@@ -24,7 +24,7 @@ The members of the team are:
 This project aims to produce an application that allows users to track their expenditures. The expenditure can belong to different categories. The user should be able to create, edit and delete these categories. When adding new spending, there should be a functionality to add a title, a short description, and an optional photo or file for the receipt. Moreover, the user should be able to set spending limits for each category as well as for the overall spending in a selected timeframe. When approaching and exceeding the set limits, the user should get a warning from the system. The app should motivate the user to stick to the set goals through gamification. Lastly, the user should be able to get reports and charts for their spending in a given timeframe.
 
 ## Project structure
-The project is called `gfc` (Greggor Financial Companion).  It currently consists of a single app `companion` where all functionality resides.
+The project is called `gfc` (Greggor Financial Companion).  It currently consists of a single app `financial_companion` where all functionality resides.
 
 ## Deployed application
 This application has yet to be deployed

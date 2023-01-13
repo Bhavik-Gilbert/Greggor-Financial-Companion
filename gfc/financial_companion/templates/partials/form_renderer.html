@@ -1,0 +1,53 @@
+{% load widget_tweaks %}
+{% for field in form %}
+    <div class="field">
+        <label class="label">{{ field.label }}</label>
+        <div class="control{% if field.label == "Email" or field.label == "Password" %} has-icons-left{% endif %}">
+            {% if form.is_bound %}
+
+                {% if field.errors or form.non_field_errors %}
+                    {% if field.field.widget.input_type|default:"textarea" == "textarea" %}
+                        {% render_field field class="textarea is-danger" %}
+                    {% elif field.field.widget.input_type == "number" %}
+                        {% render_field field class="number input is-danger" %}
+                    {% elif field.field.widget.input_type == "radio" %}
+                        {% render_field field class="radio is-danger" %}
+                    {% else %}
+                        {% render_field field class="input is-danger" %}
+                    {% endif %}
+                {% else %}
+                    {% if field.field.widget.input_type|default:"textarea" == "textarea" %}
+                        {% render_field field class="textarea is-success" %}
+                    {% elif field.field.widget.input_type == "number" %}
+                        {% render_field field class="number input is-success" %}
+                    {% elif field.field.widget.input_type == "radio" %}
+                        {% render_field field class="radio is-success" %}
+                    {% else %}
+                        {% render_field field class="input is-success" %}
+                    {% endif %}
+                {% endif %}
+            {% else %}
+                {{ field }}
+            {% endif %}
+
+            {% if field.label == "Email" or field.label == "Password" %}
+                <span class="icon is-small is-left">
+          {% if field.label == "Email" %}
+              <i class="fas fa-envelope"></i>
+          {% endif %}
+                    {% if field.label == "Password" %}
+                        <i class="fas fa-key"></i>
+                    {% endif %}
+        </span>
+            {% endif %}
+        </div>
+        {% if field.errors %}
+            <p class="help is-danger">{{ field.errors }}</p>
+        {% endif %}
+    </div>
+{% endfor %}
+{% if form.non_field_errors %}
+    <p class="help is-danger">{{ form.non_field_errors }}</p>
+{% endif %}
+
+{% include './messages.html' %}
