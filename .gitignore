@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,django,venv,macos,linux,windows,sublimetext,visualstudio,visualstudiocode,xcode,pycharm+all
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,django,venv,macos,linux,windows,sublimetext,visualstudio,visualstudiocode,xcode,pycharm+all
 
+###Hidden Keys###
+hidden_keys/
+
 ### Django ###
 *.log
 *.pot
