@@ -1,3 +1,9 @@
-{% if messages %} {% for message in messages %}
-    <div class="notification is-danger">{{ message }}</div>
-{% endfor %} {% endif %}
+<!--- Displays site messages --->
+
+{% if messages %} 
+    <div class="container">
+    {% for message in messages %}
+        <div class="alert alert-{{ message.type.value }}" role="alert">{{ message.message}}</div>
+    {% endfor %} 
+    </div>
+{% endif %}
