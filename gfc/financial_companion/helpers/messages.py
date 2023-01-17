@@ -1,14 +1,5 @@
 """Classes for site messages"""
-from enum import Enum
-
-class MessageType(Enum):
-    """ENUM defining bootstrap message types"""
-    DANGER = "danger"
-    SUCCESS = "success"
-    WARNING = "warning"
-    INFO = "info"
-    PRIMARY = "primary"
-    SECONDARY = "secondary"
+from .enums import MessageType
 
 class Message:
     """Class for message information"""
