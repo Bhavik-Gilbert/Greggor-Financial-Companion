@@ -15,3 +15,8 @@ class Timespan(Enum):
     WEEK: str = "week"
     MONTH: str = "month"
     YEAR: str = "year"
+
+class TransactionType(Enum):
+    """ENUM for transaction types"""
+    INCOME: str = "income"
+    EXPENSE: str = "expense"
