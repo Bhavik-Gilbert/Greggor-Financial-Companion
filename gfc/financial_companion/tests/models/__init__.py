@@ -1,0 +1,1 @@
+from .test_model_base import ModelTestCase

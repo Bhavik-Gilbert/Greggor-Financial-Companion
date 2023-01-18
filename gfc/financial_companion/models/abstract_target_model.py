@@ -7,7 +7,7 @@ from django.db.models import (
 
 from ..helpers.enums import Timespan, TransactionType
 
-class Target(Model):
+class AbstractTarget(Model):
     """Abstract model for target spending and saving"""
 
     transaction_type: CharField = CharField(
