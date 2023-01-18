@@ -1,6 +1,6 @@
-from enum import Enum
+from django.db import models
 
-class MessageType(Enum):
+class MessageType(models.TextChoices):
     """ENUM defining bootstrap message types"""
     DANGER: str = "danger"
     SUCCESS: str = "success"
@@ -9,9 +9,14 @@ class MessageType(Enum):
     PRIMARY: str = "primary"
     SECONDARY: str = "secondary"
 
-class Timespan(Enum):
+class Timespan(models.TextChoices):
     """ENUM for generic timespans"""
     DAY: str = "day"
     WEEK: str = "week"
     MONTH: str = "month"
     YEAR: str = "year"
+
+class TransactionType(models.TextChoices):
+    """ENUM for transaction types"""
+    INCOME: str = "income"
+    EXPENSE: str = "expense"
