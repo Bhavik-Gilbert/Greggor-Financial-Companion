@@ -7,7 +7,7 @@ from django.db.models import (
 
 from ..helpers.enums import Timespan, TransactionType
 
-class Target(Model):
+class AbstractTarget(Model):
     """Abstract model for target spending and saving"""
 
     transaction_type: CharField = CharField(
@@ -19,7 +19,7 @@ class Target(Model):
     )
 
     amount: DecimalField = DecimalField(
-        decimal_places=2, max_digits=8
+        decimal_places=2, max_digits=None
     )
 
     class Meta:

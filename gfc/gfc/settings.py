@@ -86,7 +86,7 @@ DATABASES = {
     }
 }
 
-FIXTURE_DIRS = ["financial_companion/tests/fixtures"]
+FIXTURE_DIRS = [os.path.join(BASE_DIR, "financial_companion/tests/fixtures")]
 
 
 # Password validation
