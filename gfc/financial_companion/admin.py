@@ -1,3 +1,5 @@
+"""Configuration of the admin interface of financial_companion."""
+
 from django.contrib import admin
 from .models import  User
 # Register your models here.
