@@ -43,6 +43,12 @@ Install all required packages:
 $ pip3 install -r requirements.txt
 ```
 
+Navigate into the django root directory:
+
+```
+$ cd gfc
+```
+
 Migrate the database:
 
 ```
