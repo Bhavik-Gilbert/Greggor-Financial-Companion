@@ -124,6 +124,16 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
+
+# Media files
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# User model for authentication and login purposes
+AUTH_USER_MODEL = 'financial_companion.User'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
