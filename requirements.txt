@@ -3,3 +3,4 @@ coverage==6.5.0
 Faker==15.3.2
 django-widget-tweaks==1.4.12
 Pillow==9.4.0
+DateTime==4.5
