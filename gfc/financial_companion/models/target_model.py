@@ -4,8 +4,6 @@ from django.db.models import (
     DecimalField
 )
 
-from django.utils.translation import gettext_lazy as _
-
 
 from ..helpers.enums import Timespan, TransactionType
 
@@ -13,7 +11,7 @@ class Target(Model):
     """Abstract model for target spending and saving"""
 
     transaction_type: CharField = CharField(
-        choices=Timespan.choices
+        choices=TransactionType.choices
     )
 
     timespan: CharField = CharField(
