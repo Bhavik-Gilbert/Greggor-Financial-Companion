@@ -1,1 +1,1 @@
-from .abstract_target_model import Target
+from .abstract_target_model import AbstractTarget

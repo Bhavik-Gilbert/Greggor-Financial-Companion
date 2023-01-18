@@ -1,5 +1,6 @@
 from django.db import connection
 from django.db.models.base import ModelBase
+from django.db.utils import ProgrammingError
 
 from .test_model_base import ModelTestCase
 
@@ -8,23 +9,44 @@ class AbstractModelTestCase(ModelTestCase):
     """
     Base class for tests of abstract models. To use, subclass and specify
     the mixin class variable. A model using the mixin will be made
-    available in self.test_model.
+    available in self.model.
     """
 
     def __init__(self, methodName: str = "runTest") -> None:
         super().__init__(methodName=methodName)
         self.mixin = None
 
-    def setUp(self):
-        super().setUp()
-        # Create a dummy model which extends the mixin
-        self.test_model = ModelBase('__TestModel__' + self.mixin.__name__, (self.mixin,), {'__module__': self.mixin.__module__})
+    @classmethod
+    def setUpClass(self):
+        """
+        Create temporary model for abstract models
+        Abstract model from self.mixin is used, assign in  subclass
+        New model stored in self.model
+        """
 
-        # Create the schema for our test model
-        with connection.schema_editor() as schema_editor:
-            schema_editor.create_model(self.test_model)
+        # Create dummy model extending Base, a mixin, if we haven't already.
+        if not hasattr(self, 'model'):
+            self.model = ModelBase(
+                'Base',
+                ( self.mixin, ),
+                { '__module__': self.mixin.__module__ }
+            )
 
-    def tearDown(self):
-        # Delete the schema for the test model
-        with connection.schema_editor() as schema_editor:
-            schema_editor.delete_model(self.test_model)
+            # Create the schema for our base model. 
+            # If a schema is already create then let's not create another one.
+            try:
+                with connection.schema_editor() as schema_editor:
+                    schema_editor.create_model(self.model)
+                super(AbstractModelTestCase, self).setUpClass()
+            except ProgrammingError:
+                pass
+
+
+    @classmethod
+    def tearDownClass(self):
+        try:
+            super(AbstractModelTestCase, self).tearDownClass()
+            with connection.schema_editor() as schema_editor:
+                schema_editor.delete_model(self.model)
+        except ProgrammingError:
+            pass

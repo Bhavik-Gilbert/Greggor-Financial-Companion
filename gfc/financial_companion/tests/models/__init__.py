@@ -1,1 +1,2 @@
 from .test_model_base import ModelTestCase
+from .test_abstract_model_base import AbstractModelTestCase
