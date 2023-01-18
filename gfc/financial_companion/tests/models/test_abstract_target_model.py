@@ -1,5 +1,6 @@
 from .test_abstract_model_base import AbstractModelTestCase
 from django.db.models.base import ModelBase
+from decimal import Decimal
 
 from ...helpers import Timespan, TransactionType
 from ...models import AbstractTarget
@@ -27,13 +28,13 @@ class AbstractTargetModelTestCase(AbstractModelTestCase):
         self.test_model.amount: float = 99
         self._assert_model_is_valid()
 
-    # def test_valid_amount_2_decimal_places(self):
-    #     # TODO: Check model for why invalid
-    #     self.test_model.amount: float = 99.99
-    #     self._assert_model_is_valid()
+    def test_valid_amount_2_decimal_places(self):
+        # TODO: Check model for why invalid
+        self.test_model.amount: float = Decimal('99.99')
+        self._assert_model_is_valid()
     
     def test_invalid_amount_more_than_2_decimal_places(self):
-        self.test_model.amount: float = 99.999
+        self.test_model.amount: float = Decimal('99.999')
         self._assert_model_is_invalid()
 
     def test_valid_timespan_enum_options(self):

@@ -19,7 +19,7 @@ class AbstractTarget(Model):
     )
 
     amount: DecimalField = DecimalField(
-        decimal_places=2, max_digits=8
+        decimal_places=2, max_digits=None
     )
 
     class Meta:
