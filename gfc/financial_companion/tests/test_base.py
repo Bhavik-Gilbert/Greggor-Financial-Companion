@@ -3,10 +3,14 @@ from django.test import TestCase
 class BaseTestCase(TestCase):
     """
     Base class for testing.
-    Call super().setUp() and set
-    self.test_base to the model to be tested
-    in the setUp() method of the subclass.
+    Setup universally used fixtures and information across tests
     """
+
+    def __init__(self, methodName: str = "runTest") -> None:
+        """Clear database for testing"""
+        super().__init__(methodName=methodName)
+
+    fixtures: list[str] = []
 
     def setUp(self) -> None:
         pass

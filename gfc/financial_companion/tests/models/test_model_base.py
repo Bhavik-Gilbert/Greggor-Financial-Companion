@@ -11,8 +11,8 @@ class ModelTestCase(BaseTestCase):
     in the setUp() method of the subclass.
     """
 
-    def __init__(self, method_name: str = "runTest") -> None:
-        super().__init__(methodName=method_name)
+    def __init__(self, methodName: str = "runTest") -> None:
+        super().__init__(methodName=methodName)
         self.test_model: Model = None
 
     def _assert_model_is_valid(self) -> None:

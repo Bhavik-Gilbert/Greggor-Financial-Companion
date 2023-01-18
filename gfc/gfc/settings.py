@@ -86,6 +86,8 @@ DATABASES = {
     }
 }
 
+FIXTURE_DIRS = ["financial_companion/tests/fixtures"]
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
