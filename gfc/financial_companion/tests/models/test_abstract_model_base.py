@@ -14,7 +14,7 @@ class AbstractModelTestCase(ModelTestCase):
 
     def __init__(self, methodName: str = "runTest") -> None:
         super().__init__(methodName=methodName)
-        self.mixin = None
+        self.mixin: AbstractModelTestCase = None
 
     @classmethod
     def setUpClass(self):
@@ -26,8 +26,8 @@ class AbstractModelTestCase(ModelTestCase):
 
         # Create dummy model extending Base, a mixin, if we haven't already.
         if not hasattr(self, 'model'):
-            self.model = ModelBase(
-                'Base',
+            self.model: ModelBase = ModelBase(
+                'AbstractBase',
                 ( self.mixin, ),
                 { '__module__': self.mixin.__module__ }
             )
