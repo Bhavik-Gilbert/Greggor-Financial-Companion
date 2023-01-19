@@ -29,12 +29,19 @@ class AbstractTargetModelTestCase(AbstractModelTestCase):
         self._assert_model_is_valid()
 
     def test_valid_amount_2_decimal_places(self):
-        # TODO: Check model for why invalid
         self.test_model.amount: float = Decimal('99.99')
         self._assert_model_is_valid()
     
     def test_invalid_amount_more_than_2_decimal_places(self):
         self.test_model.amount: float = Decimal('99.999')
+        self._assert_model_is_invalid()
+    
+    def test_valid_amount_can_be_15_digits_long(self):
+        self.test_model.amount: int = Decimal('1234567890123.45')
+        self._assert_model_is_valid()
+        
+    def test_invalid_amount_cannnot_be_more_than_15_digits_long(self):
+        self.test_model.amount: int = Decimal('12345678901234.56')
         self._assert_model_is_invalid()
 
     def test_valid_timespan_enum_options(self):
