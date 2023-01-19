@@ -7,6 +7,7 @@
 {% block content %}
     <h1>Monetary Accounts Form</h1>
 
+    {% if form_toggle %}
     <form method="POST" class="container-fluid row">
         {% csrf_token %}
         <h3 class="col-md-auto">Account Type</h3>
@@ -20,6 +21,9 @@
             </div>
         {% endfor %}
     </form>
+    {% else %}
+    <h3>{{ account_type.capitalize }}</h3>
+    {% endif %}
 
     <!-- TODO: Add form -->
 {% endblock %}
