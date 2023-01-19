@@ -20,3 +20,8 @@ class TransactionType(models.TextChoices):
     """ENUM for transaction types"""
     INCOME: str = "income"
     EXPENSE: str = "expense"
+
+class MonetaryAccountType(models.TextChoices):
+    """ENUM for transaction types"""
+    POT: str = "pot"
+    BANK: str = "bank"

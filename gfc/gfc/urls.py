@@ -23,5 +23,6 @@ from financial_companion import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_view),
+    path('add_monetary_account', views.add_monetary_account_view),
 ]
 
