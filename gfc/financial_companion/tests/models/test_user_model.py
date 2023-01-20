@@ -98,6 +98,9 @@ class UserModelTestCase(ModelTestCase):
         self.test_model.email = 'johndoe@@example.org'
         self._assert_model_is_invalid()
 
+    def test_profile_picture_can_be_empty(self):
+        self.test_model.profile_picture = ''
+        self._assert_model_is_valid()
 
     # TODO:
     # Test image field
