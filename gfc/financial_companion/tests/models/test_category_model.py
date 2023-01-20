@@ -6,9 +6,6 @@ from financial_companion.models.category_model import Category
 class CategoryModelTestCase(ModelTestCase):
     """Test file for category model class"""
     
-    fixtures: list[str] = ["example_category.json"]
-
-
     def setUp(self):
         super().setUp()
         self.test_model = Category.objects.get(id = 1)
