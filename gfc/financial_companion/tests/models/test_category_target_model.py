@@ -1,14 +1,14 @@
 from .test_model_base import ModelTestCase
 from django.db.backends.sqlite3.base import IntegrityError
-from ...models import TargetCategory
+from ...models import CategoryTarget
 
-class TargetCategoryModelTestCase(ModelTestCase):
-    """Test file for targetcategory model class"""
+class CategoryTargetModelTestCase(ModelTestCase):
+    """Test file for CategoryTarget model class"""
 
     def setUp(self) -> None:
         super().setUp()
-        self.test_model: TargetCategory = TargetCategory.objects.get(id=1)
-        self.second_model: TargetCategory = TargetCategory.objects.get(id=2)
+        self.test_model: CategoryTarget = CategoryTarget.objects.get(id=1)
+        self.second_model: CategoryTarget = CategoryTarget.objects.get(id=2)
     
     def test_valid_target_category(self):
         self._assert_model_is_valid()

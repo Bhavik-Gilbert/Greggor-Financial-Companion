@@ -8,7 +8,7 @@ from ...models import AbstractTarget
 class AbstractTargetModelTestCase(AbstractModelTestCase):
     """Test file for abstract target model class"""
     
-    fixtures: list[str] = ["example_targets.json"]
+    fixtures: list[str] = ["example_abstract_targets.json"]
 
     @classmethod
     def setUpClass(self):

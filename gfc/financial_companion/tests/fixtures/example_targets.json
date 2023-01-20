@@ -1,11 +1,22 @@
 [
     {
-        "model": "financial_companion.AbstractBase",
+        "model": "financial_companion.categorytarget",
         "pk": 1,
         "fields": {
             "transaction_type": "income",
             "timespan": "day",
-            "amount": "100"
+            "amount": "100",
+            "category_id": 1
+        }
+    },
+    {
+        "model": "financial_companion.categorytarget",
+        "pk": 2,
+        "fields": {
+            "transaction_type": "expense",
+            "timespan": "week",
+            "amount": "100",
+            "category_id": 2
         }
     }
 ]

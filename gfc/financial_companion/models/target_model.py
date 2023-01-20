@@ -7,6 +7,7 @@ from django.db.models import (
 )
 
 from .category_model import Category
+from .user_model import User
 from ..helpers import Timespan, TransactionType, CurrencyType
 
 class AbstractTarget(Model):
@@ -31,7 +32,7 @@ class AbstractTarget(Model):
     class Meta:
         abstract = True
 
-class TargetCategory(AbstractTarget):
+class CategoryTarget(AbstractTarget):
     """Model for target spending and saving on categories"""
 
     category_id: ForeignKey = ForeignKey(Category, on_delete=CASCADE)

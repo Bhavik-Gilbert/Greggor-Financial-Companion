@@ -7,7 +7,7 @@ class BaseTestCase(TestCase):
     """
     
     fixtures: list[str] = [
-        "example_target_category.json",
+        "example_targets.json",
         "example_category.json"
     ]
 
