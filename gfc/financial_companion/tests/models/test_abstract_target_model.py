@@ -17,7 +17,6 @@ class AbstractTargetModelTestCase(AbstractModelTestCase):
         super().setUpClass()
 
     def setUp(self) -> None:
-        AbstractTarget
         super().setUp()
         self.test_model: ModelBase = self.model.objects.get(id=1)
 
