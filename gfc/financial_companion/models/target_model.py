@@ -1,10 +1,12 @@
 from django.db.models import (
     Model,
     CharField,
-    DecimalField
+    DecimalField,
+    ForeignKey,
+    CASCADE
 )
 
-
+from .category_model import Category
 from ..helpers.enums import Timespan, TransactionType
 
 class AbstractTarget(Model):
@@ -25,3 +27,10 @@ class AbstractTarget(Model):
     class Meta:
         abstract = True
 
+class TargetCategory(AbstractTarget):
+    """Model for target spending and saving on categories"""
+
+    category_id: ForeignKey = ForeignKey(Category, on_delete=CASCADE)
+
+    class Meta:
+        unique_together = ["transaction_type", "timespan", "category_id"]

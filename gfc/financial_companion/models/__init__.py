@@ -1,5 +1,4 @@
 from .user_model import User
-from .abstract_target_model import AbstractTarget
+from .target_model import AbstractTarget, TargetCategory
 from .category_model import Category
-from .target_category_model import TargetCategory
 
