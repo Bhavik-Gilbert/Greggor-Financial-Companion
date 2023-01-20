@@ -7,7 +7,7 @@ from django.db.models import (
 )
 
 from .category_model import Category
-from ..helpers.enums import Timespan, TransactionType
+from ..helpers import Timespan, TransactionType, CurrencyType
 
 class AbstractTarget(Model):
     """Abstract model for target spending and saving"""
@@ -22,6 +22,10 @@ class AbstractTarget(Model):
 
     amount: DecimalField = DecimalField(
         decimal_places=2, max_digits=15
+    )
+
+    currency: CharField = CharField(
+        choices=CurrencyType.choices, max_length=5, default=CurrencyType.BRITISHPOUND
     )
 
     class Meta:

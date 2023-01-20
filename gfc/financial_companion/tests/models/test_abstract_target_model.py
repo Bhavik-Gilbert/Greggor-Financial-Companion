@@ -2,7 +2,7 @@ from .test_abstract_model_base import AbstractModelTestCase
 from django.db.models.base import ModelBase
 from decimal import Decimal
 
-from ...helpers import Timespan, TransactionType
+from ...helpers import Timespan, TransactionType, CurrencyType
 from ...models import AbstractTarget
 
 class AbstractTargetModelTestCase(AbstractModelTestCase):
@@ -51,6 +51,10 @@ class AbstractTargetModelTestCase(AbstractModelTestCase):
     def test_invalid_timespan_must_be_in_enum(self):
         self.test_model.timespan: str = "incorrect"
         self._assert_model_is_invalid()
+    
+    def test_invalid_timespan_cannot_be_empty(self):
+        self.test_model.timespan: str = ""
+        self._assert_model_is_invalid()
         
     def test_valid_transaction_type_enum_options(self):
         for transaction_type in TransactionType:
@@ -58,6 +62,30 @@ class AbstractTargetModelTestCase(AbstractModelTestCase):
             self._assert_model_is_valid()
     
     def test_invalid_transaction_type_must_be_in_enum(self):
-        self.test_model.timespan: str = "incorrect"
+        self.test_model.transaction_type: str = "incorrect"
+        self._assert_model_is_invalid()
+    
+    def test_invalid_transaction_type_cannot_be_empty(self):
+        self.test_model.transaction_type: str = ""
         self._assert_model_is_invalid()
 
+    def test_valid_currency_enum_options(self):
+        for currency in CurrencyType:
+            self.test_model.currency: str = currency
+            self._assert_model_is_valid()
+    
+    def test_valid_default_currency_is_gbp(self):
+        no_currency_input_model: ModelBase = self.model.objects.create(
+            transaction_type = TransactionType.INCOME,
+            timespan = Timespan.WEEK,
+            amount = 99,
+        )
+        self.assertTrue(CurrencyType.BRITISHPOUND == no_currency_input_model.currency)
+    
+    def test_invalid_currency_must_be_in_enum(self):
+        self.test_model.currency: str = "inc"
+        self._assert_model_is_invalid()
+    
+    def test_invalid_currency_cannot_be_empty(self):
+        self.test_model.currency: str = ""
+        self._assert_model_is_invalid()

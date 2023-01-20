@@ -25,3 +25,9 @@ class MonetaryAccountType(models.TextChoices):
     """ENUM for transaction types"""
     POT: str = "pot"
     BANK: str = "bank"
+
+class CurrencyType(models.TextChoices):
+    """ENUM for supported currency types"""
+    UNITEDSTATESDOLLAR: str = "USD"
+    BRITISHPOUND: str = "GBP"
+    EURO: str = "EUR"
