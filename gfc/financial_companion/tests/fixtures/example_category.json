@@ -6,5 +6,13 @@
             "name": "Food",
             "description": "Eating out expenses"
           }
+    },
+    {
+        "model": "financial_companion.Category",
+        "pk": 2,
+        "fields": {
+            "name": "Travel",
+            "description": "Going to and from uni"
+          }
     }
 ]
