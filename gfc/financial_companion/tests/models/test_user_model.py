@@ -6,9 +6,6 @@ from financial_companion.models.user_model import User
 class UserModelTestCase(ModelTestCase):
     """Test file for user model class"""
     
-    fixtures: list[str] = ["default_user.json","other_users.json"]
-
-
     def setUp(self):
         super().setUp()
         self.test_model = User.objects.get(username = '@johndoe')
