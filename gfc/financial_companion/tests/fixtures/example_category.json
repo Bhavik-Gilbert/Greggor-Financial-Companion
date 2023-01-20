@@ -1,0 +1,10 @@
+[
+    {
+        "model": "financial_companion.Category",
+        "pk": 1,
+        "fields": {
+            "name": "Food",
+            "description": "Eating out expenses"
+          }
+    }
+]
