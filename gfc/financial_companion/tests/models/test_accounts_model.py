@@ -8,7 +8,6 @@ class AccountModelTestCase(ModelTestCase):
     """test file for the accounts model"""
 
     def setUp(self) -> None:
-        Account
         super().setUp()
         self.test_model: ModelBase = Account.objects.get(id = 1)
 

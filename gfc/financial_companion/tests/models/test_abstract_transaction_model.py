@@ -15,7 +15,7 @@ class AbstractTransactionModelTestCase(AbstractModelTestCase):
         """Create temporary model"""
         self.mixin: AbstractTransaction = AbstractTransaction
         super().setUpClass()
-    
+        
     def setUp(self) -> None:
         super().setUp()
         self.test_model: ModelBase = self.model.objects.get(id=1)
