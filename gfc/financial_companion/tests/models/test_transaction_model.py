@@ -1,5 +1,6 @@
 from .test_model_base import ModelTestCase
 from django.db.models.base import ModelBase
+from django.utils import timezone
 from decimal import Decimal
 
 from ...helpers import CurrencyType
@@ -19,6 +20,7 @@ class TransactionModelTestCase(ModelTestCase):
         self.test_model.time_of_transaction = "2023-02-01T16:30:00+00:00"
         self._assert_model_is_valid()
     
-    def test_time_of_transaction_may_not_be_blank(self):
-        self.test_model.time_of_transaction = None
-        self._assert_model_is_invalid()
+    def test_time_of_transaction_auto_adds_time_if_blank(self):
+        self.test_model.time_of_transaction = ""
+        self._assert_model_is_valid()
+        

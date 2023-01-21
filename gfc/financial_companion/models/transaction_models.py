@@ -9,7 +9,6 @@ from django.db.models import (
 )
 from .accounts_model import Account
 from .category_model import Category
-from datetime import datetime
 from ..helpers.enums import CurrencyType
 
 def change_filename(instance, filename):
@@ -67,7 +66,8 @@ class AbstractTransaction(Model):
 
 class Transaction(AbstractTransaction):
     """ Concrete model for a generic transaction """
+
     time_of_transaction: DateTimeField = DateTimeField(
         blank = False,
-        default = datetime.now()
+        auto_now_add = True
     )
