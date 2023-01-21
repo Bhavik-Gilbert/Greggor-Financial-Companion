@@ -17,4 +17,5 @@ class Migration(migrations.Migration):
             field=models.ImageField(
                 upload_to=financial_companion.models.user_model.change_filename
             ),
+        ),
     ]

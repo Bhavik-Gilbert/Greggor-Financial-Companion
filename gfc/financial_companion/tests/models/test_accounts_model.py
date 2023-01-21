@@ -13,7 +13,7 @@ class AccountModelTestCase(ModelTestCase):
     def setUp(self) -> None:
         Account
         super().setUp()
-        self.test_model: ModelBase = Account.objects.get()
+        self.test_model: ModelBase = Account.objects.get(id = 1)
 
     def test_valid_target(self):
         self._assert_model_is_valid()
