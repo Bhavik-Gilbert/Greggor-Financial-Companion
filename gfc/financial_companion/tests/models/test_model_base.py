@@ -11,6 +11,11 @@ class ModelTestCase(BaseTestCase):
     in the setUp() method of the subclass.
     """
 
+    fixtures: list[str] = [
+        "example_users.json",
+        "example_category.json"
+    ]
+
     def __init__(self, methodName: str = "runTest") -> None:
         super().__init__(methodName=methodName)
         self.test_model: Model = None
