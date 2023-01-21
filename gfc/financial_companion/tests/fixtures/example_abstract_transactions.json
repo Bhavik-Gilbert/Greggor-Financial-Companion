@@ -1,0 +1,16 @@
+[
+    {
+        "model": "financial_companion.AbstractTransaction",
+        "pk": 1,
+        "fields": {
+            "title": "Daily Food Shop",
+            "description": "Food Shop at Waitrose",
+            "image": "transactions/1.jpg",
+            "category" : 1,
+            "amount" : 26.79,
+            "currency" : "gbp",
+            "sender_account" : 2,
+            "receiver_account" : 1
+        }
+    }
+]

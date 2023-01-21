@@ -7,10 +7,12 @@ class BaseTestCase(TestCase):
     """
     
     fixtures: list[str] = [
-        "example_users.json",
         "example_category.json",
+        "example_transactions.json",
+        "example_users.json",
+        "example_accounts.json",
         "example_targets.json",
     ]
-
+    
     def setUp(self) -> None:
         pass

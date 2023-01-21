@@ -21,13 +21,22 @@ class TransactionType(models.TextChoices):
     INCOME: str = "income"
     EXPENSE: str = "expense"
 
+class CurrencyType(models.TextChoices):
+    """ENUM for currency types"""
+    GBP: str = "gbp"
+    USD: str = "usd"
+    EUR: str = "eur"
+    JPY: str = "jpy"
+    CNY: str = "cny"
+    AUD: str = "aud"
+    CAD: str = "cad"
+    KZT: str = "kzt"
+    INR: str = "inr"
+    RUB: str = "rub"
+    NZD: str = "nzd"
+    CHF: str = "chf"
+
 class MonetaryAccountType(models.TextChoices):
     """ENUM for transaction types"""
     POT: str = "pot"
     BANK: str = "bank"
-
-class CurrencyType(models.TextChoices):
-    """ENUM for supported currency types"""
-    UNITEDSTATESDOLLAR: str = "USD"
-    BRITISHPOUND: str = "GBP"
-    EURO: str = "EUR"
