@@ -5,10 +5,10 @@ from django.db.models import (
     ImageField,
     DateTimeField,
     ForeignKey,
-    #Account
-    #Category
+    CASCADE
 )
-from datetime import datetime
+from .accounts_model import Account
+from .category_model import Category
 from ..helpers.enums import CurrencyType
 
 def change_filename(instance, filename):
@@ -44,17 +44,12 @@ class AbstractTransaction(Model):
         upload_to='change_filename'
     )
 
-    #category = models.ForeignKey(### Category ###)
-
-    #time_of_transaction: DateTimeField = DateTimeField(
-    #    blank = False,
-    #    default = datetime.now()
-    #)
+    category = ForeignKey(Category, on_delete = CASCADE)
 
     amount: DecimalField = DecimalField(
         blank = False,
         decimal_places=2,
-        max_digits = None,
+        max_digits = 15,
     )
 
     currency: CharField = CharField(
@@ -63,8 +58,16 @@ class AbstractTransaction(Model):
         max_length = 3
     )
 
-    #sender_account = models.ForeignKey(Account,related_name = "sender_account")
-    #reciever_account = models.ForeignKey(Account, related_name = "reciever_account")
+    sender_account = ForeignKey(Account, related_name = "sender_account", on_delete = CASCADE)
+    receiver_account = ForeignKey(Account, related_name = "receiver_account", on_delete = CASCADE)
 
     class Meta:
         abstract = True
+
+class Transaction(AbstractTransaction):
+    """ Concrete model for a generic transaction """
+
+    time_of_transaction: DateTimeField = DateTimeField(
+        blank = False,
+        auto_now_add = True
+    )
