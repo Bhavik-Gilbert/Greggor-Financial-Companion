@@ -7,8 +7,9 @@ class BaseTestCase(TestCase):
     """
     
     fixtures: list[str] = [
+        "example_users.json",
+        "example_category.json",
         "example_targets.json",
-        "example_category.json"
     ]
 
     def setUp(self) -> None:
