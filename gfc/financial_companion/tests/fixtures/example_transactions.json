@@ -1,0 +1,13 @@
+[
+    {
+        "model": "financial_companion.AbstractBase",
+        "pk": 1,
+        "fields": {
+            "title": "Daily Food Shop",
+            "description": "Food Shop at Waitrose",
+            "image": "transactions/1.jpg",
+            "timeOfTransaction" : "2023-01-01T12:00:00+00:00",
+            "amount" : {26.79, "GBP"}
+        }
+    }
+]
