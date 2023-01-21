@@ -26,7 +26,7 @@ class AbstractTarget(Model):
     )
 
     currency: CharField = CharField(
-        choices=CurrencyType.choices, max_length=5, default=CurrencyType.BRITISHPOUND
+        choices=CurrencyType.choices, max_length=5, default=CurrencyType.GBP
     )
 
     class Meta:

@@ -10,6 +10,7 @@ class BaseTestCase(TestCase):
         "example_users.json",
         "example_category.json",
         "example_targets.json",
+        "test_account.json"
     ]
 
     def setUp(self) -> None:

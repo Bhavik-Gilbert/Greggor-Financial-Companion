@@ -1,6 +1,6 @@
 [
     {
-        "model": "financial_companion.AbstractBase",
+        "model": "financial_companion.AbstractTransaction",
         "pk": 1,
         "fields": {
             "title": "Daily Food Shop",

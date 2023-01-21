@@ -8,7 +8,7 @@ from ...models import AbstractTransaction
 class AbstractTransactionModelTestCase(AbstractModelTestCase):
     """Test file for abstract transaction model class"""
 
-    fixtures: list[str] = ["example_transaction.json"]
+    fixtures: list[str] = ["example_transactions.json"]
 
     @classmethod
     def setUpClass(self):
@@ -17,7 +17,6 @@ class AbstractTransactionModelTestCase(AbstractModelTestCase):
         super().setUpClass()
 
     def setUp(self) -> None:
-        AbstractTarget
         super().setUp()
         self.test_model: ModelBase = self.model.objects.get(id=1)
 
@@ -25,11 +24,11 @@ class AbstractTransactionModelTestCase(AbstractModelTestCase):
         self._assert_model_is_valid()
 
     def test_valid_title(self):
-        self.test_model.title: string = "Test transaction title"
+        self.test_model.title: str = "Test transaction title"
         self._assert_model_is_valid()
 
     def test_title_may_not_be_blank(self):
-        self.test_model.title: string = ""
+        self.test_model.title: str = ""
         self._assert_model_is_invalid()
 
     def test_valid_title_of_30_characters(self):
@@ -41,11 +40,11 @@ class AbstractTransactionModelTestCase(AbstractModelTestCase):
         self._assert_model_is_invalid()
 
     def test_valid_description(self):
-        self.test_model.description: string = "Test transaction description"
+        self.test_model.description: str = "Test transaction description"
         self._assert_model_is_valid()
 
     def test_title_may_be_blank(self):
-        self.test_model.description: string = ""
+        self.test_model.description: str = ""
         self._assert_model_is_valid()
 
     def test_valid_description_of_200_characters(self):

@@ -8,11 +8,7 @@ from ...models import PotAccount
 class AccountModelTestCase(ModelTestCase):
     """test file for the pot accounts model"""
 
-    fixtures: list[str] = ["test_account.json"]
-
-
     def setUp(self) -> None:
-        PotAccount
         super().setUp()
         self.test_model: ModelBase = PotAccount.objects.get(id = 3)
 

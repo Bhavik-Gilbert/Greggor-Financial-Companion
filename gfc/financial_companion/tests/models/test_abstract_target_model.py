@@ -80,7 +80,7 @@ class AbstractTargetModelTestCase(AbstractModelTestCase):
             timespan = Timespan.WEEK,
             amount = 99,
         )
-        self.assertTrue(CurrencyType.BRITISHPOUND == no_currency_input_model.currency)
+        self.assertTrue(CurrencyType.GBP == no_currency_input_model.currency)
     
     def test_invalid_currency_must_be_in_enum(self):
         self.test_model.currency: str = "inc"
