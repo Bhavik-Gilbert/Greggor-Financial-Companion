@@ -20,14 +20,14 @@ class AbstractModelTestCase(ModelTestCase):
     def setUpClass(self):
         """
         Create temporary model for abstract models
-        Abstract model from self.mixin is used, assign in  subclass
+        Abstract model from self.mixin is used, assign in subclass
         New model stored in self.model
         """
 
         # Create dummy model extending Base, a mixin, if we haven't already.
         if not hasattr(self, 'model'):
             self.model: ModelBase = ModelBase(
-                'AbstractBase',
+                self.mixin.__name__,
                 ( self.mixin, ),
                 { '__module__': self.mixin.__module__ }
             )
