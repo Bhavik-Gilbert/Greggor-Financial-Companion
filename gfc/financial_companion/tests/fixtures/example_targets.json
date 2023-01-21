@@ -1,6 +1,6 @@
 [
     {
-        "model": "financial_companion.AbstractBase",
+        "model": "financial_companion.AbstractTarget",
         "pk": 1,
         "fields": {
             "transaction_type": "income",
