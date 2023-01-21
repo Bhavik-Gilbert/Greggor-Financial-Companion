@@ -7,9 +7,7 @@ from django.db.models import (
 )
 
 from .user_model import User
-
 from ..helpers.enums import CurrencyType
-
 
 class Account(Model):
     #Abstract model for all accounts
@@ -32,4 +30,3 @@ class PotAccount(Account):
         default=CurrencyType.GBP,
         max_length=3
     )
-

@@ -1,0 +1,19 @@
+[
+    {
+        "model": "financial_companion.Account",
+        "pk": 1,
+        "fields": {
+            "name": "abc",
+            "description": "this is a test account"
+        }
+    },
+
+    {
+        "model": "financial_companion.Account",
+        "pk": 2,
+        "fields": {
+            "name": "def",
+            "description": "this is a test account"
+        }
+    }
+]

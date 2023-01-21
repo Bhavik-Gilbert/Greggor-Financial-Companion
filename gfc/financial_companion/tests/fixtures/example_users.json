@@ -13,6 +13,7 @@
           }
     },
     
+    {    
         {
             "model": "financial_companion.user",
             "pk": 2,
@@ -27,4 +28,19 @@
               }
         }
     
+    },
+
+    {
+        "model": "financial_companion.user",
+        "pk": 3,
+        "fields": {
+            "first_name": "Michael",
+            "last_name": "Kolling",
+            "username": "@michaelkolling",
+            "email": "michaelkolling@example.org",
+            "bio": "Michael Kollings's BlueJ Financial Tracker",
+            "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
+            "is_active": true
+          }
+    }
 ]
