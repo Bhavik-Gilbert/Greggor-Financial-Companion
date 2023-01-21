@@ -5,8 +5,13 @@ class BaseTestCase(TestCase):
     Base class for testing.
     Setup universally used fixtures and information across tests
     """
-    
-    fixtures: list[str] = []
 
+    fixtures: list[str] = [
+        "example_category.json",
+        "example_transactions.json",
+        "example_users.json",
+        "example_accounts.json"
+    ]
+    
     def setUp(self) -> None:
         pass

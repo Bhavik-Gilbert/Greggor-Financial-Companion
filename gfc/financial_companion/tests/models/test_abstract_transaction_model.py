@@ -3,21 +3,20 @@ from django.db.models.base import ModelBase
 from decimal import Decimal
 
 from ...helpers import CurrencyType
-from ...models import AbstractTransaction
+from ...models import AbstractTransaction, Transaction
 
 class AbstractTransactionModelTestCase(AbstractModelTestCase):
     """Test file for abstract transaction model class"""
 
-    fixtures: list[str] = ["example_transactions.json"]
+    fixtures: list[str] = ["example_abstract_transactions.json", "example_category.json", "test_account.json"]
 
     @classmethod
     def setUpClass(self):
         """Create temporary model"""
         self.mixin: AbstractTransaction = AbstractTransaction
         super().setUpClass()
-
+    
     def setUp(self) -> None:
-        AbstractTarget
         super().setUp()
         self.test_model: ModelBase = self.model.objects.get(id=1)
 
