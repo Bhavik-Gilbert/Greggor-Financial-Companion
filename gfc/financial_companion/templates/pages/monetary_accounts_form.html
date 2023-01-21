@@ -1,0 +1,29 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Monetary Accounts Form{% endblock %}
+
+<!-- Content -->
+{% block content %}
+    <h1>Monetary Accounts Form</h1>
+
+    {% if form_toggle %}
+    <form method="POST" class="container-fluid row">
+        {% csrf_token %}
+        <h3 class="col-md-auto">Account Type</h3>
+        {% for monetary_account_type in monetary_account_types %}
+            <div class="col-lg-1">
+            {% if account_type == monetary_account_type %}
+                <button type="submit" name="account_type" value="{{monetary_account_type}}" class="btn btn-primary col-12">{{monetary_account_type.capitalize}}</button>
+            {% else %}
+                <button type="submit" name="account_type" value="{{monetary_account_type}}" class="btn btn-outline-secondary col-12">{{monetary_account_type.capitalize}}</button>
+            {% endif %}
+            </div>
+        {% endfor %}
+    </form>
+    {% else %}
+    <h3>{{ account_type.capitalize }}</h3>
+    {% endif %}
+
+    <!-- TODO: Add form -->
+{% endblock %}

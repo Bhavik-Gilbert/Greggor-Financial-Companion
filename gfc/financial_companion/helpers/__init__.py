@@ -1,3 +1,3 @@
 from .messages import Message
 from .decorators import offline_required
-from .enums import MessageType, Timespan, TransactionType, CurrencyType
+from .enums import *

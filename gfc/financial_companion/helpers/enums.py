@@ -35,3 +35,8 @@ class CurrencyType(models.TextChoices):
     RUB: str = "rub"
     NZD: str = "nzd"
     CHF: str = "chf"
+    
+class MonetaryAccountType(models.TextChoices):
+    """ENUM for transaction types"""
+    POT: str = "pot"
+    BANK: str = "bank"

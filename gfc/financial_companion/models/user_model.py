@@ -34,4 +34,4 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=50, blank=False)
     email = models.EmailField(unique=True, blank=False)
     bio = models.CharField(max_length=520, blank=True)
-    profile_picture = models.ImageField(upload_to=change_filename, height_field=None, width_field=None, max_length=100,)
+    profile_picture = models.ImageField(upload_to=change_filename, height_field=None, width_field=None, max_length=100,blank=True)
