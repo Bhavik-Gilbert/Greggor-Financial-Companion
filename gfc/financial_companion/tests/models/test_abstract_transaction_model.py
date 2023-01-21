@@ -8,7 +8,7 @@ from ...models import AbstractTransaction
 class AbstractTransactionModelTestCase(AbstractModelTestCase):
     """Test file for abstract transaction model class"""
 
-    fixtures: list[str] = ["example_transaction.json"]
+    fixtures: list[str] = ["example_transactions.json"]
 
     @classmethod
     def setUpClass(self):
