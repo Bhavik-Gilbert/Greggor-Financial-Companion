@@ -5,7 +5,7 @@ from django.db.models import (
 
 
 
-class AbstractAccount(Model):
+class Account(Model):
     #Abstract model for all accounts
 
     name: CharField = CharField(
@@ -17,7 +17,4 @@ class AbstractAccount(Model):
         max_length = 500,
         blank = True
     )
-
-    class Meta:
-        abstract = True
 

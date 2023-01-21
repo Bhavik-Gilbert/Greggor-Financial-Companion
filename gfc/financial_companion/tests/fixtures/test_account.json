@@ -1,6 +1,6 @@
 [
     {
-        "model": "financial_companion.AbstractAccount",
+        "model": "financial_companion.Account",
         "pk": 1,
         "fields": {
             "name": "abc",

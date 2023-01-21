@@ -1,24 +1,19 @@
-from .test_abstract_model_base import AbstractModelTestCase
+from .test_model_base import ModelTestCase
 from django.db.models.base import ModelBase
 
 
-from ...models import AbstractAccount
+from ...models import Account
 
-class AbstractAccountModelTestCase(AbstractModelTestCase):
-    """test file for the abstract accounts model"""
+class AccountModelTestCase(ModelTestCase):
+    """test file for the accounts model"""
 
     fixtures: list[str] = ["test_account.json"]
 
-    @classmethod
-    def setUpClass(self):
-        """create temp model for testing"""
-        self.mixin: AbstractAccount = AbstractAccount
-        super().setUpClass()
 
     def setUp(self) -> None:
-        AbstractAccount
+        Account
         super().setUp()
-        self.test_model: ModelBase = self.model.objects.get(id=1)
+        self.test_model: ModelBase = Account.objects.get()
 
     def test_valid_target(self):
         self._assert_model_is_valid()
