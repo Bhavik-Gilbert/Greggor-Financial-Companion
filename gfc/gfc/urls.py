@@ -23,5 +23,6 @@ from financial_companion import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home_view),
+    path('sign_up/', views.sign_up_view, name='sign_up'),
+    path('dashboard/', views.dashboard_view, name='dashboard')
 ]
-
