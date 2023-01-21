@@ -5,9 +5,8 @@ from django.db.models import (
     ImageField,
     DateTimeField,
     ForeignKey,
-    #Account
-    #Category
 )
+from .accounts_model import Account
 from datetime import datetime
 from ..helpers.enums import CurrencyType
 
@@ -63,8 +62,8 @@ class AbstractTransaction(Model):
         max_length = 3
     )
 
-    #sender_account = models.ForeignKey(Account,related_name = "sender_account")
-    #reciever_account = models.ForeignKey(Account, related_name = "reciever_account")
+    sender_account = models.ForeignKey(Account, related_name = "sender_account")
+    reciever_account = models.ForeignKey(Account, related_name = "reciever_account")
 
     class Meta:
         abstract = True
