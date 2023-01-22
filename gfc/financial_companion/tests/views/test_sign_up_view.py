@@ -7,16 +7,16 @@ from financial_companion.models import User
 class SignUpViewTestCase(TestCase):
     """Unit tests of the sign up view"""
 
-    fixtures = ['financial_companion/tests/fixtures/default_user.json']
+    fixtures = ['financial_companion/tests/fixtures/example_users.json']
 
     def setUp(self):
         self.url = reverse('sign_up')
         self.form_input = {
-            'first_name': 'Jane',
+            'first_name': 'Bob',
             'last_name': 'Doe',
-            'username': '@janedoe',
-            'email': 'janedoe@example.org',
-            "bio": "Jane Doe's Personal Spending Tracker",
+            'username': '@bobdoe',
+            'email': 'bobdoe@example.org',
+            "bio": "Bob Doe's Personal Spending Tracker",
             'new_password': 'Password123',
             'password_confirmation': 'Password123'
         }
