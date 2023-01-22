@@ -6,7 +6,7 @@
 <!-- Content -->
 {% block content %}
     <h1>User Log In</h1>
-    <form action='{%%}' method="post">
+    <form action='{% url 'log_in' %}' method="post">
       {% csrf_token %}
       {% include 'partials/form.html' with form=form %}
     <input type="submit" value="Log in" class="btn btn-primary">
