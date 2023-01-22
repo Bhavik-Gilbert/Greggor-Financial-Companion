@@ -12,7 +12,7 @@ class ViewTestCase(BaseTestCase):
     setUp() method of the subclass.
     """
 
-    def _login(self, user: User, password: str = 'Password123'):
+    def _login(self, user: User, password: str = 'Password123') -> bool:
         """
         Logs given user in
 
@@ -33,12 +33,12 @@ class ViewTestCase(BaseTestCase):
         """
         Generate reverse URL with given query parameters
         """
-        url = reverse(view)
+        url: str = reverse(view)
 
         if len(kwargs):
             url += "?"
 
-            first = True
+            first: bool = True
             for key in kwargs:
                 if first:
                     first = False
@@ -63,6 +63,6 @@ class ViewTestCase(BaseTestCase):
         user: User = auth.get_user(self.client)
         self.assertTrue(user.is_authenticated)
         response: HttpResponse = self.client.get(url, follow=True)
-        redirect_url = reverse('dashboard')
+        redirect_url: str = reverse('dashboard')
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response,  "pages/dashboard.html")

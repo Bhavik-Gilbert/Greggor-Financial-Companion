@@ -1,3 +1,6 @@
+from django import forms
+from typing import Any
+
 from ..test_base import BaseTestCase
 
 class FormTestCase(BaseTestCase):
@@ -7,7 +10,7 @@ class FormTestCase(BaseTestCase):
     setUp() method of the subclass.
     """
 
-    def _assert_form_has_necessary_fields(self, form, *fields):
+    def _assert_form_has_necessary_fields(self, form: forms.Form , *fields: Any):
         """Asserts the form has the necessary fields"""
         for field in fields:
             self.assertIn(field, form.fields)
