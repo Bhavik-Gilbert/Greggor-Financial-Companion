@@ -1,0 +1,17 @@
+[
+    {
+        "model": "financial_companion.Transaction",
+        "pk": 2,
+        "fields": {
+            "title": "New Phone",
+            "description": "Bought a new phone from Apple",
+            "image": "transactions/2.jpg",
+            "category" : 1,
+            "amount" : 1499.99,
+            "currency" : "usd",
+            "sender_account" : 1,
+            "receiver_account" : 2,
+            "time_of_transaction" : "2023-01-01T12:00:00+00:00"
+        }
+    }
+]

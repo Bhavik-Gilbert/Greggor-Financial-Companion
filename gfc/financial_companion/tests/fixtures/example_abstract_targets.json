@@ -1,0 +1,11 @@
+[
+    {
+        "model": "financial_companion.AbstractTarget",
+        "pk": 1,
+        "fields": {
+            "transaction_type": "income",
+            "timespan": "day",
+            "amount": "100"
+        }
+    }
+]
