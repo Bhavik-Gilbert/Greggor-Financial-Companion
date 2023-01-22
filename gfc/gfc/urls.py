@@ -22,9 +22,10 @@ from financial_companion import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home_view),
+    path('', views.home_view, name='home'),
     path('sign_up/', views.sign_up_view, name='sign_up'),
     path('log_in/', views.log_in_view, name='log_in'),
+    path('log_out/', views.log_out_view, name='log_out'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
     path('add_monetary_account', views.add_monetary_account_view, name="add_monetary_account"),
     re_path(

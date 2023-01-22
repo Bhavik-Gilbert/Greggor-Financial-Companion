@@ -17,3 +17,7 @@ def log_in_view(request: HttpRequest) -> HttpResponse:
         messages.add_message(request, messages.ERROR, "The credentials provided are invalid!")
     form = UserLogInForm()
     return render(request, 'pages/log_in.html', {'form': form})
+
+def log_out_view(request):
+    logout(request)
+    return redirect('home')
