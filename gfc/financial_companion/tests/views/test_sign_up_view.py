@@ -1,13 +1,12 @@
 from django.contrib.auth.hashers import check_password
-from django.test import TestCase
 from django.urls import reverse
+
+from .test_view_base import ViewTestCase
 from financial_companion.forms import UserSignUpForm
 from financial_companion.models import User
 
-class SignUpViewTestCase(TestCase):
+class SignUpViewTestCase(ViewTestCase):
     """Unit tests of the sign up view"""
-
-    fixtures = ['financial_companion/tests/fixtures/example_users.json']
 
     def setUp(self):
         self.url = reverse('sign_up')
