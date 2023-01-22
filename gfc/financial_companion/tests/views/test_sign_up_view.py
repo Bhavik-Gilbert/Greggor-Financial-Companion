@@ -2,10 +2,11 @@ from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 
 from .test_view_base import ViewTestCase
+from ..helpers.log_in_helpers import LogInTester
 from financial_companion.forms import UserSignUpForm
 from financial_companion.models import User
 
-class SignUpViewTestCase(ViewTestCase):
+class SignUpViewTestCase(ViewTestCase, LogInTester):
     """Unit tests of the sign up view"""
 
     def setUp(self):
@@ -51,7 +52,7 @@ class SignUpViewTestCase(ViewTestCase):
         form = response.context['form']
         self.assertTrue(isinstance(form, UserSignUpForm))
         self.assertTrue(form.is_bound)
-        # self.assertFalse(self._is_logged_in())
+        self.assertFalse(self.is_logged_in())
 
     def test_succesful_sign_up(self):
         before_count = User.objects.count()
@@ -68,7 +69,7 @@ class SignUpViewTestCase(ViewTestCase):
         self.assertEqual(user.bio, "Jane Doe's Personal Spending Tracker")
         is_password_correct = check_password('Password123', user.password)
         self.assertTrue(is_password_correct)
-        # self.assertTrue(self._is_logged_in())
+        self.assertTrue(self.is_logged_in())
 
     # def test_post_sign_up_redirects_when_logged_in(self):
     #     self.client.login(username=self.user.username, password="Password123")
