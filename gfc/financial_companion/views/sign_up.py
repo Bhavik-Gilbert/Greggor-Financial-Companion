@@ -4,7 +4,7 @@ from financial_companion.forms import UserSignUpForm
 
 def sign_up_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
-        form = UserSignUpForm(request.POST)
+        form = UserSignUpForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save()
             # login(request, user)
