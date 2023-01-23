@@ -1,7 +1,7 @@
 """Configuration of the admin interface of financial_companion."""
 
 from django.contrib import admin
-from .models import  User, Category
+from .models import  User, Category, Account, PotAccount, BankAccount
 # Register your models here.
 @admin.register(User)
 class User(admin.ModelAdmin):
@@ -17,4 +17,29 @@ class Category(admin.ModelAdmin):
 
     list_display = [
         'id', 'name', 'description'
+    ]
+
+@admin.register(Account)
+class Account(admin.ModelAdmin):
+    """Configuration of the admin interface for account."""
+
+    list_display = [
+        'id', 'name', 'description'
+    ]
+
+@admin.register(PotAccount)
+class PotAccount(admin.ModelAdmin):
+    """Configuration of the admin interface for pot account."""
+
+    list_display = [
+        'id', 'name', 'description', 'user_id', 'balance', 'currency'
+    ]
+
+@admin.register(BankAccount)
+class BankAccount(admin.ModelAdmin):
+    """Configuration of the admin interface for bank account."""
+
+    list_display = [
+        'id', 'name', 'description', 'user_id', 'balance', 'currency',
+        'bank_name', 'account_number', 'sort_code', 'iban', 'interest_rate'
     ]

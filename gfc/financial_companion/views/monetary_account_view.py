@@ -1,14 +1,9 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
-from ..helpers import offline_required, MonetaryAccountType
+from django.contrib.auth.decorators import login_required
 
-# def get_monetary_account_form(account_type: str, *form_args, **form_kwargs):
-#     if account_type == MonetaryAccountType.BANK:
-#         return BankFrom(form_args, form_kwargs), MonetaryAccountType.BANK
-#     elif account_type == MonetaryAccountType.POT:
-#         return PotForm(form_args, form_kwargs), MonetaryAccountType.POT
-#     else:
-#         return None
+from ..helpers import MonetaryAccountType
+from ..forms import MonetaryAccountForm
 
 
 # dict_monetary_account_models: dict = {
@@ -16,32 +11,36 @@ from ..helpers import offline_required, MonetaryAccountType
 #     MonetaryAccountType.POT: PotModel
 # } 
         
-# @offline_required
+@login_required
 def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
     """View to add monetary account"""
     
-    # form, account_type = get_monetary_form(MonetaryAccountType.POT)
-    account_type = MonetaryAccountType.POT # TODO: remove temp code
+    user = request.user
+    account_type = MonetaryAccountType.POT
+    form = MonetaryAccountForm(form_type=account_type, user=user)
 
     if request.method == "POST":
         if "account_type" in request.POST: 
             # # set form to account type
-            # form, account_type = get_monetary_form(request.POST["account_type"])
-
-            account_type = request.POST["account_type"] # TODO: remove temp code
-        # elif "submit_type" in request.POST:
-        #     # get form from request and check form
-        #     form, account_type = get_monetary_form(request.POST["submit_type"], request.POST)
+            account_type = request.POST["account_type"] 
+            form = MonetaryAccountForm(form_type=account_type, user=user)
+        elif "submit_type" in request.POST:
+            # get form from request and check form
+            account_type = request.POST["submit_type"] 
+            form = MonetaryAccountForm(request.POST, form_type=account_type, user=user)
+            if form.is_valid():
+                form.save()
+                return redirect("dashboard")
             
         
     return render(request, "pages/monetary_accounts_form.html", {
         "form_toggle": True,
         "account_type": account_type,
-        "monetary_account_types": MonetaryAccountType
-        # "form": form
+        "monetary_account_types": MonetaryAccountType,
+        "form": form
         })
     
-# @offline_required
+@login_required
 def edit_monetary_account_view(request: HttpRequest, account_type: str, pk: int) -> HttpResponse:
     """View to edit monetary account"""
 

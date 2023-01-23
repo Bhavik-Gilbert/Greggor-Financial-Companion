@@ -60,6 +60,7 @@ class BankAccount(PotAccount):
     iban: EncryptedCharField = EncryptedCharField(
         max_length=33,
         blank=True,
+        null=True,
         validators=[MinLengthValidator(15, "Iban must be a minimum of 15 characters long")]
     )
     interest_rate: DecimalField = DecimalField(
