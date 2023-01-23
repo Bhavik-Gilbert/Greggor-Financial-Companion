@@ -88,3 +88,19 @@ class AccountModelTestCase(ModelTestCase):
         self.test_model.sort_code = "123456"
         self.test_model.save()
         self._assert_model_is_valid()
+
+    def test_iban_cannot_be_blank(self):
+        self.test_model.iban: str = ""
+        self._assert_model_is_valid()
+
+    def test_valid_iban(self):
+        self.test_model.iban: str = "8989898989898989898989898989889899"
+        self._assert_model_is_valid()
+
+    def test_iban_max_length_is_34(self):
+        self.test_model.iban: str = "1" * 34
+        self._assert_model_is_valid()
+    
+    def test_iban_is_not_longer_than_34(self):
+        self.test_model.iban: str = '1' * 35
+        self._assert_model_is_invalid()
