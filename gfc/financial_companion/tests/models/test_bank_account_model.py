@@ -5,7 +5,7 @@ from decimal import Decimal
 
 
 from ...helpers import CurrencyType
-from ...models import BankAccount
+from ...models import BankAccount, User
 
 class AccountModelTestCase(ModelTestCase):
     """test file for the pot accounts model"""
@@ -71,6 +71,11 @@ class AccountModelTestCase(ModelTestCase):
             self.test_model.save()
             self._assert_model_is_invalid()
         self.assertEqual(AssertionError, type(raised.exception))
+
+    def test_account_number_cannot_be_less_than_8_digits(self):
+        self.test_model.account_number = "9090909"
+        self.test_model.save()
+        self._assert_model_is_invalid()
     
     def test_sort_code_is_int(self):
         with self.assertRaises(Exception) as raised:
@@ -88,19 +93,72 @@ class AccountModelTestCase(ModelTestCase):
         self.test_model.sort_code = "123456"
         self.test_model.save()
         self._assert_model_is_valid()
+    
+    def test_sort_code_cannot_be_less_than_6_digits(self):
+        self.test_model.sort_code = "90909"
+        self.test_model.save()
+        self._assert_model_is_invalid()
 
     def test_iban_cannot_be_blank(self):
         self.test_model.iban: str = ""
         self._assert_model_is_valid()
 
     def test_valid_iban(self):
-        self.test_model.iban: str = "8989898989898989898989898989889899"
+        self.test_model.iban: str = "BG12345678901234567"
         self._assert_model_is_valid()
 
-    def test_iban_max_length_is_34(self):
-        self.test_model.iban: str = "1" * 34
+    def test_iban_max_length_is_33(self):
+        self.test_model.iban: str = "1" * 33
         self._assert_model_is_valid()
     
-    def test_iban_is_not_longer_than_34(self):
-        self.test_model.iban: str = '1' * 35
+    def test_iban_is_not_longer_than_33(self):
+        self.test_model.iban: str = '1' * 34
         self._assert_model_is_invalid()
+
+    def test_iban_cannot_be_less_than_15_digits(self):
+        self.test_model.iban = "GB123456789012"
+        self.test_model.save()
+        self._assert_model_is_invalid()
+    
+    def test_iban_cannot_start_with_numbers(self):
+        with self.assertRaises(Exception) as raised:
+            self.test_model.iban = "123456789012345"
+            self.test_model.save()
+            self._assert_model_is_invalid()
+        self.assertEqual(AssertionError, type(raised.exception))
+
+    def test_iban_starts_with_iso_3166_country_code(self):
+        self.test_model.iban = "GB123456789012345"
+        self.test_model.save()
+        self._assert_model_is_valid()
+
+    def test_interest_rate_can_be_0(self):
+        self.test_model.interest_rate: float = Decimal("0.0")
+        self._assert_model_is_valid()
+    
+    def test_interest_rate_is_2_decimal_places(self):
+        self.test_model.interest_rate: float = Decimal("1.01")
+        self._assert_model_is_valid()
+    
+    def test_interest_rate_cannot_have_more_than_2_decimal_places(self):
+        self.test_model.interest_rate: float = Decimal("10.001")
+        self._assert_model_is_invalid()
+    
+    def test_interest_rate_default_is_not_blank(self):
+        self.test_model.interest_rate: float = None
+        self._assert_model_is_invalid()
+
+    def test_interest_rate_default_is_zero(self):
+        default_interest_zero_bank_model = BankAccount.objects.create(
+            name = "bank account",
+            description = "my first bank account",
+            user_id = User.objects.get(id=1),
+            balance = 100,
+            currency = CurrencyType.GBP,
+            bank_name = "Kush Corp",
+            account_number = "11111111",
+            sort_code = "111111",
+            iban = "GB12345678901234567"
+        )
+        self._assert_model_is_valid()
+        self.assertEquals(0, default_interest_zero_bank_model.interest_rate)
