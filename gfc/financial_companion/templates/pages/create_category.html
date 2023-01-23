@@ -1,0 +1,13 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Create Category{% endblock %}
+
+<!-- Content -->
+{% block content %}
+    <h1>Create Category</h1>
+    <form action='{% url 'create_category' %}' method="post">
+      {% csrf_token %}
+      {% include 'partials/form.html' with form=form %}
+    <input type="submit" value="Create" class="btn btn-primary">
+{% endblock %}
