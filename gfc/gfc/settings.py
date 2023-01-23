@@ -142,7 +142,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # URL to redirect to and from on protected pages
 # TODO: Change pages when made
-LOGIN_URL = "login"
+LOGIN_URL = "log_in"
 LOGGED_IN_URL = "dashboard"
 
 

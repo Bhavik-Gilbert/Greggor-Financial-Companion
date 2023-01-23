@@ -38,5 +38,25 @@
             "amount": "100",
             "user_id": 2
         }
+    },
+    {
+        "model": "financial_companion.accounttarget",
+        "pk": 1,
+        "fields": {
+            "transaction_type": "income",
+            "timespan": "day",
+            "amount": "100",
+            "account_id": 3
+        }
+    },
+    {
+        "model": "financial_companion.accounttarget",
+        "pk": 2,
+        "fields": {
+            "transaction_type": "expense",
+            "timespan": "week",
+            "amount": "100",
+            "account_id": 4
+        }
     }
 ]

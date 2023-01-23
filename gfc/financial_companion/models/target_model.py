@@ -8,6 +8,7 @@ from django.db.models import (
 
 from .category_model import Category
 from .user_model import User
+from .accounts_model import PotAccount
 from ..helpers import Timespan, TransactionType, CurrencyType
 
 class AbstractTarget(Model):
@@ -47,3 +48,11 @@ class UserTarget(AbstractTarget):
 
     class Meta:
         unique_together = ["transaction_type", "timespan", "user_id"]
+
+class AccountTarget(AbstractTarget):
+    """Model for target spending and saving of users"""
+
+    account_id: ForeignKey = ForeignKey(PotAccount, on_delete=CASCADE)
+
+    class Meta:
+        unique_together = ["transaction_type", "timespan", "account_id"]

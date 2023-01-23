@@ -38,6 +38,25 @@
 
     {
         "model": "financial_companion.Account",
+        "pk": 4,
+        "fields": {
+            "name": "cash",
+            "description": "this is another test account"
+        }
+     },
+     
+     {
+        "model": "financial_companion.PotAccount",
+        "pk": 4,
+        "fields": {
+            "user_id": "2",
+            "balance": 200.00,
+            "currency": "gbp"
+        }
+     },
+     
+     {
+        "model": "financial_companion.Account",
         "pk": 5,
         "fields": {
             "name": "jkl",
