@@ -10,29 +10,47 @@ class AccountModelTestCase(ModelTestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.test_model: ModelBase = PotAccount.objects.get(id = 3)
+        self.test_model: ModelBase = PotAccount.objects.get(id = 5)
 
     def test_valid_target(self):
         self._assert_model_is_valid()
 
-    def test_vaild_balance_float(self):
-        self.test_model.balance: float = 200.00
+    def test_bank_name_is_not_blank(self):
+        self.test_model.bank_name: str = ""
+        self._assert_model_is_invalid()
+
+    def test_valid_bank_name(self):
+        self.test_model.bank_name: str = "abc"
         self._assert_model_is_valid()
 
-    def test_vaild_balance_for_2_decimal_places(self):
-        self.test_model.balance: float = Decimal('200.01')
+    def test_bank_name_max_length_is_50(self):
+        self.test_model.bank_name: str = "a" * 50
         self._assert_model_is_valid()
     
-    def test_invalid_balance_for_3_decimal_places(self):
-        self.test_model.balance: float = Decimal('200.012')
+    def test_bank_name_is_not_longer_than_50(self):
+        self.test_model.bank_name: str = 'a' * 51
         self._assert_model_is_invalid()
+  
+    # def test_bank_name_cannot_be_blank(self):
+    #     self.test_model.bank_name: str = ""
+    #     self._assert_model_is_invalid()
+
+    # def test_bank_name_is_not_blank(self):
+    #     self.test_model.bank_name: str = ""
+    #     self._assert_model_is_invalid()
+
+    # def test_valid_bank_name(self):
+    #     self.test_model.bank_name: str = "abc"
+    #     self._assert_model_is_valid()
+
+    # def test_bank_name_max_length_is_50(self):
+    #     self.test_model.bank_name: str = "a" * 50
+    #     self._assert_model_is_valid()
     
-    def test_vaild_currency_types(self):
-        for currency in CurrencyType:
-            self.test_model.currency: str  = currency
-            self._assert_model_is_valid()
+    # def test_bank_name_is_not_longer_than_50(self):
+    #     self.test_model.bank_name: str = 'a' * 51
+    #     self._assert_model_is_invalid()
     
-    def test_invalid_currency_type_must_be_in_enum(self):
-        self.test_model.currency: str = "incorrect"
-        self._assert_model_is_invalid()
-    
+    # def test_bank_name_cannot_be_blank(self):
+    #     self.test_model.bank_name: str = ""
+    #     self._assert_model_is_invalid()
