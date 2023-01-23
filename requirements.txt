@@ -4,3 +4,5 @@ Faker==15.3.2
 django-widget-tweaks==1.4.12
 Pillow==9.4.0
 DateTime==4.5
+cryptography==39.0.0
+django-fernet-encrypted-fields==0.1.2

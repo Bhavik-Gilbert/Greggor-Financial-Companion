@@ -5,9 +5,11 @@ from django.db.models import (
     DecimalField,
     CASCADE
 )
+from encrypted_fields.fields import EncryptedCharField
+from django.core.exceptions import ValidationError
 
 from .user_model import User
-from ..helpers.enums import CurrencyType
+from ..helpers import CurrencyType
 
 class Account(Model):
     #Abstract model for all accounts
@@ -30,20 +32,26 @@ class PotAccount(Account):
         max_length=3
     )
 
+def only_int(value):
+    if(not value.isnumeric()):
+        raise ValidationError("value contains characters")
+
 class BankAccount(PotAccount):
     bank_name: CharField = CharField(
         max_length = 50,
         blank = False
     )
-    account_number: CharField = CharField(
+    account_number: EncryptedCharField = EncryptedCharField(
         blank = False,
-        max_length=8
+        max_length=8,
+        validators=[only_int]
     )
-    sort_code: CharField = CharField(
+    sort_code: EncryptedCharField = EncryptedCharField(
         max_length=6,
-        blank=False
+        blank=False,
+        validators=[only_int]
     )
-    iban: CharField = CharField(
+    iban: EncryptedCharField = EncryptedCharField(
         max_length=34,
         blank=True
     )
