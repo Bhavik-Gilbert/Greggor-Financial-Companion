@@ -3,7 +3,12 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from financial_companion.forms import UserLogInForm
+from django.contrib.auth.decorators import login_required
 
+from ..helpers import offline_required
+
+
+@offline_required
 def log_in_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         form = UserLogInForm(request.POST)
@@ -18,6 +23,8 @@ def log_in_view(request: HttpRequest) -> HttpResponse:
     form = UserLogInForm()
     return render(request, 'pages/log_in.html', {'form': form})
 
+
+@login_required
 def log_out_view(request):
     logout(request)
     return redirect('home')

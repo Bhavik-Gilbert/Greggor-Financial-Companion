@@ -17,7 +17,7 @@ class AbstractModelTestCase(ModelTestCase):
         self.mixin: AbstractModelTestCase = None
 
     @classmethod
-    def setUpClass(self):
+    def setUpClass(self) -> None:
         """
         Create temporary model for abstract models
         Abstract model from self.mixin is used, assign in subclass
@@ -43,7 +43,7 @@ class AbstractModelTestCase(ModelTestCase):
 
 
     @classmethod
-    def tearDownClass(self):
+    def tearDownClass(self) -> None:
         try:
             super(AbstractModelTestCase, self).tearDownClass()
             with connection.schema_editor() as schema_editor:
