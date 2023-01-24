@@ -8,6 +8,7 @@ from financial_companion.models import (
     Category
 )
 from django.db.utils import IntegrityError
+from django.db.models import Q
 import datetime
 from random import randint, random
 import random
@@ -31,7 +32,6 @@ class Command(BaseCommand):
 
     def create_categories(self, user):
         randomNumOfCategories = randint(3, self.MAX_NUMBER_OF_CATEGORIES)
-        print(self.faker.text())
         categories = []
         for i in range(0, randomNumOfCategories):
             category = Category.objects.create(
@@ -117,7 +117,7 @@ class Command(BaseCommand):
 
     def create_transactions_for_account(self, account, categories):
         randomNumOfTransactions = randint(0,self.MAX_TRANSACTIONS_PER_ACCOUNT)
-        oppositePartyOfTransaction = random.choice(Account.objects.filter(~Q(id = account)))
+        oppositePartyOfTransaction = random.choice(Account.objects.filter(~Q(id = account.id)))
 
         if (randint(0,1) == 0):
             sender_account = oppositePartyOfTransaction
