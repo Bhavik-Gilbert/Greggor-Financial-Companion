@@ -15,7 +15,7 @@ from financial_companion.helpers import TransactionType, CurrencyType, MonetaryA
 
 class Command(BaseCommand):
     PASSWORD = "Password123"
-    USER_COUNT = 100
+    USER_COUNT = 1
     MAX_ACCOUNTS_PER_USER = 10
     MAX_TRANSACTIONS_PER_ACCOUNT = 50
     MAX_NUMBER_OF_CATEGORIES = 20
@@ -67,15 +67,16 @@ class Command(BaseCommand):
                 is_staff = adminStatus,
                 is_superuser = adminStatus
             )
-            if (float(randint(0,100))/100 < self.OBJECT_HAS_TARGET_PROBABILITY):
-                UserTarget.objects.create(
-                    transaction_type = self.choose_random_enum(TransactionType),
-                    timespan = self.choose_random_enum(Timespan),
-                    amount = float(randint(0,1000000))/100,
-                    currency = self.choose_random_enum(CurrencyType),
-                    user_id = user
-                )
-            self.create_accounts_for_user(user)
+            if (not(adminStatus)):
+                if (float(randint(0,100))/100 < self.OBJECT_HAS_TARGET_PROBABILITY):
+                    UserTarget.objects.create(
+                        transaction_type = self.choose_random_enum(TransactionType),
+                        timespan = self.choose_random_enum(Timespan),
+                        amount = float(randint(0,1000000))/100,
+                        currency = self.choose_random_enum(CurrencyType),
+                        user_id = user
+                    )
+                self.create_accounts_for_user(user)
         except(IntegrityError):
             pass
 
