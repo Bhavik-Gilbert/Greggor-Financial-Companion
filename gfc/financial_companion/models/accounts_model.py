@@ -45,7 +45,7 @@ def only_int(value):
 
 def iban_valid(value):
     s1 = value[0:2]
-    if(s1.isnumeric()):
+    if(not s1.isalpha()):
         raise ValidationError("IBAN does not start with a iso-3166 country codes")
 
 class BankAccount(PotAccount):
@@ -67,7 +67,7 @@ class BankAccount(PotAccount):
         max_length=33,
         blank=True,
         null=True,
-        validators=[MinLengthValidator(15, "Iban must be a minimum of 15 characters long")]
+        validators=[iban_valid, MinLengthValidator(15, "Iban must be a minimum of 15 characters long")]
     )
     interest_rate: DecimalField = DecimalField(
         max_digits= 6,

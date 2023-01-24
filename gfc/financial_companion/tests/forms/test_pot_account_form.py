@@ -44,13 +44,23 @@ class PotAccountFormTestCase(FormTestCase):
         form = PotAccountForm(data=self.form_input)
         self.assertTrue(form.is_valid())
 
-    def test_valid_form_accepts_balance_2_decimal_places(self):
+    def test_valid_form_accepts_balance_up_to_2_decimal_places(self):
         self.form_input["balance"] = Decimal("99.99")
+        form = PotAccountForm(data=self.form_input)
+        self.assertTrue(form.is_valid())
+    
+    def test_valid_form_accepts_balance_up_to_15_digits(self):
+        self.form_input["balance"] = Decimal(f"{'9' * 13}.{'9' * 2}")
         form = PotAccountForm(data=self.form_input)
         self.assertTrue(form.is_valid())
     
     def test_invalid_form_rejects_balance_3_or_more_decimal_places(self):
         self.form_input["balance"] = Decimal("99.999")
+        form = PotAccountForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+    
+    def test_invalid_form_rejects_balance_16_or_more_digits(self):
+        self.form_input["balance"] = Decimal(f"{'9' * 14}.{'9' * 2}")
         form = PotAccountForm(data=self.form_input)
         self.assertFalse(form.is_valid())
 
