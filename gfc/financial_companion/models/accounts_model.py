@@ -8,9 +8,10 @@ from django.db.models import (
 from encrypted_fields.fields import EncryptedCharField
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
+from model_utils.managers import InheritanceManager
 
 from .user_model import User
-from ..helpers import CurrencyType
+from ..helpers import CurrencyType, MonetaryAccountType
 
 class Account(Model):
     """model for all accounts"""
@@ -24,6 +25,8 @@ class Account(Model):
         blank = True
     )
 
+    objects = InheritanceManager()
+
 class PotAccount(Account):
     user_id: ForeignKey = ForeignKey(User, on_delete=CASCADE)
     balance: DecimalField = DecimalField(max_digits = 15, decimal_places=2)
@@ -32,6 +35,9 @@ class PotAccount(Account):
         default=CurrencyType.GBP,
         max_length=3
     )
+
+    def __str__(self):
+        return f"{MonetaryAccountType.POT}"
 
 def only_int(value):
     if(not value.isnumeric()):
@@ -68,3 +74,6 @@ class BankAccount(PotAccount):
         decimal_places=2,
         default=0.0,
     )
+
+    def __str__(self):
+        return f"{MonetaryAccountType.BANK}"

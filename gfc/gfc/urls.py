@@ -29,7 +29,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard_view, name='dashboard'),
     path('add_monetary_account', views.add_monetary_account_view, name="add_monetary_account"),
     re_path(
-        'edit_monetary_account/(?P<account_type>\w+)/(?P<pk>\d+)/$',
+        'edit_monetary_account/(?P<pk>\d+)/$',
         views.edit_monetary_account_view,
         name="edit_monetary_account"
     ),

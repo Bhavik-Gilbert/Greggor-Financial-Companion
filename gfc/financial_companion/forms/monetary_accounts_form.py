@@ -37,10 +37,10 @@ class PotAccountForm(forms.ModelForm):
             )
         else:
             monetary_account = instance
-            monetary_account.name = self.cleaned_data.get("name"),
-            monetary_account.description = self.cleaned_data.get("description"),
-            monetary_account.balance = self.cleaned_data.get("balance"),
-            monetary_account.currency = self.cleaned_data.get("currency"),
+            monetary_account.name = self.cleaned_data.get("name")
+            monetary_account.description = self.cleaned_data.get("description")
+            monetary_account.balance = self.cleaned_data.get("balance")
+            monetary_account.currency = self.cleaned_data.get("currency")
             monetary_account.user_id = self.user
             monetary_account.save()
         
@@ -62,7 +62,6 @@ class BankAccountForm(forms.ModelForm):
     def save(self, instance: BankAccount = None):
         super().save(commit=False)
 
-        print(self.cleaned_data.get("iban"))
         if instance is None:
             monetary_account = BankAccount.objects.create(
                 name = self.cleaned_data.get("name"),
@@ -78,15 +77,15 @@ class BankAccountForm(forms.ModelForm):
             )
         else:
             monetary_account = instance
-            monetary_account.name = self.cleaned_data.get("name"),
-            monetary_account.description = self.cleaned_data.get("description"),
-            monetary_account.balance = self.cleaned_data.get("balance"),
-            monetary_account.currency = self.cleaned_data.get("currency"),
-            monetary_account.bank_name = self.cleaned_data.get("bank_name"),
-            monetary_account.sort_code = self.cleaned_data.get("sort_code"),
-            monetary_account.account_number = self.cleaned_data.get("account_number"),
-            monetary_account.iba = self.cleaned_data.get("iban"),
-            monetary_account.interest_rate = self.cleaned_data.get("interest_rate"),
+            monetary_account.name = self.cleaned_data.get("name")
+            monetary_account.description = self.cleaned_data.get("description")
+            monetary_account.balance = self.cleaned_data.get("balance")
+            monetary_account.currency = self.cleaned_data.get("currency")
+            monetary_account.bank_name = self.cleaned_data.get("bank_name")
+            monetary_account.sort_code = self.cleaned_data.get("sort_code")
+            monetary_account.account_number = self.cleaned_data.get("account_number")
+            monetary_account.iba = self.cleaned_data.get("iban")
+            monetary_account.interest_rate = self.cleaned_data.get("interest_rate")
             monetary_account.user_id = self.user
             monetary_account.save()
         

@@ -25,10 +25,15 @@
     <h3>{{ account_type.capitalize }}</h3>
     {% endif %}
 
-    <!-- TODO: Add form -->
     <form method="post">
         {% csrf_token %}
         {% include 'partials/form.html' with form=form %}
-      <button type="submit" name="submit_type" value="{{account_type}}" class="btn btn-primary">Create Account</button>
+      <button type="submit" name="submit_type" value="{{account_type}}" class="btn btn-primary">
+        {% if form_toggle %}
+            Create Account
+        {% else %}
+            Edit Account
+        {% endif %}
+    </button>
     </form>
 {% endblock %}
