@@ -1,0 +1,25 @@
+<div class="card text-bg-primary mb-3">
+  <div class="card-body">
+    <h5 class="card-title">Recent Transactions: </h5>
+    {% for transaction in recent %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Transaction Title: {{ transaction.title }}
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <strong>Transaction Description :</strong>{{transaction.description }}
+            <strong>Transaction Category :</strong>{{transaction.category}}
+            <strong>Transaction Balance :</strong>{{transaction.amount}}
+            <strong>Transaction Currency :</strong>{{transaction.currency}}
+            <strong>Sender Account:</strong>
+            <strong>Reciver Account:</strong>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+</div>
