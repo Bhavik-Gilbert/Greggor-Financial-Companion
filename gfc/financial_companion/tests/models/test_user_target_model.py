@@ -13,14 +13,14 @@ class UserTargetModelTestCase(ModelTestCase):
     def test_valid_target_user(self):
         self._assert_model_is_valid()
     
-    def test_valid_duplicate_user_id_duplicate_timespan(self):
-        self.second_model.user_id = self.test_model.user_id
+    def test_valid_duplicate_user_duplicate_timespan(self):
+        self.second_model.user = self.test_model.user
         self.second_model.timespan = self.test_model.timespan
         self.second_model.save()
         self._assert_model_is_valid()
     
-    def test_valid_duplicate_user_id_duplicate_transaction_type(self):
-        self.second_model.user_id = self.test_model.user_id
+    def test_valid_duplicate_user_duplicate_transaction_type(self):
+        self.second_model.user = self.test_model.user
         self.second_model.transaction_type = self.test_model.transaction_type
         self.second_model.save()
         self._assert_model_is_valid()
@@ -31,9 +31,9 @@ class UserTargetModelTestCase(ModelTestCase):
         self.second_model.save()
         self._assert_model_is_valid()
     
-    def test_invalid_duplicate_user_id_duplicate_transaction_type_duplicate_timespan(self):
+    def test_invalid_duplicate_user_duplicate_transaction_type_duplicate_timespan(self):
         with self.assertRaises(Exception) as raised:
-            self.second_model.user_id = self.test_model.user_id
+            self.second_model.user = self.test_model.user
             self.second_model.timespan = self.test_model.timespan
             self.second_model.transaction_type = self.test_model.transaction_type
             self.second_model.save()

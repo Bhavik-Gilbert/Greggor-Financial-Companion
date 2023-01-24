@@ -28,7 +28,7 @@ class Account(Model):
     objects = InheritanceManager()
 
 class PotAccount(Account):
-    user_id: ForeignKey = ForeignKey(User, on_delete=CASCADE)
+    user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
     balance: DecimalField = DecimalField(max_digits = 15, decimal_places=2)
     currency: CharField = CharField(
         choices=CurrencyType.choices,

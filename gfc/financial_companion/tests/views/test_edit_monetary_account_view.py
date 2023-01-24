@@ -14,8 +14,8 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
     def setUp(self):
         self.pot_account: PotAccount = PotAccount.objects.get(id=4)
         self.bank_account: BankAccount = BankAccount.objects.get(id=5)
-        self.pot_user: User = User.objects.get(id=self.pot_account.user_id.id)
-        self.bank_user: User = User.objects.get(id=self.bank_account.user_id.id)
+        self.pot_user: User = User.objects.get(id=self.pot_account.user.id)
+        self.bank_user: User = User.objects.get(id=self.bank_account.user.id)
         self.pot_url: str = reverse("edit_monetary_account", kwargs={"pk": self.pot_account.id})
         self.bank_url: str = reverse("edit_monetary_account", kwargs={"pk": self.bank_account.id})
 
@@ -162,7 +162,7 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
     
     def test_invalid_post_pot_page_logeged_in_user_must_be_account_holder(self):
         self._login(self.bank_user)
-        self.assertNotEqual(self.pot_account.user_id.id, self.bank_user.id)
+        self.assertNotEqual(self.pot_account.user.id, self.bank_user.id)
         form_input: dict[str, Any]= {
             "name": "Test Pot",
             "description": "This is a test pot",
@@ -176,7 +176,7 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
     
     def test_invalid_get_pot_page_logeged_in_user_must_be_account_holder(self):
         self._login(self.bank_user)
-        self.assertNotEqual(self.pot_account.user_id.id, self.bank_user.id)
+        self.assertNotEqual(self.pot_account.user.id, self.bank_user.id)
         response: HttpResponse = self.client.post(self.pot_url, follow=True)
         response_url: str = reverse("dashboard")
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
@@ -185,7 +185,7 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
     
     def test_invalid_post_bank_page_logeged_in_user_must_be_account_holder(self):
         self._login(self.pot_user)
-        self.assertNotEqual(self.bank_account.user_id.id, self.pot_user.id)
+        self.assertNotEqual(self.bank_account.user.id, self.pot_user.id)
         form_input: dict[str, Any] = {
             "name": "Test Bank",
             "description": "This is a test bank",
@@ -204,7 +204,7 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
     
     def test_invalid_get_bank_page_logeged_in_user_must_be_account_holder(self):
         self._login(self.pot_user)
-        self.assertNotEqual(self.bank_account.user_id.id, self.pot_user.id)
+        self.assertNotEqual(self.bank_account.user.id, self.pot_user.id)
         response: HttpResponse = self.client.post(self.bank_url, follow=True)
         response_url: str = reverse("dashboard")
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)

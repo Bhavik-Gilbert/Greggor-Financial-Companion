@@ -44,7 +44,7 @@ class CategoryTarget(AbstractTarget):
 class UserTarget(AbstractTarget):
     """Model for target spending and saving of users"""
 
-    user_id: ForeignKey = ForeignKey(User, on_delete=CASCADE)
+    user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
 
     class Meta:
         unique_together = ["transaction_type", "timespan", "user_id"]
