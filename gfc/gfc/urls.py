@@ -27,7 +27,7 @@ urlpatterns = [
     path('log_in/', views.log_in_view, name='log_in'),
     path('log_out/', views.log_out_view, name='log_out'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
-    path('add_monetary_account', views.add_monetary_account_view, name="add_monetary_account"),
+    path('add_monetary_account/', views.add_monetary_account_view, name="add_monetary_account"),
     re_path(
         'edit_monetary_account/(?P<pk>\d+)/$',
         views.edit_monetary_account_view,
