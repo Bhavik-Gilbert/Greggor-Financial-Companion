@@ -71,3 +71,6 @@ class Transaction(AbstractTransaction):
         blank = False,
         auto_now_add = True
     )
+
+    class Meta:
+        ordering = ['-time_of_transaction']
