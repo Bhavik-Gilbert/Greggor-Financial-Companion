@@ -1,0 +1,24 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Monetary Accounts Form{% endblock %}
+
+<!-- Content -->
+{% block content %}
+    <h1>Categories</h1>
+    
+    {%if categories%}
+        {%for category in categories %}
+            <div class="card">
+                <div class="card-header">
+                Category {{category.id}}
+                </div>
+                <div class="card-body">
+                <h5 class="card-title">{{ category.name }}</h5>
+                <p class="card-text">{{ category.description }}</p>
+                <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
