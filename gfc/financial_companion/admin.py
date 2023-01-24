@@ -49,6 +49,7 @@ class BankAccount(admin.ModelAdmin):
     list_display = [
         'id', 'name', 'description', 'user_id', 'balance', 'currency',
         'bank_name', 'account_number', 'sort_code', 'iban', 'interest_rate'
+        ]
 
 @admin.register(Transaction)
 class Transaction(admin.ModelAdmin):
