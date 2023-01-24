@@ -1,0 +1,16 @@
+{% extends "page.html" %}
+
+<div class="card-columns">
+  {% for target in targets %}
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">{{target.transaction_type}}</h4>
+        <!--- the percentage needs to be passed to it --->
+        <div class="progress" role="progressbar" aria-label="Default striped example" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+          <div class="progress-bar progress-bar-striped" style="width: "+{{completeness}}>{{completeness}}</div>
+        </div>
+        <p class="card-text">Target Amount: {{target.amount}}</p>
+      </div>
+    </div>
+  {% endfor %}
+</div>
