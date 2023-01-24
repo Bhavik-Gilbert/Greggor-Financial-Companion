@@ -8,11 +8,8 @@ def dashboard_view(request: HttpRequest) -> HttpResponse:
 
     user_accounts = PotAccount.objects.filter(user_id = user.id)
     user_transactions = []
-    for accounts in user_accounts:
-        try:
-            user_transactions = [*user_transactions, *Transactions.objects.filter(id=account)]
-        except Exception:
-            pass
+    for account in user_accounts:
+        user_transactions = [*user_transactions, *Transaction.objects.filter(id=account.id)]
 
     recent_transactions = user_transactions[0:3]
 

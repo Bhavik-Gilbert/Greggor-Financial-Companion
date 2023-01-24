@@ -15,7 +15,7 @@ from financial_companion.helpers import TransactionType, CurrencyType, MonetaryA
 
 class Command(BaseCommand):
     PASSWORD = "Password123"
-    USER_COUNT = 2
+    USER_COUNT = 4
     MAX_ACCOUNTS_PER_USER = 10
     MAX_TRANSACTIONS_PER_ACCOUNT = 50
     MAX_NUMBER_OF_CATEGORIES = 10
@@ -48,14 +48,14 @@ class Command(BaseCommand):
                 )
             categories.append(category)
         return categories
-    
+
     def create_users(self):
         self.create_single_user("Michael", "Kolling", self.PASSWORD, True)
         self.create_single_user("admin", "user", self.PASSWORD, True)
         while User.objects.count() < self.USER_COUNT:
             self.create_single_user(self.faker.first_name(), self.faker.last_name(), self.PASSWORD, False)
         print("USERS SEEDED")
-    
+
     def create_single_user(self, first_name, last_name, password, adminStatus):
         try:
             user = User.objects.create_user(
@@ -141,10 +141,10 @@ class Command(BaseCommand):
 
     def format_email(self, first_name, last_name):
         return f'{first_name}.{last_name}@gfc.org'.lower()
-    
+
     def choose_random_enum(self, enum):
         return random.choice(list(enum))
-    
+
     def create_target_for_account(self, account):
         if (float(randint(0,100))/100 < self.OBJECT_HAS_TARGET_PROBABILITY):
             AccountTarget.objects.create(
