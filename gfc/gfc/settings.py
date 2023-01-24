@@ -152,3 +152,6 @@ try:
         SALT_KEY = f.read().strip()
 except:
     SALT_KEY = "temporarysalt"
+
+# Default language for Faker
+FAKER_LOCALE = "en_GB"
