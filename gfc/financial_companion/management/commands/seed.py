@@ -117,7 +117,7 @@ class Command(BaseCommand):
 
     def create_transactions_for_account(self, account, categories):
         randomNumOfTransactions = randint(0,self.MAX_TRANSACTIONS_PER_ACCOUNT)
-        oppositePartyOfTransaction = random.choice(Account.objects.all())
+        oppositePartyOfTransaction = random.choice(Account.objects.filter(~Q(id = account)))
 
         if (randint(0,1) == 0):
             sender_account = oppositePartyOfTransaction
