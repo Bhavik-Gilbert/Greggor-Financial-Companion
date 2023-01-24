@@ -10,10 +10,4 @@ from financial_companion.models import (
 """ Unseeder CLass to clear all objects from Database"""
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        User.objects.all().delete()
-        Account.objects.all().delete()
-        CategoryTarget.objects.all().delete()
-        UserTarget.objects.all().delete()
-        AccountTarget.objects.all().delete()
-        Transaction.objects.all().delete()
-        Category.objects.all().delete()
+        User.objects.filter(email__endswith='@gfc.org').delete()
