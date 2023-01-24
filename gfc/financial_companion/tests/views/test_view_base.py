@@ -67,8 +67,3 @@ class ViewTestCase(BaseTestCase):
         redirect_url: str = reverse('dashboard')
         self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response,  "pages/dashboard.html")
-
-    def reverse_with_next(self, url_name, next_url):
-        url = reverse(url_name)
-        url += f"?next={next_url}"
-        return url
