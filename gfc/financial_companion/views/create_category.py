@@ -1,7 +1,9 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from financial_companion.forms import CreateCategoryForm
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def create_category_view(request: HttpRequest) -> HttpResponse:
     """View to allow users to create a category"""
     if request.method == 'POST':
