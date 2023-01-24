@@ -35,4 +35,4 @@ urlpatterns = [
         views.edit_monetary_account_view,
         name="edit_monetary_account"
     ),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

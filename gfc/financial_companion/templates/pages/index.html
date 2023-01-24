@@ -5,7 +5,46 @@
 
 <!-- Content -->
 {% block content %}
-    <h1>Greggor Financial Companion</h1>
-    <a href='{% url 'sign_up' %}' class="btn btn-lg btn-secondary">Sign up</a>
-    <a href='{% url 'log_in' %}' class="btn btn-lg btn-secondary">Log in</a>
+    <h1>Welcome to the Greggor Financial Companion</h1>
+
+    <br>
+
+    {% if logo_types %}
+    <div align="center">
+    <h2>Meet Greggor</h2>
+        <div id="greggor_carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+            <div class="carousel-inner">
+                {% for type in logo_types %}
+                    {% if type == logo_types.0 %}
+                    <div class="carousel-item card bg-light active">
+                    {% else %}
+                    <div class="carousel-item card bg-light">
+                    {% endif %}
+                        {% include 'partials/greggor_logo.html' with width=300 greggor_type=type %}
+                        <h3>{{type.capitalize}} Greggor</h3>
+                        <br>
+                    </div>
+                {% endfor %}
+            </div>
+            </button>
+        </div>
+    </div>
+    <br>
+    {% endif %}
+    <br>
+
+    <h5 align="center">
+        Greggor will be you guide throughout this application, helping you manage your spending and saving
+        <br>
+        He will change mood depending on the day, time and how well you manage your financial accounts
+        <br>
+        You can always find him on the top hand corner of the page
+        <br>
+        To keep him happy, make sure to keep your financial life in order
+        <br>
+        <div class="text-danger">You don't want to find out what happens when he gets upset</div>
+    </h5>
+    <br>
+    <a href='{% url 'sign_up' %}' class="btn btn-lg btn-info">Sign up</a>
+    <a href='{% url 'log_in' %}' class="btn btn-lg btn-success">Log in</a>
 {% endblock %}
