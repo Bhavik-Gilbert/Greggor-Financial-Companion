@@ -10,7 +10,7 @@ def get_greggor(greggor_type: str = ""):
     """Returns the filepath for the wanted greggor logo"""
     base_path = os.path.join("greggor", "greggor-")
     if len(greggor_type) != 0:
-        return f"{base_path}greggor_type.png"
+        return f"{base_path}{greggor_type}.png"
     
     if datetime.datetime.today().strftime('%Y-%m-%d') in holidays.country_holidays('UK'):
         return f"{base_path}party.png"
