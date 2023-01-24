@@ -1,8 +1,8 @@
 """Unit tests of the pot account form."""
-from django import forms
 from .test_form_base import FormTestCase
-from financial_companion.forms import PotAccountForm
-from financial_companion.helpers import CurrencyType
+from financial_companion.forms import PotAccountForm, MonetaryAccountForm
+from financial_companion.helpers import CurrencyType, MonetaryAccountType
+from financial_companion.models import User
 from decimal import Decimal
 
 class PotAccountFormTestCase(FormTestCase):
@@ -24,6 +24,16 @@ class PotAccountFormTestCase(FormTestCase):
             "balance",
             "currency"
         )
+
+    def test_get_correct_monetary_account_form_pot_account_form(self):
+        user = User.objects.all()[0]
+        form = MonetaryAccountForm(form_type = MonetaryAccountType.POT, user=user)
+        self.assertIsInstance(form, PotAccountForm)
+    
+    def test_get_incorrect_monetary_account_form_pot_account_form(self):
+        user = User.objects.all()[0]
+        form = MonetaryAccountForm(form_type = MonetaryAccountType.BANK, user=user)
+        self.assertNotIsInstance(form, PotAccountForm)
     
     def test_valid_form_accepts_valid_input(self):
         form = PotAccountForm(data=self.form_input)
