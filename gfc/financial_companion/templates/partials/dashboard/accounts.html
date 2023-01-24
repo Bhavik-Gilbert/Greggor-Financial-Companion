@@ -4,15 +4,15 @@
     <div class="accordion" id="accordionExample">
     {% for account in accounts %}
       <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+        <h2 class="accordion-header" id="heading{{ account.name }}">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ account.name }}" aria-expanded="true" aria-controls="collapse{{ account.name }}">
             Account Name: {{ account.name }}
           </button>
         </h2>
-        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <div id="collapse{{ account.name }}" class="accordion-collapse collapse" aria-labelledby="heading{{ account.name }}" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            <strong>Account Description :</strong>{{ account.description }}
-            <strong>Account Balance :</strong>{{ account.currency}} {{account.balance}}
+            <p><strong>Account Description :</strong>{{ account.description }}</p>
+            <p><strong>Account Balance :</strong>{{ account.currency}} {{account.balance}}</p>
           </div>
         </div>
       </div>
