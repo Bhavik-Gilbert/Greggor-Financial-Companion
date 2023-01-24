@@ -10,21 +10,18 @@
       <div class="col-sm-12 col-md-6">
         {% if accounts %}
           {% for account in accounts %}
-            <div class = "card">
-              <ul>
-                <li>
-                  <a class="text-info">Name:</a>
-                  {{ account.name }}
-                </li>
-                <li>
-                  <a class="text-info">Balance:</a>
-                  {{ account.balance }}
-                </li>
-                <li>
-                  <a class="text-info">Description:</a>
-                  {{ account.description }}
-                </li>
-              </ul>
+            <br>
+            <div class="card">
+              <div class="card-header">
+                <h4 class="card-title">{{ account.name }}</h5>
+                <h6 class="card-subtitle text-muted">{{ account.balance }}</h6>
+              </div>
+              <div class="card-body">
+                <p class="card-text">{{ account.description }}</p>
+              </div>
+              <div class="card-footer">
+                <a href="#" class="btn btn-primary">View</a> <a style="float:center" href="#" class="btn btn-danger">Delete</a>
+              </div>
             </div>
           {% endfor %}
         {% else %}
