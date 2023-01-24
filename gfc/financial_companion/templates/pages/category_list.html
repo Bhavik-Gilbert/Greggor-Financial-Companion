@@ -5,8 +5,14 @@
 
 <!-- Content -->
 {% block content %}
-    <h1>Categories</h1>
-    
+    <h1 style="text-align: center;">Categories</h1>
+    <div class="input-group rounded">
+        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+        <span class="input-group-text border-0" id="search-addon">
+          <i class="fas fa-search"></i>
+        </span>
+      </div>
+    <br>
     {%if categories%}
         {%for category in categories %}
             <div class="card">
@@ -20,5 +26,7 @@
                 </div>
             </div>
         {% endfor %}
+    {% else %}
+            <h2 style="text-align: center;"> You have no categories yet</h2>
     {% endif %}
 {% endblock %}
