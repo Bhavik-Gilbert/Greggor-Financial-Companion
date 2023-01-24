@@ -15,7 +15,7 @@ from financial_companion.helpers import TransactionType, CurrencyType, MonetaryA
 
 class Command(BaseCommand):
     PASSWORD = "Password123"
-    USER_COUNT = 2
+    USER_COUNT = 4    # MINIMUM OF FOUR PREDEFINED USERS ARE CREATED IRRESPECTIVE OF VARIABLE VALUE
     MAX_ACCOUNTS_PER_USER = 10
     MAX_TRANSACTIONS_PER_ACCOUNT = 50
     MAX_NUMBER_OF_CATEGORIES = 10
@@ -23,7 +23,7 @@ class Command(BaseCommand):
 
     def __init__(self):
         super().__init__()
-        self.faker = Faker("en_GB")
+        self.faker = Faker("en_US")
 
     def handle(self, *args, **options):
         self.create_users()
@@ -31,6 +31,7 @@ class Command(BaseCommand):
 
     def create_categories(self, user):
         randomNumOfCategories = randint(3, self.MAX_NUMBER_OF_CATEGORIES)
+        print(self.faker.text())
         categories = []
         for i in range(0, randomNumOfCategories):
             category = Category.objects.create(
@@ -52,6 +53,7 @@ class Command(BaseCommand):
     def create_users(self):
         self.create_single_user("Michael", "Kolling", self.PASSWORD, True)
         self.create_single_user("admin", "user", self.PASSWORD, True)
+        self.create_single_user("John", "Doe", self.PASSWORD, False)
         while User.objects.count() < self.USER_COUNT:
             self.create_single_user(self.faker.first_name(), self.faker.last_name(), self.PASSWORD, False)
         print("USERS SEEDED")
