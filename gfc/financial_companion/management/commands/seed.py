@@ -15,7 +15,7 @@ from financial_companion.helpers import TransactionType, CurrencyType, MonetaryA
 
 class Command(BaseCommand):
     PASSWORD = "Password123"
-    USER_COUNT = 2
+    USER_COUNT = 200
     MAX_ACCOUNTS_PER_USER = 10
     MAX_TRANSACTIONS_PER_ACCOUNT = 50
     MAX_NUMBER_OF_CATEGORIES = 10
