@@ -144,3 +144,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # TODO: Change pages when made
 LOGIN_URL = "log_in"
 LOGGED_IN_URL = "dashboard"
+
+
+#salt for secure string
+try:
+    with open(os.path.dirname(os.path.abspath(__file__)) + "\\hidden_keys\\salt_key.txt") as f:
+        SALT_KEY = f.read().strip()
+except:
+    SALT_KEY = "temporarysalt"
