@@ -2,25 +2,51 @@
 {% block title %}View transactions{% endblock %}
 
 {% block content %}
-<div class="container">
-  <div class="row content">
-    <div class="col-xs-12 col-lg-6 col-xl-6">
-        <h1>View Recieved Transactions</h1>
-        {%include 'partials/list_transactions.html' with transactions=recieved_transactions%}
 
-    </div>
-    <div class="col-xs-12 col-lg-6 col-xl-6">
-        <div class = "container">
-            <div class = "row ">
-              <div class = "col-12 ">
-              <h1>View Sent Transactions</h1>
+<div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h1>Lessons</h1>
+  
+        <div>
+          <form method="post">
+            {% csrf_token %}
+              <input type = "submit" name = "sent" value = "View Sent Transactions" class= "btn btn-primary">
+              <input type = "submit" name = "recieved" value = "View Recieved Transactions"" class= "btn btn-primary">
+              <input type = "submit" name = "all" value = "View Transactions" class= "btn btn-primary">
+          </form>
+        </div>
+          &nbsp;
+  
+  
+        <table class="table">
+          <thead>
+            <tr>
+                <th scope="col">Transaction ID</th>
+                <th scope="col">Transaction Name</th>
+                <th scope="col">Value</th>
+                <th scope="col">View More</th>
+            </tr>
+          </thead>
+          {% for transaction in transactions %}
+  
+            <tr>
+              <td>{{ transaction.id}}</td>
+              <td>{{ transaction.title }} </td>
               
-              {%include 'partials/list_transactions.html' with transactions=sent_transactions%}
-            </div>
-           </div>
-          </div>
-          
+              <td>{{ transaction.amount }} </td>
+              <td>{{ transaction.sender_account.id }} </td>
+              <td>{{ transaction.receiver_account.id }} </td>
+    
+                  <td> <input type = "submit" name = "view" value = "View More" class= "btn btn-primary"></td>
+            
+              </a></td>
+  
+            </tr>
+          </form>
+          {% endfor %}
+        </table>
+      </div>
     </div>
   </div>
-</div>
 {% endblock %}
