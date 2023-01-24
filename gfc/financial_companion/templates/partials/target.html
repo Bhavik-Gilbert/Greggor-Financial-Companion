@@ -6,10 +6,11 @@
       <div class="card-body">
         <h4 class="card-title">{{target.transaction_type}}</h4>
         <!--- the percentage needs to be passed to it --->
+        <p class="card-text-end">Target Timespan: {{target.timespan}}</p>
         <div class="progress" role="progressbar" aria-label="Default striped example" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
           <div class="progress-bar progress-bar-striped" style="width: "+{{completeness}}>{{completeness}}</div>
         </div>
-        <p class="card-text">Target Amount: {{target.amount}}</p>
+        <p class="card-text-end">Target Amount: {{target.currency+target.amount}}</p>
       </div>
     </div>
   {% endfor %}
