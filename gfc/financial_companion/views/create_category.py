@@ -7,7 +7,7 @@ def create_category_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         form = CreateCategoryForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(request.user)
             return redirect('dashboard')
     else:
         form = CreateCategoryForm()
