@@ -19,11 +19,10 @@ class Command(BaseCommand):
     MAX_ACCOUNTS_PER_USER = 10
     MAX_TRANSACTIONS_PER_ACCOUNT = 50
     MAX_NUMBER_OF_CATEGORIES = 20
-    CURRENCY_CHOICES = [(x[1]).upper() for x in CurrencyType.choices]
+    CURRENCY_CHOICES = CurrencyType
 
     def __init__(self):
         super().__init__()
-        print(random.choice(self.CURRENCY_CHOICES))
         self.faker = Faker("en_GB")
 
     def handle(self, *args, **options):
@@ -76,7 +75,7 @@ class Command(BaseCommand):
                 description = self.faker.text(),
                 user_id = user,
                 balance = float(randint(-1000000,1000000))/100,
-                currency = random.choice(self.CURRENCY_CHOICES)
+                currency = self.choose_random_currency()
             )
             self.create_transactions_for_account(potAccount)
         for i in range(0,randomNumOfBankAccount):
@@ -85,7 +84,7 @@ class Command(BaseCommand):
                 description = self.faker.text(),
                 user_id = user,
                 balance = float(randint(-1000000,1000000))/100,
-                currency = random.choice(self.CURRENCY_CHOICES),
+                currency = self.choose_random_currency(),
                 bank_name = self.faker.word(),
                 account_number = str(randint(0,9)) + "" + str(randint(1000000,9999999)),
                 sort_code = str(randint(0,9)) + "" + str(randint(10000,99999)),
@@ -110,7 +109,7 @@ class Command(BaseCommand):
                 description = self.faker.text(),
                 category = random.choice(self.categories),
                 amount = float(randint(0,1000000))/100,
-                currency = random.choice(self.CURRENCY_CHOICES),
+                currency = self.choose_random_currency(),
                 sender_account = sender_account,
                 receiver_account = receiver_account
             )
@@ -121,3 +120,6 @@ class Command(BaseCommand):
 
     def format_email(self, first_name, last_name):
         return f'{first_name}.{last_name}@gfc.org'.lower()
+    
+    def choose_random_currency(self):
+        return random.choice(list(CurrencyType))
