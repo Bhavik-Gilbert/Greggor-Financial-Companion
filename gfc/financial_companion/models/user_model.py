@@ -14,7 +14,7 @@ def change_filename(instance, filename):
         filename = '{}.{}'.format(instance.pk, existing_filename)
     else:
         # set a random filename  ,  os.path.getmtime(instance)
-        filename_strings_to_add = [random.choice(string.ascii_letters), str(datetime.now())]
+        filename_strings_to_add = f"{random.choice(string.ascii_letters) for i in range(32)}{str(datetime.now())}"
         filename = '{}.{}'.format(''.join(filename_strings_to_add),existing_filename)
 
     return os.path.join('user_profile', filename)
