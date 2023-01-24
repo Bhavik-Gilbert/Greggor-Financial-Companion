@@ -1,0 +1,23 @@
+<div class="card text-bg-primary mb-3">
+  <div class="card-body">
+    <h5 class="card-title">Accounts: </h5>
+
+    <div class="accordion" id="accordionExample">
+    {% for account in accounts %}
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            Account Name: {{ account.name }}
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <strong>Account Description :</strong>{{ account.description }}
+            <strong>Account Balance :</strong>{{ account.currency}} {{account.balance}}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+  </div>
+</div>
