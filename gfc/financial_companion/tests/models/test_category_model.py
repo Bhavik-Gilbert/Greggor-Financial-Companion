@@ -1,7 +1,7 @@
 from .test_model_base import ModelTestCase
 from django.db.models.base import ModelBase
 from financial_companion.models.category_model import Category
-
+from financial_companion.models.user_model import User
 
 class CategoryModelTestCase(ModelTestCase):
     """Test file for category model class"""
@@ -36,5 +36,10 @@ class CategoryModelTestCase(ModelTestCase):
     def test_description_is_not_more_than_50_characters(self):
         self.test_model.description = 'j' * 51
         self._assert_model_is_invalid()
+    
+    def test_user_cannot_be_empty(self):
+        self.test_model.user = None
+        self._assert_model_is_invalid()
+    
     
     
