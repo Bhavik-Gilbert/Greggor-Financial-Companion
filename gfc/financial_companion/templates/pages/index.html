@@ -5,12 +5,12 @@
 
 <!-- Content -->
 {% block content %}
+<div align="center">
     <h1>Welcome to the Greggor Financial Companion</h1>
 
     <br>
 
     {% if logo_types %}
-    <div align="center">
     <h2>Meet Greggor</h2>
         <div id="greggor_carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
             <div class="carousel-inner">
@@ -28,21 +28,38 @@
             </div>
             </button>
         </div>
-    </div>
     <br>
     {% endif %}
     <br>
 
-    <h5 align="center">
-        Greggor will be you guide throughout this application, helping you manage your spending and saving
+    <h5 class="row">
+        <marquee direction="right" onmouseover="this.stop();" onmouseout="this.start();">
+            Greggor will be you guide throughout this application, helping you manage your spending and saving
+        </marquee>
         <br>
-        He will change mood depending on the day, time and how well you manage your financial accounts
         <br>
-        You can always find him on the top hand corner of the page
         <br>
-        To keep him happy, make sure to keep your financial life in order
+        <marquee direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+            He will change mood depending on the day, time and how well you manage your financial accounts
+        </marquee>
         <br>
-        <div class="text-danger">You don't want to find out what happens when he gets upset</div>
+        <br>
+        <br>
+        <marquee direction="right" onmouseover="this.stop();" onmouseout="this.start();">
+            You can always find him on the top hand corner of the page
+        </marquee>
+        <br>
+        <br>
+        <br>
+        <marquee direction="left" onmouseover="this.stop();" onmouseout="this.start();">
+            To keep him happy, make sure to keep your financial life in order
+        </marquee>
+        <br>
+        <br>
+        <br>
+        <div class="col-md-12 d-flex justify-content-center">
+            <div class="text-danger">You don't want to find out what happens when he gets upset</div>
+        </div>
     </h5>
     <br>
     <a href='{% url 'sign_up' %}' class="btn btn-lg btn-info">Sign up</a>
