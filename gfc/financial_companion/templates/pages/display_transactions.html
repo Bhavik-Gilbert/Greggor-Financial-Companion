@@ -8,7 +8,7 @@
       <div class="col-12">
         <h1 style="text-align:center">Transactions</h1>
         <div>
-          <form method="post">
+          <form action="{% url 'filter_request' %}"method="post">
             {% csrf_token %}
             <div style="text-align:center">
               <input type = "submit" name = "sent" value = "View Sent Transactions" class= "btn btn-primary">
@@ -38,6 +38,7 @@
           </form>
           {% endfor %}
         </table>
+        {%include 'partials/pagination.html'  with page_obj=transactions %}
       </div>
     </div>
   </div>
