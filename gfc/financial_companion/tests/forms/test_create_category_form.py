@@ -4,6 +4,7 @@ from .test_form_base import FormTestCase
 from financial_companion.forms import CreateCategoryForm
 from financial_companion.models.user_model import User
 from financial_companion.models.category_model import Category
+from financial_companion.models.target_model import CategoryTarget
 
 class CreateCategoryFormTestCase(FormTestCase):
     """Unit tests of the category form."""
@@ -11,14 +12,17 @@ class CreateCategoryFormTestCase(FormTestCase):
         self.test_model = User.objects.get(username = '@johndoe')
         self.form_input = {  
             'name': 'Travel',
-         'description': 'Travel Expenses'}
+         'description': 'Travel Expenses',
+         'amount': 0}
 
     def test_form_contains_required_fields(self):
         form = CreateCategoryForm()
         self._assert_form_has_necessary_fields(
             form,
             'name',
-            'description'
+            'description',
+            'amount',
+            'timespan'
         )
 
     def test_form_accepts_valid_input(self):
@@ -55,7 +59,18 @@ class CreateCategoryFormTestCase(FormTestCase):
         form = CreateCategoryForm(data=self.form_input)
         self.assertFalse(form.is_valid())
     
-    def test_form_must_save_correctly(self):
+    def test_form_timespan_can_be_empty(self):
+        self.form_input['timespan'] = ''
+        form = CreateCategoryForm(data=self.form_input)
+        self.assertTrue(form.is_valid())
+
+    # As initial value is specified
+    def test_form_amount_can_not_be_empty(self):
+        self.form_input['amount'] = ''
+        form = CreateCategoryForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+    
+    def test_form_must_save_correctly_when_no_timespan_specified(self):
         form = CreateCategoryForm(instance=self.test_model, data=self.form_input)
         before_count = Category.objects.count()
         category = form.save(self.test_model)
@@ -64,5 +79,23 @@ class CreateCategoryFormTestCase(FormTestCase):
         self.assertEqual(category.user, self.test_model)
         self.assertEqual(category.name, 'Travel')
         self.assertEqual(category.description, 'Travel Expenses')
+    
+    def test_form_must_save_correctly_when_timespan_is_specified(self):
+        self.form_input['timespan'] = 'day'
+        form = CreateCategoryForm(instance=self.test_model, data=self.form_input)
+        before_count_category = Category.objects.count()
+        before_count_categoryTarget = CategoryTarget.objects.count()
+        category = form.save(self.test_model)
+        after_count_category = Category.objects.count()
+        after_count_categoryTarget = CategoryTarget.objects.count()
+        category_target = CategoryTarget.objects.get(category_id = category)
+        self.assertEqual(after_count_category, before_count_category + 1)
+        self.assertEqual(after_count_categoryTarget, before_count_categoryTarget + 1)
+        self.assertEqual(category.user, self.test_model)
+        self.assertEqual(category.name, 'Travel')
+        self.assertEqual(category.description, 'Travel Expenses')
+        self.assertEqual(category_target.category_id, category)
+        self.assertEqual(category_target.amount, 0)
+        self.assertEqual(category_target.timespan, 'day')
        
     
