@@ -20,13 +20,13 @@ class DashboardViewTestCase(ViewTestCase):
         self._assert_require_login(self.url)
 
     def test_get_dashboard(self):
-        self.client.login(username=self.user.username, password='Password123')
+        self._login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/dashboard.html')
 
     def test_dashboard_displays_desired_info(self):
-        self.client.login(username=self.user.username, password='Password123')
+        self._login(self.user)
         response = self.client.get(self.url)
         self.assertContains(response, self.user.full_name())
         self.assertContains(response, self.account.name)
