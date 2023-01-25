@@ -11,8 +11,8 @@
         </h2>
         <div id="collapse{{ account.name }}" class="accordion-collapse collapse" aria-labelledby="heading{{ account.name }}" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            <p><strong>Account Description :</strong>{{ account.description }}</p>
-            <p><strong>Account Balance :</strong>{{ account.currency}} {{account.balance}}</p>
+            <p><strong>Account Description: </strong>{{ account.description }}</p>
+            <p><strong>Account Balance </strong>{{ account.currency.upper}}: {{account.balance}}</p>
           </div>
         </div>
       </div>
