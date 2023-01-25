@@ -18,7 +18,7 @@ def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResp
         for account in user_accounts:
             transactions = [*transactions, *Transaction.objects.filter(sender_account=account)]
             transactions = [*transactions, *Transaction.objects.filter(receiver_account=account)]
-    if filter_type == "sent":
+    elif filter_type == "sent":
         transactions = []
         print("sent")
         print(len(transactions))
@@ -31,7 +31,7 @@ def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResp
         for account in user_accounts:
             transactions = [*transactions, *Transaction.objects.filter(receiver_account=account)]
     else:
-        redirect('dashboard')
+        return redirect('dashboard')
     
     print(len(transactions))
     page = request.GET.get('page', 1)
@@ -47,7 +47,6 @@ def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResp
 
 
 def filter_request(request):
-    showButtons = True
     if 'sent' in request.POST:
         return redirect(reverse('view_transactions', kwargs={'filter_type': "sent"}))
     elif 'recieved' in request.POST:
