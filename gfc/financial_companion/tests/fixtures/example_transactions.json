@@ -13,5 +13,21 @@
             "receiver_account" : 2,
             "time_of_transaction" : "2023-01-01T12:00:00+00:00"
         }
+    },
+
+    {
+        "model": "financial_companion.Transaction",
+        "pk": 3,
+        "fields": {
+            "title": "New Shooes",
+            "description": "Bought new shoes from my friend",
+            "image": "transactions/2.jpg",
+            "category" : 1,
+            "amount" : 199.99,
+            "currency" : "usd",
+            "sender_account" : 3,
+            "receiver_account" : 1,
+            "time_of_transaction" : "2023-01-01T12:00:00+00:00"
+        }
     }
 ]

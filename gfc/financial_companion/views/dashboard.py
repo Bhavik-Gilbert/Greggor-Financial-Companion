@@ -1,7 +1,9 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from financial_companion.models import Account, PotAccount, Transaction, AbstractTransaction
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def dashboard_view(request: HttpRequest) -> HttpResponse:
 
     user = request.user
