@@ -61,6 +61,26 @@ Seed the development database with:
 $ python3 manage.py seed
 ```
 
+Use the following accounts when testing the seeded database:
+
+Format (username, password)
+```
+ADMINS:
+@michaelkolling, Password123
+@adminuser, Password123
+
+NORMAL USER:
+@johndoe, Password123
+@matthewprice, Password123
+```
+
+
+Unseed the development database with:
+
+```
+$ python3 manage.py unseed
+```
+
 Run all tests with:
 ```
 $ python3 manage.py test

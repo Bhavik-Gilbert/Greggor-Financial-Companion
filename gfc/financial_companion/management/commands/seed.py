@@ -8,6 +8,7 @@ from financial_companion.models import (
     Category
 )
 from django.db.utils import IntegrityError
+from django.db.models import Q
 import datetime
 from random import randint, random
 import random
@@ -15,7 +16,7 @@ from financial_companion.helpers import TransactionType, CurrencyType, MonetaryA
 
 class Command(BaseCommand):
     PASSWORD = "Password123"
-    USER_COUNT = 4
+    USER_COUNT = 4    # MINIMUM OF FOUR PREDEFINED USERS ARE CREATED IRRESPECTIVE OF VARIABLE VALUE
     MAX_ACCOUNTS_PER_USER = 10
     MAX_TRANSACTIONS_PER_ACCOUNT = 50
     MAX_NUMBER_OF_CATEGORIES = 10
@@ -23,7 +24,7 @@ class Command(BaseCommand):
 
     def __init__(self):
         super().__init__()
-        self.faker = Faker("en_GB")
+        self.faker = Faker("en_US")
 
     def handle(self, *args, **options):
         self.create_users()
@@ -52,6 +53,7 @@ class Command(BaseCommand):
     def create_users(self):
         self.create_single_user("Michael", "Kolling", self.PASSWORD, True)
         self.create_single_user("admin", "user", self.PASSWORD, True)
+        self.create_single_user("John", "Doe", self.PASSWORD, False)
         while User.objects.count() < self.USER_COUNT:
             self.create_single_user(self.faker.first_name(), self.faker.last_name(), self.PASSWORD, False)
         print("USERS SEEDED")
@@ -115,7 +117,7 @@ class Command(BaseCommand):
 
     def create_transactions_for_account(self, account, categories):
         randomNumOfTransactions = randint(0,self.MAX_TRANSACTIONS_PER_ACCOUNT)
-        oppositePartyOfTransaction = random.choice(Account.objects.all())
+        oppositePartyOfTransaction = random.choice(Account.objects.filter(~Q(id = account.id)))
 
         if (randint(0,1) == 0):
             sender_account = oppositePartyOfTransaction
