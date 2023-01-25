@@ -15,21 +15,23 @@ def view_users_transactions(request: HttpRequest) -> HttpResponse:
     
     if request.method == "POST":
         if "sent" in request.POST: 
+            transactions = []
             for account in user_accounts:
                 transactions = [*transactions, *Transaction.objects.filter(sender_account=account)]
-        # return render(request, "pages/display_transactions.html", {'transactions': transactions})
         elif "recieved" in request.POST:
+            transactions = []
             for account in user_accounts:
                 transactions = [*transactions, *Transaction.objects.filter(receiver_account=account)]
-            # return render(request, "pages/display_transactions.html", {'transactions': transactions})
+
+    # Can't filter and paginate 
+
+    # page = request.GET.get('page', 1)
+    # paginator = Paginator(transactions, 10)
+    # try:
+    #     listOfTransactions = paginator.page(page)
+    # except PageNotAnInteger:
+    #     listOfTransactions = paginator.page(1)
+    # except EmptyPage:
+    #     listOfTransactions = paginator.page(paginator.num_pages)
     
-    page = request.GET.get('page', 1)
-    paginator = Paginator(transactions, 10)
-    try:
-        listOfTransactions = paginator.page(page)
-    except PageNotAnInteger:
-        listOfTransactions = paginator.page(1)
-    except EmptyPage:
-        listOfTransactions = paginator.page(paginator.num_pages)
-    
-    return render(request, "pages/display_transactions.html", {'transactions': listOfTransactions})
+    return render(request, "pages/display_transactions.html", {'transactions': transactions})
