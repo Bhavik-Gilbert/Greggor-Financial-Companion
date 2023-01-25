@@ -14,9 +14,9 @@
               <p><strong>Transaction Description: </strong>{{transaction.description }}</p>
               <p><strong>Transaction Category: </strong>{{transaction.category}}</p>
               <p><strong>Transaction Balance: </strong>{{transaction.amount}}</p>
-              <p><strong>Transaction Currency: </strong>{{transaction.currency}}</p>
-              <p><strong>Sender Account: </strong></p>
-              <p><strong>Reciver Account:</strong></p>
+              <p><strong>Transaction Currency: </strong>{{transaction.currency.upper}}</p>
+              <p><strong>Sender Account: </strong>{{transaction.sender_account}}</p>
+              <p><strong>Reciver Account: </strong>{{transaction.receiver_account}}</p>
               <p><strong>Time of Transaction: </strong>{{transaction.time_of_transaction}}</p>
             </div>
           </div>
