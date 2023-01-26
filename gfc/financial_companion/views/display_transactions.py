@@ -20,7 +20,7 @@ def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResp
     for account in user_accounts:
         if filter_type in filter_send_types:
             transactions = [*transactions, *Transaction.objects.filter(sender_account=account)]
-        elif filter_type in filter_receive_types:
+        if filter_type in filter_receive_types:
             transactions = [*transactions, *Transaction.objects.filter(receiver_account=account)]
 
     page = request.GET.get('page', 1)
@@ -35,6 +35,7 @@ def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResp
     return render(request, "pages/display_transactions.html", {'transactions': listOfTransactions})
 
 
+@login_required
 def filter_transaction_request(request):
     if 'sent' in request.POST:
         return redirect(reverse('view_transactions', kwargs={'filter_type': "sent"}))
