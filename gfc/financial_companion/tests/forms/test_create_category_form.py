@@ -4,6 +4,7 @@ from .test_form_base import FormTestCase
 from financial_companion.forms import CreateCategoryForm
 from financial_companion.models.user_model import User
 from financial_companion.models.category_model import Category
+from financial_companion.models.target_model import CategoryTarget
 
 class CreateCategoryFormTestCase(FormTestCase):
     """Unit tests of the category form."""
@@ -55,7 +56,7 @@ class CreateCategoryFormTestCase(FormTestCase):
         form = CreateCategoryForm(data=self.form_input)
         self.assertFalse(form.is_valid())
     
-    def test_form_must_save_correctly(self):
+    def test_form_must_save_correctly_when_no_timespan_specified(self):
         form = CreateCategoryForm(instance=self.test_model, data=self.form_input)
         before_count = Category.objects.count()
         category = form.save(self.test_model)
@@ -64,5 +65,6 @@ class CreateCategoryFormTestCase(FormTestCase):
         self.assertEqual(category.user, self.test_model)
         self.assertEqual(category.name, 'Travel')
         self.assertEqual(category.description, 'Travel Expenses')
+ 
        
     
