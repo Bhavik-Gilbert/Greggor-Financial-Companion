@@ -5,7 +5,7 @@ from django.urls import reverse
 
 
 class DispalyTransactionsViewTestCase(ViewTestCase):
-    """Unit tests of the log in view"""
+    """Unit tests of the display transactions view"""
 
     def setUp(self):
         self.url = reverse('view_transactions',kwargs={'filter_type': "all"})
