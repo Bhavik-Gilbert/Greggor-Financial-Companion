@@ -6,7 +6,7 @@ from financial_companion.forms import CreateCategoryForm
 from financial_companion.models import User, Category
 
 class CreateCategoryViewTestCase(ViewTestCase):
-    """Tests of the log out view."""
+    """Tests of the create category view."""
 
     def setUp(self):
         self.url = reverse('create_category')

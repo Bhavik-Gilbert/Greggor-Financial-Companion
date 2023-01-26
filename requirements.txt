@@ -7,3 +7,4 @@ DateTime==4.5
 cryptography==39.0.0
 django-fernet-encrypted-fields==0.1.2
 django-model-utils==4.3.1
+holidays==0.18
