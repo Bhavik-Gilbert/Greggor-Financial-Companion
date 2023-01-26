@@ -20,6 +20,7 @@ class Command(BaseCommand):
     MAX_ACCOUNTS_PER_USER = 10
     MAX_TRANSACTIONS_PER_ACCOUNT = 50
     MAX_NUMBER_OF_CATEGORIES = 10
+    MAX_NUMBER_OF_BASIC_ACCOUNTS = 5
     OBJECT_HAS_TARGET_PROBABILITY = 0.6
 
     def __init__(self):
@@ -27,8 +28,16 @@ class Command(BaseCommand):
         self.faker = Faker("en_US")
 
     def handle(self, *args, **options):
+        self.create_basic_accounts()
         self.create_users()
         print("SEEDING COMPLETE")
+
+    def create_basic_accounts(self):
+        for i in range(0,self.MAX_NUMBER_OF_BASIC_ACCOUNTS):
+            Account.objects.create(
+                name = self.faker.word(),
+                description = self.faker.text()
+            )
 
     def create_categories(self, user):
         randomNumOfCategories = randint(3, self.MAX_NUMBER_OF_CATEGORIES)
