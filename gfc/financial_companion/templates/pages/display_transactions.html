@@ -8,11 +8,11 @@
       <div class="col-12">
         <h1 style="text-align:center">Transactions</h1>
         <div>
-          <form action="{% url 'filter_request' %}"method="post">
+          <form action="{% url 'filter_transaction_request' %}"method="post">
             {% csrf_token %}
             <div style="text-align:center">
               <input type = "submit" name = "sent" value = "View Sent Transactions" class= "btn btn-primary">
-              <input type = "submit" name = "recieved" value = "View Recieved Transactions"" class= "btn btn-primary">
+              <input type = "submit" name = "received" value = "View Received Transactions"" class= "btn btn-primary">
               <input type = "submit" name = "all" value = "View Transactions" class= "btn btn-primary">
             </div>
           </form>
