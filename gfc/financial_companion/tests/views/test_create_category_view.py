@@ -13,7 +13,6 @@ class CreateCategoryViewTestCase(ViewTestCase):
         self.form_input = {
             'name': 'Travel',
             'description': 'Travel Expenses',
-            'amount' : 0
             }
         self.user = User.objects.get(username='@johndoe')
 
