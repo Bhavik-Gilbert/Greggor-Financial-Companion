@@ -16,7 +16,7 @@ from financial_companion.helpers import TransactionType, CurrencyType, MonetaryA
 
 class Command(BaseCommand):
     PASSWORD = "Password123"
-    USER_COUNT = 4    # MINIMUM OF FOUR PREDEFINED USERS ARE CREATED IRRESPECTIVE OF VARIABLE VALUE
+    USER_COUNT = 6    # MINIMUM OF FOUR PREDEFINED USERS ARE CREATED IRRESPECTIVE OF VARIABLE VALUE
     MAX_ACCOUNTS_PER_USER = 10
     MAX_TRANSACTIONS_PER_ACCOUNT = 50
     MAX_NUMBER_OF_CATEGORIES = 10
@@ -87,7 +87,7 @@ class Command(BaseCommand):
                         timespan = self.choose_random_enum(Timespan),
                         amount = float(randint(0,1000000))/100,
                         currency = self.choose_random_enum(CurrencyType),
-                        user_id = user
+                        user = user
                     )
                 self.create_accounts_for_user(user, categories)
         except(IntegrityError):
@@ -102,7 +102,7 @@ class Command(BaseCommand):
             potAccount = PotAccount.objects.create(
                 name = self.faker.word(),
                 description = self.faker.text(),
-                user_id = user,
+                user = user,
                 balance = float(randint(-1000000,1000000))/100,
                 currency = self.choose_random_enum(CurrencyType)
             )
@@ -112,7 +112,7 @@ class Command(BaseCommand):
             bankAccount = BankAccount.objects.create(
                 name = self.faker.word(),
                 description = self.faker.text(),
-                user_id = user,
+                user = user,
                 balance = float(randint(-1000000,1000000))/100,
                 currency = self.choose_random_enum(CurrencyType),
                 bank_name = self.faker.word(),

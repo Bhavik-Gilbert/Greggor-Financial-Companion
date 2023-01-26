@@ -19,7 +19,7 @@ def change_filename(instance, filename):
 class User(AbstractUser):
     """User model used for authentication"""
 
-    username = models.CharField(
+    username: models.CharField = models.CharField(
         max_length=30,
         unique=True,
         validators=[RegexValidator(
@@ -27,11 +27,11 @@ class User(AbstractUser):
             message='Username must consist of @ followed by at least one letter or number'
         )]
     )
-    first_name = models.CharField(max_length=50, blank=False)
-    last_name = models.CharField(max_length=50, blank=False)
-    email = models.EmailField(unique=True, blank=False)
-    bio = models.CharField(max_length=520, blank=True)
-    profile_picture = models.ImageField(upload_to=change_filename, height_field=None, width_field=None, max_length=100,blank=True)
+    first_name: models.CharField = models.CharField(max_length=50, blank=False)
+    last_name: models.CharField = models.CharField(max_length=50, blank=False)
+    email: models.EmailField = models.EmailField(unique=True, blank=False)
+    bio: models.CharField = models.CharField(max_length=520, blank=True)
+    profile_picture: models.ImageField = models.ImageField(upload_to=change_filename, height_field=None, width_field=None, max_length=100,blank=True)
 
     def full_name(self):
         return f'{self.first_name} {self.last_name}'

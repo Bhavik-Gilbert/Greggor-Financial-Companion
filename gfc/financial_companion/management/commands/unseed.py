@@ -16,8 +16,8 @@ class Command(BaseCommand):
         categories = []
         transactions = []
         for user in users:
-            potAndBankAccounts.extend(PotAccount.objects.filter(user_id = user))
-            targets.extend(UserTarget.objects.filter(user_id = user))
+            potAndBankAccounts.extend(PotAccount.objects.filter(user = user))
+            targets.extend(UserTarget.objects.filter(user = user))
             categories.extend(Category.objects.filter(user = user))
         
         for account in potAndBankAccounts:
