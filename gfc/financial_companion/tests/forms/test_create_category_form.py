@@ -24,6 +24,26 @@ class CreateCategoryFormTestCase(FormTestCase):
     def test_form_accepts_valid_input(self):
         form = CreateCategoryForm(data=self.form_input)
         self.assertTrue(form.is_valid())
+    
+    def test_form_accepts_name_up_to_50_character_input(self):
+        self.form_input['name'] = 'x'*50
+        form = CreateCategoryForm(data=self.form_input)
+        self.assertTrue(form.is_valid())
+
+    def test_form_accepts_description_up_to_50_character_input(self):
+        self.form_input['description'] = 'x'*50
+        form = CreateCategoryForm(data=self.form_input)
+        self.assertTrue(form.is_valid())
+
+    def test_form_doesnt_accept_name_greater_than_50_character_input(self):
+        self.form_input['name'] = 'x'*51
+        form = CreateCategoryForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    def test_form_doesnt_accept_description_greater_than_50_character_input(self):
+        self.form_input['description'] = 'x'*51
+        form = CreateCategoryForm(data=self.form_input)
+        self.assertFalse(form.is_valid())
 
     def test_form_name_can_not_be_empty(self):
         self.form_input['name'] = ''
