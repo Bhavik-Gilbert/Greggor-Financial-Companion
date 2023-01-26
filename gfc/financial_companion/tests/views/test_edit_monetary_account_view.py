@@ -1,4 +1,4 @@
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 from django.urls import reverse
 from typing import Any
 
@@ -9,7 +9,7 @@ from financial_companion.helpers import MonetaryAccountType, CurrencyType
 from decimal import Decimal
 
 class AddMonetaryAccountViewTestCase(ViewTestCase):
-    """Unit tests of the add monetary account view"""
+    """Unit tests of the edit monetary account view"""
 
     def setUp(self):
         self.pot_account: PotAccount = PotAccount.objects.get(id=4)
@@ -160,7 +160,7 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
         response: HttpResponse = self.client.get(self.bank_url, follow=True)
         self._assert_require_login(self.bank_url)
     
-    def test_invalid_post_pot_page_logeged_in_user_must_be_account_holder(self):
+    def test_invalid_post_pot_page_logged_in_user_must_be_account_holder(self):
         self._login(self.bank_user)
         self.assertNotEqual(self.pot_account.user.id, self.bank_user.id)
         form_input: dict[str, Any]= {
@@ -174,7 +174,7 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, "pages/dashboard.html")
     
-    def test_invalid_get_pot_page_logeged_in_user_must_be_account_holder(self):
+    def test_invalid_get_pot_page_logged_in_user_must_be_account_holder(self):
         self._login(self.bank_user)
         self.assertNotEqual(self.pot_account.user.id, self.bank_user.id)
         response: HttpResponse = self.client.post(self.pot_url, follow=True)
@@ -183,7 +183,7 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/dashboard.html")
 
     
-    def test_invalid_post_bank_page_logeged_in_user_must_be_account_holder(self):
+    def test_invalid_post_bank_page_logged_in_user_must_be_account_holder(self):
         self._login(self.pot_user)
         self.assertNotEqual(self.bank_account.user.id, self.pot_user.id)
         form_input: dict[str, Any] = {
@@ -202,7 +202,7 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, "pages/dashboard.html")
     
-    def test_invalid_get_bank_page_logeged_in_user_must_be_account_holder(self):
+    def test_invalid_get_bank_page_loggeed_in_user_must_be_account_holder(self):
         self._login(self.pot_user)
         self.assertNotEqual(self.bank_account.user.id, self.pot_user.id)
         response: HttpResponse = self.client.post(self.bank_url, follow=True)

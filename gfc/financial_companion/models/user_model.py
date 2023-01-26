@@ -32,3 +32,6 @@ class User(AbstractUser):
     email: models.EmailField = models.EmailField(unique=True, blank=False)
     bio: models.CharField = models.CharField(max_length=520, blank=True)
     profile_picture: models.ImageField = models.ImageField(upload_to=change_filename, height_field=None, width_field=None, max_length=100,blank=True)
+
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'

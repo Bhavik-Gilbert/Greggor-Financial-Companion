@@ -30,9 +30,11 @@ urlpatterns = [
     path('add_monetary_account/', views.add_monetary_account_view, name="add_monetary_account"),
     path('view_accounts/', views.view_user_pot_accounts, name='view_accounts'),
     path('create_category/', views.create_category_view, name="create_category"),
+    path('filter_transaction_request/', views.filter_transaction_request, name="filter_transaction_request"),
+    path('view_transactions/<str:filter_type>', views.view_users_transactions, name="view_transactions"),
     re_path(
         'edit_monetary_account/(?P<pk>\d+)/$',
         views.edit_monetary_account_view,
         name="edit_monetary_account"
     ),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
