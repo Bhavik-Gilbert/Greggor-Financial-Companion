@@ -54,7 +54,7 @@ class Command(BaseCommand):
                     timespan = self.choose_random_enum(Timespan),
                     amount = float(randint(0,1000000))/100,
                     currency = self.choose_random_enum(CurrencyType),
-                    category_id = category
+                    category = category
                 )
             categories.append(category)
         return categories
@@ -163,5 +163,5 @@ class Command(BaseCommand):
                 timespan = self.choose_random_enum(Timespan),
                 amount = float(randint(0,1000000))/100,
                 currency = self.choose_random_enum(CurrencyType),
-                account_id = account
+                account = account
             )
