@@ -4,6 +4,7 @@ from ..models import Transaction, PotAccount
 from django.http import HttpRequest, HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse
+from django.conf import settings
 
 @login_required
 def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResponse:
@@ -22,8 +23,8 @@ def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResp
             transactions = [*transactions, *Transaction.objects.filter(sender_account=account)]
         if filter_type in filter_receive_types:
             transactions = [*transactions, *Transaction.objects.filter(receiver_account=account)]
-
-    page = request.GET.get('page', 1)
+    
+    page = request.GET.get('page', settings.NUMBER_OF_TRANSACTIONS)
     paginator = Paginator(transactions, 10)
     try:
         listOfTransactions = paginator.page(page)
