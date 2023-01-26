@@ -12,7 +12,7 @@ class CreateCategoryViewTestCase(ViewTestCase):
         self.url = reverse('create_category')
         self.form_input = {
             'name': 'Travel',
-            'description': 'Travel Expenses',
+            'description': 'Travel Expenses'
             }
         self.user = User.objects.get(username='@johndoe')
 
