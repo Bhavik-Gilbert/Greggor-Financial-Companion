@@ -5,7 +5,130 @@
 
 <!-- Content -->
 {% block content %}
-    <h1>Greggor Financial Companion</h1>
-    <a href='{% url 'sign_up' %}' class="btn btn-lg btn-secondary">Sign up</a>
-    <a href='{% url 'log_in' %}' class="btn btn-lg btn-secondary">Log in</a>
+<div align="center">
+    <h1>Welcome to the Greggor Financial Companion</h1>
+
+    <br>
+
+    {% if logo_types %}
+    <h2>Meet Greggor</h2>
+        <div id="greggor_carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+            <div class="carousel-inner">
+                {% for type in logo_types %}
+                    {% if type == logo_types.0 %}
+                    <div class="carousel-item card bg-light active">
+                    {% else %}
+                    <div class="carousel-item card bg-light">
+                    {% endif %}
+                        {% include 'partials/greggor_logo.html' with width=300 greggor_type=type %}
+                        <h3>{{type.capitalize}} Greggor</h3>
+                        <br>
+                    </div>
+                {% endfor %}
+            </div>
+            </button>
+        </div>
+    <br>
+    <br>
+    {% endif %}
+
+    <h4>About</h4>
+    <div class="card border-0 bg-primary">
+        <div class="card-header d-grid">
+            <button class="btn btn-primary pb-0" type="button" data-bs-toggle="collapse" data-bs-target="#greggor_info" aria-expanded="true" aria-controls="greggor_info">
+                <h4>&#x21D5;</h4>
+            </button>
+        </div>
+
+        <div class="collapse show" id="greggor_info">
+            <br><br>
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-10 card border-0 my-3">
+                    <div class="card-body">
+                        <h5>Greggor will be you guide throughout this application</h5>
+                    </div>
+                </div>
+                <div class="col-md-5 col-0"></div>
+
+                <div class="col-md-5 col-0"></div>
+                <div class="col-md-6 col-10 card border-0 my-3">
+                    <div class="card-body">
+                        <h5>He'll be around to help you manage your spending and saving</h5>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-10 card border-0 my-3">
+                    <div class="card-body">
+                        <h5>You can always find him on the top hand corner of the page</h5>
+                    </div>
+                </div>
+                <div class="col-md-5 col-0"></div>
+                
+                <div class="col-md-5 col-0"></div>
+                <div class="col-md-6 col-10 card border-0 my-3">
+                    <div class="card-body">
+                        <h5>He will change mood depending on how you interact with the site</h5>
+                    </div>
+                </div>
+
+                <div class="col-md-6 col-10 card border-0 my-3">
+                    <div class="card-body">
+                        <h5>This includes the date, time and how well you manage your financial accounts</h5>
+                    </div>
+                </div>
+                <div class="col-md-5 col-0"></div>
+
+                <div class="col-md-5 col-0"></div>
+                <div class="col-md-6 col-10 card border-0 my-3">
+                    <div class="card-body">
+                        <h5>To keep him happy, make sure to keep your financial life in order</h5>
+                    </div>
+                </div>
+
+                <div class="col-12"></div>
+                <div class="col-12"></div>
+
+                <div class="col-md-10 col-10 card border-0 my-3">
+                    <div class="card-body">
+                        <h5 class="text-danger">You don't want to find out what happens when he gets upset</h5>
+                    </div>
+                </div>
+            </div>
+            
+
+            <br><br>
+        </div>
+    </div>
+    
+    <br>
+    <br>
+    <br>
+
+    <h4>Get Started Now</h4>
+    <br>
+    <div class="row justify-content-center g-4">
+        <div class="col-md-4 col-sm-8">
+            <div class="card border-dark bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">New User?</h5>
+                    <p class="card-text">
+                        If you're a new user, go ahead and make a new account via the sign up page to get started
+                    </p>
+                    <a href='{% url 'sign_up' %}' class="btn btn-md btn-outline-primary">Sign up</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-8">
+            <div class="card border-dark bg-light">
+                <div class="card-body">
+                    <h5 class="card-title">Existing User?</h5>
+                    <p class="card-text">
+                        If you already have an account, you can continue to access it like normal after logging
+                    </p>
+                    <a href='{% url 'log_in' %}' class="btn btn-md btn-outline-success">Log in</a>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
