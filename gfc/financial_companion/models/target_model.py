@@ -36,10 +36,10 @@ class AbstractTarget(Model):
 class CategoryTarget(AbstractTarget):
     """Model for target spending and saving on categories"""
 
-    category_id: ForeignKey = ForeignKey(Category, on_delete=CASCADE)
+    category: ForeignKey = ForeignKey(Category, on_delete=CASCADE)
 
     class Meta:
-        unique_together = ["transaction_type", "timespan", "category_id"]
+        unique_together = ["transaction_type", "timespan", "category"]
 
 class UserTarget(AbstractTarget):
     """Model for target spending and saving of users"""
@@ -47,12 +47,12 @@ class UserTarget(AbstractTarget):
     user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
 
     class Meta:
-        unique_together = ["transaction_type", "timespan", "user_id"]
+        unique_together = ["transaction_type", "timespan", "user"]
 
 class AccountTarget(AbstractTarget):
     """Model for target spending and saving of users"""
 
-    account_id: ForeignKey = ForeignKey(PotAccount, on_delete=CASCADE)
+    account: ForeignKey = ForeignKey(PotAccount, on_delete=CASCADE)
 
     class Meta:
-        unique_together = ["transaction_type", "timespan", "account_id"]
+        unique_together = ["transaction_type", "timespan", "account"]

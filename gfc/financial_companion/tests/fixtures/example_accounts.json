@@ -30,7 +30,7 @@
         "model": "financial_companion.PotAccount",
         "pk": 3,
         "fields": {
-            "user_id": "1",
+            "user": "1",
             "balance": 1000.00,
             "currency": "gbp"
         }
