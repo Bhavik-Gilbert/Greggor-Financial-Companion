@@ -16,7 +16,7 @@
     },
     {
         "model": "financial_companion.Transaction",
-        "pk": 3,
+        "pk": 4,
         "fields": {
             "title": "New Car",
             "description": "Bought a new car",
@@ -31,7 +31,7 @@
     },
     {
         "model": "financial_companion.Transaction",
-        "pk": 4,
+        "pk": 5,
         "fields": {
             "title": "New Bike",
             "description": "Bought a new bike",

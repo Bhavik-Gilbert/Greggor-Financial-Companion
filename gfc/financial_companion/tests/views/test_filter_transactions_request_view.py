@@ -27,10 +27,10 @@ class FilterTransactionsViewTestCase(ViewTestCase):
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
         self.assertContains(response, 'New Car')
-        self.assertContains(response, 3)
+        self.assertContains(response, 4)
         self.assertContains(response, 14999.99)
         self.assertContains(response, 'New Bike')
-        self.assertContains(response, 4)
+        self.assertContains(response, 5)
         self.assertContains(response, 499.99)
     
     def test_post_when_sent_button_is_clicked(self):
@@ -46,7 +46,7 @@ class FilterTransactionsViewTestCase(ViewTestCase):
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
         self.assertContains(response, 'New Car')
-        self.assertContains(response, 3)
+        self.assertContains(response, 4)
         self.assertContains(response, 14999.99)
     
     def test_post_when_received_button_is_clicked(self):
@@ -62,7 +62,7 @@ class FilterTransactionsViewTestCase(ViewTestCase):
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
         self.assertContains(response, 'New Bike')
-        self.assertContains(response, 4)
+        self.assertContains(response, 5)
         self.assertContains(response, 499.99)
     
     def test_post_when_random_input_is_given(self):
