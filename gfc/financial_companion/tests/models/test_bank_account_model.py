@@ -144,7 +144,7 @@ class AccountModelTestCase(ModelTestCase):
         default_interest_zero_bank_model = BankAccount.objects.create(
             name = "bank account",
             description = "my first bank account",
-            user_id = User.objects.get(id=1),
+            user = User.objects.get(id=1),
             balance = 100,
             currency = CurrencyType.GBP,
             bank_name = "Kush Corp",

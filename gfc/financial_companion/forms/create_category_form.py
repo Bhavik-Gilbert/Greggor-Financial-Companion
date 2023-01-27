@@ -1,5 +1,7 @@
 from django import forms
 from financial_companion.models import Category
+from ..helpers import Timespan
+
 
 class CreateCategoryForm(forms.ModelForm):
     """Form to add a new transaction"""
@@ -7,10 +9,10 @@ class CreateCategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ['name', 'description']
+    
 
     def save(self, current_user):
-        """Create a new transaction."""
-
+        """Create a new category."""
         super().save(commit=False)
         category = Category.objects.create(
             user = current_user,

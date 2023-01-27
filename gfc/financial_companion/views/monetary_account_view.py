@@ -42,7 +42,7 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
 
     # check is id valid
     try:
-         this_monetary_account: PotAccount = PotAccount.objects.get_subclass(id=pk, user_id=request.user.id)
+         this_monetary_account: PotAccount = PotAccount.objects.get_subclass(id=pk, user=request.user.id)
     except Exception:
         return redirect("dashboard")
     

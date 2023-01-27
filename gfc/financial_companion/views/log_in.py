@@ -18,10 +18,12 @@ def log_in_view(request: HttpRequest) -> HttpResponse:
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('dashboard')
+                redirect_url = request.POST.get('next') or 'dashboard'
+                return redirect(redirect_url)
         messages.add_message(request, messages.ERROR, "The credentials provided are invalid!")
     form = UserLogInForm()
-    return render(request, 'pages/log_in.html', {'form': form})
+    next = request.GET.get('next') or ''
+    return render(request, 'pages/log_in.html', {'form': form, 'next': next})
 
 
 @login_required

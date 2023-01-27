@@ -145,6 +145,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = "log_in"
 LOGGED_IN_URL = "dashboard"
 
+# Number of transactions per page
+NUMBER_OF_TRANSACTIONS = 10
 
 #salt for secure string
 try:
