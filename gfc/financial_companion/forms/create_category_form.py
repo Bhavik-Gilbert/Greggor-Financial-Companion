@@ -21,7 +21,6 @@ class CategoryForm(forms.ModelForm):
                 description=self.cleaned_data.get('description')
             )
         else:
-             print("saving:")
              category: Category = instance
              category.name  = self.cleaned_data.get('name')
              category.description = self.cleaned_data.get('description')

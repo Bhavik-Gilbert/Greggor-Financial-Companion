@@ -66,6 +66,17 @@ class CategoryFormTestCase(FormTestCase):
         self.assertEqual(category.name, 'Travel')
         self.assertEqual(category.description, 'Travel Expenses')
     
+    def test_form_updates_correctly(self):
+        category = Category.objects.get(id = 1)
+        form = CategoryForm(instance=self.test_model, data=self.form_input)
+        before_count = Category.objects.count()
+        current_category = form.save(current_user = self.test_model, instance=category)
+        after_count = Category.objects.count()
+        self.assertEqual(current_category.name, 'Travel')
+        self.assertEqual(current_category.description, 'Travel Expenses')
+   
+
+    
 
 
 
