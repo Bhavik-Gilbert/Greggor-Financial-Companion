@@ -16,5 +16,14 @@
             "name": "Travel",
             "description": "Going to and from uni"
           }
+    },
+    {
+        "model": "financial_companion.Category",
+        "pk": 3,
+        "fields": {
+            "user":2,
+            "name": "Shopping",
+            "description": "Shopping expenses"
+          }
     }
 ]
