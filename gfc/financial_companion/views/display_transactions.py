@@ -35,6 +35,9 @@ def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResp
     
     return render(request, "pages/display_transactions.html", {'transactions': listOfTransactions})
 
+@login_required
+def view_users_transactions_redirect(request: HttpRequest) -> HttpResponse:
+    return redirect('view_transactions', filter_type="all")
 
 @login_required
 def filter_transaction_request(request):
