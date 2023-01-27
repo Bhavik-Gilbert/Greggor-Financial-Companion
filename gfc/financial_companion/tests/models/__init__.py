@@ -4,3 +4,4 @@ from .test_abstract_target_model import AbstractTargetModelTestCase
 from .test_accounts_model import AccountModelTestCase
 from .test_abstract_transaction_model import AbstractTransactionModelTestCase
 from .test_transaction_model import TransactionModelTestCase
+from .test_recurring_transaction_model import RecurringTransactionTestCase

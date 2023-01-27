@@ -1,15 +1,17 @@
 from django.db.models import (
     Model,
     CharField,
+    IntegerField,
     DecimalField,
     ImageField,
     DateTimeField,
+    DateField,
     ForeignKey,
     CASCADE
 )
 from .accounts_model import Account
 from .category_model import Category
-from ..helpers.enums import CurrencyType
+from ..helpers import CurrencyType, Timespan
 
 def change_filename(instance, filename):
     existing_filename = filename.split('.')[-1]
@@ -55,11 +57,11 @@ class AbstractTransaction(Model):
     currency: CharField = CharField(
         blank = False,
         choices = CurrencyType.choices,
-        max_length = 3
+        max_length = 3,
     )
 
-    sender_account = ForeignKey(Account, related_name = "sender_account", on_delete = CASCADE)
-    receiver_account = ForeignKey(Account, related_name = "receiver_account", on_delete = CASCADE)
+    sender_account = ForeignKey(Account, on_delete = CASCADE, related_name ="sender_account%(app_label)s_%(class)s_related")
+    receiver_account = ForeignKey(Account, on_delete = CASCADE, related_name="reciever%(app_label)s_%(class)s_related")
 
     class Meta:
         abstract = True
@@ -75,3 +77,18 @@ class Transaction(AbstractTransaction):
 
     class Meta:
         ordering = ['-time_of_transaction']
+
+
+class RecurringTransaction(AbstractTransaction):
+
+    start_date: DateField = DateField(
+        blank = False
+    )
+
+    interval: CharField = CharField(
+        choices=Timespan.choices, max_length=5
+    )
+
+    end_date: DateField = DateField(
+        blank = False
+    )
