@@ -1,13 +1,20 @@
 {% extends "page.html" %}
 
 <!-- Title -->
-{% block title %}Create Category{% endblock %}
+{% block title %}Category Form{% endblock %}
 
 <!-- Content -->
 {% block content %}
-    <h1>Create Category</h1>
-    <form action='{% url 'create_category' %}' method="post">
-      {% csrf_token %}
-      {% include 'partials/form.html' with form=form %}
-    <input type="submit" value="Create" class="btn btn-primary">
+    <h1>Category Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% include 'partials/form.html' with form=form %}
+      <button type="submit" name="submit_type" value="Submit" class="btn btn-primary">
+        {% if form_toggle %}
+            Create Category
+        {% else %}
+            Edit Account
+        {% endif %}
+    </button>
+    </form>
 {% endblock %}

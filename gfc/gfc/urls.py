@@ -32,6 +32,7 @@ urlpatterns = [
     path('create_category/', views.create_category_view, name="create_category"),
     path('filter_transaction_request/', views.filter_transaction_request, name="filter_transaction_request"),
     path('view_transactions/<str:filter_type>', views.view_users_transactions, name="view_transactions"),
+    path('edit_category/<int:pk>', views.edit_category_view, name = "edit_category"),
     re_path(
         'edit_monetary_account/(?P<pk>\d+)/$',
         views.edit_monetary_account_view,
