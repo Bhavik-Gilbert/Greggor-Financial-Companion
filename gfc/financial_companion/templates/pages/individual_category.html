@@ -13,7 +13,7 @@
                     <h1 class="text-white">{{category.name.capitalize}}</h1>
                 </div>
                 <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-end">
-                    <button type="button" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit</button>
+                    <a href="{% url 'edit_category' pk=category.id %}"><button type="button" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit</button></a>
                     <button type="button" class="btn btn-danger px-3 mx-2 py-1 mb-md-4">Delete</button>
                 </div>
             </div>

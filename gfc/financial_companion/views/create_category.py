@@ -32,7 +32,7 @@ def edit_category_view(request: HttpRequest, pk: int) -> HttpResponse:
         form = CategoryForm(request.POST,  instance=current_category)
         if form.is_valid():
                 form.save(current_user = request.user, instance=current_category)
-                return redirect("dashboard")
+                return redirect('individual_category_redirect', pk=current_category.id)
     else:
         form = CategoryForm(instance=current_category)
 
