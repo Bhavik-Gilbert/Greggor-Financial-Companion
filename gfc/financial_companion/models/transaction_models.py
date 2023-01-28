@@ -63,6 +63,7 @@ class AbstractTransaction(Model):
 
     class Meta:
         abstract = True
+        unique_together = ['sender_account', 'receiver_account']
 
 class Transaction(AbstractTransaction):
     """ Concrete model for a generic transaction """
@@ -71,3 +72,6 @@ class Transaction(AbstractTransaction):
         blank = False,
         auto_now_add = True
     )
+
+    class Meta:
+        ordering = ['-time_of_transaction']

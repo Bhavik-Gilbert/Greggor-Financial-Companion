@@ -8,21 +8,18 @@ import time
 from datetime import datetime
 
 def change_filename(instance, filename):
-    existing_filename = filename.split('.')[-1]
+    file_extension = filename.split('.')[-1]
     #get filename
-    if instance.pk:
-        filename = '{}.{}'.format(instance.pk, existing_filename)
-    else:
-        # set a random filename  ,  os.path.getmtime(instance)
-        filename_strings_to_add = [random.choice(string.ascii_letters), str(datetime.now())]
-        filename = '{}.{}'.format(''.join(filename_strings_to_add),existing_filename)
+    # set a random filename  ,  os.path.getmtime(instance)
+    filename_strings_to_add = [random.choice(string.ascii_letters), str(datetime.now())]
+    filename = '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
 
     return os.path.join('user_profile', filename)
 
 class User(AbstractUser):
     """User model used for authentication"""
 
-    username = models.CharField(
+    username: models.CharField = models.CharField(
         max_length=30,
         unique=True,
         validators=[RegexValidator(
@@ -30,8 +27,11 @@ class User(AbstractUser):
             message='Username must consist of @ followed by at least one letter or number'
         )]
     )
-    first_name = models.CharField(max_length=50, blank=False)
-    last_name = models.CharField(max_length=50, blank=False)
-    email = models.EmailField(unique=True, blank=False)
-    bio = models.CharField(max_length=520, blank=True)
-    profile_picture = models.ImageField(upload_to=change_filename, height_field=None, width_field=None, max_length=100,blank=True)
+    first_name: models.CharField = models.CharField(max_length=50, blank=False)
+    last_name: models.CharField = models.CharField(max_length=50, blank=False)
+    email: models.EmailField = models.EmailField(unique=True, blank=False)
+    bio: models.CharField = models.CharField(max_length=520, blank=True)
+    profile_picture: models.ImageField = models.ImageField(upload_to=change_filename, height_field=None, width_field=None, max_length=100,blank=True)
+
+    def full_name(self):
+        return f'{self.first_name} {self.last_name}'

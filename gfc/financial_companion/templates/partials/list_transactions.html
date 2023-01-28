@@ -1,0 +1,14 @@
+{% for transaction in transactions %}
+    <br>
+    <div class="card">
+        <div class="card-header">
+        <h4 class="card-title">{{ transaction.name }}</h5>
+        </div>
+        <div class="card-body">
+        <p class="card-text">{{ transaction.description }}</p>
+        </div>
+        <div class="card-footer">
+        <a href="#" class="btn btn-primary">View</a> <a style="float:center" href="#" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+{% endfor %}

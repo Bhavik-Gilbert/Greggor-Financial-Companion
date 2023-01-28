@@ -145,6 +145,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = "log_in"
 LOGGED_IN_URL = "dashboard"
 
+# Number of transactions per page
+NUMBER_OF_TRANSACTIONS = 10
 
 #salt for secure string
 try:
@@ -152,3 +154,6 @@ try:
         SALT_KEY = f.read().strip()
 except:
     SALT_KEY = "temporarysalt"
+
+# Default language for Faker
+FAKER_LOCALE = "en_GB"

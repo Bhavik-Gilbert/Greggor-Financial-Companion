@@ -6,8 +6,15 @@
 <!-- Content -->
 {% block content %}
     <h1>User Sign Up</h1>
-    <form action='{% url 'sign_up' %}' method="post">
+    <form action='{% url 'sign_up' %}' method="post" enctype='multipart/form-data'>
       {% csrf_token %}
       {% include 'partials/form.html' with form=form %}
     <input type="submit" value="Sign up" class="btn btn-primary">
+    </form>
+
+    <br><br>
+
+    Already got an account?
+    <br>
+    <a href='{% url 'log_in' %}' class="btn btn-sm btn-success">Log in</a>
 {% endblock %}

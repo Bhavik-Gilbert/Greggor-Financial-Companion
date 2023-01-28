@@ -30,7 +30,7 @@
         "model": "financial_companion.PotAccount",
         "pk": 3,
         "fields": {
-            "user_id": "1",
+            "user": "1",
             "balance": 1000.00,
             "currency": "gbp"
         }
@@ -49,7 +49,7 @@
         "model": "financial_companion.PotAccount",
         "pk": 4,
         "fields": {
-            "user_id": "2",
+            "user": "2",
             "balance": 200.00,
             "currency": "gbp"
         }
@@ -68,7 +68,7 @@
         "model": "financial_companion.PotAccount",
         "pk": 5,
         "fields": {
-            "user_id": "1",
+            "user": "1",
             "balance": 1000.00,
             "currency": "gbp"
         }
@@ -81,7 +81,8 @@
             "bank_name": "Bank of Misha",
             "account_number": "12345678",
             "sort_code": "223344",
-            "iban": "IE12BOFI90000112345678"
+            "iban": "GB1234567890123456789012345678901",
+            "interest_rate": 0.00
         }
     }
 ]
