@@ -12,7 +12,7 @@ class IndividualCategoryRedirectViewTestCase(ViewTestCase):
         self.category: Category = Category.objects.filter(user=self.user)[0]
         self.url: str = reverse("individual_category_redirect", kwargs={"pk": self.category.id})
 
-    def test_valid_log_in_url(self):
+    def test_valid_individual_category_redirect_url(self):
         self.assertEqual(self.url, f"/individual_category/{self.category.id}/")
 
     def test_valid_get_view_transactions_redirect(self):
