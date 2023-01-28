@@ -31,8 +31,8 @@ class CategoryFormTestCase(FormTestCase):
         form = CategoryForm(data=self.form_input)
         self.assertTrue(form.is_valid())
 
-    def test_form_accepts_description_up_to_50_character_input(self):
-        self.form_input['description'] = 'x'*50
+    def test_form_accepts_description_up_to_520_character_input(self):
+        self.form_input['description'] = 'x'*520
         form = CategoryForm(data=self.form_input)
         self.assertTrue(form.is_valid())
 
@@ -41,8 +41,8 @@ class CategoryFormTestCase(FormTestCase):
         form = CategoryForm(data=self.form_input)
         self.assertFalse(form.is_valid())
 
-    def test_form_doesnt_accept_description_greater_than_50_character_input(self):
-        self.form_input['description'] = 'x'*51
+    def test_form_doesnt_accept_description_greater_than_520_character_input(self):
+        self.form_input['description'] = 'x'*521
         form = CategoryForm(data=self.form_input)
         self.assertFalse(form.is_valid())
 

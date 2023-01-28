@@ -50,7 +50,7 @@ class EditCategoryViewTestCase(ViewTestCase):
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = Category.objects.count()
         self.assertEqual(after_count, before_count)
-        self.assertTemplateUsed(response, 'pages/dashboard.html')
+        self.assertTemplateUsed(response, 'pages/individual_category.html')
     
     def test_user_tries_to_edit_someone_elses_category(self):
         self._login(self.user)

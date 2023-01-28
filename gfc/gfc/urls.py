@@ -38,4 +38,14 @@ urlpatterns = [
         views.edit_monetary_account_view,
         name="edit_monetary_account"
     ),
+    re_path(
+        'individual_category/(?P<pk>\d+)/(?P<filter_type>\w+)/$',
+        views.individual_category_view,
+        name="individual_category"
+    ),
+    re_path(
+        'individual_category/(?P<pk>\d+)/$',
+        views.individual_category_redirect,
+        name="individual_category_redirect"
+    ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
