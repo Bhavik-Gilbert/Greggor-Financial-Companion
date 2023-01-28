@@ -1,17 +1,20 @@
 {% extends "page.html" %}
 
 <!-- Title -->
-{% block title %}Monetary Accounts Form{% endblock %}
+{% block title %}View Categories{% endblock %}
 
 <!-- Content -->
 {% block content %}
     <h1 align="center">Categories</h1>
     <div class="container input-group rounded">
+      <form action="{% url 'filter_categories_request' %}"method="post">
+        {% csrf_token %}
         <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
         <span class="input-group-text border-0" id="search-addon">
-          <i class="fas fa-search"></i>
+          <input type = "submit" name = "sent" value = "Search" class= "btn btn-primary">
         </span>
-      </div>
+      </form>
+    </div>
     <br>
     {%if categories%}
     <div class="row">
