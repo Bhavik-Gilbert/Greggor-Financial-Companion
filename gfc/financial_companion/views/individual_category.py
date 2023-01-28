@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 
-from ..models import Category, Transaction, User
+from ..models import Category, Transaction, User, CategoryTarget
 
 @login_required
 def individual_category_view(request: HttpRequest, pk: int, filter_type: str) -> HttpResponse:
@@ -14,9 +14,11 @@ def individual_category_view(request: HttpRequest, pk: int, filter_type: str) ->
     except Category.DoesNotExist:
         return redirect("dashboard")
 
+    category_targets: CategoryTarget = CategoryTarget.objects.filter(category=category)
+
     #TODO: Get filtered transactions
 
-    return render(request, "pages/individual_category.html", {"category": category})
+    return render(request, "pages/individual_category.html", {"category": category, "category_targets": category_targets})
     
 
 @login_required
