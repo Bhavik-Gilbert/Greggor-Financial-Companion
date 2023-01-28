@@ -39,7 +39,7 @@ class PotAccount(admin.ModelAdmin):
     """Configuration of the admin interface for pot account."""
 
     list_display = [
-        'id', 'name', 'description', 'user_id', 'balance', 'currency'
+        'id', 'name', 'description', 'user', 'balance', 'currency'
     ]
 
 @admin.register(BankAccount)
@@ -47,7 +47,7 @@ class BankAccount(admin.ModelAdmin):
     """Configuration of the admin interface for bank account."""
 
     list_display = [
-        'id', 'name', 'description', 'user_id', 'balance', 'currency',
+        'id', 'name', 'description', 'user', 'balance', 'currency',
         'bank_name', 'account_number', 'sort_code', 'iban', 'interest_rate'
         ]
 
@@ -66,7 +66,7 @@ class CategoryTarget(admin.ModelAdmin):
 @admin.register(UserTarget)
 class UserTarget(admin.ModelAdmin):
     list_display = [
-        'transaction_type', 'timespan', 'amount', 'currency', 'user_id'
+        'transaction_type', 'timespan', 'amount', 'currency', 'user'
     ]
 
 @admin.register(AccountTarget)
