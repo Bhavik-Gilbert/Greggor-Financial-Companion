@@ -7,11 +7,11 @@
 {% block content %}
     <h1 align="center">Categories</h1>
     <div class="container input-group rounded">
-      <form action="{% url 'filter_categories_request' %}"method="post">
+      <form action="{% url 'filter_categories_request' %}" method="post">
         {% csrf_token %}
-        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="textfield"/>
         <span class="input-group-text border-0" id="search-addon">
-          <input type = "submit" name = "sent" value = "Search" class= "btn btn-primary">
+          <input type = "submit" class= "btn btn-primary">
         </span>
       </form>
     </div>

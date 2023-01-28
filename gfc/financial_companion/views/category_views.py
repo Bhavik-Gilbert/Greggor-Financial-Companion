@@ -18,8 +18,14 @@ def category_list_view(request: HttpRequest, filter_type: str) -> HttpResponse:
 
 @login_required
 def filter_categories_request(request: HttpRequest):
-    categories = Category.objects.filter(user_id = request.user).filter()
+    if request.method == 'POST':
+        search_id  = request.POST.get('textfield', None)
+        try:
+            categories = Category.objects.filter(user_id = request.user ).filter(name = search_id)
+            return redirect(reverse('categories_list', kwargs={'filter_type': search_id}))
+        except Category.DoesNotExist:
+            return redirect(reverse('categories_list', kwargs={'filter_type': "all"})) 
 
     print(request.POST)
 
-    return redirect(reverse('categories_list', kwargs={'filter_type': "all"}))
+    
