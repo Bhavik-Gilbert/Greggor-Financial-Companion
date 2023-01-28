@@ -6,15 +6,15 @@
 <!-- Content -->
 {% block content %}
     <h1 align="center">Categories</h1>
-    <div class="container input-group rounded">
+    
+    <span class="input-group-text border-0"  id="search-addon" align="center">
       <form action="{% url 'filter_categories_request' %}" method="post">
         {% csrf_token %}
-        <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="textfield"/>
-        <span class="input-group-text border-0" id="search-addon">
-          <input type = "submit" class= "btn btn-primary">
-        </span>
+          <input type="search" class="form-control rounded  w-100 p-3" placeholder="Search" aria-label="Search" aria-describedby="search-addon"  name="textfield"/> 
+          <input type = "submit" class= "btn btn-primary"/>
       </form>
-    </div>
+    </span>
+
     <br>
     {%if categories%}
     <div class="row">
