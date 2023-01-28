@@ -30,7 +30,6 @@ class CurrencyType(models.TextChoices):
     CNY: str = "CNY"
     AUD: str = "AUD"
     CAD: str = "CAD"
-    KZT: str = "KZT"
     INR: str = "INR"
     RUB: str = "RUB"
     NZD: str = "NZD"
