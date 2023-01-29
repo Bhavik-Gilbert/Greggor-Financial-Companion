@@ -16,7 +16,7 @@ class IndividualCategoryViewTestCase(ViewTestCase):
     def test_valid_individual_category_url(self):
         self.assertEqual(self.url, f"/individual_category/{self.category.id}/all/")
 
-    def test_valid_get_view_transactions(self):
+    def test_valid_get_view_individual_category(self):
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
