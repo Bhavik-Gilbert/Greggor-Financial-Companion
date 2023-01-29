@@ -15,7 +15,7 @@ class IndividualCategoryRedirectViewTestCase(ViewTestCase):
     def test_valid_individual_category_redirect_url(self):
         self.assertEqual(self.url, f"/individual_category/{self.category.id}/")
 
-    def test_valid_get_view_transactions_redirect(self):
+    def test_valid_get_individual_category_redirect(self):
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url, follow=True)
         self.assertTrue(self._is_logged_in())

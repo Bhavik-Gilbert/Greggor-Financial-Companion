@@ -5,16 +5,8 @@
 
 <!-- Content -->
 {% block content %}
-    <h1 align="center">Categories</h1>
-    
-    <span class="input-group-text border-0"  id="search-addon" align="center">
-      <form action="{% url 'filter_categories_request' %}" method="post">
-        {% csrf_token %}
-          <input type="search" class="form-control rounded  w-100 p-3" placeholder="Search" aria-label="Search" aria-describedby="search-addon"  name="textfield"/> 
-          <input type = "submit" class= "btn btn-primary"/>
-      </form>
-    </span>
-
+    <h1>Categories</h1>
+    {% include 'partials/search_bar.html' %}
     <br>
     {%if categories%}
     <div class="row">
@@ -38,6 +30,6 @@
         {% endfor %}
     </div>
     {% else %}
-            <h2 style="text-align: center;"> You have no categories yet</h2>
+            <h2 class="text-center"> You have no categories yet</h2>
     {% endif %}
 {% endblock %}
