@@ -7,7 +7,7 @@ from ..forms import EditUserDetailsForm
 from ..models import User
 
 @login_required
-def edit_user_details(request: HttpRequest) -> HttpResponse:
+def edit_user_details_view(request):
     try:
         user = User.objects.get(id=request.user.id)
     except ObjectDoesNotExist:
@@ -16,8 +16,9 @@ def edit_user_details(request: HttpRequest) -> HttpResponse:
         form = EditUserDetailsForm(request.POST, instance=user)
         if form.is_valid():
             form.save()
-            request.user.save()
             return redirect('dashboard')
+        else:
+            return redirect('edit_user_details')
     else:
         form = EditUserDetailsForm(instance=user)
         return render(request, 'pages/edit_user_details.html', {'form': form})
