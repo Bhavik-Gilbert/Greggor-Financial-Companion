@@ -32,7 +32,7 @@
         "fields": {
             "user": "1",
             "balance": 1000.00,
-            "currency": "gbp"
+            "currency": "GBP"
         }
     },
 
@@ -51,7 +51,7 @@
         "fields": {
             "user": "2",
             "balance": 200.00,
-            "currency": "gbp"
+            "currency": "GBP"
         }
      },
      
@@ -70,7 +70,7 @@
         "fields": {
             "user": "1",
             "balance": 1000.00,
-            "currency": "gbp"
+            "currency": "GBP"
         }
     },
 
