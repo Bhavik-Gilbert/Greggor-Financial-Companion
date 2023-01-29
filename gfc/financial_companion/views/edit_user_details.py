@@ -13,7 +13,7 @@ def edit_user_details_view(request):
     except ObjectDoesNotExist:
         return redirect('log_in')
     if request.method == "POST":
-        form = EditUserDetailsForm(request.POST, instance=user)
+        form = EditUserDetailsForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             return redirect('dashboard')
