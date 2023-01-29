@@ -6,11 +6,15 @@
 <!-- Content -->
 {% block content %}
   <div>
-      <h1>Categories</h1>
+    <div align="center" class="w-50 container-fluid">
+      <h1>Categories</h1> 
+      <a class="btn btn-primary" href="{% url 'create_category' %}">Add New</a> <a class="btn btn-primary" href="{% url 'categories_list' search_name='all'%}">View All</a>
+      <br/><br>
       {% include 'partials/search_bar.html' %}
-      <br>
-      {%if categories%}
-      <div class="row">
+    </div>
+    <br>
+    {%if categories%}
+    <div class="row">
           {%for category in categories %}
           <div class="col-sm-4 py-4">
               <div class="card">
@@ -24,7 +28,7 @@
                   
                   </div>
                   <div class="card-footer text-muted justify-content-center">
-                      <a href="#" class="btn btn-primary justify-content-center">Go somewhere</a>
+                      <a href="{% url 'individual_category' pk=category.id filter_type='all'%}" class="btn btn-primary justify-content-center">View </a>
                     </div>
               </div>
           </div>
