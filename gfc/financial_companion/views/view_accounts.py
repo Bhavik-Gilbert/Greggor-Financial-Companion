@@ -5,5 +5,5 @@ from django.http import HttpRequest, HttpResponse
 
 @login_required
 def view_user_pot_accounts(request: HttpRequest) -> HttpResponse:
-    accounts = PotAccount.objects.filter(user_id=request.user).values
+    accounts = PotAccount.objects.filter(user=request.user).values
     return render(request, "pages/view_accounts.html", {'accounts': accounts})

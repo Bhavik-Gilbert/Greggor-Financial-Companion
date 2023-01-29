@@ -8,7 +8,7 @@
             "image": "transactions/1.jpg",
             "category" : 1,
             "amount" : 26.79,
-            "currency" : "gbp",
+            "currency" : "GBP",
             "sender_account" : 2,
             "receiver_account" : 1
         }

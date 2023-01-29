@@ -35,7 +35,7 @@ class PotAccountForm(forms.ModelForm):
                 description = self.cleaned_data.get("description"),
                 balance = self.cleaned_data.get("balance"),
                 currency = self.cleaned_data.get("currency"),
-                user_id = self.user
+                user = self.user
             )
         else:
             monetary_account: PotAccount = instance
@@ -43,7 +43,7 @@ class PotAccountForm(forms.ModelForm):
             monetary_account.description: str = self.cleaned_data.get("description")
             monetary_account.balance: Decimal = self.cleaned_data.get("balance")
             monetary_account.currency: str = self.cleaned_data.get("currency")
-            monetary_account.user_id: User = self.user
+            monetary_account.user: User = self.user
             monetary_account.save()
         
         return monetary_account
@@ -75,7 +75,7 @@ class BankAccountForm(forms.ModelForm):
                 account_number = self.cleaned_data.get("account_number"),
                 iban = self.cleaned_data.get("iban"),
                 interest_rate = self.cleaned_data.get("interest_rate"),
-                user_id = self.user
+                user = self.user
             )
         else:
             monetary_account: BankAccount = instance
@@ -88,7 +88,7 @@ class BankAccountForm(forms.ModelForm):
             monetary_account.account_number: str = self.cleaned_data.get("account_number")
             monetary_account.iban: str = self.cleaned_data.get("iban")
             monetary_account.interest_rate: Decimal = self.cleaned_data.get("interest_rate")
-            monetary_account.user_id: User = self.user
+            monetary_account.user: User = self.user
             monetary_account.save()
         
         return monetary_account

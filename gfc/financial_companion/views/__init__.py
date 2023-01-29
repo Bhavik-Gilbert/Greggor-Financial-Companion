@@ -7,4 +7,5 @@ from .monetary_account_view import add_monetary_account_view, edit_monetary_acco
 from .view_accounts import view_user_pot_accounts
 from .create_category import create_category_view
 from .display_transactions import view_users_transactions, filter_transaction_request, view_users_transactions_redirect
-
+from .create_category import create_category_view,edit_category_view
+from .individual_category import individual_category_view, individual_category_redirect

@@ -9,7 +9,7 @@ from django.conf import settings
 @login_required
 def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResponse:
     user = request.user
-    user_accounts = PotAccount.objects.filter(user_id = user.id)
+    user_accounts = PotAccount.objects.filter(user = user.id)
     transactions = []
 
     filter_send_types = ["sent", "all"]
