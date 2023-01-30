@@ -9,3 +9,4 @@ from .view_accounts import view_user_pot_accounts
 from .display_transactions import view_users_transactions, filter_transaction_request, view_users_transactions_redirect
 from .create_category import create_category_view, edit_category_view
 from .individual_category import individual_category_view, individual_category_redirect
+from .individual_account_view import individual_account_view, filter_individual_account_request
