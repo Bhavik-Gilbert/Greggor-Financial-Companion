@@ -56,7 +56,7 @@
 </div>
 &nbsp;
 <div>
-    <form action="{% url 'filter_transaction_request' %}"method="post">
+    <form action="{% url 'filter_individual_account_request' pk=account.id %}"method="post">
       {% csrf_token %}
       <div style="text-align:center">
         <input type = "submit" name = "sent" value = "View Sent Transactions" class= "btn btn-primary">

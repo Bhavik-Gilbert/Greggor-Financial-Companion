@@ -45,15 +45,19 @@ def individual_account_view(request: HttpRequest, pk: int, filter_type: str) -> 
     except EmptyPage:
         listOfTransactions = paginator.page(paginator.num_pages)
 
-    return render(request, "pages/individual_account.html", {"account": account})
+    return render(request, "pages/individual_account.html", {"account": account, 'transactions': listOfTransactions})
+
+@login_required
+def individual_account_redirect(request: HttpRequest, pk: int) -> HttpResponse:
+    return redirect('view_transactions', pk = pk, filter_type="all")
 
 @login_required
 def filter_individual_account_request(request, pk: int):
     if 'sent' in request.POST:
-        return redirect(reverse('view_transactions', pk = pk, kwargs={'filter_type': "sent"}))
+        return redirect(reverse('individual_account', kwargs={'pk': pk, 'filter_type': "sent"}))
     elif 'received' in request.POST:
-        return redirect(reverse('view_transactions', pk = pk, kwargs={'filter_type': "received"}))
+        return redirect(reverse('individual_account', kwargs={'pk': pk, 'filter_type': "received"}))
     elif 'all' in request.POST:
-        return redirect(reverse('view_transactions', pk = pk, kwargs={'filter_type': "all"}))
+        return redirect(reverse('individual_account', kwargs={'pk': pk, 'filter_type': "all"}))
     else:
         return redirect('dashboard')

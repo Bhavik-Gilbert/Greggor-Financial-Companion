@@ -42,8 +42,12 @@ urlpatterns = [
         name="individual_account"
     ),
     re_path(
+        'filter_individual_account_request/(?P<pk>\d+)', 
+        views.filter_individual_account_request, 
+        name="filter_individual_account_request"),
+    re_path(
         'individual_account/(?P<pk>\d+)/$',
-        views.filter_individual_account_request,
+        views.individual_category_redirect,
         name="individual_account"
     ),
     re_path(
