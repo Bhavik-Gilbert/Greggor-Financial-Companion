@@ -1,0 +1,33 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Category{% endblock %}
+
+<!-- Content -->
+{% block content %}
+<div class="card py-3 px-4 bg-primary">
+    <div class="row gy-3">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12 col-md-8">
+                    <h1 class="text-white">{{category.name.capitalize}}</h1>
+                </div>
+                <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-end">
+                    <a href="{% url 'edit_category' pk=category.id %}"><button type="button" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit</button></a>
+                    <button type="button" class="btn btn-danger px-3 mx-2 py-1 mb-md-4">Delete</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <h5 class="text-white">Description</h5>
+            <p class="text-white">{{category.description}}</p>
+        </div>
+        <div class="col-12 d-flex justify-content-center">
+            <!--- TODO: Add target partial --->
+            {% for target in category_targets %}
+                {{target}}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

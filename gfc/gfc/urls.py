@@ -27,12 +27,29 @@ urlpatterns = [
     path('log_in/', views.log_in_view, name='log_in'),
     path('log_out/', views.log_out_view, name='log_out'),
     path('dashboard/', views.dashboard_view, name='dashboard'),
+    path('categories/<str:search_name>/', views.category_list_view, name='categories_list'),
+    path('categories/', views.category_list_redirect, name='categories_list_redirect'),
+    path('add_monetary_account/', views.add_monetary_account_view, name="add_monetary_account"),
     path('view_accounts/', views.view_user_pot_accounts, name='view_accounts'),
-    path('add_monetary_account', views.add_monetary_account_view, name="add_monetary_account"),
     path('create_category/', views.create_category_view, name="create_category"),
+    path('filter_transaction_request/', views.filter_transaction_request, name="filter_transaction_request"),
+    path('view_transactions/<str:filter_type>', views.view_users_transactions, name="view_transactions"),
+    path('edit_user_details/', views.edit_user_details_view, name="edit_user_details"),
+    path('view_transactions/', views.view_users_transactions_redirect, name="view_transactions_redirect"),
+    path('edit_category/<int:pk>', views.edit_category_view, name = "edit_category"),
     re_path(
-        'edit_monetary_account/(?P<account_type>\w+)/(?P<pk>\d+)/$',
+        'edit_monetary_account/(?P<pk>\d+)/$',
         views.edit_monetary_account_view,
         name="edit_monetary_account"
     ),
-]
+    re_path(
+        'individual_category/(?P<pk>\d+)/(?P<filter_type>\w+)/$',
+        views.individual_category_view,
+        name="individual_category"
+    ),
+    re_path(
+        'individual_category/(?P<pk>\d+)/$',
+        views.individual_category_redirect,
+        name="individual_category_redirect"
+    ),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

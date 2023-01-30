@@ -8,9 +8,10 @@ from django.db.models import (
 from encrypted_fields.fields import EncryptedCharField
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
+from model_utils.managers import InheritanceManager
 
 from .user_model import User
-from ..helpers import CurrencyType
+from ..helpers import CurrencyType, MonetaryAccountType
 
 class Account(Model):
     """model for all accounts"""
@@ -24,8 +25,10 @@ class Account(Model):
         blank = True
     )
 
+    objects = InheritanceManager()
+
 class PotAccount(Account):
-    user_id: ForeignKey = ForeignKey(User, on_delete=CASCADE)
+    user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
     balance: DecimalField = DecimalField(max_digits = 15, decimal_places=2)
     currency: CharField = CharField(
         choices=CurrencyType.choices,
@@ -33,13 +36,16 @@ class PotAccount(Account):
         max_length=3
     )
 
+    def __str__(self):
+        return f"{MonetaryAccountType.POT}"
+
 def only_int(value):
     if(not value.isnumeric()):
         raise ValidationError("value contains characters")
 
 def iban_valid(value):
     s1 = value[0:2]
-    if(s1.isnumeric()):
+    if(not s1.isalpha()):
         raise ValidationError("IBAN does not start with a iso-3166 country codes")
 
 class BankAccount(PotAccount):
@@ -60,10 +66,14 @@ class BankAccount(PotAccount):
     iban: EncryptedCharField = EncryptedCharField(
         max_length=33,
         blank=True,
-        validators=[MinLengthValidator(15, "Iban must be a minimum of 15 characters long")]
+        null=True,
+        validators=[iban_valid, MinLengthValidator(15, "Iban must be a minimum of 15 characters long")]
     )
     interest_rate: DecimalField = DecimalField(
         max_digits= 6,
         decimal_places=2,
         default=0.0,
     )
+
+    def __str__(self):
+        return f"{MonetaryAccountType.BANK}"

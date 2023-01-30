@@ -8,6 +8,7 @@ from financial_companion.models import (
     Category
 )
 from django.db.utils import IntegrityError
+from django.db.models import Q
 import datetime
 from random import randint, random
 import random
@@ -15,46 +16,57 @@ from financial_companion.helpers import TransactionType, CurrencyType, MonetaryA
 
 class Command(BaseCommand):
     PASSWORD = "Password123"
-    USER_COUNT = 100
+    USER_COUNT = 6    # MINIMUM OF FOUR PREDEFINED USERS ARE CREATED IRRESPECTIVE OF VARIABLE VALUE
     MAX_ACCOUNTS_PER_USER = 10
     MAX_TRANSACTIONS_PER_ACCOUNT = 50
-    MAX_NUMBER_OF_CATEGORIES = 20
+    MAX_NUMBER_OF_CATEGORIES = 10
+    MAX_NUMBER_OF_BASIC_ACCOUNTS = 5
     OBJECT_HAS_TARGET_PROBABILITY = 0.6
 
     def __init__(self):
         super().__init__()
-        self.faker = Faker("en_GB")
+        self.faker = Faker("en_US")
 
     def handle(self, *args, **options):
-        self.create_categories()
+        self.create_basic_accounts()
         self.create_users()
         print("SEEDING COMPLETE")
 
-    def create_categories(self):
+    def create_basic_accounts(self):
+        for i in range(0,self.MAX_NUMBER_OF_BASIC_ACCOUNTS):
+            Account.objects.create(
+                name = self.faker.word(),
+                description = self.faker.text()
+            )
+
+    def create_categories(self, user):
         randomNumOfCategories = randint(3, self.MAX_NUMBER_OF_CATEGORIES)
-        self.categories = []
+        categories = []
         for i in range(0, randomNumOfCategories):
             category = Category.objects.create(
+                    user = user,
                     name = self.faker.word(),
                     description = self.faker.text()
                 )
-            self.categories.append(category)
             if (float(randint(0,100))/100 < self.OBJECT_HAS_TARGET_PROBABILITY):
                 CategoryTarget.objects.create(
                     transaction_type = self.choose_random_enum(TransactionType),
                     timespan = self.choose_random_enum(Timespan),
                     amount = float(randint(0,1000000))/100,
                     currency = self.choose_random_enum(CurrencyType),
-                    category_id = category
+                    category = category
                 )
-    
+            categories.append(category)
+        return categories
+
     def create_users(self):
         self.create_single_user("Michael", "Kolling", self.PASSWORD, True)
         self.create_single_user("admin", "user", self.PASSWORD, True)
+        self.create_single_user("John", "Doe", self.PASSWORD, False)
         while User.objects.count() < self.USER_COUNT:
             self.create_single_user(self.faker.first_name(), self.faker.last_name(), self.PASSWORD, False)
         print("USERS SEEDED")
-    
+
     def create_single_user(self, first_name, last_name, password, adminStatus):
         try:
             user = User.objects.create_user(
@@ -67,38 +79,40 @@ class Command(BaseCommand):
                 is_staff = adminStatus,
                 is_superuser = adminStatus
             )
-            if (float(randint(0,100))/100 < self.OBJECT_HAS_TARGET_PROBABILITY):
-                UserTarget.objects.create(
-                    transaction_type = self.choose_random_enum(TransactionType),
-                    timespan = self.choose_random_enum(Timespan),
-                    amount = float(randint(0,1000000))/100,
-                    currency = self.choose_random_enum(CurrencyType),
-                    user_id = user
-                )
-            self.create_accounts_for_user(user)
+            if (not(adminStatus)):
+                categories = self.create_categories(user)
+                if (float(randint(0,100))/100 < self.OBJECT_HAS_TARGET_PROBABILITY):
+                    UserTarget.objects.create(
+                        transaction_type = self.choose_random_enum(TransactionType),
+                        timespan = self.choose_random_enum(Timespan),
+                        amount = float(randint(0,1000000))/100,
+                        currency = self.choose_random_enum(CurrencyType),
+                        user = user
+                    )
+                self.create_accounts_for_user(user, categories)
         except(IntegrityError):
             pass
 
         print(f'Seeding User {User.objects.count()} with accounts and transactions', end = '\r')
 
-    def create_accounts_for_user(self, user):
+    def create_accounts_for_user(self, user, categories):
         randomNumOfPotAccounts = randint(0,self.MAX_ACCOUNTS_PER_USER)
         randomNumOfBankAccount = randint(0,self.MAX_ACCOUNTS_PER_USER - randomNumOfPotAccounts)
         for i in range(0,randomNumOfPotAccounts):
             potAccount = PotAccount.objects.create(
                 name = self.faker.word(),
                 description = self.faker.text(),
-                user_id = user,
+                user = user,
                 balance = float(randint(-1000000,1000000))/100,
                 currency = self.choose_random_enum(CurrencyType)
             )
             self.create_target_for_account(potAccount)
-            self.create_transactions_for_account(potAccount)
+            self.create_transactions_for_account(potAccount, categories)
         for i in range(0,randomNumOfBankAccount):
             bankAccount = BankAccount.objects.create(
                 name = self.faker.word(),
                 description = self.faker.text(),
-                user_id = user,
+                user = user,
                 balance = float(randint(-1000000,1000000))/100,
                 currency = self.choose_random_enum(CurrencyType),
                 bank_name = self.faker.word(),
@@ -108,11 +122,11 @@ class Command(BaseCommand):
                 interest_rate = float(randint(-1000,1000))/100
             )
             self.create_target_for_account(bankAccount)
-            self.create_transactions_for_account(bankAccount)
+            self.create_transactions_for_account(bankAccount,categories)
 
-    def create_transactions_for_account(self, account):
+    def create_transactions_for_account(self, account, categories):
         randomNumOfTransactions = randint(0,self.MAX_TRANSACTIONS_PER_ACCOUNT)
-        oppositePartyOfTransaction = random.choice(Account.objects.all())
+        oppositePartyOfTransaction = random.choice(Account.objects.filter(~Q(id = account.id)))
 
         if (randint(0,1) == 0):
             sender_account = oppositePartyOfTransaction
@@ -125,7 +139,7 @@ class Command(BaseCommand):
             Transaction.objects.create(
                 title = self.faker.word(),
                 description = self.faker.text(),
-                category = random.choice(self.categories),
+                category = random.choice(categories),
                 amount = float(randint(0,1000000))/100,
                 currency = self.choose_random_enum(CurrencyType),
                 sender_account = sender_account,
@@ -138,10 +152,10 @@ class Command(BaseCommand):
 
     def format_email(self, first_name, last_name):
         return f'{first_name}.{last_name}@gfc.org'.lower()
-    
+
     def choose_random_enum(self, enum):
         return random.choice(list(enum))
-    
+
     def create_target_for_account(self, account):
         if (float(randint(0,100))/100 < self.OBJECT_HAS_TARGET_PROBABILITY):
             AccountTarget.objects.create(
@@ -149,5 +163,5 @@ class Command(BaseCommand):
                 timespan = self.choose_random_enum(Timespan),
                 amount = float(randint(0,1000000))/100,
                 currency = self.choose_random_enum(CurrencyType),
-                account_id = account
+                account = account
             )
