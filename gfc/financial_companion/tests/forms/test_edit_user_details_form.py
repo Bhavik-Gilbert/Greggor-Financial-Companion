@@ -1,4 +1,5 @@
 from django import forms
+from django.urls import reverse
 from .test_form_base import FormTestCase
 from financial_companion.forms import EditUserDetailsForm
 from financial_companion.models import User
