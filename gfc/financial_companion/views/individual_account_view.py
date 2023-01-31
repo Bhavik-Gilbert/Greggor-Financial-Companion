@@ -14,14 +14,11 @@ def individual_account_view(request: HttpRequest, pk: int, filter_type: str) -> 
     
     try:
         account = PotAccount.objects.get_subclass(id=pk, user=user)
-        print(account)
+        # print(account)
     except PotAccount.DoesNotExist:
         print("account does not exist")
         return redirect("dashboard")
 
-    # category_targets: CategoryTarget = CategoryTarget.objects.filter(category=category)
-
-    #TODO: Get filtered transactions
 
     transactions = []
 
