@@ -5,12 +5,15 @@
 
 <!-- Content -->
 {% block content %}
+
+
+
 <div class="card py-3 px-4 bg-primary">
     <div class="row gy-3">
         <div class="col-12">
             <div class="row">
                 <div class="col-12 col-md-8">
-                    <h1 class="text-white">Account Name: {{account.name.capitalize}}</h1>
+                    <h1 >Account Name: {{account.name.capitalize}}</h1>
                 </div>
                 <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-end">
                     <a href="#"><button type="button" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit</button></a>
@@ -18,40 +21,51 @@
                 </div>
             </div>
         </div>
-        <div class="col-12">
-            <h5 class="text-white">Description</h5>
-            <p class="text-white">{{account.description}}</p>
-        </div>
-        <div class="col-12">
-            <h5 class="text-white">Balance</h5>
-            <p class="text-white">{{account.balance}}</p>
-        </div>
-        <div class="col-12">
-            <h5 class="text-white">Currency</h5>
-            <p class="text-white">{{account.currency}}</p>
-        </div>
-        <div class="col-12">
-            <h5 class="text-white">bank Name</h5>
-            <p class="text-white">{{account.bank_name}}</p>
-        </div>
-        <div class="col-12">
-            <h5 class="text-white">Iban</h5>
-            <p class="text-white">{{account.iban}}</p>
-        </div>
-        <div class="col-12">
-            <h5 class="text-white">Account number</h5>
-            <p class="text-white">{{account.account_number}}</p>
-        </div>
-        <div class="col-12">
-            <h5 class="text-white">Sort Code</h5>
-            <p class="text-white">{{account.sort_code}}</p>
-        </div>
+        <div class="row">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 mb-4">
+                        <div class="card">
+                            <img class="card-img-top" src="" alt="">
+            
+                            <div class="card-body">
+                            
+                                <p class="card-text">
+                                    <p class="">Description: {{account.description}}</p>
+                                    <p class="">Balance: {{account.balance}}</p>
+                                    <p class="">Currency: {{account.currency}}</p>
+                                    &nbsp;
+                                </p>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mb-4">
+                        <div class="card">
+                            <img class="card-img-top" src="" alt="">
+            
+                            <div class="card-body">
+            
+                                <p class="card-text">
+                                    <p class="">Bank Name:{{account.bank_name}}</p>
+                                    <p class="">Sort Code: {{account.sort_code}}</p>
+                                    <p class="">Account Number: {{account.account_number}}</p>
+                                    <p class="">IBAN: {{account.iban}}</p>
+                                </p>
+                                  
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+        <!-- 
         <div class="col-12 d-flex justify-content-center">
-            <!--- TODO: Add target partial --->
+            <- TODO: Add target partial --->
             <!-- {% for target in category_targets %}
                 {{target}}
             {% endfor %} -->
-        </div>
+        </div> 
     </div>
 </div>
 &nbsp;
