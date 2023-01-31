@@ -29,12 +29,12 @@ class CategoryModelTestCase(ModelTestCase):
         self.test_model.description = ''
         self._assert_model_is_invalid()
 
-    def test_description_has_length_of_max_50(self):
-        self.test_model.description = 'j' * 50
+    def test_description_has_length_of_max_520(self):
+        self.test_model.description = 'j' * 520
         self._assert_model_is_valid()
 
-    def test_description_is_not_more_than_50_characters(self):
-        self.test_model.description = 'j' * 51
+    def test_description_is_not_more_than_520_characters(self):
+        self.test_model.description = 'j' * 521
         self._assert_model_is_invalid()
     
     def test_user_cannot_be_empty(self):

@@ -8,3 +8,6 @@ cryptography==39.0.0
 django-fernet-encrypted-fields==0.1.2
 django-model-utils==4.3.1
 holidays==0.18
+currency-symbols==2.0.3
+CurrencyConverter==0.17.5
+python-kzt-exchangerates==0.1.2
