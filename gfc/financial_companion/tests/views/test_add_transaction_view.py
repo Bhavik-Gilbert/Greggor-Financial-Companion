@@ -15,7 +15,7 @@ class AddTransactionViewTestCase(ViewTestCase):
             "image": "transaction_reciept.jpeg",
             "category" : 1,
             "amount" : 152.95,
-            "currency" : "usd",
+            "currency" : "USD",
             "sender_account" : 1,
             "receiver_account" : 2,
         }
@@ -60,7 +60,7 @@ class AddTransactionViewTestCase(ViewTestCase):
         # self.assertEqual(transaction.image, "transaction_reciept.jpeg")
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("152.95"))
-        self.assertEqual(transaction.currency, 'usd')
+        self.assertEqual(transaction.currency, 'USD')
         self.assertEqual(transaction.sender_account.id, 1)
         self.assertEqual(transaction.receiver_account.id, 2)
 

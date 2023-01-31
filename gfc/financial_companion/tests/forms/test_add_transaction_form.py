@@ -19,7 +19,7 @@ class AddTransactionFormTestCase(FormTestCase):
             "image": "transaction_reciept.jpeg",
             "category" : 1,
             "amount" : 152.95,
-            "currency" : "usd",
+            "currency" : "USD",
             "sender_account" : 1,
             "receiver_account" : 2,
         }
@@ -106,7 +106,7 @@ class AddTransactionFormTestCase(FormTestCase):
         self.assertTrue(isinstance(transaction.category, Category))
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("152.95"))
-        self.assertEqual(transaction.currency, 'usd')
+        self.assertEqual(transaction.currency, 'USD')
         self.assertTrue(isinstance(transaction.sender_account, Account))
         self.assertEqual(transaction.sender_account.id, 1)
         self.assertTrue(isinstance(transaction.receiver_account, Account))

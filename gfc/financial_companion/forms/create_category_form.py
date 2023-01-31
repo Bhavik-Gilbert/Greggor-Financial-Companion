@@ -9,6 +9,7 @@ class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ['name', 'description']
+        widgets = {'description': forms.Textarea()}
     
 
     def save(self, current_user, instance: Category = None) -> Category:
