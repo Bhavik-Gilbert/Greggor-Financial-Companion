@@ -16,7 +16,7 @@ def individual_account_view(request: HttpRequest, pk: int, filter_type: str) -> 
         account = PotAccount.objects.get_subclass(id=pk, user=user)
         # print(account)
     except PotAccount.DoesNotExist:
-        print("account does not exist")
+        # print("account does not exist")
         return redirect("dashboard")
 
 
