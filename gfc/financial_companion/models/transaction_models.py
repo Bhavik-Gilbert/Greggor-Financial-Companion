@@ -9,9 +9,11 @@ from django.db.models import (
     ForeignKey,
     CASCADE
 )
+from django.core.exceptions import ValidationError
 from .accounts_model import Account
 from .category_model import Category
 from ..helpers import CurrencyType, Timespan
+
 
 def change_filename(instance, filename):
     existing_filename = filename.split('.')[-1]
@@ -79,16 +81,31 @@ class Transaction(AbstractTransaction):
         ordering = ['-time_of_transaction']
 
 
+# def validate_date(start_date, end_date):
+#     if end_date > start_date:
+#         raise ValidationError("End date is after start date.", params={'start_date': start_date, 'end_date': end_date})
+#     elif start_date > end_date:
+#         raise ValidationError("Start date precedes end date.", params={'start_date': start_date, 'end_date': end_date})
+#     elif start_date == end_date:
+#         raise ValidationError("Start and End date are on the same day.", params={'start_date': start_date, 'end_date': end_date})
+
 class RecurringTransaction(AbstractTransaction):
 
     start_date: DateField = DateField(
-        blank = False
+        blank = False,
+        auto_now_add=True,
+        # validators= [validate_date],
     )
 
     interval: CharField = CharField(
-        choices=Timespan.choices, max_length=5
+        choices=Timespan.choices,
+        max_length= 10,
     )
 
     end_date: DateField = DateField(
-        blank = False
+        blank = False,
+        # validators= [validate_date],
     )
+
+    class Meta:
+        ordering = ['-interval']
