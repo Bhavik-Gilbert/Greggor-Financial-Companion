@@ -2,7 +2,22 @@
   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
     <li class="nav-item">
       <a class="nav-link" href="{% url 'dashboard' %}">
-        <p class="text-white">Dashboard</p>
+        <p class="text-white h6">Dashboard</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'view_accounts' %}">
+        <p class="text-white h6">Accounts</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'view_transactions_redirect' %}">
+        <p class="text-white h6">Transactions</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'categories_list_redirect' %}">
+        <p class="text-white h6">Cateogories</p>
       </a>
     </li>
   </ul>
