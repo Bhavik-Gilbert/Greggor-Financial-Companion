@@ -2,11 +2,10 @@ from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 
 from .test_view_base import ViewTestCase
-from ..helpers.log_in_helpers import LogInTester
 from financial_companion.forms import UserLogInForm
 from financial_companion.models import User
 
-class LogInViewTestCase(ViewTestCase, LogInTester):
+class LogInViewTestCase(ViewTestCase):
     """Unit tests of the log in view"""
 
     def setUp(self):
@@ -27,7 +26,7 @@ class LogInViewTestCase(ViewTestCase, LogInTester):
     def test_successful_log_in(self):
         form_input = {'username': '@johndoe', 'password': 'Password123'}
         response = self.client.post(self.url, form_input, follow=True)
-        self.assertTrue(self.is_logged_in())
+        self.assertTrue(self._is_logged_in())
         response_url = reverse('dashboard')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, 'pages/dashboard.html')
@@ -40,7 +39,7 @@ class LogInViewTestCase(ViewTestCase, LogInTester):
         form = response.context['form']
         self.assertTrue(isinstance(form, UserLogInForm))
         self.assertFalse(form.is_bound)
-        self.assertFalse(self.is_logged_in())
+        self.assertFalse(self._is_logged_in())
 
     def test_invalid_form_for_log_in(self):
         wrong_form_input = {'username': 'johndoe', 'password': 'WrongPassword123'}
@@ -50,10 +49,8 @@ class LogInViewTestCase(ViewTestCase, LogInTester):
         form = response.context['form']
         self.assertTrue(isinstance(form, UserLogInForm))
         self.assertFalse(form.is_bound)
-        self.assertFalse(self.is_logged_in())
+        self.assertFalse(self._is_logged_in())
 
-    # def test_user_redirects_when_not_logged_in(self):
-    #     dashboard = reverse('dashboard')
-    #     response = self.client.get(dashboard)
-    #     response_url = reverse('log_in')
-    #     self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+    def test_get_login_redirects_when_logged_in(self):
+        self._login(self.user)
+        self._assert_require_logout(self.url)

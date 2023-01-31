@@ -1,17 +1,20 @@
 """Unit tests of the log in form."""
 from django import forms
-from django.test import TestCase
+from .test_form_base import FormTestCase
 from financial_companion.forms import UserLogInForm
 
-class LogInFormTestCase(TestCase):
+class LogInFormTestCase(FormTestCase):
     """Unit tests of the log in form."""
     def setUp(self):
         self.form_input = {'username': '@janedoe', 'password': 'Password123'}
 
     def test_form_contains_required_fields(self):
         form = UserLogInForm()
-        self.assertIn('username', form.fields)
-        self.assertIn('password', form.fields)
+        self._assert_form_has_necessary_fields(
+            form,
+            'username',
+            'password'
+        )
         password_field = form.fields['password']
         self.assertTrue(isinstance(password_field.widget,forms.PasswordInput))
 

@@ -3,6 +3,7 @@
         "model": "financial_companion.Category",
         "pk": 1,
         "fields": {
+            "user":1,
             "name": "Food",
             "description": "Eating out expenses"
           }
@@ -11,8 +12,27 @@
         "model": "financial_companion.Category",
         "pk": 2,
         "fields": {
+            "user":1,
             "name": "Travel",
             "description": "Going to and from uni"
+          }
+    },
+    {
+        "model": "financial_companion.Category",
+        "pk": 3,
+        "fields": {
+            "user":2,
+            "name": "Shopping",
+            "description": "Shopping expenses"
+          }
+    },
+    {
+        "model": "financial_companion.Category",
+        "pk": 4,
+        "fields": {
+            "user": 1,
+            "name": "Entertainment",
+            "description": "Going out and having fun"
           }
     }
 ]

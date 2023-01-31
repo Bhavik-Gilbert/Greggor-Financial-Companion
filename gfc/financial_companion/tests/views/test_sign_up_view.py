@@ -2,11 +2,10 @@ from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 
 from .test_view_base import ViewTestCase
-from ..helpers.log_in_helpers import LogInTester
 from financial_companion.forms import UserSignUpForm
 from financial_companion.models import User
 
-class SignUpViewTestCase(ViewTestCase, LogInTester):
+class SignUpViewTestCase(ViewTestCase):
     """Unit tests of the sign up view"""
 
     def setUp(self):
@@ -34,12 +33,10 @@ class SignUpViewTestCase(ViewTestCase, LogInTester):
         self.assertTrue(isinstance(form, UserSignUpForm))
         self.assertFalse(form.is_bound)
 
-    # def test_get_sign_up_redirects_when_logged_in(self):
-    #     self.client.login(username=self.user.username, password="Password123")
-    #     response = self.client.get(self.url, follow=True)
-    #     redirect_url = reverse('feed')
-    #     self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-    #     self.assertTemplateUsed(response, 'feed.html')
+    def test_get_sign_up_redirects_when_logged_in(self):
+        self._login(self.user)
+        response = self.client.get(self.url, follow=True)
+        self._assert_require_logout(self.url)
 
     def test_unsuccesful_sign_up(self):
         self.form_input['username'] = 'BAD_USERNAME'
@@ -52,7 +49,7 @@ class SignUpViewTestCase(ViewTestCase, LogInTester):
         form = response.context['form']
         self.assertTrue(isinstance(form, UserSignUpForm))
         self.assertTrue(form.is_bound)
-        self.assertFalse(self.is_logged_in())
+        self.assertFalse(self._is_logged_in())
 
     def test_succesful_sign_up(self):
         before_count = User.objects.count()
@@ -69,14 +66,14 @@ class SignUpViewTestCase(ViewTestCase, LogInTester):
         self.assertEqual(user.bio, "Jane Doe's Personal Spending Tracker")
         is_password_correct = check_password('Password123', user.password)
         self.assertTrue(is_password_correct)
-        self.assertTrue(self.is_logged_in())
+        self.assertTrue(self._is_logged_in())
 
-    # def test_post_sign_up_redirects_when_logged_in(self):
-    #     self.client.login(username=self.user.username, password="Password123")
-    #     before_count = User.objects.count()
-    #     response = self.client.post(self.url, self.form_input, follow=True)
-    #     after_count = User.objects.count()
-    #     self.assertEqual(after_count, before_count)
-    #     redirect_url = reverse('dashboard')
-    #     self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-    #     self.assertTemplateUsed(response,  "pages/dashboard.html")
+    def test_post_sign_up_redirects_when_logged_in(self):
+        self._login(self.user)
+        before_count = User.objects.count()
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = User.objects.count()
+        self.assertEqual(after_count, before_count)
+        self._assert_require_logout(self.url)
+        self.assertEqual(after_count, before_count)
+

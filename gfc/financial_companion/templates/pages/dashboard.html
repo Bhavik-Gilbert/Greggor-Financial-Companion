@@ -5,5 +5,15 @@
 
 <!-- Content -->
 {% block content %}
-    <h1>Greggor Financial Companion Dashboard</h1>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <div class="col">
+        {% include 'partials/dashboard/welcome.html'%}
+      </div>
+      <div class="col">
+        {% include 'partials/dashboard/accounts.html'%}
+        {% include 'partials/dashboard/recent-transactions.html'%}
+      </div>
+    </div>
+
 {% endblock %}

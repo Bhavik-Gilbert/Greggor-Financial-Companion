@@ -23,20 +23,26 @@ class TransactionType(models.TextChoices):
 
 class CurrencyType(models.TextChoices):
     """ENUM for currency types"""
-    GBP: str = "gbp"
-    USD: str = "usd"
-    EUR: str = "eur"
-    JPY: str = "jpy"
-    CNY: str = "cny"
-    AUD: str = "aud"
-    CAD: str = "cad"
-    KZT: str = "kzt"
-    INR: str = "inr"
-    RUB: str = "rub"
-    NZD: str = "nzd"
-    CHF: str = "chf"
+    GBP: str = "GBP"
+    USD: str = "USD"
+    EUR: str = "EUR"
+    JPY: str = "JPY"
+    CNY: str = "CNY"
+    AUD: str = "AUD"
+    CAD: str = "CAD"
+    INR: str = "INR"
+    RUB: str = "RUB"
+    NZD: str = "NZD"
+    CHF: str = "CHF"
+    KZT: str = "KZT"
 
 class MonetaryAccountType(models.TextChoices):
     """ENUM for transaction types"""
     POT: str = "pot"
     BANK: str = "bank"
+
+class GreggorTypes(models.TextChoices):
+    """ENUM for greggor logo types"""
+    SAD: str = "sad"
+    PARTY: str = "party"
+    NORMAL: str = "normal"

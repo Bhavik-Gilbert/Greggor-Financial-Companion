@@ -36,6 +36,10 @@ class ModelTestCase(BaseTestCase):
             self.test_model.full_clean()
 
     def _check_model(self) -> None:
+        """
+        Checks if a model is valid or not
+        Returns true if valid, otherwise false
+        """
         if self.test_model is None:
             self.fail("self.test_model_base was not set in the test's setUp() method!")
         if not isinstance(self.test_model, Model):

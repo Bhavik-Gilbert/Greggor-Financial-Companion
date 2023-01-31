@@ -30,9 +30,9 @@
         "model": "financial_companion.PotAccount",
         "pk": 3,
         "fields": {
-            "user_id": "1",
+            "user": "1",
             "balance": 1000.00,
-            "currency": "gbp"
+            "currency": "GBP"
         }
     },
 
@@ -43,15 +43,46 @@
             "name": "cash",
             "description": "this is another test account"
         }
+     },
+     
+     {
+        "model": "financial_companion.PotAccount",
+        "pk": 4,
+        "fields": {
+            "user": "2",
+            "balance": 200.00,
+            "currency": "GBP"
+        }
+     },
+     
+     {
+        "model": "financial_companion.Account",
+        "pk": 5,
+        "fields": {
+            "name": "jkl",
+            "description": "this is a test account"
+        }
     },
 
     {
         "model": "financial_companion.PotAccount",
-        "pk": 4,
+        "pk": 5,
         "fields": {
-            "user_id": "2",
-            "balance": 200.00,
-            "currency": "gbp"
+            "user": "1",
+            "balance": 1000.00,
+            "currency": "GBP"
+        }
+    },
+
+    {
+        "model": "financial_companion.BankAccount",
+        "pk": 5,
+        "fields": {
+            "bank_name": "Bank of Misha",
+            "account_number": "12345678",
+            "sort_code": "223344",
+            "iban": "GB1234567890123456789012345678901",
+            "interest_rate": 0.00
         }
     }
 ]

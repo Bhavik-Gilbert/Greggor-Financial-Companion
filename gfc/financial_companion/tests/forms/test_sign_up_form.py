@@ -1,21 +1,22 @@
 from django import forms
 from django.contrib.auth.hashers import check_password
-from django.test import TestCase
 from django.urls import reverse
+
+from .test_form_base import FormTestCase
 from financial_companion.forms import UserSignUpForm
 from financial_companion.models import User
 
-class SignUpFormTestCase(TestCase):
+class SignUpFormTestCase(FormTestCase):
     """Test of the sign up form"""
 
     def setUp(self):
         self.url = reverse('sign_up')
         self.form_input = {
             "first_name": "John",
-            "last_name": "Doe",
-            "username": "@johndoe",
-            "email": "johndoe@example.org",
-            "bio": "John Doe's Personal Spending Tracker",
+            "last_name": "Smith",
+            "username": "@johnsmith",
+            "email": "johnsmith@example.org",
+            "bio": "John Smith's Personal Spending Tracker",
             'new_password': 'Password123',
             'password_confirmation': 'Password123'
         }
@@ -26,17 +27,20 @@ class SignUpFormTestCase(TestCase):
 
     def test_form_has_necessary_fields(self):
         form = UserSignUpForm()
-        self.assertIn('first_name', form.fields)
-        self.assertIn('last_name', form.fields)
-        self.assertIn('username', form.fields)
-        self.assertIn('email', form.fields)
+        self._assert_form_has_necessary_fields(
+            form,
+            'first_name',
+            'last_name',
+            'username',
+            'email',
+            'bio',
+            'new_password',
+            'password_confirmation'
+            )
         email_field = form.fields['email']
         self.assertTrue(isinstance(email_field, forms.EmailField))
-        self.assertIn('bio', form.fields)
-        self.assertIn('new_password', form.fields)
         new_password_widget = form.fields['new_password'].widget
         self.assertTrue(isinstance(new_password_widget, forms.PasswordInput))
-        self.assertIn('password_confirmation', form.fields)
         password_confirmation_widget = form.fields['password_confirmation'].widget
         self.assertTrue(isinstance(password_confirmation_widget, forms.PasswordInput))
 
@@ -75,10 +79,10 @@ class SignUpFormTestCase(TestCase):
         form.save()
         after_count = User.objects.count()
         self.assertEqual(after_count, before_count+1)
-        user = User.objects.get(username='@johndoe')
+        user = User.objects.get(username='@johnsmith')
         self.assertEqual(user.first_name, 'John')
-        self.assertEqual(user.last_name, 'Doe')
-        self.assertEqual(user.email, "johndoe@example.org")
-        self.assertEqual(user.bio, "John Doe's Personal Spending Tracker")
+        self.assertEqual(user.last_name, 'Smith')
+        self.assertEqual(user.email, "johnsmith@example.org")
+        self.assertEqual(user.bio, "John Smith's Personal Spending Tracker")
         is_password_correct = check_password('Password123', user.password)
         self.assertTrue(is_password_correct)
