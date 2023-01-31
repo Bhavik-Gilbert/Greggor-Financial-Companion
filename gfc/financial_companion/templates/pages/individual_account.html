@@ -1,0 +1,90 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Account{% endblock %}
+
+<!-- Content -->
+{% block content %}
+<div class="card py-3 px-4 bg-primary">
+    <div class="row gy-3">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12 col-md-8">
+                    <h1 class="text-white">{{account.name.capitalize}}</h1>
+                </div>
+                <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-end">
+                    <a href="#"><button type="button" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit</button></a>
+                    <button type="button" class="btn btn-danger px-3 mx-2 py-1 mb-md-4">Delete</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <h5 class="text-white">Description</h5>
+            <p class="text-white">{{account.description}}</p>
+        </div>
+        <div class="col-12">
+            <h5 class="text-white">Balance</h5>
+            <p class="text-white">{{account.balance}}</p>
+        </div>
+        <div class="col-12">
+            <h5 class="text-white">Currency</h5>
+            <p class="text-white">{{account.currency}}</p>
+        </div>
+        <div class="col-12">
+            <h5 class="text-white">bank Name</h5>
+            <p class="text-white">{{account.bank_name}}</p>
+        </div>
+        <div class="col-12">
+            <h5 class="text-white">Iban</h5>
+            <p class="text-white">{{account.iban}}</p>
+        </div>
+        <div class="col-12">
+            <h5 class="text-white">Currency</h5>
+            <p class="text-white">{{account.account_number}}</p>
+        </div>
+        <div class="col-12">
+            <h5 class="text-white">Sort Code</h5>
+            <p class="text-white">{{account.sort_code}}</p>
+        </div>
+        <div class="col-12 d-flex justify-content-center">
+            <!--- TODO: Add target partial --->
+            <!-- {% for target in category_targets %}
+                {{target}}
+            {% endfor %} -->
+        </div>
+    </div>
+</div>
+&nbsp;
+<div>
+    <form action="{% url 'filter_individual_account_request' pk=account.id %}"method="post">
+      {% csrf_token %}
+      <div style="text-align:center">
+        <input type = "submit" name = "sent" value = "View Sent Transactions" class= "btn btn-primary">
+        <input type = "submit" name = "received" value = "View Received Transactions"" class= "btn btn-primary">
+        <input type = "submit" name = "all" value = "View Transactions" class= "btn btn-primary">
+      </div>
+    </form>
+  </div>
+&nbsp;
+    <table class="table  table-bordered table-striped" style="width:100%" style="text-align:center" >
+      <thead class = "table-primary">
+        <tr>
+            <th scope="col" style="text-align:center">Transaction ID</th>
+            <th scope="col" style="text-align:center">Transaction Name</th>
+            <th scope="col" style="text-align:center">Value</th>
+            <th scope="col" style="text-align:center">View More</th>
+        </tr>
+      </thead>
+      {% for transaction in transactions %}
+        <tr style="text-align:center">
+          <td>{{ transaction.id}}</td>
+          <td>{{ transaction.title }} </td>
+          <td>{{ transaction.amount }} </td>
+          <td> <input type = "submit" name = "view" value = "View More" class= "btn btn-primary"></td>
+
+        </tr>
+      </form>
+      {% endfor %}
+    </table>
+    {%include 'partials/pagination.html'  with page_obj=transactions %}
+{% endblock %}
