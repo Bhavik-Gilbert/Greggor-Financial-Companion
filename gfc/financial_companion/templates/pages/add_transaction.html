@@ -6,7 +6,7 @@
 <!-- Content -->
 {% block content %}
     <h1>Add Transaction</h1>
-    <form action='{% url 'add_transaction' %}' method="post">
+    <form action='{% url 'add_transaction' %}' method="post" enctype='multipart/form-data'>
       {% csrf_token %}
       {% include 'partials/form.html' with form=form %}
       {# <input type='text' list='senders' placeholder="Sender" class="form-control"> #}

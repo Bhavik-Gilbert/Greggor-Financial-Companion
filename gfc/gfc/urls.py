@@ -30,6 +30,7 @@ urlpatterns = [
     path('add_monetary_account/', views.add_monetary_account_view, name="add_monetary_account"),
     path('view_accounts/', views.view_user_pot_accounts, name='view_accounts'),
     path('create_category/', views.create_category_view, name="create_category"),
+    path('add_transaction/', views.add_transaction_view, name='add_transaction'),
     path('filter_transaction_request/', views.filter_transaction_request, name="filter_transaction_request"),
     path('view_transactions/<str:filter_type>', views.view_users_transactions, name="view_transactions"),
     path('edit_category/<int:pk>', views.edit_category_view, name = "edit_category"),
