@@ -46,7 +46,7 @@ def individual_account_view(request: HttpRequest, pk: int, filter_type: str) -> 
 
 @login_required
 def individual_account_redirect(request: HttpRequest, pk: int) -> HttpResponse:
-    return redirect('view_transactions', pk = pk, filter_type="all")
+    return redirect('individual_account', pk = pk, filter_type="all")
 
 @login_required
 def filter_individual_account_request(request, pk: int):
