@@ -1,13 +1,17 @@
 
-<div class="container">
+
     <div class="row">
       <div class="col-12">
         <div>
-          <form action="{% url 'filter_transaction_request' %}"method="post">
+          {% if pk %}
+            <form action="{% url filter_url pk=pk %}" method="post">
+          {% else %}
+            <form action="{% url filter_url %}" method="post">
+          {% endif %}
             {% csrf_token %}
             <div style="text-align:center">
               <input type = "submit" name = "sent" value = "View Sent Transactions" class= "btn btn-primary">
-              <input type = "submit" name = "received" value = "View Received Transactions"" class= "btn btn-primary">
+              <input type = "submit" name = "received" value = "View Received Transactions" class= "btn btn-primary">
               <input type = "submit" name = "all" value = "View Transactions" class= "btn btn-primary">
             </div>
           </form>
@@ -36,4 +40,3 @@
         {%include 'partials/pagination.html'  with page_obj=transactions %}
       </div>
     </div>
-  </div>

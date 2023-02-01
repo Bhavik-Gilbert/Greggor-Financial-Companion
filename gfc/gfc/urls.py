@@ -48,8 +48,8 @@ urlpatterns = [
         name="filter_individual_account_request"),
     re_path(
         'individual_account/(?P<pk>\d+)/$',
-        views.individual_category_redirect,
-        name="individual_account"
+        views.individual_account_redirect,
+        name="individual_account_redirect"
     ),
     re_path(
         'edit_monetary_account/(?P<pk>\d+)/$',
