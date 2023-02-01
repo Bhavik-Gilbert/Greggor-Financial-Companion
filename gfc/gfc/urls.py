@@ -38,6 +38,20 @@ urlpatterns = [
     path('view_transactions/', views.view_users_transactions_redirect, name="view_transactions_redirect"),
     path('edit_category/<int:pk>', views.edit_category_view, name = "edit_category"),
     re_path(
+        'individual_account/(?P<pk>\d+)/(?P<filter_type>\w+)/$',
+        views.individual_account_view,
+        name="individual_account"
+    ),
+    re_path(
+        'filter_individual_account_request/(?P<pk>\d+)', 
+        views.filter_individual_account_request, 
+        name="filter_individual_account_request"),
+    re_path(
+        'individual_account/(?P<pk>\d+)/$',
+        views.individual_category_redirect,
+        name="individual_account"
+    ),
+    re_path(
         'edit_monetary_account/(?P<pk>\d+)/$',
         views.edit_monetary_account_view,
         name="edit_monetary_account"
