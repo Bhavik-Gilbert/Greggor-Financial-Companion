@@ -8,7 +8,7 @@ from financial_companion.models import User, PotAccount, BankAccount
 from financial_companion.helpers import MonetaryAccountType, CurrencyType
 from decimal import Decimal
 
-class AddMonetaryAccountViewTestCase(ViewTestCase):
+class EditMonetaryAccountViewTestCase(ViewTestCase):
     """Unit tests of the edit monetary account view"""
 
     def setUp(self):

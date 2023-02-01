@@ -5,8 +5,8 @@ from decimal import Decimal
 from ...helpers import CurrencyType
 from ...models import BankAccount, User
 
-class AccountModelTestCase(ModelTestCase):
-    """test file for the pot accounts model"""
+class BankAccountModelTestCase(ModelTestCase):
+    """test file for the bank accounts model"""
 
     def setUp(self) -> None:
         super().setUp()
