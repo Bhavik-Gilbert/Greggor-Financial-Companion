@@ -72,5 +72,5 @@
 </div>
 &nbsp;
 
-{%include 'partials/transaction_table.html'  with transactions=transactions filter_url="filter_individual_account_request" pk=account.id %}
+{%include 'partials/transaction_table.html'  with transactions=transactions redirect_name="individual_account" pk=account.id %}
 {% endblock %}

@@ -4,9 +4,9 @@
       <div class="col-12">
         <div>
           {% if pk %}
-            <form action="{% url filter_url pk=pk %}" method="post">
+            <form action="{% url 'filter_transaction_request_with_pk' redirect_name=redirect_name pk=pk %}" method="post">
           {% else %}
-            <form action="{% url filter_url %}" method="post">
+            <form action="{% url 'filter_transaction_request' redirect_name=redirect_name %}" method="post">
           {% endif %}
             {% csrf_token %}
             <div style="text-align:center">

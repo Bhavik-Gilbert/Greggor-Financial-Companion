@@ -4,5 +4,5 @@
 {% block content %}
   <h1 style="text-align:center">Transactions</h1>
   
-  {%include 'partials/transaction_table.html'  with transactions=transactions filter_url="filter_transaction_request" %}
+  {%include 'partials/transaction_table.html'  with transactions=transactions redirect_name="view_transactions" %}
 {% endblock %}
