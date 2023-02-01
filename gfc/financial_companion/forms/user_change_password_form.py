@@ -18,7 +18,8 @@ class UserChangePasswordForm(forms.Form):
     def save(self, instance=None):
         """Save the password"""
         if instance is not None:
-            new_password = self.cleaned_data.get('new_password')
-            user = instance
-            user.set_password(new_password)
-            user.save()
+            if self.is_valid():
+                new_password = self.cleaned_data.get('new_password')
+                user = instance
+                user.set_password(new_password)
+                user.save()
