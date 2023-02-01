@@ -30,4 +30,9 @@
         </div>
     </div>
 </div>
+
+<br>
+
+{%include 'partials/transaction_table.html' with transactions=transactions redirect_name="individual_category" pk=category.id %}
+
 {% endblock %}
