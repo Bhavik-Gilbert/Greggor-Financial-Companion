@@ -33,6 +33,7 @@ urlpatterns = [
     path('view_accounts/', views.view_user_pot_accounts, name='view_accounts'),
     path('create_category/', views.create_category_view, name="create_category"),
     path('add_transaction/', views.add_transaction_view, name='add_transaction'),
+    path('edit_transaction/<int:pk>', views.edit_transaction_view, name='edit_transaction'),
     path('filter_transaction_request/', views.filter_transaction_request, name="filter_transaction_request"),
     path('view_transactions/<str:filter_type>', views.view_users_transactions, name="view_transactions"),
     path('edit_user_details/', views.edit_user_details_view, name="edit_user_details"),

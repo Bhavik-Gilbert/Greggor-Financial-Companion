@@ -18,6 +18,10 @@
               <p><strong>Sender Account: </strong>{{transaction.sender_account.name}}</p>
               <p><strong>Reciver Account: </strong>{{transaction.receiver_account.name}}</p>
               <p><strong>Time of Transaction: </strong>{{transaction.time_of_transaction}}</p>
+              <form action="{%  url 'edit_transaction' transaction.id %}" method="post">
+                {% csrf_token %}
+              <input type = "submit" name = "edit" value = "Edit" class= "btn btn-primary">
+              </form>
             </div>
           </div>
         </div>
