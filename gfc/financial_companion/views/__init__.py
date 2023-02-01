@@ -10,3 +10,4 @@ from .display_transactions import view_users_transactions, filter_transaction_re
 from .create_category import create_category_view, edit_category_view
 from .individual_category import individual_category_view, individual_category_redirect
 from .edit_user_details import edit_user_details_view
+from .change_password import change_password_view

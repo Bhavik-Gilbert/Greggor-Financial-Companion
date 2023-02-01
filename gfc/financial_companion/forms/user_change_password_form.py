@@ -14,3 +14,11 @@ class UserChangePasswordForm(forms.Form):
                     'character and a number'
             )]
     )
+
+    def save(self, instance=None):
+        """Save the password"""
+        if instance is not None:
+            new_password = self.cleaned_data.get('new_password')
+            user = instance
+            user.set_password(new_password)
+            user.save()
