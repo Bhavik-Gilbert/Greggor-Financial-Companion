@@ -37,6 +37,7 @@ urlpatterns = [
     path('edit_user_details/', views.edit_user_details_view, name="edit_user_details"),
     path('view_transactions/', views.view_users_transactions_redirect, name="view_transactions_redirect"),
     path('edit_category/<int:pk>', views.edit_category_view, name = "edit_category"),
+    path('delete_category/<int:pk>', views.delete_category_view, name = "delete_category"),
     re_path(
         'individual_account/(?P<pk>\d+)/(?P<filter_type>\w+)/$',
         views.individual_account_view,
