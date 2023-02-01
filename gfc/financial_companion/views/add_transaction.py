@@ -26,10 +26,9 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         return redirect('dashboard')
     else:
         if request.method == 'POST':
-            form = AddTransactionForm(request.POST, request.FILES, instance=transaction)
+            form = AddTransactionForm(request.POST,request.FILES, instance=transaction)
             if form.is_valid():
                 form.save(instance=transaction)
                 return redirect('dashboard')
-        else:
-            form = AddTransactionForm(instance=transaction)
+        form = AddTransactionForm(instance=transaction)
         return render(request, "pages/add_transaction.html", {'form': form, 'edit': True, 'pk':pk})
