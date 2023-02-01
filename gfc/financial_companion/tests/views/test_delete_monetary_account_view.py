@@ -22,7 +22,7 @@ class DeleteMonetaryAccountViewTestCase(ViewTestCase):
         response = self.client.get(self.url, follow=True)
         after_count = Account.objects.count()
         self.assertEqual(after_count + 1 , before_count )
-        self.assertTemplateUsed(response, 'pages/individual_category.html')
+        self.assertTemplateUsed(response, 'pages/view_accounts.html')
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 1)
 
