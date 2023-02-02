@@ -8,11 +8,11 @@ class FilterTransactionsViewTestCase(ViewTestCase):
     """Unit tests of the filter transactions request view"""
 
     def setUp(self):
-        self.url = reverse('filter_transaction_request')
+        self.url = reverse('filter_transaction_request', kwargs={"redirect_name":"view_transactions"})
         self.user = User.objects.get(username='@johndoe')
 
     def test_log_in_url(self):
-        self.assertEqual(self.url,'/filter_transaction_request/')
+        self.assertEqual(self.url,'/filter_transaction_request/view_transactions/')
     
     def test_post_when_all_button_is_clicked(self):
         self._login(self.user)

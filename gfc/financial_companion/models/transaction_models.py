@@ -7,7 +7,7 @@ from django.db.models import (
     DateTimeField,
     DateField,
     ForeignKey,
-    CASCADE
+    CASCADE,SET_NULL
 )
 from django.core.exceptions import ValidationError
 from .accounts_model import Account
@@ -48,7 +48,7 @@ class AbstractTransaction(Model):
         upload_to='change_filename'
     )
 
-    category = ForeignKey(Category, on_delete = CASCADE)
+    category = ForeignKey(Category, on_delete = SET_NULL, null = True, blank = True)
 
     amount: DecimalField = DecimalField(
         blank = False,

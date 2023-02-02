@@ -2,7 +2,7 @@ from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 
 from .test_view_base import ViewTestCase
-from financial_companion.forms import CreateCategoryForm
+from financial_companion.forms import CategoryForm
 from financial_companion.models import User, Category
 
 class CreateCategoryViewTestCase(ViewTestCase):
@@ -25,7 +25,7 @@ class CreateCategoryViewTestCase(ViewTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/create_category.html')
         form = response.context['form']
-        self.assertTrue(isinstance(form, CreateCategoryForm))
+        self.assertTrue(isinstance(form, CategoryForm))
         self.assertFalse(form.is_bound)
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
@@ -41,7 +41,7 @@ class CreateCategoryViewTestCase(ViewTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/create_category.html')
         form = response.context['form']
-        self.assertTrue(isinstance(form, CreateCategoryForm))
+        self.assertTrue(isinstance(form, CategoryForm))
 
 
     def test_succesful_category_form_submission(self):

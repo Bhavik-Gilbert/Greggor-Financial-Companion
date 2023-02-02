@@ -8,7 +8,7 @@
             "image": "transactions/2.jpg",
             "category" : 1,
             "amount" : 1499.99,
-            "currency" : "usd",
+            "currency" : "USD",
             "sender_account" : 1,
             "receiver_account" : 2,
             "time_of_transaction" : "2023-01-01T12:00:00+00:00"
@@ -23,7 +23,7 @@
             "image": "transactions/123.jpg",
             "category" : 1,
             "amount" : 14999.99,
-            "currency" : "usd",
+            "currency" : "USD",
             "sender_account" : 3,
             "receiver_account" : 4,
             "time_of_transaction" : "2023-01-01T12:00:00+00:00"
@@ -38,7 +38,7 @@
             "image": "transactions/13.jpg",
             "category" : 1,
             "amount" : 499.99,
-            "currency" : "usd",
+            "currency" : "USD",
             "sender_account" : 4,
             "receiver_account" : 3,
             "time_of_transaction" : "2023-01-01T12:00:00+00:00"
@@ -54,7 +54,7 @@
             "image": "transactions/2.jpg",
             "category" : 1,
             "amount" : 199.99,
-            "currency" : "usd",
+            "currency" : "USD",
             "sender_account" : 3,
             "receiver_account" : 1,
             "time_of_transaction" : "2023-01-01T12:00:00+00:00"
