@@ -13,7 +13,7 @@ class IndividualAccountViewTestCase(ViewTestCase):
         self.account: PotAccount = PotAccount.objects.get_subclass(user=self.user, id=5)
         self.url: str = reverse("individual_account", kwargs={"pk": self.account.id, "filter_type": "all"})
 
-    def test_valid_individual_category_url(self):
+    def test_valid_individual_account_url(self):
         self.assertEqual(self.url, f"/individual_account/{self.account.id}/all/")
 
     def test_valid_get_view_individual_account(self):
@@ -24,9 +24,6 @@ class IndividualAccountViewTestCase(ViewTestCase):
         account: Account = response.context["account"]
         self.assertTrue(isinstance(account, PotAccount))
 
-    #     # TODO: test for transactions
-    
-    # # TODO: test for filter types
     
     def test_valid_account_belongs_to_user(self):
         self._login(self.user)
@@ -45,3 +42,5 @@ class IndividualAccountViewTestCase(ViewTestCase):
 
     def test_invalid_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)
+
+    
