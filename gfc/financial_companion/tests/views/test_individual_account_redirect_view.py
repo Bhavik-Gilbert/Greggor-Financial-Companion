@@ -10,7 +10,7 @@ class IndividualAccountRedirectViewTestCase(ViewTestCase):
     def setUp(self):
         self.user: User = User.objects.get(username="@johndoe")
         self.account: PotAccount = PotAccount.objects.get_subclass(user=self.user, id=3)
-        self.url: str = reverse("individual_account", kwargs={"pk": self.account.id})
+        self.url: str = reverse("individual_account_redirect", kwargs={"pk": self.account.id})
 
     def test_valid_individual_account_redirect_url(self):
         self.assertEqual(self.url, f"/individual_account/{self.account.id}/")
