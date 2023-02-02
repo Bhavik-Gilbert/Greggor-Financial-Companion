@@ -5,7 +5,7 @@ from django.db.models import (
     ImageField,
     DateTimeField,
     ForeignKey,
-    CASCADE
+    CASCADE,SET_NULL
 )
 from .accounts_model import Account
 from .category_model import Category
@@ -44,7 +44,7 @@ class AbstractTransaction(Model):
         upload_to='change_filename'
     )
 
-    category = ForeignKey(Category, on_delete = CASCADE)
+    category = ForeignKey(Category, on_delete = SET_NULL, null = True, blank = True)
 
     amount: DecimalField = DecimalField(
         blank = False,
