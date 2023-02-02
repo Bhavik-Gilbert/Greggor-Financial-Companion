@@ -80,21 +80,11 @@ class Transaction(AbstractTransaction):
     class Meta:
         ordering = ['-time_of_transaction']
 
-
-# def validate_date(start_date, end_date):
-#     if end_date > start_date:
-#         raise ValidationError("End date is after start date.", params={'start_date': start_date, 'end_date': end_date})
-#     elif start_date > end_date:
-#         raise ValidationError("Start date precedes end date.", params={'start_date': start_date, 'end_date': end_date})
-#     elif start_date == end_date:
-#         raise ValidationError("Start and End date are on the same day.", params={'start_date': start_date, 'end_date': end_date})
-
 class RecurringTransaction(AbstractTransaction):
 
     start_date: DateField = DateField(
         blank = False,
         auto_now_add=True,
-        # validators= [validate_date],
     )
 
     interval: CharField = CharField(
@@ -104,7 +94,6 @@ class RecurringTransaction(AbstractTransaction):
 
     end_date: DateField = DateField(
         blank = False,
-        # validators= [validate_date],
     )
 
     class Meta:
