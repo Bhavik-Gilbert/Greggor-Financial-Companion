@@ -5,7 +5,7 @@ from decimal import Decimal
 from ...helpers import CurrencyType
 from ...models import PotAccount
 
-class AccountModelTestCase(ModelTestCase):
+class PotAccountModelTestCase(ModelTestCase):
     """test file for the pot accounts model"""
 
     def setUp(self) -> None:

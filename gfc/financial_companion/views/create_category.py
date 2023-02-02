@@ -3,6 +3,23 @@ from django.shortcuts import render, redirect
 from financial_companion.forms import CategoryForm
 from django.contrib.auth.decorators import login_required
 from ..models import Category
+from django.contrib import messages
+
+
+@login_required
+def delete_category_view(request: HttpRequest, pk: int) -> HttpResponse:
+    """View to allow users to delete a category"""
+     # check is id valid
+    try:
+         current_category: Category = Category.objects.get(id=pk, user =  request.user)
+    except Exception:
+        return redirect("dashboard")
+        
+    current_category.delete()
+    messages.add_message(request, messages.WARNING, "This category has been deleted")
+    return redirect("categories_list", search_name="all")
+
+
 
 
 @login_required
