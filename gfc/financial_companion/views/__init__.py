@@ -11,4 +11,5 @@ from .create_category import create_category_view, edit_category_view, delete_ca
 from .individual_category import individual_category_view, individual_category_redirect
 from .individual_account_view import individual_account_view, individual_account_redirect
 from .edit_user_details import edit_user_details_view
+from .change_password import change_password_view
 
