@@ -10,6 +10,7 @@
     <link href="{% static 'CSS/style.css'%}" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
     <title>{% block title %}{% endblock %}</title>
+    <script src="{% static 'functions.js' %}"></script>
 </head>
 
 <body>
@@ -24,6 +25,6 @@
   {% include 'partials/messages.html' with messages=messages %}
   <div class="container-fluid">{% block content %}{% endblock %}</div>
   <br>
-  
+
 </body>
 </html>
