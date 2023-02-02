@@ -58,6 +58,11 @@ urlpatterns = [
         name="edit_monetary_account"
     ),
     re_path(
+        'delete_monetary_account/(?P<pk>\d+)/$',
+        views.delete_monetary_account_view,
+        name="delete_monetary_account"
+    ),
+    re_path(
         'individual_category/(?P<pk>\d+)/(?P<filter_type>\w+)/$',
         views.individual_category_view,
         name="individual_category"
