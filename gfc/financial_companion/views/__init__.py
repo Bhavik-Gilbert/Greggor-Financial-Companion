@@ -6,9 +6,9 @@ from .dashboard import dashboard_view
 from .monetary_account_view import add_monetary_account_view, edit_monetary_account_view, delete_monetary_account_view
 from .category_views import category_list_view, category_list_redirect
 from .view_accounts import view_user_pot_accounts
-from .display_transactions import view_users_transactions, filter_transaction_request, view_users_transactions_redirect
+from .display_transactions import view_users_transactions, filter_transaction_request, view_users_transactions_redirect, filter_transaction_request_with_pk
 from .create_category import create_category_view, edit_category_view, delete_category_view
 from .individual_category import individual_category_view, individual_category_redirect
-from .individual_account_view import individual_account_view, filter_individual_account_request, individual_account_redirect
+from .individual_account_view import individual_account_view, individual_account_redirect
 from .edit_user_details import edit_user_details_view
 
