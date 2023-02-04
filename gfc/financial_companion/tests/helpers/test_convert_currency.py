@@ -18,7 +18,7 @@ class ConverCurrencyHelperFunctionTestCase(HelperTestCase):
             after_amount: float = convert_currency(before_amount, current_currency_code, target_currency_code)
             self.assertTrue(before_amount != after_amount)
     
-    def test_valid_GBP_supported(self):
+    def test_valid_GBP_supported_current(self):
         current_currency_code = CurrencyType.GBP
         target_currency_code = CurrencyType.USD
 
@@ -26,7 +26,15 @@ class ConverCurrencyHelperFunctionTestCase(HelperTestCase):
         after_amount: float = convert_currency(before_amount, current_currency_code, target_currency_code)
         self.assertTrue(before_amount != after_amount)
     
-    def test_valid_USD_supported(self):
+    def test_valid_GBP_supported_target(self):
+        current_currency_code = CurrencyType.USD
+        target_currency_code = CurrencyType.GBP
+
+        before_amount: float = 100 
+        after_amount: float = convert_currency(before_amount, current_currency_code, target_currency_code)
+        self.assertTrue(before_amount != after_amount)
+    
+    def test_valid_USD_supported_current(self):
         current_currency_code = CurrencyType.USD
         target_currency_code = CurrencyType.EUR
 
@@ -34,7 +42,15 @@ class ConverCurrencyHelperFunctionTestCase(HelperTestCase):
         after_amount: float = convert_currency(before_amount, current_currency_code, target_currency_code)
         self.assertTrue(before_amount != after_amount)
     
-    def test_valid_EUR_supported(self):
+    def test_valid_USD_supported_target(self):
+        current_currency_code = CurrencyType.EUR
+        target_currency_code = CurrencyType.USD
+
+        before_amount: float = 100 
+        after_amount: float = convert_currency(before_amount, current_currency_code, target_currency_code)
+        self.assertTrue(before_amount != after_amount)
+    
+    def test_valid_EUR_supported_current(self):
         current_currency_code = CurrencyType.EUR
         target_currency_code = CurrencyType.GBP
 
@@ -42,9 +58,25 @@ class ConverCurrencyHelperFunctionTestCase(HelperTestCase):
         after_amount: float = convert_currency(before_amount, current_currency_code, target_currency_code)
         self.assertTrue(before_amount != after_amount)
     
-    def test_valid_KZT_supported(self):
+    def test_valid_EUR_supported_target(self):
+        current_currency_code = CurrencyType.GBP
+        target_currency_code = CurrencyType.EUR
+
+        before_amount: float = 100 
+        after_amount: float = convert_currency(before_amount, current_currency_code, target_currency_code)
+        self.assertTrue(before_amount != after_amount)
+
+    def test_valid_KZT_supported_current(self):
         current_currency_code = CurrencyType.KZT
         target_currency_code = CurrencyType.GBP
+
+        before_amount: float = 100 
+        after_amount: float = convert_currency(before_amount, current_currency_code, target_currency_code)
+        self.assertTrue(before_amount != after_amount)
+    
+    def test_valid_KZT_supported_target(self):
+        current_currency_code = CurrencyType.GBP
+        target_currency_code = CurrencyType.KZT
 
         before_amount: float = 100 
         after_amount: float = convert_currency(before_amount, current_currency_code, target_currency_code)
