@@ -10,9 +10,10 @@ from django.db.models import (
 from .accounts_model import Account
 from .category_model import Category
 from ..helpers import CurrencyType, random_filename
+import os
 
 def change_filename(instance, filename):
-    return os.path.join('transactions', random_filename(instance, filename))
+    return os.path.join('transactions', random_filename(filename))
 
 class AbstractTransaction(Model):
     """Abstract model for recording a transaction"""

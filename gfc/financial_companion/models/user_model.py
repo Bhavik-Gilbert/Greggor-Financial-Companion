@@ -2,14 +2,10 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import RegexValidator
 import os
-import random
-import string
-import time
-from datetime import datetime
 from financial_companion.helpers import random_filename
 
 def change_filename(instance, filename):
-    return os.path.join('user_profile', random_filename(instance, filename))
+    return os.path.join('user_profile', random_filename(filename))
 
 class User(AbstractUser):
     """User model used for authentication"""
