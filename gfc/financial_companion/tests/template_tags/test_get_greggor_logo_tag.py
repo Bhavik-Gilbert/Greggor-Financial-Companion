@@ -17,6 +17,12 @@ class GetGreggorTemplateTagTestCase(TemplateTagTestCase):
         for greggor_type in GreggorTypes:
             greggor_path: str = get_greggor(greggor_type.lower())
             self.assertEqual(greggor_type.lower(), self._get_filaname(greggor_path))
+    
+    def test_valid_function_lowers_case_for_filename(self):
+        greggor_input: str = "normal"
+        self.assertTrue(greggor_input in GreggorTypes)
+        greggor_path: str = get_greggor(greggor_input.upper())
+        self.assertEqual(greggor_input, self._get_filaname(greggor_path))
         
     def test_invalid_function_does_not_return_input_if_input_not_greggor_type(self):
         greggor_input: str = "not a greggor"

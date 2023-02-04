@@ -5,7 +5,12 @@ from .enums import CurrencyType
 
 def get_currency_symbol(currency_code: str):
     """Returns currency symbol for given currency code"""
-    return CurrencySymbols.get_symbol(currency_code)
+    currency_code = currency_code.upper()
+
+    if currency_code in CurrencyType:
+        return CurrencySymbols.get_symbol(currency_code)
+    else:
+        return ""
 
 def convert_currency(amount: float, current_currency_code: str, target_currency_code: str):
     """Converts balance from one currency to another"""
