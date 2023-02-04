@@ -18,3 +18,11 @@ def convert_currency(amount: float, current_currency_code: str, target_currency_
 
     c: CurrencyConverter = CurrencyConverter(fallback_on_missing_rate=True)
     return c.convert(amount, current_currency_code, target_currency_code)
+
+def random_filename(instance, filename):
+    """Generates a random filename"""
+    file_extension = filename.split('.')[-1]
+
+    # set a random filename
+    filename_strings_to_add = [random.choice(string.ascii_letters), str(datetime.now())]
+    return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
