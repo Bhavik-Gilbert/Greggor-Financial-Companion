@@ -1,6 +1,7 @@
 from .test_helper_base import HelperTestCase
 from financial_companion.helpers import random_filename
-from datetime import datetime
+import datetime
+from freezegun import freeze_time
 
 class RandomFilenameHelperFunctionTestCase(HelperTestCase):
     """Test for the random_filename helpers function"""
@@ -12,6 +13,8 @@ class RandomFilenameHelperFunctionTestCase(HelperTestCase):
         filename: str = random_filename(self.filename)
         self.assertEqual(self.filename.split(".")[-1], filename.split(".")[-1])
 
+    @freeze_time("2012-01-14 22:00:00")
     def test_valid_random_filename_contains_current_datetime(self):
+        self.assertEqual(datetime.datetime.now(), datetime.datetime(2012, 1, 14, 22, 0, 0))
         filename: str = random_filename(self.filename)
-        self.assertTrue(str(datetime.now()) in filename)
+        self.assertTrue(str(datetime.datetime.now()) in filename)
