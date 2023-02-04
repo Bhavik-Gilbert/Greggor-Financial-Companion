@@ -1,6 +1,6 @@
 from ..test_base import BaseTestCase
 
-class HelpersTestCase(BaseTestCase):
+class HelperTestCase(BaseTestCase):
     """
     Base class for testing helpers.
     Call super().setUp() in the

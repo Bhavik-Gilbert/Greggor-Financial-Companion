@@ -1,5 +1,4 @@
 from .test_template_tag_base import TemplateTagTestCase
-from financial_companion.models import User
 from financial_companion.helpers import GreggorTypes
 from financial_companion.templatetags import get_greggor
 import os
@@ -18,10 +17,16 @@ class GetGreggorTemplateTagTestCase(TemplateTagTestCase):
             greggor_path: str = get_greggor(greggor_type.lower())
             self.assertEqual(greggor_type.lower(), self._get_filaname(greggor_path))
     
-    def test_valid_function_lowers_case_for_filename(self):
-        greggor_input: str = "normal"
+    def test_valid_function_accepts_upper_case_for_greggor_type(self):
+        greggor_input: str = GreggorTypes.NORMAL
         self.assertTrue(greggor_input in GreggorTypes)
         greggor_path: str = get_greggor(greggor_input.upper())
+        self.assertEqual(greggor_input, self._get_filaname(greggor_path))
+    
+    def test_valid_function_accepts_lower_case_for_greggor_type(self):
+        greggor_input: str = GreggorTypes.NORMAL
+        self.assertTrue(greggor_input in GreggorTypes)
+        greggor_path: str = get_greggor(greggor_input.lower())
         self.assertEqual(greggor_input, self._get_filaname(greggor_path))
         
     def test_invalid_function_does_not_return_input_if_input_not_greggor_type(self):
