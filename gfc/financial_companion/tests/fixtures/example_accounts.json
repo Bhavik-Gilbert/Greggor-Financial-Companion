@@ -44,7 +44,7 @@
             "description": "this is another test account"
         }
      },
-     
+
      {
         "model": "financial_companion.PotAccount",
         "pk": 4,
@@ -54,7 +54,7 @@
             "currency": "GBP"
         }
      },
-     
+
      {
         "model": "financial_companion.Account",
         "pk": 5,
