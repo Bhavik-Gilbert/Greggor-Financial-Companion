@@ -7,7 +7,7 @@ class ProfileViewTestCase(ViewTestCase):
 
     def setUp(self):
         self.url = reverse('profile')
-        self.user = User.objects.get(username='@johndoe')
+        self.user = User.objects.get(username='@michaelkolling')
 
     def test_delete_transaction_url(self):
         self.assertEqual(self.url,'/profile/')
@@ -18,6 +18,7 @@ class ProfileViewTestCase(ViewTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/profile.html')
         self.assertContains(response, "Profile")
+        self.assertContains(response, self.user)
         self.assertContains(response, self.user.profile_picture)
         self.assertContains(response, self.user.username)
         self.assertContains(response, self.user.first_name)

@@ -16,11 +16,9 @@ class DeleteTransactionViewTestCase(ViewTestCase):
     def test_get_delete_transaction(self):
         self._login(self.user)
         transaction = Transaction.objects.get(id=2)
-        before_count = User.objects.count()
-        print(transaction.title)
+        before_count = Transaction.objects.count()
         response = self.client.get(self.url)
-        print(transaction.title)
-        after_count = User.objects.count()
+        after_count = Transaction.objects.count()
         self.assertEqual(before_count-1,after_count)
         response_url = reverse('dashboard')
         self.assertRedirects(response, response_url, status_code=302, target_status_code=200)

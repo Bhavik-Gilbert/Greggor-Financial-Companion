@@ -1,5 +1,5 @@
 from .test_view_base import ViewTestCase
-from financial_companion.models import User, Category, CategoryTarget
+from financial_companion.models import User, Category, CategoryTarget, Transaction
 from django.http import HttpResponse
 from django.urls import reverse
 from django.db.models import Q
@@ -26,10 +26,11 @@ class IndividualCategoryViewTestCase(ViewTestCase):
         category_targets: Category = response.context["category_targets"]
         for target in category_targets:
             self.assertTrue(isinstance(target, CategoryTarget))
-
-        # TODO: test for transactions
+        transactions: list[Transaction] = response.context["transactions"]
+        for transaction in transactions:
+            self.assertTrue(isinstance(transaction, Transaction))
     
-    # TODO: test for filter types
+    # TODO: test for filter types (do once can get transactions from user model)
     
     def test_valid_category_belongs_to_user(self):
         self._login(self.user)
