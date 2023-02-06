@@ -27,6 +27,8 @@
         <span class="bi-person-fill"></span>
       </a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-account-dropdown">
+        <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+        <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="{% url 'log_out' %}">Log out</a></li>
       </ul>
     </li>
