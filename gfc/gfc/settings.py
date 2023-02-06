@@ -145,6 +145,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = "log_in"
 LOGGED_IN_URL = "dashboard"
 
+# Number of transactions per page
+NUMBER_OF_TRANSACTIONS = 10
 
 #salt for secure string
 try:
@@ -155,3 +157,12 @@ except:
 
 # Default language for Faker
 FAKER_LOCALE = "en_GB"
+
+#Information for email password reset
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "greggorfinancialcompanion@gmail.com"
+EMAIL_HOST_PASSWORD = "ajoaavtgkujobzep"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False

@@ -1,0 +1,14 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Edit Details{% endblock %}
+
+<!-- Content -->
+{% block content %}
+    <h1>User Edit Details</h1>
+    <form action='{% url 'edit_user_details' %}' method="post" enctype='multipart/form-data'>
+      {% csrf_token %}
+      {% include 'partials/form.html' with form=form %}
+    <input type="submit" value="Submit" class="btn btn-primary">
+  </form>
+{% endblock %}

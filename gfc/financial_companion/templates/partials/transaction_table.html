@@ -1,0 +1,42 @@
+
+
+    <div class="row">
+      <div class="col-12">
+        <div>
+          {% if pk %}
+            <form action="{% url 'filter_transaction_request_with_pk' redirect_name=redirect_name pk=pk %}" method="post">
+          {% else %}
+            <form action="{% url 'filter_transaction_request' redirect_name=redirect_name %}" method="post">
+          {% endif %}
+            {% csrf_token %}
+            <div style="text-align:center">
+              <input type = "submit" name = "sent" value = "View Sent Transactions" class= "btn btn-primary">
+              <input type = "submit" name = "received" value = "View Received Transactions" class= "btn btn-primary">
+              <input type = "submit" name = "all" value = "View Transactions" class= "btn btn-primary">
+            </div>
+          </form>
+        </div>
+          &nbsp;
+        <table class="table  table-bordered table-striped" style="width:100%" style="text-align:center" >
+          <thead class = "table-primary">
+            <tr>
+                <th scope="col" style="text-align:center">Transaction ID</th>
+                <th scope="col" style="text-align:center">Transaction Name</th>
+                <th scope="col" style="text-align:center">Value</th>
+                <th scope="col" style="text-align:center">View More</th>
+            </tr>
+          </thead>
+          {% for transaction in transactions %}
+            <tr style="text-align:center">
+              <td>{{ transaction.id}}</td>
+              <td>{{ transaction.title }} </td>
+              <td>{{ transaction.amount }} </td>
+              <td> <a href="{% url 'individual_transaction' pk=transaction.id%}" class="btn btn-primary justify-content-center">View Info</a</td>
+
+            </tr>
+          </form>
+          {% endfor %}
+        </table>
+        {%include 'partials/pagination.html'  with page_obj=transactions %}
+      </div>
+    </div>

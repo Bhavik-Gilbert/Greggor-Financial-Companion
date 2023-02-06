@@ -14,9 +14,10 @@ The members of the team are:
 ## Badges
 ![GitHub last commit](https://img.shields.io/github/last-commit/Bhavik-Gilbert/Greggor-Financial-Companion)
 ![GitHub contributors](https://img.shields.io/github/contributors/Bhavik-Gilbert/Greggor-Financial-Companion)
-![Lines of code](https://img.shields.io/tokei/lines/github/Bhavik-Gilbert/Greggor-Financial-Companion)
-![GitHub repo size](https://img.shields.io/github/repo-size/Bhavik-Gilbert/Greggor-Financial-Companion)    
+![Github build](https://img.shields.io/github/actions/workflow/status/Bhavik-Gilbert/Greggor-Financial-Companion/django.yml)
 
+![Lines of code](https://img.shields.io/tokei/lines/github/Bhavik-Gilbert/Greggor-Financial-Companion)
+![GitHub repo size](https://img.shields.io/github/repo-size/Bhavik-Gilbert/Greggor-Financial-Companion)
 ![GitHub top language](https://img.shields.io/github/languages/top/Bhavik-Gilbert/Greggor-Financial-Companion)
 ![GitHub language count](https://img.shields.io/github/languages/count/Bhavik-Gilbert/Greggor-Financial-Companion)
 
@@ -59,6 +60,25 @@ Seed the development database with:
 
 ```
 $ python3 manage.py seed
+```
+
+Use the following accounts when testing the seeded database:
+
+Format (username, password)
+```
+ADMINS:
+@michaelkolling, Password123
+@adminuser, Password123
+
+NORMAL USER:
+@johndoe, Password123
+```
+
+
+Unseed the development database with:
+
+```
+$ python3 manage.py unseed
 ```
 
 Run all tests with:

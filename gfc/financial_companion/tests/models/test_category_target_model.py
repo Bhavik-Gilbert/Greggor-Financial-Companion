@@ -13,14 +13,14 @@ class CategoryTargetModelTestCase(ModelTestCase):
     def test_valid_target_category(self) -> None:
         self._assert_model_is_valid()
     
-    def test_valid_duplicate_category_id_duplicate_timespan(self) -> None:
-        self.second_model.category_id: int = self.test_model.category_id
+    def test_valid_duplicate_category_duplicate_timespan(self) -> None:
+        self.second_model.category: int = self.test_model.category
         self.second_model.timespan: str = self.test_model.timespan
         self.second_model.save()
         self._assert_model_is_valid()
     
-    def test_valid_duplicate_category_id_duplicate_transaction_type(self) -> None:
-        self.second_model.category_id: int = self.test_model.category_id
+    def test_valid_duplicate_category_duplicate_transaction_type(self) -> None:
+        self.second_model.category: int = self.test_model.category
         self.second_model.transaction_type: str = self.test_model.transaction_type
         self.second_model.save()
         self._assert_model_is_valid()
@@ -31,9 +31,9 @@ class CategoryTargetModelTestCase(ModelTestCase):
         self.second_model.save()
         self._assert_model_is_valid()
     
-    def test_invalid_duplicate_category_id_duplicate_transaction_type_duplicate_timespan(self) -> None:
+    def test_invalid_duplicate_category_duplicate_transaction_type_duplicate_timespan(self) -> None:
         with self.assertRaises(Exception) as raised:
-            self.second_model.category_id: int = self.test_model.category_id
+            self.second_model.category: int = self.test_model.category
             self.second_model.timespan: str = self.test_model.timespan
             self.second_model.transaction_type: str = self.test_model.transaction_type
             self.second_model.save()

@@ -5,8 +5,8 @@ from decimal import Decimal
 from ...helpers import CurrencyType
 from ...models import BankAccount, User
 
-class AccountModelTestCase(ModelTestCase):
-    """test file for the pot accounts model"""
+class BankAccountModelTestCase(ModelTestCase):
+    """test file for the bank accounts model"""
 
     def setUp(self) -> None:
         super().setUp()
@@ -144,7 +144,7 @@ class AccountModelTestCase(ModelTestCase):
         default_interest_zero_bank_model = BankAccount.objects.create(
             name = "bank account",
             description = "my first bank account",
-            user_id = User.objects.get(id=1),
+            user = User.objects.get(id=1),
             balance = 100,
             currency = CurrencyType.GBP,
             bank_name = "Kush Corp",

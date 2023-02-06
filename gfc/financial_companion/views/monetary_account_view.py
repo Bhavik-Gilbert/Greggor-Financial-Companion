@@ -2,7 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django import forms
-
+from django.contrib import messages
 from ..helpers import MonetaryAccountType
 from ..forms import MonetaryAccountForm
 from ..models import PotAccount, User
@@ -42,7 +42,7 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
 
     # check is id valid
     try:
-         this_monetary_account: PotAccount = PotAccount.objects.get_subclass(id=pk, user_id=request.user.id)
+         this_monetary_account: PotAccount = PotAccount.objects.get_subclass(id=pk, user=request.user.id)
     except Exception:
         return redirect("dashboard")
     
@@ -65,3 +65,19 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
         "monetary_account_types": MonetaryAccountType,
         "form": form
         })
+    
+
+@login_required
+def delete_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
+    """View to delete monetary account"""
+
+    # check is id valid
+    try:
+         this_monetary_account: PotAccount = PotAccount.objects.get_subclass(id=pk, user=request.user.id)
+    except Exception:
+        return redirect("dashboard")
+    this_monetary_account.delete()
+    messages.add_message(request, messages.WARNING, "This account has been deleted")
+    return redirect("view_accounts")
+
+    
