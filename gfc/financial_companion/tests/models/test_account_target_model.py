@@ -2,7 +2,7 @@ from .test_model_base import ModelTestCase
 from django.db.backends.sqlite3.base import IntegrityError
 from ...models import AccountTarget
 
-class CategoryTargetModelTestCase(ModelTestCase):
+class AccountTargetModelTestCase(ModelTestCase):
     """Test file for AccountTarget model class"""
 
     def setUp(self) -> None:

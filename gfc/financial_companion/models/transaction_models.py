@@ -5,23 +5,15 @@ from django.db.models import (
     ImageField,
     DateTimeField,
     ForeignKey,
-    CASCADE
+    CASCADE,SET_NULL
 )
 from .accounts_model import Account
 from .category_model import Category
-from ..helpers.enums import CurrencyType
+from ..helpers import CurrencyType, random_filename
+import os
 
 def change_filename(instance, filename):
-    existing_filename = filename.split('.')[-1]
-    #get filename
-    if instance.pk:
-        filename = '{}.{}'.format(instance.pk, existing_filename)
-    else:
-        # set a random filename
-        filename_strings_to_add = [random.choice(string.ascii_letters), str(datetime.now())]
-        filename = '{}.{}'.format(''.join(filename_strings_to_add),existing_filename)
-
-    return os.path.join('transactions', filename)
+    return os.path.join('transactions', random_filename(filename))
 
 class AbstractTransaction(Model):
     """Abstract model for recording a transaction"""
@@ -44,7 +36,7 @@ class AbstractTransaction(Model):
         upload_to='change_filename'
     )
 
-    category = ForeignKey(Category, on_delete = CASCADE)
+    category = ForeignKey(Category, on_delete = SET_NULL, null = True, blank = True)
 
     amount: DecimalField = DecimalField(
         blank = False,
