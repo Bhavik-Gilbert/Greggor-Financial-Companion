@@ -30,8 +30,6 @@ class IndividualCategoryViewTestCase(ViewTestCase):
         for transaction in transactions:
             self.assertTrue(isinstance(transaction, Transaction))
     
-    # TODO: test for filter types (do once can get transactions from user model)
-    
     def test_valid_category_belongs_to_user(self):
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url)
@@ -69,3 +67,10 @@ class IndividualCategoryViewTestCase(ViewTestCase):
 
     def test_invalid_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)
+
+    def test_invalid_filter_type_redirect_reset_to_all(self):
+        self._login(self.user)
+        url: str = reverse("individual_category", kwargs={"pk": self.category.id, "filter_type": "invalid"})
+        response: HttpResponse = self.client.get(url, follow=True)
+        response_url: str = reverse("dashboard")
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
