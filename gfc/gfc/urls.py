@@ -63,10 +63,6 @@ urlpatterns = [
         name="filter_transaction_request_with_pk"
     ),
     re_path(
-        'filter_individual_account_request/(?P<pk>\d+)',
-        views.filter_individual_account_request,
-        name="filter_individual_account_request"),
-    re_path(
         'individual_account/(?P<pk>\d+)/$',
         views.individual_account_redirect,
         name="individual_account_redirect"
