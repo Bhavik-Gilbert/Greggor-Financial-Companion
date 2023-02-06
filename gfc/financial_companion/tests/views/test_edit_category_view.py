@@ -16,7 +16,7 @@ class EditCategoryViewTestCase(ViewTestCase):
             }
         self.user = User.objects.get(username='@johndoe')
 
-    def test_log_out_url(self):
+    def test_edit_category_url(self):
         self.assertEqual(self.url,'/edit_category/1')
 
     def test_get_edit_category(self):

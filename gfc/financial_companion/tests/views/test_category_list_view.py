@@ -4,7 +4,7 @@ from financial_companion.models import User, Category
 from financial_companion.forms import UserLogInForm
 
 
-class ViewAccountsViewTestCase(ViewTestCase):
+class CategoryListViewCase(ViewTestCase):
     """Tests of the user view categories view."""
 
     def setUp(self):
