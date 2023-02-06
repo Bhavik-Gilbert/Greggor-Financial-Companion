@@ -17,6 +17,7 @@ def change_password_view(request: HttpRequest) -> HttpResponse:
                 form.save(instance=request.user)
                 messages.add_message(request, messages.SUCCESS, "Password successfully changed")
                 return redirect('dashboard')
-        messages.add_message(request, messages.ERROR, "The password provided is incorrect")
+        else:
+            messages.add_message(request, messages.ERROR, "The password provided is incorrect")
     form = UserChangePasswordForm()
     return render(request, 'pages/change_password.html', {'form': form})
