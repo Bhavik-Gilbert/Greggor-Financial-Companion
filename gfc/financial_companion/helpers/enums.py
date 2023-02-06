@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class MessageType(models.TextChoices):
     """ENUM defining bootstrap message types"""
     DANGER: str = "danger"
@@ -9,12 +10,14 @@ class MessageType(models.TextChoices):
     PRIMARY: str = "primary"
     SECONDARY: str = "secondary"
 
+
 class Timespan(models.TextChoices):
     """ENUM for generic timespans"""
     DAY: str = "day"
     WEEK: str = "week"
     MONTH: str = "month"
     YEAR: str = "year"
+
 
 class TransactionType(models.TextChoices):
     """ENUM for transaction types"""
@@ -25,11 +28,12 @@ class TransactionType(models.TextChoices):
     def get_send_list() -> list[str]:
         """Filter list for sent transactions"""
         return ["sent", "all"]
-        
+
     @staticmethod
     def get_received_list() -> list[str]:
         """Filter list for received transactions"""
         return ["all", "received"]
+
 
 class CurrencyType(models.TextChoices):
     """ENUM for currency types"""
@@ -46,10 +50,12 @@ class CurrencyType(models.TextChoices):
     CHF: str = "CHF"
     KZT: str = "KZT"
 
+
 class MonetaryAccountType(models.TextChoices):
     """ENUM for transaction types"""
     POT: str = "pot"
     BANK: str = "bank"
+
 
 class GreggorTypes(models.TextChoices):
     """ENUM for greggor logo types"""

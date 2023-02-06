@@ -20,7 +20,10 @@ def log_in_view(request: HttpRequest) -> HttpResponse:
                 login(request, user)
                 redirect_url = request.POST.get('next') or 'dashboard'
                 return redirect(redirect_url)
-        messages.add_message(request, messages.ERROR, "The credentials provided are invalid!")
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "The credentials provided are invalid!")
     form = UserLogInForm()
     next = request.GET.get('next') or ''
     return render(request, 'pages/log_in.html', {'form': form, 'next': next})
