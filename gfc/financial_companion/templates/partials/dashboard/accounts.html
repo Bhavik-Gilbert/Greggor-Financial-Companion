@@ -6,13 +6,13 @@
       <div class="accordion-item">
         <h2 class="accordion-header" id="heading{{ account.name }}">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ account.name }}" aria-expanded="true" aria-controls="collapse{{ account.name }}">
-            Account Name: {{ account.name }}
+            {{ account.name.capitalize }}
           </button>
         </h2>
         <div id="collapse{{ account.name }}" class="accordion-collapse collapse" aria-labelledby="heading{{ account.name }}" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            <p><strong>Account Description: </strong>{{ account.description }}</p>
-            <p><strong>Account Balance </strong>{{ account.currency.upper}}: {{account.balance}}</p>
+            <p><strong>Description: </strong>{{ account.description }}</p>
+            <p><strong>Balance </strong>{{ account.currency.upper}}: {{account.balance}}</p>
           </div>
         </div>
       </div>

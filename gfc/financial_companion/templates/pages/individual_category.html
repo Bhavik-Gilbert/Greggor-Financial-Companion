@@ -14,7 +14,7 @@
                 </div>
                 <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-end">
                     <a href="{% url 'edit_category' pk=category.id %}"><button type="button" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit</button></a>
-                    <button type="button" class="btn btn-danger px-3 mx-2 py-1 mb-md-4">Delete</button>
+                    <a href="{% url 'delete_category' pk=category.id %}"><button type="button" class="btn btn-danger px-3 mx-2 py-1 mb-md-4" onclick="showAlert('category')">Delete</button></a>
                 </div>
             </div>
         </div>
@@ -30,4 +30,9 @@
         </div>
     </div>
 </div>
+
+<br>
+
+{%include 'partials/transaction_table.html' with transactions=transactions redirect_name="individual_category" pk=category.id %}
+
 {% endblock %}
