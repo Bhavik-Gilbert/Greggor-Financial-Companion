@@ -44,18 +44,18 @@ urlpatterns = [
         name="individual_account"
     ),
     re_path(
-        'filter_transaction_request/(?P<redirect_name>\w+)/$', 
-        views.filter_transaction_request, 
+        'filter_transaction_request/(?P<redirect_name>\w+)/$',
+        views.filter_transaction_request,
         name="filter_transaction_request"
     ),
     re_path(
-        'filter_transaction_request_with_pk/(?P<redirect_name>\w+)/(?P<pk>\d+)/$', 
-        views.filter_transaction_request_with_pk, 
+        'filter_transaction_request_with_pk/(?P<redirect_name>\w+)/(?P<pk>\d+)/$',
+        views.filter_transaction_request_with_pk,
         name="filter_transaction_request_with_pk"
     ),
     re_path(
-        'filter_individual_account_request/(?P<pk>\d+)', 
-        views.filter_individual_account_request, 
+        'filter_individual_account_request/(?P<pk>\d+)',
+        views.filter_individual_account_request,
         name="filter_individual_account_request"),
     re_path(
         'individual_account/(?P<pk>\d+)/$',
@@ -81,5 +81,10 @@ urlpatterns = [
         'individual_category/(?P<pk>\d+)/$',
         views.individual_category_redirect,
         name="individual_category_redirect"
+    ),
+    re_path(
+        'individual_transaction/(?P<pk>\d+)/$',
+        views.individual_transaction_view,
+        name="individual_transaction"
     ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

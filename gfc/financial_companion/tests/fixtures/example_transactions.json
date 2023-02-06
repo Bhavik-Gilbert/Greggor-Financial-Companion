@@ -43,7 +43,7 @@
             "receiver_account" : 3,
             "time_of_transaction" : "2023-01-01T12:00:00+00:00"
           }
-      },    
+      },
 
     {
         "model": "financial_companion.Transaction",

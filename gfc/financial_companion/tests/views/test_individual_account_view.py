@@ -6,7 +6,7 @@ from django.db.models import Q
 
 
 class IndividualAccountViewTestCase(ViewTestCase):
-    """Unit tests of the individual category view"""
+    """Unit tests of the individual account view"""
 
     def setUp(self):
         self.user: User = User.objects.get(username="@johndoe")
@@ -24,13 +24,13 @@ class IndividualAccountViewTestCase(ViewTestCase):
         account: Account = response.context["account"]
         self.assertTrue(isinstance(account, PotAccount))
 
-    
+
     def test_valid_account_belongs_to_user(self):
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/individual_account.html")
-    
+
     def test_invalid_account_does_not_belong_to_user(self):
         self._login(self.user)
         account: PotAccount = PotAccount.objects.get_subclass(~Q(user=self.user))
@@ -42,5 +42,3 @@ class IndividualAccountViewTestCase(ViewTestCase):
 
     def test_invalid_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)
-
-    
