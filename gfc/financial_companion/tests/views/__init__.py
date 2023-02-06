@@ -18,3 +18,4 @@ from .test_log_in_view import LogInViewTestCase
 from .test_log_out_view import LogOutViewTestCase
 from .test_sign_up_view import SignUpViewTestCase
 from .test_view_user_pot_accounts_view import ViewAccountsViewTestCase
+from .test_delete_transaction_view import DeleteTransactionViewTestCase
