@@ -12,11 +12,11 @@
           <div id="collapse{{ transaction.title}}" class="accordion-collapse collapse" aria-labelledby="heading{{ transaction.title }}" data-bs-parent="#accordionExample">
             <div class="accordion-body">
               <p><strong>Transaction Description: </strong>{{transaction.description }}</p>
-              <p><strong>Transaction Category: </strong>{{transaction.category.name}}</p>
+              <p><strong>Transaction Category: </strong>{{transaction.category.name.capitalize}}</p>
               <p><strong>Transaction Amount: </strong>{{transaction.amount}}</p>
               <p><strong>Transaction Currency: </strong>{{transaction.currency.upper}}</p>
-              <p><strong>Sender Account: </strong>{{transaction.sender_account.name}}</p>
-              <p><strong>Reciver Account: </strong>{{transaction.receiver_account.name}}</p>
+              <p><strong>Sender Account: </strong>{{transaction.sender_account.name.capitalize}}</p>
+              <p><strong>Reciver Account: </strong>{{transaction.receiver_account.name.capitalize}}</p>
               <p><strong>Time of Transaction: </strong>{{transaction.time_of_transaction}}</p>
             </div>
           </div>

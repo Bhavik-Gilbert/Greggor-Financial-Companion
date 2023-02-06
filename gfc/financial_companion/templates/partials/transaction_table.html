@@ -31,7 +31,7 @@
               <td>{{ transaction.id}}</td>
               <td>{{ transaction.title }} </td>
               <td>{{ transaction.amount }} </td>
-              <td> <input type = "submit" name = "view" value = "View More" class= "btn btn-primary"></td>
+              <td> <a href="{% url 'individual_transaction' pk=transaction.id%}" class="btn btn-primary justify-content-center">View Info</a</td>
 
             </tr>
           </form>

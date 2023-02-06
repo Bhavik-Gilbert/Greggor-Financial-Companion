@@ -1,6 +1,5 @@
 from .test_account_target_model import AccountTargetModelTestCase
 from .test_accounts_model import AccountModelTestCase
-from .test_abstract_transaction_model import AbstractTransactionModelTestCase
 from .test_recurring_transaction_model import RecurringTransactionTestCase
 from .test_bank_account_model import BankAccountModelTestCase
 from .test_category_model import CategoryModelTestCase

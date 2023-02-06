@@ -12,20 +12,11 @@ from django.db.models import (
 from django.core.exceptions import ValidationError
 from .accounts_model import Account
 from .category_model import Category
-from ..helpers import CurrencyType, Timespan
-
+from ..helpers import CurrencyType, Timespan, random_filename
+import os
 
 def change_filename(instance, filename):
-    existing_filename = filename.split('.')[-1]
-    #get filename
-    if instance.pk:
-        filename = '{}.{}'.format(instance.pk, existing_filename)
-    else:
-        # set a random filename
-        filename_strings_to_add = [random.choice(string.ascii_letters), str(datetime.now())]
-        filename = '{}.{}'.format(''.join(filename_strings_to_add),existing_filename)
-
-    return os.path.join('transactions', filename)
+    return os.path.join('transactions', random_filename(filename))
 
 class AbstractTransaction(Model):
     """Abstract model for recording a transaction"""
@@ -80,21 +71,11 @@ class Transaction(AbstractTransaction):
     class Meta:
         ordering = ['-time_of_transaction']
 
-
-# def validate_date(start_date, end_date):
-#     if end_date > start_date:
-#         raise ValidationError("End date is after start date.", params={'start_date': start_date, 'end_date': end_date})
-#     elif start_date > end_date:
-#         raise ValidationError("Start date precedes end date.", params={'start_date': start_date, 'end_date': end_date})
-#     elif start_date == end_date:
-#         raise ValidationError("Start and End date are on the same day.", params={'start_date': start_date, 'end_date': end_date})
-
 class RecurringTransaction(AbstractTransaction):
 
     start_date: DateField = DateField(
         blank = False,
         auto_now_add=True,
-        # validators= [validate_date],
     )
 
     interval: CharField = CharField(
@@ -104,7 +85,6 @@ class RecurringTransaction(AbstractTransaction):
 
     end_date: DateField = DateField(
         blank = False,
-        # validators= [validate_date],
     )
 
     class Meta:

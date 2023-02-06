@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 from django.urls import path, re_path
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 
 from financial_companion import views
 
@@ -38,21 +39,29 @@ urlpatterns = [
     path('change_password/', views.change_password_view, name="change_password"),
     path('edit_category/<int:pk>', views.edit_category_view, name = "edit_category"),
     path('delete_category/<int:pk>', views.delete_category_view, name = "delete_category"),
+    path('reset_password', PasswordResetView.as_view(template_name="pages/email/password_reset.html"), name='password_reset'),
+    path('reset_password/done', PasswordResetDoneView.as_view(template_name="pages/email/password_reset_done.html"), name='password_reset_done'),
+    path('reset_password/confirm/<uidb64>[0-9A-Za-z]+)-<token>/', PasswordResetConfirmView.as_view(template_name="pages/email/password_reset_confirm.html"), name='password_reset_confirm'),
+    path('reset_password/complete/', PasswordResetCompleteView.as_view(template_name="pages/email/password_reset_complete.html"), name='password_reset_complete'),
     re_path(
         'individual_account/(?P<pk>\d+)/(?P<filter_type>\w+)/$',
         views.individual_account_view,
         name="individual_account"
     ),
     re_path(
-        'filter_transaction_request/(?P<redirect_name>\w+)/$', 
-        views.filter_transaction_request, 
+        'filter_transaction_request/(?P<redirect_name>\w+)/$',
+        views.filter_transaction_request,
         name="filter_transaction_request"
     ),
     re_path(
-        'filter_transaction_request_with_pk/(?P<redirect_name>\w+)/(?P<pk>\d+)/$', 
-        views.filter_transaction_request_with_pk, 
+        'filter_transaction_request_with_pk/(?P<redirect_name>\w+)/(?P<pk>\d+)/$',
+        views.filter_transaction_request_with_pk,
         name="filter_transaction_request_with_pk"
     ),
+    re_path(
+        'filter_individual_account_request/(?P<pk>\d+)',
+        views.filter_individual_account_request,
+        name="filter_individual_account_request"),
     re_path(
         'individual_account/(?P<pk>\d+)/$',
         views.individual_account_redirect,
@@ -77,5 +86,10 @@ urlpatterns = [
         'individual_category/(?P<pk>\d+)/$',
         views.individual_category_redirect,
         name="individual_category_redirect"
+    ),
+    re_path(
+        'individual_transaction/(?P<pk>\d+)/$',
+        views.individual_transaction_view,
+        name="individual_transaction"
     ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
