@@ -4,6 +4,7 @@ from financial_companion.forms import AddTransactionForm
 from ..models import Transaction
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 
 @login_required
 def add_transaction_view(request: HttpRequest) -> HttpResponse:
@@ -32,3 +33,14 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
                 return redirect('dashboard')
         form = AddTransactionForm(instance=transaction)
         return render(request, "pages/add_transaction.html", {'form': form, 'edit': True, 'pk':pk})
+
+@login_required
+def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
+    try:
+        transaction = Transaction.objects.get(id=pk)
+    except ObjectDoesNotExist:
+        return redirect('dashboard')
+    else:
+        transaction.delete()
+        messages.add_message(request, messages.WARNING, "The transaction has been deleted")
+        return redirect('dashboard')

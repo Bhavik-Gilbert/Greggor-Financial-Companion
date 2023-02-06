@@ -20,7 +20,12 @@
               <p><strong>Time of Transaction: </strong>{{transaction.time_of_transaction}}</p>
               <form action="{%  url 'edit_transaction' transaction.id %}" method="post">
                 {% csrf_token %}
-              <input type = "submit" name = "edit" value = "Edit" class= "btn btn-primary">
+                  <button class="btn btn-primary">Edit</button>
+              </form>
+              &nbsp;
+              <form action="{%  url 'delete_transaction' transaction.id %}" method="post">
+                {% csrf_token %}
+                  <button class="btn btn-primary">Delete</button>
               </form>
             </div>
           </div>
