@@ -47,3 +47,14 @@ def individual_account_view(request: HttpRequest, pk: int, filter_type: str) -> 
 @login_required
 def individual_account_redirect(request: HttpRequest, pk: int) -> HttpResponse:
     return redirect('individual_account', pk = pk, filter_type="all")
+
+@login_required
+def filter_individual_account_request(request, pk: int):
+    if 'sent' in request.POST:
+        return redirect(reverse('individual_account', kwargs={'pk': pk, 'filter_type': "sent"}))
+    elif 'received' in request.POST:
+        return redirect(reverse('individual_account', kwargs={'pk': pk, 'filter_type': "received"}))
+    elif 'all' in request.POST:
+        return redirect(reverse('individual_account', kwargs={'pk': pk, 'filter_type': "all"}))
+    else:
+        return redirect('dashboard')
