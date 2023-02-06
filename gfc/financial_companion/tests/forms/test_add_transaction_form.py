@@ -12,7 +12,7 @@ class AddTransactionFormTestCase(FormTestCase):
     """Test of the add transaction form"""
     def setUp(self):
         image_path = "financial_companion/tests/helpers/dragon.jpeg"
-        self.new_image = SimpleUploadedFile(name='dragon.jpeg', content=open(image_path, 'rb').read(), content_type='image/jpeg')
+        # self.new_image = SimpleUploadedFile(name='dragon.jpeg', content=open(image_path, 'rb').read(), content_type='image/jpeg')
         self.form_input = {
             "title": "Test",
             "description": "This is a test transaction",
