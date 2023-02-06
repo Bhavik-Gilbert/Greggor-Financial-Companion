@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.conf import settings
 from ..models import Transaction, User, PotAccount
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from financial_companion.helpers import TransactionType
 
 
 @login_required
@@ -13,25 +14,15 @@ def individual_account_view(request: HttpRequest, pk: int, filter_type: str) -> 
     user: User = request.user
     
     try:
-        account = PotAccount.objects.get_subclass(id=pk, user=user)
-        # print(account)
+        account: PotAccount = PotAccount.objects.get_subclass(id=pk, user=user)
     except PotAccount.DoesNotExist:
-        # print("account does not exist")
         return redirect("dashboard")
 
-
-    transactions = []
-
-    filter_send_types = ["sent", "all"]
-    filter_receive_types = ["all", "received"]
     
-    if not(filter_type in filter_send_types or filter_type in filter_receive_types):
+    if not(filter_type in TransactionType.get_send_list() or filter_type in TransactionType.get_received_list()):
         return redirect('dashboard')
 
-    if filter_type in filter_send_types:
-        transactions = [*transactions, *Transaction.objects.filter(sender_account=account)]
-    if filter_type in filter_receive_types:
-        transactions = [*transactions, *Transaction.objects.filter(receiver_account=account)]
+    transactions: list[Transaction] = account.get_account_transactions(filter_type)
     
     page = request.GET.get('page', settings.NUMBER_OF_TRANSACTIONS)
     paginator = Paginator(transactions, 10)

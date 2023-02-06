@@ -21,6 +21,16 @@ class TransactionType(models.TextChoices):
     INCOME: str = "income"
     EXPENSE: str = "expense"
 
+    @staticmethod
+    def get_send_list() -> list[str]:
+        """Filter list for sent transactions"""
+        return ["sent", "all"]
+        
+    @staticmethod
+    def get_received_list() -> list[str]:
+        """Filter list for received transactions"""
+        return ["all", "received"]
+
 class CurrencyType(models.TextChoices):
     """ENUM for currency types"""
     GBP: str = "GBP"

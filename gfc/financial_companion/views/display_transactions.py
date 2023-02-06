@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
-from ..models import Transaction, PotAccount
+from ..models import Transaction, User
+from financial_companion.helpers import TransactionType
 from django.http import HttpRequest, HttpResponse
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.urls import reverse
@@ -8,21 +9,12 @@ from django.conf import settings
 
 @login_required
 def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResponse:
-    user = request.user
-    user_accounts = PotAccount.objects.filter(user = user.id)
-    transactions = []
-
-    filter_send_types = ["sent", "all"]
-    filter_receive_types = ["all", "received"]
+    user: User = request.user
     
-    if not(filter_type in filter_send_types or filter_type in filter_receive_types):
+    if not(filter_type in TransactionType.get_send_list() or filter_type in TransactionType.get_received_list()):
         return redirect('dashboard')
 
-    for account in user_accounts:
-        if filter_type in filter_send_types:
-            transactions = [*transactions, *Transaction.objects.filter(sender_account=account)]
-        if filter_type in filter_receive_types:
-            transactions = [*transactions, *Transaction.objects.filter(receiver_account=account)]
+    transactions: list[Transaction] = user.get_user_transactions(filter_type)
     
     page = request.GET.get('page', settings.NUMBER_OF_TRANSACTIONS)
     paginator = Paginator(transactions, 10)

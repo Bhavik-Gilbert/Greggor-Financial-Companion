@@ -10,8 +10,9 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 from model_utils.managers import InheritanceManager
 
-from .user_model import User
-from ..helpers import CurrencyType, MonetaryAccountType
+from financial_companion.models import User
+import financial_companion.models as fcmodels
+from ..helpers import CurrencyType, MonetaryAccountType, TransactionType
 
 class Account(Model):
     """model for all accounts"""
@@ -26,6 +27,17 @@ class Account(Model):
     )
 
     objects = InheritanceManager()
+
+    def get_account_transactions(self, filter_type: str = "all") -> list:
+        """Return filtered list of the accounts transactions"""
+        transactions: list[fcmodels.Transaction] = []
+
+        if filter_type in TransactionType.get_send_list():
+            transactions = [*transactions, *fcmodels.Transaction.objects.filter(sender_account=self)]
+        if filter_type in TransactionType.get_received_list():
+            transactions = [*transactions, *fcmodels.Transaction.objects.filter(receiver_account=self)]
+        
+        return transactions
 
 class PotAccount(Account):
     user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
