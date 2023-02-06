@@ -33,8 +33,12 @@ urlpatterns = [
     path('add_monetary_account/', views.add_monetary_account_view, name="add_monetary_account"),
     path('view_accounts/', views.view_user_pot_accounts, name='view_accounts'),
     path('create_category/', views.create_category_view, name="create_category"),
+    path('add_transaction/', views.add_transaction_view, name='add_transaction'),
+    path('edit_transaction/<int:pk>', views.edit_transaction_view, name='edit_transaction'),
+    path('delete_transaction/<int:pk>', views.delete_transaction_view, name='delete_transaction'),
     path('view_transactions/<str:filter_type>', views.view_users_transactions, name="view_transactions"),
     path('edit_user_details/', views.edit_user_details_view, name="edit_user_details"),
+    path('profile/', views.profile_view, name="profile"),
     path('view_transactions/', views.view_users_transactions_redirect, name="view_transactions_redirect"),
     path('change_password/', views.change_password_view, name="change_password"),
     path('edit_category/<int:pk>', views.edit_category_view, name = "edit_category"),
@@ -93,3 +97,6 @@ urlpatterns = [
         name="individual_transaction"
     ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+if settings.DEBUG:
+    urlpatterns+= static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

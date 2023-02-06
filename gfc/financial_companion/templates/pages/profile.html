@@ -1,0 +1,29 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Profile{% endblock %}
+
+<!-- Content -->
+{% block content %}
+<div class="container ">
+  <div class="row">
+   <div class="card mb-3 w-75 mx-auto mt-2 text-center" >
+      <h5 class="card-title "><b><u>Profile</u></b></h5>
+      {%if user.profile_picture.url == None %}
+      <p><img src="{{ user.profile_picture.url }}" alt="Profile picture of {{ user.username }}" class="rounded center " ></p>
+      {% else %}
+        <p class="card-text"><b>Profile Picture:</b> Your profile picture has not been uploaded yet</p>
+      {% endif %}
+      <p class="card-text"><b>Username:</b> {{user.username}}</p>
+      <p class="card-text"><b>Name:</b> {{user.first_name}} {{user.last_name}}</p>
+      <p class="card-text"><b>Email:</b> {{user.email}}</p>
+      <p class="card-text"><b>Bio:</b>  {{user.bio}}</p>
+        <form action="{%  url 'edit_user_details'%}" method="post">
+            {% csrf_token %}
+            <input type = "submit" name= "edit" value = "Edit" class= "btn btn-primary">
+        </form>
+  </div>
+
+  </div>
+</div>
+{% endblock %}
