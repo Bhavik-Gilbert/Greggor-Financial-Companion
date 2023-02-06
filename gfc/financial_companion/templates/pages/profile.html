@@ -22,6 +22,11 @@
             {% csrf_token %}
             <input type = "submit" name= "edit" value = "Edit" class= "btn btn-primary">
         </form>
+        &nbsp
+        <form action="{%  url 'change_password' %}" method="post">
+          {% csrf_token %}
+            <button class="btn btn-primary">Change Password</button>
+        </form>
   </div>
 
   </div>
