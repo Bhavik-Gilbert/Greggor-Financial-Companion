@@ -18,15 +18,11 @@
       <p class="card-text"><b>Name:</b> {{user.first_name}} {{user.last_name}}</p>
       <p class="card-text"><b>Email:</b> {{user.email}}</p>
       <p class="card-text"><b>Bio:</b>  {{user.bio}}</p>
-        <form action="{%  url 'edit_user_details'%}" method="post">
-            {% csrf_token %}
-            <input type = "submit" name= "edit" value = "Edit" class= "btn btn-primary">
-        </form>
+      <div align="center" class="w-50 container-fluid">
+          <a class="btn btn-primary" href="{% url 'edit_user_details' %}">Edit Profile</a>
         &nbsp
-        <form action="{%  url 'change_password' %}" method="post">
-          {% csrf_token %}
-            <button class="btn btn-primary">Change Password</button>
-        </form>
+        <a class="btn btn-primary" href="{% url 'change_password' %}">Change Password</a>
+      </div>
   </div>
 
   </div>
