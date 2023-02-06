@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
 from django.urls import path, re_path
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 
 from financial_companion import views
 
@@ -35,7 +36,6 @@ urlpatterns = [
     path('add_transaction/', views.add_transaction_view, name='add_transaction'),
     path('edit_transaction/<int:pk>', views.edit_transaction_view, name='edit_transaction'),
     path('delete_transaction/<int:pk>', views.delete_transaction_view, name='delete_transaction'),
-    path('filter_transaction_request/', views.filter_transaction_request, name="filter_transaction_request"),
     path('view_transactions/<str:filter_type>', views.view_users_transactions, name="view_transactions"),
     path('edit_user_details/', views.edit_user_details_view, name="edit_user_details"),
     path('profile/', views.profile_view, name="profile"),
@@ -43,6 +43,10 @@ urlpatterns = [
     path('change_password/', views.change_password_view, name="change_password"),
     path('edit_category/<int:pk>', views.edit_category_view, name = "edit_category"),
     path('delete_category/<int:pk>', views.delete_category_view, name = "delete_category"),
+    path('reset_password', PasswordResetView.as_view(template_name="pages/email/password_reset.html"), name='password_reset'),
+    path('reset_password/done', PasswordResetDoneView.as_view(template_name="pages/email/password_reset_done.html"), name='password_reset_done'),
+    path('reset_password/confirm/<uidb64>[0-9A-Za-z]+)-<token>/', PasswordResetConfirmView.as_view(template_name="pages/email/password_reset_confirm.html"), name='password_reset_confirm'),
+    path('reset_password/complete/', PasswordResetCompleteView.as_view(template_name="pages/email/password_reset_complete.html"), name='password_reset_complete'),
     re_path(
         'individual_account/(?P<pk>\d+)/(?P<filter_type>\w+)/$',
         views.individual_account_view,
