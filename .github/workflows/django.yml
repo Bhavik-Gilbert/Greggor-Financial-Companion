@@ -25,6 +25,9 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+    - name: Autopep Python Formatter
+      run: |
+          autopep8 --aggressive --in-place --recursive .
     - name: Run Tests
       run: |
           coverage run gfc/manage.py test financial_companion --timing
