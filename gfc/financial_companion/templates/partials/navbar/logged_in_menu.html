@@ -17,7 +17,7 @@
     </li>
     <li class="nav-item">
       <a class="nav-link" href="{% url 'categories_list_redirect' %}">
-        <p class="text-white h6">Cateogories</p>
+        <p class="text-white h6">Categories</p>
       </a>
     </li>
   </ul>
@@ -27,6 +27,8 @@
         <span class="bi-person-fill"></span>
       </a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-account-dropdown">
+        <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+        <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="{% url 'log_out' %}">Log out</a></li>
       </ul>
     </li>

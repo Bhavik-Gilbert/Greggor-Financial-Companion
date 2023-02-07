@@ -27,13 +27,13 @@ def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResp
     page = request.GET.get('page', settings.NUMBER_OF_TRANSACTIONS)
     paginator = Paginator(transactions, 10)
     try:
-        listOfTransactions = paginator.page(page)
+        list_of_transactions = paginator.page(page)
     except PageNotAnInteger:
-        listOfTransactions = paginator.page(1)
+        list_of_transactions = paginator.page(1)
     except EmptyPage:
-        listOfTransactions = paginator.page(paginator.num_pages)
+        list_of_transactions = paginator.page(paginator.num_pages)
     
-    return render(request, "pages/display_transactions.html", {'transactions': listOfTransactions})
+    return render(request, "pages/display_transactions.html", {'transactions': list_of_transactions})
 
 @login_required
 def view_users_transactions_redirect(request: HttpRequest) -> HttpResponse:
