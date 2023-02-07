@@ -11,8 +11,12 @@ from django.db.utils import IntegrityError
 from django.db.models import Q
 import datetime
 from random import randint, random
+from gfc.tasks import testing
 import random
+from django_q.models import Schedule
 from financial_companion.helpers import TransactionType, CurrencyType, MonetaryAccountType, Timespan
+from django.utils import timezone
+from datetime import datetime
 
 class Command(BaseCommand):
     PASSWORD = "Password123"
@@ -30,6 +34,18 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.create_basic_accounts()
         self.create_users()
+
+        date_time_str = f'{datetime.now(tz=None).month + 1}-01-{datetime.now(tz=None).year}'
+        date_object = datetime.strptime(date_time_str, '%m-%d-%Y').date()
+        
+        Schedule.objects.create(
+            name = "Monthly Newsletter",
+            func='gfc.tasks.testing',
+            minutes=1,
+            repeats=-1,
+            schedule_type=Schedule.MONTHLY,
+            next_run = date_object)
+
         print("SEEDING COMPLETE")
 
     def create_basic_accounts(self):
@@ -165,3 +181,5 @@ class Command(BaseCommand):
                 currency = self.choose_random_enum(CurrencyType),
                 account = account
             )
+    
+    

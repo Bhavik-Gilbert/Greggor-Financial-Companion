@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'financial_companion',
-    'widget_tweaks'
+    'widget_tweaks',
+    'django_q'
 ]
 
 MIDDLEWARE = [
@@ -166,3 +167,12 @@ EMAIL_HOST_PASSWORD = "ajoaavtgkujobzep"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+Q_CLUSTER = {
+    'name': "shop",
+   'retry': 60,
+   'timeout': 30,
+   'workers': 4,
+   'orm': 'default'
+}
+
