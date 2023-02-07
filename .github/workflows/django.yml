@@ -31,5 +31,5 @@ jobs:
           coverage report --omit="./venv/*,*tests*,*apps.py,*manage.py,*__init__.py,*migrations*,*asgi*,*wsgi*,*admin.py,*urls.py"
     - name: Autopep Report
       run: |
+          echo "If you run into errors here, run the command 'autopep8 --aggressive --in-place --recursive .' to resolve this issue"
           pycodestyle . --max-line-length=200 --exclude='./venv/*,*apps.py,*manage.py,*__init__.py,*migrations*,*asgi*,*wsgi*' --show-source
-          echo "::error run the command 'autopep8 --aggressive --in-place --recursive .' to resolve this issue"
