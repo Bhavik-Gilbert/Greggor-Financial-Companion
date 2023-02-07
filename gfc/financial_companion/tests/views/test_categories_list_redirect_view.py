@@ -18,8 +18,14 @@ class CategoriesListRedirectViewTestCase(ViewTestCase):
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url, follow=True)
         self.assertTrue(self._is_logged_in())
-        response_url: str = reverse("categories_list", kwargs={"search_name": "all"})
-        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        response_url: str = reverse(
+            "categories_list", kwargs={
+                "search_name": "all"})
+        self.assertRedirects(
+            response,
+            response_url,
+            status_code=302,
+            target_status_code=200)
         self.assertTemplateUsed(response, "pages/category_list.html")
 
     def test_invalid_get_view_redirects_when_not_logged_in(self):

@@ -4,6 +4,7 @@ from financial_companion.models import Transaction, User
 from django.urls import reverse
 from decimal import Decimal
 
+
 class EditTransactionViewTestCase(ViewTestCase):
     """Unit tests of the edit transaction view"""
 
@@ -13,16 +14,16 @@ class EditTransactionViewTestCase(ViewTestCase):
             "title": "Test",
             "description": "This is a test transaction",
             "image": "transaction_reciept.jpeg",
-            "category" : 1,
-            "amount" : 152.95,
-            "currency" : "USD",
-            "sender_account" : 1,
-            "receiver_account" : 2,
+            "category": 1,
+            "amount": 152.95,
+            "currency": "USD",
+            "sender_account": 1,
+            "receiver_account": 2,
         }
         self.user = User.objects.get(username='@johndoe')
 
     def test_edit_transaction_url(self):
-        self.assertEqual(self.url,'/edit_transaction/2')
+        self.assertEqual(self.url, '/edit_transaction/2')
 
     def test_get_edit_transaction(self):
         self._login(self.user)
@@ -47,7 +48,9 @@ class EditTransactionViewTestCase(ViewTestCase):
         # self.assertTrue(form.is_bound)
         transaction = Transaction.objects.get(id=2)
         transaction.refresh_from_db()
-        self.assertEqual(transaction.description, "Bought a new phone from Apple")
+        self.assertEqual(
+            transaction.description,
+            "Bought a new phone from Apple")
         # self.assertEqual(transaction.image, "transaction_reciept.jpeg")
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("1499.99"))
@@ -62,7 +65,11 @@ class EditTransactionViewTestCase(ViewTestCase):
         after_count = Transaction.objects.count()
         self.assertEqual(after_count, before_count)
         response_url = reverse('dashboard')
-        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertRedirects(
+            response,
+            response_url,
+            status_code=302,
+            target_status_code=200)
         self.assertTemplateUsed(response, 'pages/dashboard.html')
         transaction = Transaction.objects.get(id=2)
         transaction.refresh_from_db()
@@ -80,7 +87,11 @@ class EditTransactionViewTestCase(ViewTestCase):
         invalid_url = reverse('edit_transaction', kwargs={'pk': 100000})
         response = self.client.get(invalid_url, follow=True)
         response_url = reverse('dashboard')
-        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertRedirects(
+            response,
+            response_url,
+            status_code=302,
+            target_status_code=200)
         self.assertTemplateUsed(response, 'pages/dashboard.html')
 
     def test_get_view_redirects_when_not_logged_in(self):

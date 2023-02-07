@@ -11,10 +11,16 @@ class IndividualCategoryViewTestCase(ViewTestCase):
     def setUp(self):
         self.user: User = User.objects.get(username="@johndoe")
         self.category: Category = Category.objects.filter(user=self.user)[0]
-        self.url: str = reverse("individual_category", kwargs={"pk": self.category.id, "filter_type": "all"})
+        self.url: str = reverse(
+            "individual_category",
+            kwargs={
+                "pk": self.category.id,
+                "filter_type": "all"})
 
     def test_valid_individual_category_url(self):
-        self.assertEqual(self.url, f"/individual_category/{self.category.id}/all/")
+        self.assertEqual(
+            self.url,
+            f"/individual_category/{self.category.id}/all/")
 
     def test_valid_get_view_individual_category(self):
         self._login(self.user)
@@ -29,20 +35,28 @@ class IndividualCategoryViewTestCase(ViewTestCase):
         transactions: list[Transaction] = response.context["transactions"]
         for transaction in transactions:
             self.assertTrue(isinstance(transaction, Transaction))
-    
+
     def test_valid_category_belongs_to_user(self):
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/individual_category.html")
-    
+
     def test_invalid_category_does_not_belong_to_user(self):
         self._login(self.user)
         category: Category = Category.objects.filter(~Q(user=self.user))[0]
-        url: str = reverse("individual_category", kwargs={"pk": category.id, "filter_type": "all"})
+        url: str = reverse(
+            "individual_category",
+            kwargs={
+                "pk": category.id,
+                "filter_type": "all"})
         response: HttpResponse = self.client.get(url, follow=True)
         response_url: str = reverse("dashboard")
-        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertRedirects(
+            response,
+            response_url,
+            status_code=302,
+            target_status_code=200)
         self.assertTemplateUsed(response, "pages/dashboard.html")
 
     def test_valid_category_has_targets(self):
@@ -54,11 +68,15 @@ class IndividualCategoryViewTestCase(ViewTestCase):
         for target in category_targets:
             self.assertTrue(isinstance(target, CategoryTarget))
         self.assertGreater(len(category_targets), 0)
-    
+
     def test_valid_category_does_not_have_targets(self):
         self._login(self.user)
         category: Category = Category.objects.filter(user=self.user)[2]
-        url: str = reverse("individual_category", kwargs={"pk": category.id, "filter_type": "all"})
+        url: str = reverse(
+            "individual_category",
+            kwargs={
+                "pk": category.id,
+                "filter_type": "all"})
         response: HttpResponse = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/individual_category.html")
@@ -70,7 +88,15 @@ class IndividualCategoryViewTestCase(ViewTestCase):
 
     def test_invalid_filter_type_redirect_reset_to_all(self):
         self._login(self.user)
-        url: str = reverse("individual_category", kwargs={"pk": self.category.id, "filter_type": "invalid"})
+        url: str = reverse(
+            "individual_category",
+            kwargs={
+                "pk": self.category.id,
+                "filter_type": "invalid"})
         response: HttpResponse = self.client.get(url, follow=True)
         response_url: str = reverse("dashboard")
-        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertRedirects(
+            response,
+            response_url,
+            status_code=302,
+            target_status_code=200)

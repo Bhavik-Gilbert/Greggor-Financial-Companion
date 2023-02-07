@@ -3,8 +3,10 @@ from django import forms
 from .test_form_base import FormTestCase
 from financial_companion.forms import UserLogInForm
 
+
 class LogInFormTestCase(FormTestCase):
     """Unit tests of the log in form."""
+
     def setUp(self):
         self.form_input = {'username': '@janedoe', 'password': 'Password123'}
 
@@ -16,7 +18,7 @@ class LogInFormTestCase(FormTestCase):
             'password'
         )
         password_field = form.fields['password']
-        self.assertTrue(isinstance(password_field.widget,forms.PasswordInput))
+        self.assertTrue(isinstance(password_field.widget, forms.PasswordInput))
 
     def test_form_accepts_valid_input(self):
         form = UserLogInForm(data=self.form_input)

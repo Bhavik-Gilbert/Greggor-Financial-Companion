@@ -6,6 +6,7 @@ from .test_form_base import FormTestCase
 from financial_companion.forms import UserChangePasswordForm
 from financial_companion.models import User
 
+
 class UserChangePasswordFormTestCase(FormTestCase):
     """Test of the sign up form"""
 
@@ -25,8 +26,11 @@ class UserChangePasswordFormTestCase(FormTestCase):
         )
         password_field = form.fields['password']
         new_password_field = form.fields['new_password']
-        self.assertTrue(isinstance(password_field.widget,forms.PasswordInput))
-        self.assertTrue(isinstance(new_password_field.widget,forms.PasswordInput))
+        self.assertTrue(isinstance(password_field.widget, forms.PasswordInput))
+        self.assertTrue(
+            isinstance(
+                new_password_field.widget,
+                forms.PasswordInput))
 
     def test_form_accepts_valid_input(self):
         form = UserChangePasswordForm(data=self.form_input)
