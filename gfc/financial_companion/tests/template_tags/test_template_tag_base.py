@@ -1,5 +1,6 @@
 from ..test_base import BaseTestCase
 
+
 class TemplateTagTestCase(BaseTestCase):
     """
     Base class for testing template tags.

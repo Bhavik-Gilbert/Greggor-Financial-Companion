@@ -6,6 +6,7 @@ from django import forms
 from ..forms import EditUserDetailsForm
 from ..models import User
 
+
 @login_required
 def edit_user_details_view(request):
     user = User.objects.get(id=request.user.id)

@@ -6,6 +6,7 @@ from .test_form_base import FormTestCase
 from financial_companion.forms import UserSignUpForm
 from financial_companion.models import User
 
+
 class SignUpFormTestCase(FormTestCase):
     """Test of the sign up form"""
 
@@ -36,14 +37,16 @@ class SignUpFormTestCase(FormTestCase):
             'bio',
             'new_password',
             'password_confirmation'
-            )
+        )
         email_field = form.fields['email']
         self.assertTrue(isinstance(email_field, forms.EmailField))
         new_password_widget = form.fields['new_password'].widget
         self.assertTrue(isinstance(new_password_widget, forms.PasswordInput))
         password_confirmation_widget = form.fields['password_confirmation'].widget
-        self.assertTrue(isinstance(password_confirmation_widget, forms.PasswordInput))
-
+        self.assertTrue(
+            isinstance(
+                password_confirmation_widget,
+                forms.PasswordInput))
 
     def test_form_uses_model_validation(self):
         self.form_input['username'] = 'badusername'
@@ -78,7 +81,7 @@ class SignUpFormTestCase(FormTestCase):
         before_count = User.objects.count()
         form.save()
         after_count = User.objects.count()
-        self.assertEqual(after_count, before_count+1)
+        self.assertEqual(after_count, before_count + 1)
         user = User.objects.get(username='@johnsmith')
         self.assertEqual(user.first_name, 'John')
         self.assertEqual(user.last_name, 'Smith')

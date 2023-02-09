@@ -1,5 +1,6 @@
 from ..test_base import BaseTestCase
 
+
 class HelperTestCase(BaseTestCase):
     """
     Base class for testing helpers.
