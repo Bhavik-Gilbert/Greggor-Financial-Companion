@@ -8,8 +8,10 @@ from financial_companion.models import Transaction
 from decimal import Decimal
 from django.core.files.uploadedfile import SimpleUploadedFile
 
+
 class AddTransactionFormTestCase(FormTestCase):
     """Test of the add transaction form"""
+
     def setUp(self):
         image_path = "financial_companion/tests/helpers/dragon.jpeg"
         # self.new_image = SimpleUploadedFile(name='dragon.jpeg', content=open(image_path, 'rb').read(), content_type='image/jpeg')
@@ -17,14 +19,13 @@ class AddTransactionFormTestCase(FormTestCase):
             "title": "Test",
             "description": "This is a test transaction",
             "image": "transaction_reciept.jpeg",
-            "category" : 1,
-            "amount" : 152.95,
-            "currency" : "USD",
-            "sender_account" : 1,
-            "receiver_account" : 2,
+            "category": 1,
+            "amount": 152.95,
+            "currency": "USD",
+            "sender_account": 1,
+            "receiver_account": 2,
         }
         # print(self.form_input["image"])
-
 
     def test_form_contains_required_fields(self):
         form = AddTransactionForm()
@@ -97,9 +98,9 @@ class AddTransactionFormTestCase(FormTestCase):
     def test_form_must_save_correctly(self):
         form = AddTransactionForm(data=self.form_input)
         before_count = Transaction.objects.count()
-        transaction=form.save()
+        transaction = form.save()
         after_count = Transaction.objects.count()
-        self.assertEqual(after_count, before_count+1)
+        self.assertEqual(after_count, before_count + 1)
         self.assertEqual(transaction.description, 'This is a test transaction')
         # print(transaction.image)
         # self.assertEqual(transaction.image, self.new_image)

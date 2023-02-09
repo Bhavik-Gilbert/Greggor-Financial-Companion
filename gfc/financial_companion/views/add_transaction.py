@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 
+
 @login_required
 def add_transaction_view(request: HttpRequest) -> HttpResponse:
     """View to record a transaction made"""
@@ -17,7 +18,9 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
             return redirect('dashboard')
     else:
         form = AddTransactionForm()
-    return render(request, "pages/add_transaction.html", {'form': form, 'edit': False})
+    return render(request, "pages/add_transaction.html",
+                  {'form': form, 'edit': False})
+
 
 @login_required
 def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
@@ -27,12 +30,15 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         return redirect('dashboard')
     else:
         if request.method == 'POST':
-            form = AddTransactionForm(request.POST,request.FILES, instance=transaction)
+            form = AddTransactionForm(
+                request.POST, request.FILES, instance=transaction)
             if form.is_valid():
                 form.save(instance=transaction)
                 return redirect('dashboard')
         form = AddTransactionForm(instance=transaction)
-        return render(request, "pages/add_transaction.html", {'form': form, 'edit': True, 'pk':pk})
+        return render(request, "pages/add_transaction.html",
+                      {'form': form, 'edit': True, 'pk': pk})
+
 
 @login_required
 def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
@@ -42,5 +48,8 @@ def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         return redirect('dashboard')
     else:
         transaction.delete()
-        messages.add_message(request, messages.WARNING, "The transaction has been deleted")
+        messages.add_message(
+            request,
+            messages.WARNING,
+            "The transaction has been deleted")
         return redirect('dashboard')

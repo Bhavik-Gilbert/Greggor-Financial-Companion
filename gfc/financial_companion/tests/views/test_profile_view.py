@@ -2,6 +2,7 @@ from .test_view_base import ViewTestCase
 from financial_companion.models import User
 from django.urls import reverse
 
+
 class ProfileViewTestCase(ViewTestCase):
     """Unit tests of the profile view"""
 
@@ -10,7 +11,7 @@ class ProfileViewTestCase(ViewTestCase):
         self.user = User.objects.get(username='@michaelkolling')
 
     def test_delete_transaction_url(self):
-        self.assertEqual(self.url,'/profile/')
+        self.assertEqual(self.url, '/profile/')
 
     def test_get_profile(self):
         self._login(self.user)

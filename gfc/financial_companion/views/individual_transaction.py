@@ -14,4 +14,5 @@ def individual_transaction_view(request: HttpRequest, pk: int) -> HttpResponse:
     except Transaction.DoesNotExist:
         return redirect("dashboard")
     else:
-        return render(request, "pages/individual_transaction.html", {"transaction": transaction})
+        return render(request, "pages/individual_transaction.html",
+                      {"transaction": transaction})

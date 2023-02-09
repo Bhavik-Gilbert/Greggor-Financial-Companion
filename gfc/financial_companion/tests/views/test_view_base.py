@@ -6,6 +6,7 @@ from ..test_base import BaseTestCase
 from ...models import User
 from django.urls import reverse
 
+
 class ViewTestCase(BaseTestCase):
     """
     Base class for testing views.
@@ -56,8 +57,12 @@ class ViewTestCase(BaseTestCase):
         self.assertFalse(user.is_authenticated)
         response: HttpResponse = self.client.get(url, follow=True)
         expected_url: str = self._reverse_with_query("log_in", next=url)
-        self.assertRedirects(response, expected_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response,  "pages/log_in.html")
+        self.assertRedirects(
+            response,
+            expected_url,
+            status_code=302,
+            target_status_code=200)
+        self.assertTemplateUsed(response, "pages/log_in.html")
 
     def _assert_require_logout(self, url: str) -> None:
         """Asserts users are not allowed to access this page when logged in"""
@@ -65,5 +70,9 @@ class ViewTestCase(BaseTestCase):
         self.assertTrue(user.is_authenticated)
         response: HttpResponse = self.client.get(url, follow=True)
         redirect_url: str = reverse('dashboard')
-        self.assertRedirects(response, redirect_url, status_code=302, target_status_code=200)
-        self.assertTemplateUsed(response,  "pages/dashboard.html")
+        self.assertRedirects(
+            response,
+            redirect_url,
+            status_code=302,
+            target_status_code=200)
+        self.assertTemplateUsed(response, "pages/dashboard.html")
