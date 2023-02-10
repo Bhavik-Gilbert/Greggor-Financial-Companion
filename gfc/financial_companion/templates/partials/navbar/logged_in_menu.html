@@ -1,7 +1,24 @@
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
   <ul class="navbar-nav me-auto mb-2 mb-lg-0">
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+      <a class="nav-link" href="{% url 'dashboard' %}">
+        <p class="text-white h6">Dashboard</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'view_accounts' %}">
+        <p class="text-white h6">Accounts</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'view_transactions_redirect' %}">
+        <p class="text-white h6">Transactions</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'categories_list_redirect' %}">
+        <p class="text-white h6">Categories</p>
+      </a>
     </li>
   </ul>
   <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
@@ -10,6 +27,8 @@
         <span class="bi-person-fill"></span>
       </a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-account-dropdown">
+        <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>
+        <li><hr class="dropdown-divider"></li>
         <li><a class="dropdown-item" href="{% url 'log_out' %}">Log out</a></li>
       </ul>
     </li>

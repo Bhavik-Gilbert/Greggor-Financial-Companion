@@ -14,6 +14,15 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='transaction',
             name='time_of_transaction',
-            field=models.DateTimeField(default=datetime.datetime(2023, 1, 21, 19, 53, 1, 628819, tzinfo=datetime.timezone.utc)),
+            field=models.DateTimeField(
+                default=datetime.datetime(
+                    2023,
+                    1,
+                    21,
+                    19,
+                    53,
+                    1,
+                    628819,
+                    tzinfo=datetime.timezone.utc)),
         ),
     ]
