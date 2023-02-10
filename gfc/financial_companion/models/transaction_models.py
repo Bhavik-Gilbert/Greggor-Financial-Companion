@@ -80,6 +80,7 @@ class Transaction(AbstractTransaction):
     class Meta:
         ordering = ['-time_of_transaction']
 
+
 class RecurringTransaction(AbstractTransaction):
 
     start_date: DateField = DateField(
@@ -93,15 +94,16 @@ class RecurringTransaction(AbstractTransaction):
     )
 
     end_date: DateField = DateField(
-        blank = False,
+        blank=False,
     )
 
     class Meta:
         ordering = ['-interval']
 
+
 class LinkRecurringTransaction(Model):
     """Model for linking individual transactions with their respective recurring transaction"""
 
-    recurring_transaction = ForeignKey(RecurringTransaction, on_delete= CASCADE)
+    recurring_transaction = ForeignKey(RecurringTransaction, on_delete=CASCADE)
 
     transaction = ForeignKey(Transaction, on_delete=CASCADE)

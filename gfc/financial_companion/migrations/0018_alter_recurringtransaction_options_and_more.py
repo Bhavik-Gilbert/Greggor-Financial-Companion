@@ -22,7 +22,17 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recurringtransaction',
             name='interval',
-            field=models.CharField(choices=[('day', 'Day'), ('week', 'Week'), ('month', 'Month'), ('year', 'Year')], max_length=10),
+            field=models.CharField(
+                choices=[
+                    ('day',
+                     'Day'),
+                    ('week',
+                     'Week'),
+                    ('month',
+                     'Month'),
+                    ('year',
+                     'Year')],
+                max_length=10),
         ),
         migrations.AlterField(
             model_name='recurringtransaction',
@@ -32,9 +42,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='LinkRecurringTransaction',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('recurring_transaction', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='financial_companion.recurringtransaction')),
-                ('transaction', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='financial_companion.transaction')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('recurring_transaction',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   to='financial_companion.recurringtransaction')),
+                ('transaction',
+                 models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                   to='financial_companion.transaction')),
             ],
         ),
     ]

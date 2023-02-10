@@ -19,7 +19,7 @@ class LinkRecurringTransactionTestCase(ModelTestCase):
         self.assertTrue(isinstance(self.test_model.transaction, Transaction))
 
     def test_recurring_transaction_ofinstance_recurring_transaction(self):
-        self.assertTrue(isinstance(self.test_model.recurring_transaction, RecurringTransaction))
-        
-         
-            
+        self.assertTrue(
+            isinstance(
+                self.test_model.recurring_transaction,
+                RecurringTransaction))
