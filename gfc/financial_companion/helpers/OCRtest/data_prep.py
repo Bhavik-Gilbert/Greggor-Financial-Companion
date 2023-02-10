@@ -94,6 +94,7 @@ from keras.layers import Add as add
 from keras.regularizers import L2
 from keras import backend as k
 from keras.optimizers import SGD
+from keras import regularizers
 
 
 class ResNet:
@@ -108,9 +109,9 @@ class ResNet:
         momentum=bnMom)(data)
         act1 = Activation("relu")(bn1)
         conv1 = Conv2D(int(k* 0.25), (1,1), use_bias=False,
-        kernel_regularizer=12(reg))(act1)
+        kernel_regularizer=regularizers.l2(reg))(act1)
         conv1 = Conv2D(int(k * 0.25), (1,1), use_bias=False,
-        kernel_regularizer=12(reg)(act1)
+        kernel_regularizer=regularizers.l2(reg)(act1)
         )
         
 
@@ -118,26 +119,28 @@ class ResNet:
         momentum = bnMom)(conv1)
         act2 = Activation("relu")(bn2)
         conv2 = Conv2D(int(k * 0.25), (3,3), use_bias=False,
-        kernel_regularizer=12(reg)(act2)
+        kernel_regularizer=regularizers.l2(reg)(act2)
         )
 
         bn3 = BatchNormalization(axis=chanDim, epsilon=bnEps, 
         momentum = bnMom)(conv2)
         act3 = Activation("relu")(bn3)
         conv3 = Conv2D(int(k), (1,1), use_bias=False,
-        kernel_regularizer=12(reg)(act3)
+        kernel_regularizer=regularizers.l2(reg)(act3)
         )
 
         if red:
             shortcut = Conv2D(k, (1,1), strides=stride,
-            use_bias=False, kernel_regularizer=12(reg))(act1)
+            use_bias=False, kernel_regularizer=regularizers.l2(reg))(act1)
         
         x = add([conv3], shortcut)
 
         return x
 
+    @staticmethod
     def build(width, height, depth, classes, stages, filters, 
         reg=0.0001, bnEps=2e-5, bnMom=0.9, dataset="cifar"):
+
         inputShape = (height, width, depth)
         chanDim = -1
 
@@ -149,11 +152,11 @@ class ResNet:
         x = BatchNormalization(axis=chanDim, epsilon=bnEps, momentum=bnMom)(inputs)
 
         if dataset == "cifar":
-            x = Conv2D(filters[0], (3,3), use_bias=False, padding="same", kernel_regularizer=12(reg))(x)
+            x = Conv2D(filters[0], (3,3), use_bias=False, padding="same", kernel_regularizer=regularizers.l2(reg))(x)
 
         elif dataset == "tiny_imagenet":
 
-            x = Conv2D(filters[0], strides=(5,5), use_bias=False, padding = "same", kernel_regularizer=12(reg))(x)
+            x = Conv2D(filters[0], (5,5), use_bias=False, padding = "same", kernel_regularizer=regularizers.l2(reg))(x)
 
             x = BatchNormalization(axis=chanDim, epsilon = bnEps, momentum= bnMom)(x)
 
@@ -179,7 +182,7 @@ class ResNet:
         X = AveragePooling2D((8,8))(x)
 
         x = Flatten()(x)
-        x = Dense(classes, kernel_regularizer=12(reg))(x)
+        x = Dense(classes, kernel_regularizer=regularizers.l2(reg))(x)
         x = Activation("softmax")(x)
 
         model = Model(inputs, name="resnet")
