@@ -14,19 +14,19 @@ def send_monthly_newsletter_email():
     users = User.objects.all()
 
     for user in users:
-        context ={
-            "user":user,
+        context = {
+            "user": user,
             "month": calendar.month_name[datetime.now(tz=None).month]
         }
-        html_content = render_to_string("partials/monthly_newsletter.html", context)
+        html_content = render_to_string(
+            "partials/monthly_newsletter.html", context)
         text_content = strip_tags(html_content)
         send_mail(
-        'Monthly Newsletter',
-        text_content,
-        settings.EMAIL_HOST_USER,
-        [user.email],
-        html_message = html_content,
-        fail_silently=False,
+            'Monthly Newsletter',
+            text_content,
+            settings.EMAIL_HOST_USER,
+            [user.email],
+            html_message=html_content,
+            fail_silently=False,
         )
     print("EMAILS SENT")
-        

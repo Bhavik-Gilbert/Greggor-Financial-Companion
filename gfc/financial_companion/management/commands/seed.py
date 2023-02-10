@@ -183,16 +183,15 @@ class Command(BaseCommand):
                 currency=self.choose_random_enum(CurrencyType),
                 account=account
             )
-    
+
     def create_monthly_newsletter_scheduler(self):
         date_time_str = f'{datetime.now(tz=None).month + 1}-01-{datetime.now(tz=None).year}'
         date_object = datetime.strptime(date_time_str, '%m-%d-%Y').date()
 
         Schedule.objects.create(
-                name = "Monthly Newsletter",
-                func='gfc.tasks.send_monthly_newsletter_email',
-                minutes=1,
-                repeats=-1,
-                schedule_type=Schedule.MONTHLY,
-                next_run = date_object)
-    
+            name="Monthly Newsletter",
+            func='gfc.tasks.send_monthly_newsletter_email',
+            minutes=1,
+            repeats=-1,
+            schedule_type=Schedule.MONTHLY,
+            next_run=date_object)

@@ -170,9 +170,8 @@ EMAIL_USE_SSL = False
 
 Q_CLUSTER = {
     'name': "shop",
-   'retry': 60,
-   'timeout': 30,
-   'workers': 4,
-   'orm': 'default'
+    'retry': 60,
+    'timeout': 30,
+    'workers': 4,
+    'orm': 'default'
 }
-
