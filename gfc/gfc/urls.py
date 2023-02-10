@@ -37,6 +37,18 @@ urlpatterns = [
         views.category_list_redirect,
         name='categories_list_redirect'),
     path(
+        'groups/',
+        views.all_groups_view,
+        name='all_groups'),
+    # path(
+    #     'groups/<str:search_name>/',
+    #     views.all_groups,
+    #     name='all_groups'),
+    # path(
+    #     'groups/',
+    #     views.all_groups_redirect,
+    #     name='all_groups_redirect'),
+    path(
         'add_monetary_account/',
         views.add_monetary_account_view,
         name="add_monetary_account"),
