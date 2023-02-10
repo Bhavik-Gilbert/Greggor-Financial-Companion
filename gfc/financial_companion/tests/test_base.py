@@ -14,6 +14,7 @@ class BaseTestCase(TestCase):
         "example_accounts.json",
         "example_targets.json",
         "example_recurring_transaction.json",
+        "example_link_recurring_transaction.json",
     ]
 
     def setUp(self) -> None:

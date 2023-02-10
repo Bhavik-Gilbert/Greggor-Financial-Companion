@@ -99,3 +99,11 @@ class RecurringTransaction(AbstractTransaction):
 
     class Meta:
         ordering = ['-interval']
+
+
+class LinkRecurringTransaction(Model):
+    """Model for linking individual transactions with their respective recurring transaction"""
+
+    recurring_transaction = ForeignKey(RecurringTransaction, on_delete=CASCADE)
+
+    transaction = ForeignKey(Transaction, on_delete=CASCADE)
