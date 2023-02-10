@@ -6,8 +6,23 @@
 <!-- Content -->
 {% block content %}
   <div>
+
     <div align="center" class="w-50 container-fluid">
       <h1>Groups</h1>
+      <a class="btn btn-primary">Add New</a> <a class="btn btn-primary">View All</a>
+      <br/><br>
+      {% include 'partials/search_bar.html' %}
     </div>
+
+    <br>
+
+    {%if groups%}
+      <div class="row">
+        {% include 'partials/group_card.html' %}
+      </div>
+    {% else %}
+      <h2 class="text-center"> You have no groups yet</h2>
+    {% endif %}
+
   </div>
 {% endblock %}

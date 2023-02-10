@@ -1,0 +1,15 @@
+{%for group in groups %}
+<div class="col-sm-4 py-4">
+    <div class="card">
+        <div class="card-body">
+        <h5 class="card-title">{{ group.name }}</h5>
+        <p class="card-text">{{ group.description }}</p>
+
+
+        </div>
+        <div class="card-footer text-muted justify-content-center">
+            <a class="btn btn-primary justify-content-center">View</a>
+        </div>
+    </div>
+</div>
+{% endfor %}
