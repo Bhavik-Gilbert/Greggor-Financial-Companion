@@ -80,10 +80,6 @@ class Transaction(AbstractTransaction):
     class Meta:
         ordering = ['-time_of_transaction']
 
-<<<<<<< HEAD
-=======
-
->>>>>>> master
 class RecurringTransaction(AbstractTransaction):
 
     start_date: DateField = DateField(
@@ -97,11 +93,7 @@ class RecurringTransaction(AbstractTransaction):
     )
 
     end_date: DateField = DateField(
-<<<<<<< HEAD
         blank = False,
-=======
-        blank=False,
->>>>>>> master
     )
 
     class Meta:
