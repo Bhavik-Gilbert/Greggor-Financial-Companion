@@ -24,9 +24,7 @@
         </div>
         <div class="col-12 d-flex justify-content-center">
             <!--- TODO: Add target partial --->
-            {% for target in category_targets %}
-                {{target}}
-            {% endfor %}
+            {%include 'partials/target.html' with targets=category_targets %}
         </div>
     </div>
 </div>
