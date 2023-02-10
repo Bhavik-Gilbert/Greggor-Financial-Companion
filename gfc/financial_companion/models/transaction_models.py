@@ -102,6 +102,6 @@ class RecurringTransaction(AbstractTransaction):
 class LinkRecurringTransaction(Model):
     """Model for linking individual transactions with their respective recurring transaction"""
 
-    recurring_transaction_id = ForeignKey(RecurringTransaction, on_delete= CASCADE, related_name= "id")
+    recurring_transaction = ForeignKey(RecurringTransaction, on_delete= CASCADE)
 
-    transaction_id = ForeignKey(Transaction, on_delete=CASCADE, related_name= "id")
+    transaction = ForeignKey(Transaction, on_delete=CASCADE)
