@@ -16,7 +16,9 @@ def send_monthly_newsletter_email():
     for user in users:
         context = {
             "user": user,
-            "month": calendar.month_name[datetime.now(tz=None).month]
+            "month": calendar.month_name[datetime.now(tz=None).month],
+            "transactions": user.get_user_transactions("sent")[:10]
+
         }
         html_content = render_to_string(
             "partials/monthly_newsletter.html", context)
