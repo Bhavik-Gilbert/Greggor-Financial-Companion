@@ -14,10 +14,15 @@ def send_monthly_newsletter_email():
     users = User.objects.all()
 
     for user in users:
+        # today = datetime.datetime.now()
+        # transactions = user.get_user_transactions()
+        # filtered_transactions = filter((lambda transaction: time_of_transaction__year==today.year, time_of_transaction__month==today.month),  countries)
+        # print(len(transactions))
+        # print(len(filtered_transactions))
         context = {
             "user": user,
             "month": calendar.month_name[datetime.now(tz=None).month],
-            "transactions": user.get_user_transactions("sent")[:10]
+            "transactions": user.get_user_transactions()[:10]
 
         }
         html_content = render_to_string(
