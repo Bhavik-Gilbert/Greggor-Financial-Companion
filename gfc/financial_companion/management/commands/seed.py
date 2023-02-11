@@ -15,6 +15,7 @@ import random
 from financial_companion.helpers import TransactionType, CurrencyType, MonetaryAccountType, Timespan
 from financial_companion.scheduler import create_monthly_newsletter_scheduler
 
+
 class Command(BaseCommand):
     PASSWORD = "Password123"
     # MINIMUM OF FOUR PREDEFINED USERS ARE CREATED IRRESPECTIVE OF VARIABLE
@@ -180,4 +181,3 @@ class Command(BaseCommand):
                 currency=self.choose_random_enum(CurrencyType),
                 account=account
             )
-
