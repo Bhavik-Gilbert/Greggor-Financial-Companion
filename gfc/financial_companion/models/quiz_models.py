@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.backends.sqlite3.base import IntegrityError
 
 from financial_companion.models import User
 
@@ -7,7 +8,7 @@ from financial_companion.models import User
 class QuizQuestion(models.Model):
     """Model for storing quiz questions"""
 
-    question: models.CharField = models.CharField(max_length=520)
+    question: models.CharField = models.CharField(max_length=520, unique=True)
     potential_answer_1: models.CharField = models.CharField(max_length=520)
     potential_answer_2: models.CharField = models.CharField(max_length=520)
     potential_answer_3: models.CharField = models.CharField(max_length=520)
@@ -18,6 +19,12 @@ class QuizQuestion(models.Model):
             MinValueValidator(1)
         ]
     )
+
+    def clean(self) -> None:
+        super().clean()
+
+        if len(self.get_potential_answers()) != len(set(self.get_potential_answers())):
+            raise IntegrityError({'potential_answer':(f'You cannot have the same response in more than one potential answer {self.get_potential_answers()}')})
 
     def get_potential_answers(self) -> list[str]:
         """Returns list of potential answers"""

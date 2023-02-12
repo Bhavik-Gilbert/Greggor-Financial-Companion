@@ -12,6 +12,18 @@
         }
     },
     {
+        "model": "financial_companion.QuizQuestion",
+        "pk": 2,
+        "fields": {
+            "question": "Pick john",
+            "potential_answer_1": "john",
+            "potential_answer_2": "jane",
+            "potential_answer_3": "smith",
+            "potential_answer_4": "doe",
+            "correct_answer": 1
+        }
+    },
+    {
         "model": "financial_companion.QuizScore",
         "pk": 1,
         "fields": {
