@@ -1,0 +1,14 @@
+[
+    {
+        "model": "financial_companion.QuizQuestion",
+        "pk": 1,
+        "fields": {
+            "question": "Pick correct",
+            "potential_answer_1": "correct",
+            "potential_answer_2": "incorrect2",
+            "potential_answer_3": "incorrect3",
+            "potential_answer_4": "incorrect4",
+            "correct_answer": 1
+        }
+    }
+]

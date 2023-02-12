@@ -9,3 +9,4 @@ from .test_transaction_model import TransactionModelTestCase
 from .test_user_model import UserModelTestCase
 from .test_user_target_model import UserTargetModelTestCase
 from .test_link_recurring_transaction_model import LinkRecurringTransactionTestCase
+from .test_quiz_question_model import QuizQuestionModelTestCase
