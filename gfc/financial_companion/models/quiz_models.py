@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+from financial_companion.models import User
+
 
 class QuizQuestion(models.Model):
     """Model for storing quiz questions"""
@@ -35,3 +37,17 @@ class QuizQuestion(models.Model):
         """Returns boolean for if the result given is the correct answer"""
 
         return potential_answer == self.get_answer()
+
+
+class QuizScore(models.Model):
+    """Model for storing quiz scores"""
+
+    user: models.ForeignKey = models.ForeignKey(User, on_delete=models.CASCADE)
+    correct_questions: models.IntegerField = models.IntegerField()
+    total_questions: models.IntegerField = models.IntegerField()
+    time_of_submission: models.DateTimeField = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering: list[str] = ['-time_of_submission']
