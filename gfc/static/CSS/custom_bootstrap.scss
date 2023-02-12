@@ -1,18 +1,50 @@
-// $body-bg: white;
-// $body-bg-dark: gray;
+$body-bg: #fbfdff;
+$body-bg-dark: #0D2237;
+$body-color: #0D2237;
+
+$min-contrast-ratio: 2;
 
 @import "bootstrap/scss/_functions";
 @import "bootstrap/scss/_variables";
 
+$colors: (
+    "blue": #2d7bd8,
+    "orange": #FF842B,
+);
+
 $theme-colors : (
-    "primary": $blue,
-    "secondary": $gray-600,
-    "success": $green,
-    "info": $cyan,
+    "primary": #217ceb,
+    "secondary": $orange-400,
+    "success": $teal-300,
+    "info": $orange,
     "warning": $yellow,
     "danger": $red,
     "light": $gray-100,
     "dark": $gray-900,
+    "background-color": #0D2237,
 );
+
+.btn {
+    transition: all .5s ease-in-out !important;
+}
+.btn:hover {
+    transform: scale(1.1) !important;
+}
+
+.container {
+    margin: 0 4%;
+  
+    @media (min-width: 64em) {
+      margin: 0 8%;
+    }
+  
+    @media (min-width: 85.375em) {
+      margin: 0 12%;
+    }
+  
+    @media (min-width: 120em) {
+      margin: 0 18%;
+    }
+  }
 
 @import "bootstrap/scss/bootstrap"
