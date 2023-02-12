@@ -893,3 +893,7 @@ FodyWeavers.xsd
 .metals
 
 # End of https://www.toptal.com/developers/gitignore/api/python,django,venv,macos,linux,windows,sublimetext,visualstudio,visualstudiocode,xcode,pycharm+all
+
+#training data
+DataSets/
+*.csv
