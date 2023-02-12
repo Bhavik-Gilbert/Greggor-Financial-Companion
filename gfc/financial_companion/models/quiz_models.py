@@ -66,6 +66,12 @@ class QuizScore(models.Model):
 
     class Meta:
         ordering: list[str] = ['-time_of_submission']
+    
+    def clean(self) -> None:
+        super().clean()
+
+        if self.total_questions < self.correct_questions:
+            raise IntegrityError({'correct questions':(f'there cannot be more correct questions than total questions total questions : {self.total_questions}, correct questions : {self.correct_questions}')})
 
     def get_score(self):
         """Returns score as a percentage"""
