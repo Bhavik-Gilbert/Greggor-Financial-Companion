@@ -1,6 +1,6 @@
 from django.urls import reverse
 from .test_view_base import ViewTestCase
-from financial_companion.models import User, Category
+from financial_companion.models import User, UserGroup
 from financial_companion.forms import UserLogInForm
 
 
