@@ -13,11 +13,12 @@
     {% endif %}
       {% csrf_token %}
       {% include 'partials/form.html' with form=form %}
-      <input type='checkbox' list='senders' placeholder="Sender" class="form-control">
-      <datalist id = 'senders'>
-        {% for sender in senders %}
-          <option value={{sender.title}}></option>
+      {# <input type="text" id = "title" name= "title" class="form-control"> #}
+      <label for="sender_account">Sender Account:</label>
+      <select name="sender_account" id="sender_account" >
+        {% for account in sent_or_received_accounts %}
+          <option value={{account.id}}>{{account.name}}</option>
         {% endfor %}
-      </datalist>
+      </select>
     <input type="submit" value="Add Transaction" class="btn btn-primary">
 {% endblock %}
