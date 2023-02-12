@@ -51,3 +51,9 @@ def random_filename(filename):
             string.ascii_letters), str(
             datetime.now())]
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
+
+def get_random_invite_code(length):
+    """Generates a random invite code for User Groups"""
+    letters = string.ascii_uppercase
+    result_str = ''.join(random.choice(letters) for i in range(length))
+    return result_str
