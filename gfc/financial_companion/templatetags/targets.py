@@ -24,10 +24,8 @@ def get_completeness(current):
     #     return 100
     # else:
     #     return completeness
-    print(current.amount)
-    print(total)
-    
-    return completeness
+
+    return round(completeness, 2)
 
 def get_category_transactions(current: CategoryTarget):
     return current.category.get_category_transactions()
