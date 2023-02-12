@@ -83,7 +83,7 @@ urlpatterns = [
         views.delete_category_view,
         name="delete_category"),
     path(
-        'create_group/',
+        'create_user_group/',
         views.create_user_group_view,
         name="create_user_group"),
     path(

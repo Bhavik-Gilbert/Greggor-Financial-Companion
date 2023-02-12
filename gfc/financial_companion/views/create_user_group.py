@@ -10,7 +10,7 @@ from django.contrib import messages
 def create_user_group_view(request: HttpRequest) -> HttpResponse:
     """View to allow users to create a user group"""
     if request.method == 'POST':
-        form = CreateUserGroupForm(request.POST)
+        form = CreateUserGroupForm(request.POST, request.FILES)
         if form.is_valid():
             user = request.user
             user_group: UserGroup = form.save(user)
