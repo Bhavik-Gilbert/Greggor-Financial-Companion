@@ -15,9 +15,9 @@ def all_groups_view(request: HttpRequest, search_name: str) -> HttpResponse:
     # need to get all the groups the user is in
     for group in allGroups:
         if group.owner_email == userEmail:
-            userGroups += group
+            userGroups = [*userGroups, group]
         elif group.is_member(user):
-            userGroups += group
+            userGroups = [*userGroups, group]
 
     # handling the search
     if request.method == "POST" and "search" in request.POST:
@@ -29,7 +29,11 @@ def all_groups_view(request: HttpRequest, search_name: str) -> HttpResponse:
                             search_name=(request.POST["search"]))
 
     if (search_name != "all"):
-        userGroups.filter(name__icontains=search_name)
+        filterGroups = []
+        for group in userGroups:
+            if search_name in group.name:
+                filterGroups = [*filterGroups, group]
+        return render(request, "pages/all_groups.html", {"groups": filterGroups})
 
     return render(request, "pages/all_groups.html", {"groups": userGroups})
 
