@@ -27,3 +27,6 @@ class QuizScoreModelTestCase(ModelTestCase):
     def test_invalid_total_questions_cannot_be_negative(self):
         self.test_model.total_questions: int = -1
         self._assert_model_is_invalid()
+
+    def test_valid_get_score_is_correct(self):
+        self.assertEqual(self.test_model.get_score(), 80)

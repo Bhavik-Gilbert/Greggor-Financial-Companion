@@ -59,3 +59,7 @@ class QuizScore(models.Model):
 
     class Meta:
         ordering: list[str] = ['-time_of_submission']
+
+    def get_score(self):
+        """Returns score as a percentage"""
+        return (self.correct_questions / self.total_questions) * 100
