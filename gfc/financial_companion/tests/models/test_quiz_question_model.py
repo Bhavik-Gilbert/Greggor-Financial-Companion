@@ -9,7 +9,7 @@ class QuizQuestionModelTestCase(ModelTestCase):
         super().setUp()
         self.test_model: QuizQuestion = QuizQuestion.objects.get(id=1)
 
-    def test_valid_question(self):
+    def test_valid_quiz_question(self):
         self._assert_model_is_valid()
 
     def test_valid_question_can_be_520_characters_or_shorter(self):

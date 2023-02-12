@@ -1,0 +1,29 @@
+from .test_model_base import ModelTestCase
+from financial_companion.models import QuizScore
+
+
+class QuizScoreModelTestCase(ModelTestCase):
+    """Test file for QuizScore model class"""
+
+    def setUp(self) -> None:
+        super().setUp()
+        self.test_model: QuizScore = QuizScore.objects.get(id=1)
+
+    def test_valid_quiz_score(self):
+        self._assert_model_is_valid()
+
+    def test_valid_correct_questions_can_be_positive(self):
+        self.test_model.correct_questions: int = 0
+        self._assert_model_is_valid()
+
+    def test_invalid_correct_questions_cannot_be_negative(self):
+        self.test_model.correct_questions: int = -1
+        self._assert_model_is_invalid()
+
+    def test_valid_total_questions_can_be_positive(self):
+        self.test_model.total_questions: int = 0
+        self._assert_model_is_valid()
+
+    def test_invalid_total_questions_cannot_be_negative(self):
+        self.test_model.total_questions: int = -1
+        self._assert_model_is_invalid()

@@ -43,8 +43,16 @@ class QuizScore(models.Model):
     """Model for storing quiz scores"""
 
     user: models.ForeignKey = models.ForeignKey(User, on_delete=models.CASCADE)
-    correct_questions: models.IntegerField = models.IntegerField()
-    total_questions: models.IntegerField = models.IntegerField()
+    total_questions: models.IntegerField = models.IntegerField(
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
+    correct_questions: models.IntegerField = models.IntegerField(
+        validators=[
+            MinValueValidator(0)
+        ]
+    )
     time_of_submission: models.DateTimeField = models.DateTimeField(
         auto_now_add=True
     )
