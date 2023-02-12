@@ -52,7 +52,9 @@ class AllGroupsViewCase(ViewTestCase):
 
     def test_post_when_incorrect_category_name_is_applied(self):
         self._login(self.user)
-        self.url = reverse('all_groups', kwargs={'search_name': "Spending Club"})
+        self.url = reverse(
+            'all_groups', kwargs={
+                'search_name': "Spending Club"})
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/all_groups.html')

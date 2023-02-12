@@ -4,6 +4,7 @@ from ..models import UserGroup
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
+
 @login_required
 def all_groups_view(request: HttpRequest, search_name: str) -> HttpResponse:
 
@@ -33,9 +34,11 @@ def all_groups_view(request: HttpRequest, search_name: str) -> HttpResponse:
         for group in userGroups:
             if search_name in group.name:
                 filterGroups = [*filterGroups, group]
-        return render(request, "pages/all_groups.html", {"groups": filterGroups})
+        return render(request, "pages/all_groups.html",
+                      {"groups": filterGroups})
 
     return render(request, "pages/all_groups.html", {"groups": userGroups})
+
 
 @login_required
 def all_groups_redirect(request: HttpRequest) -> HttpResponse:
