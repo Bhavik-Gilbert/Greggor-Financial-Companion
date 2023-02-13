@@ -91,6 +91,10 @@ urlpatterns = [
         views.delete_category_view,
         name="delete_category"),
     path(
+        'create_user_group/',
+        views.create_user_group_view,
+        name="create_user_group"),
+    path(
         'reset_password',
         PasswordResetView.as_view(
             template_name="pages/email/password_reset.html"),
