@@ -6,6 +6,7 @@ from django.http import HttpRequest, HttpResponse
 from django.urls import reverse
 from financial_companion.helpers import paginate
 
+
 @login_required
 def view_users_transactions(request: HttpRequest,
                             filter_type: str) -> HttpResponse:

@@ -6,6 +6,7 @@ from ..models import Transaction, User, PotAccount
 from financial_companion.helpers import TransactionType
 from financial_companion.helpers import paginate
 
+
 @login_required
 def individual_account_view(
         request: HttpRequest, pk: int, filter_type: str) -> HttpResponse:

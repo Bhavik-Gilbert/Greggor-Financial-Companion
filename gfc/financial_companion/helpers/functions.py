@@ -8,6 +8,7 @@ from datetime import datetime
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+
 def get_currency_symbol(currency_code: str):
     """Returns currency symbol for given currency code"""
     currency_code = currency_code.upper()
@@ -53,6 +54,7 @@ def random_filename(filename):
             datetime.now())]
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
 
+
 def paginate(page, transactions):
     list_of_transactions = []
     paginator = Paginator(transactions, settings.NUMBER_OF_TRANSACTIONS)
@@ -62,5 +64,5 @@ def paginate(page, transactions):
         list_of_transactions = paginator.page(1)
     except EmptyPage:
         list_of_transactions = paginator.page(paginator.num_pages)
-    
+
     return list_of_transactions
