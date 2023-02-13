@@ -14,8 +14,9 @@ def individual_group_view(request: HttpRequest, pk: int) -> HttpResponse:
     except group.DoesNotExist:
         return redirect("dashboard")
     else:
-        user: User = request.user
-        members: User = group.members
-        is_owner: Boolean = (group.owner_email == user.email)
+        user = request.user
+        members = group.members.all()
+        is_owner = (group.owner_email == user.email)
+        count =  group.members_count()
         return render(request, "pages/individual_group.html",
-                      {"group": group}, {"members": members}, {"owner": is_owner}, {"count": group.members_count()})
+                      {"group": group, "members": members, "owner": is_owner, "count":count})
