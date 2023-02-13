@@ -14,7 +14,9 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='usergroup',
             name='group_picture',
-            field=models.ImageField(blank=True, upload_to=financial_companion.models.user_group_model.change_filename),
+            field=models.ImageField(
+                blank=True,
+                upload_to=financial_companion.models.user_group_model.change_filename),
         ),
         migrations.AlterField(
             model_name='usergroup',

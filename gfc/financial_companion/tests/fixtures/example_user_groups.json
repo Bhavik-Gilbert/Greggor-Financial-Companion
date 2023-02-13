@@ -18,5 +18,15 @@
             "invite_code": "IJKLMNOP",
             "owner_email": "janedoe@example.org"
             }
+    },
+    {
+        "model": "financial_companion.UserGroup",
+        "pk": 3,
+        "fields": {
+            "name": "SavingsRUs",
+            "description": "Fun savers",
+            "invite_code": "QRSTUVWX",
+            "owner_email": "johndoe@example.org"
+            }
     }
 ]
