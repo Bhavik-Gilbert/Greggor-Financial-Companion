@@ -8,9 +8,9 @@
     <h1>User Log In</h1>
     <form action='{% url 'log_in' %}' method="post">
       {% csrf_token %}
-    <input type="hidden" name="next" value="{{ next }}">
+      <input type="hidden" name="next" value="{{ next }}">
       {% include 'partials/form.html' with form=form %}
-    <input type="submit" value="Log in" class="btn btn-primary">
+      <input type="submit" value="Log in" class="btn btn-primary">
     </form>
     <br>
     <a href="{% url 'password_reset' %}">Forgotten your password?</a>

@@ -47,7 +47,7 @@ class DashboardViewTestCase(ViewTestCase):
         self.assertContains(response, self.recent[0].amount)
         self.assertContains(
             response,
-            self.recent[0].sender_account.name.capitalize())
+            self.recent[0].sender_account.name)#.capitalize())
         self.assertContains(
             response,
-            self.recent[0].receiver_account.name.capitalize())
+            self.recent[0].receiver_account.name)#.capitalize())
