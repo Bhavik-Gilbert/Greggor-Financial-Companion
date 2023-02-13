@@ -23,9 +23,10 @@ def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResp
             transactions = [*transactions, *Transaction.objects.filter(sender_account=account)]
         if filter_type in filter_receive_types:
             transactions = [*transactions, *Transaction.objects.filter(receiver_account=account)]
+
     
-    page = request.GET.get('page', settings.NUMBER_OF_TRANSACTIONS)
-    paginator = Paginator(transactions, 10)
+    page = request.GET.get('page', 1)
+    paginator = Paginator(transactions, settings.NUMBER_OF_TRANSACTIONS)
     try:
         list_of_transactions = paginator.page(page)
     except PageNotAnInteger:
