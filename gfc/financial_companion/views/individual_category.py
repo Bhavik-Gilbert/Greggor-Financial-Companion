@@ -19,8 +19,10 @@ def individual_category_view(
     except Category.DoesNotExist:
         return redirect("dashboard")
 
-    category_targets: CategoryTarget = CategoryTarget.objects.filter(
-        category=category)
+    # handling targets
+    all_category_targets: CategoryTarget = CategoryTarget.objects.filter(
+        category=category).filter()
+
 
     if not (filter_type in TransactionType.get_send_list()
             or filter_type in TransactionType.get_received_list()):
@@ -41,7 +43,7 @@ def individual_category_view(
 
     return render(request, "pages/individual_category.html", {
         "category": category,
-        "category_targets": category_targets,
+        "category_targets": all_category_targets,
         "transactions": list_of_transactions
     })
 

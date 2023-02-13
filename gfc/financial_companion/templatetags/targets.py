@@ -1,6 +1,9 @@
 from django import template
 from ..models import Transaction, CategoryTarget, AccountTarget, UserTarget
+from financial_companion.helpers import timespan_map
+import datetime
 register = template.Library()
+
 
 @register.filter
 def get_completeness(current):
@@ -13,17 +16,20 @@ def get_completeness(current):
     elif isinstance(current, UserTarget):
         transactions = get_user_transactions(current)
 
+    timespan_int = timespan_map[current.timespan]
+    start_of_timespan_period = datetime.date.today() - datetime.timedelta(days = timespan_int)
+
+    filtered_transactions = []
+    for transaction in transactions:
+        if transaction.time_of_transaction.date() >= start_of_timespan_period:
+            filtered_transactions = [*filtered_transactions, transaction]
+
     total = 0.0
 
-    for transaction in transactions:
+    for transaction in filtered_transactions:
         total += float(transaction.amount)
 
     completeness = (total / float(current.amount)) * 100
-
-    # if completeness >= 100:
-    #     return 100
-    # else:
-    #     return completeness
 
     return round(completeness, 2)
 
