@@ -55,14 +55,14 @@ def random_filename(filename):
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
 
 
-def paginate(page, transactions):
-    list_of_transactions = []
-    paginator = Paginator(transactions, settings.NUMBER_OF_TRANSACTIONS)
+def paginate(page, list_input):
+    list_of_items = []
+    paginator = Paginator(list_input, settings.NUMBER_OF_TRANSACTIONS)
     try:
-        list_of_transactions = paginator.page(page)
+        list_of_items = paginator.page(page)
     except PageNotAnInteger:
-        list_of_transactions = paginator.page(1)
+        list_of_items = paginator.page(1)
     except EmptyPage:
-        list_of_transactions = paginator.page(paginator.num_pages)
+        list_of_items = paginator.page(paginator.num_pages)
 
-    return list_of_transactions
+    return list_of_items
