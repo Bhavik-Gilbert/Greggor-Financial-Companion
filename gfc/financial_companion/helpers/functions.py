@@ -1,10 +1,12 @@
 from currency_symbols import CurrencySymbols
 from currency_converter import CurrencyConverter
 from kzt_exchangerates import Rates as KZTRates
+from financial_companion.models import Transaction, Category
+from financial_companion.helpers import timespan_map
 from .enums import CurrencyType
 import random
 import string
-from datetime import datetime
+from datetime import datetime, date
 
 
 def get_currency_symbol(currency_code: str):
@@ -51,3 +53,27 @@ def random_filename(filename):
             string.ascii_letters), str(
             datetime.now())]
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
+
+def get_category_splits(transactions: list(Transaction)):
+    spent_per_category= dict()
+    no_of_categories = Category.objects.count()
+    for x in transactions:
+        if (len(spent_per_category) == 0) | spent_per_category.get(x.category) == None:
+            spent_per_category[x.category] = x.amount
+        else:
+            spent_per_category.update({x.category : spent_per_category.get(x.category) + x.amount })
+    print(spent_per_category)
+        
+    
+def get_transactions_from_last_week(time_choice):
+    transactions = []
+    timespan_int = timespan_map[time_choice.timespan]
+    start_of_timespan_period = datetime.date.today(
+    ) - datetime.timedelta(days=timespan_int)
+
+    filtered_transactions = []
+    for transaction in transactions:
+        if transaction.time_of_transaction.date() >= start_of_timespan_period:
+            filtered_transactions = [*filtered_transactions, transaction]   
+    
+
