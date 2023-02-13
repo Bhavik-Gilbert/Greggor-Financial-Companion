@@ -3,6 +3,7 @@ from django.core.validators import RegexValidator
 from financial_companion.models import UserGroup
 from financial_companion.helpers.functions import get_random_invite_code
 
+
 class CreateUserGroupForm(forms.ModelForm):
     """Form to create user groups"""
 
@@ -17,7 +18,8 @@ class CreateUserGroupForm(forms.ModelForm):
     def get_invite_code(self):
         generated_invite_code = get_random_invite_code(8)
         try:
-            user_group: UserGroup = UserGroup.objects.get(invite_code=generated_invite_code)
+            user_group: UserGroup = UserGroup.objects.get(
+                invite_code=generated_invite_code)
         except UserGroup.DoesNotExist:
             return generated_invite_code
         self.get_invite_code()
@@ -31,8 +33,8 @@ class CreateUserGroupForm(forms.ModelForm):
             user_group = UserGroup.objects.create(
                 name=self.cleaned_data.get('name'),
                 description=self.cleaned_data.get('description'),
-                owner_email = current_user.email,
-                invite_code = self.get_invite_code(),
+                owner_email=current_user.email,
+                invite_code=self.get_invite_code(),
                 group_picture=self.cleaned_data.get('group_picture'),
             )
         else:

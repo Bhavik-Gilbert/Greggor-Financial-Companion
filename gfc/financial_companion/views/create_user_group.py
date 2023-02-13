@@ -16,11 +16,11 @@ def create_user_group_view(request: HttpRequest) -> HttpResponse:
             user_group: UserGroup = form.save(user)
             user_group.add_member(user)
             messages.add_message(
-            request,
-            messages.SUCCESS,
-            "You have successfully made a group")
+                request,
+                messages.SUCCESS,
+                "You have successfully made a group")
             return redirect('all_groups_redirect')
     else:
         form = CreateUserGroupForm()
     return render(request, "pages/create_user_group.html",
-                  {'form': form })
+                  {'form': form})
