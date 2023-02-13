@@ -43,13 +43,13 @@
             "receiver_account" : 3,
             "time_of_transaction" : "2023-01-01T12:00:00+00:00"
           }
-      },    
+      },
 
     {
         "model": "financial_companion.Transaction",
         "pk": 3,
         "fields": {
-            "title": "New Shooes",
+            "title": "New Shoes",
             "description": "Bought new shoes from my friend",
             "image": "transactions/2.jpg",
             "category" : 1,
@@ -57,6 +57,54 @@
             "currency" : "USD",
             "sender_account" : 3,
             "receiver_account" : 1,
+            "time_of_transaction" : "2023-01-01T12:00:00+00:00"
+        }
+    },
+
+    {
+        "model": "financial_companion.Transaction",
+        "pk": 6,
+        "fields": {
+            "title": "New glasses",
+            "description": "Bought new glasses",
+            "image": "transactions/5.jpg",
+            "category" : 1,
+            "amount" : 299.99,
+            "currency" : "USD",
+            "sender_account" : 5,
+            "receiver_account" : 1,
+            "time_of_transaction" : "2023-01-01T12:00:00+00:00"
+        }
+    },
+
+    {
+        "model": "financial_companion.Transaction",
+        "pk": 7,
+        "fields": {
+            "title": "old laptop bag",
+            "description": "sold my old laptop bag",
+            "image": "transactions/11.jpg",
+            "category" : 1,
+            "amount" : 89.99,
+            "currency" : "USD",
+            "sender_account" : 3,
+            "receiver_account" : 5,
+            "time_of_transaction" : "2023-01-01T12:00:00+00:00"
+        }
+    },
+
+    {
+        "model": "financial_companion.Transaction",
+        "pk": 8,
+        "fields": {
+            "title": "old phone",
+            "description": "sold old phone",
+            "image": "transactions/23.jpg",
+            "category" : 1,
+            "amount" : 499.99,
+            "currency" : "USD",
+            "sender_account" : 4,
+            "receiver_account" : 5,
             "time_of_transaction" : "2023-01-01T12:00:00+00:00"
         }
     }

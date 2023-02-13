@@ -5,15 +5,15 @@ from financial_companion.models.user_model import User
 
 class UserModelTestCase(ModelTestCase):
     """Test file for user model class"""
-    
+
     def setUp(self):
         super().setUp()
-        self.test_model = User.objects.get(username = '@johndoe')
-        self.second_user = User.objects.get(username = '@janedoe')
+        self.test_model = User.objects.get(username='@johndoe')
+        self.second_user = User.objects.get(username='@janedoe')
 
     def test_valid_target(self):
         self._assert_model_is_valid()
-    
+
     def test_username_cant_be_blank(self):
         self.test_model.username = ''
         self._assert_model_is_invalid()
@@ -37,9 +37,9 @@ class UserModelTestCase(ModelTestCase):
     def test_first_name_is_not_more_than_50_characters(self):
         self.test_model.first_name = 'j' * 51
         self._assert_model_is_invalid()
-    
+
     def test_last_name_is_not_blank(self):
-        self.test_model.last_name = '';
+        self.test_model.last_name = ''
         self._assert_model_is_invalid()
 
     def test_last_name_doesnt_need_to_be_unique(self):
@@ -69,7 +69,7 @@ class UserModelTestCase(ModelTestCase):
     def test_bio_cant_be_more_that_520_chars(self):
         self.test_model.bio = 'x' * 521
         self._assert_model_is_invalid()
-    
+
     def test_email_must_not_be_blank(self):
         self.test_model.email = ''
         self._assert_model_is_invalid()
@@ -104,4 +104,3 @@ class UserModelTestCase(ModelTestCase):
 
     # TODO:
     # Test image field
-    
