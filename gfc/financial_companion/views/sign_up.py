@@ -5,6 +5,7 @@ from django.contrib.auth import login
 from ..helpers import offline_required
 from financial_companion.forms import UserSignUpForm
 
+
 @offline_required
 def sign_up_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':

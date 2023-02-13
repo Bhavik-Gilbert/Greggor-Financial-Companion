@@ -1,11 +1,12 @@
 from django.test import TestCase
 
+
 class BaseTestCase(TestCase):
     """
     Base class for testing.
     Setup universally used fixtures and information across tests
     """
-    
+
     fixtures: list[str] = [
         "example_category.json",
         "example_transactions.json",
@@ -13,7 +14,9 @@ class BaseTestCase(TestCase):
         "example_accounts.json",
         "example_targets.json",
         "example_recurring_transaction.json",
+        "example_user_groups.json",
+        "example_link_recurring_transaction.json",
     ]
-    
+
     def setUp(self) -> None:
         pass

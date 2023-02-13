@@ -4,6 +4,7 @@ from financial_companion.models import Transaction, User
 from django.urls import reverse
 from decimal import Decimal
 
+
 class AddTransactionViewTestCase(ViewTestCase):
     """Unit tests of the add transaction view"""
 
@@ -13,16 +14,16 @@ class AddTransactionViewTestCase(ViewTestCase):
             "title": "Test",
             "description": "This is a test transaction",
             "image": "transaction_reciept.jpeg",
-            "category" : 1,
-            "amount" : 152.95,
-            "currency" : "USD",
-            "sender_account" : 1,
-            "receiver_account" : 2,
+            "category": 1,
+            "amount": 152.95,
+            "currency": "USD",
+            "sender_account": 1,
+            "receiver_account": 2,
         }
         self.user = User.objects.get(username='@johndoe')
 
     def test_add_transaction_url(self):
-        self.assertEqual(self.url,'/add_transaction/')
+        self.assertEqual(self.url, '/add_transaction/')
 
     def test_get_add_transaction(self):
         self._login(self.user)
@@ -51,9 +52,13 @@ class AddTransactionViewTestCase(ViewTestCase):
         before_count = Transaction.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = Transaction.objects.count()
-        self.assertEqual(after_count, before_count+1)
+        self.assertEqual(after_count, before_count + 1)
         response_url = reverse('dashboard')
-        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertRedirects(
+            response,
+            response_url,
+            status_code=302,
+            target_status_code=200)
         self.assertTemplateUsed(response, 'pages/dashboard.html')
         transaction = Transaction.objects.get(title='Test')
         self.assertEqual(transaction.description, 'This is a test transaction')

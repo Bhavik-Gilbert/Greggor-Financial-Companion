@@ -5,6 +5,7 @@ from .test_view_base import ViewTestCase
 from financial_companion.forms import UserChangePasswordForm
 from financial_companion.models import User
 
+
 class ChangePasswordViewTestCase(ViewTestCase):
     """Unit tests of the change password view"""
 
@@ -17,7 +18,7 @@ class ChangePasswordViewTestCase(ViewTestCase):
         self.user = User.objects.get(username='@johndoe')
 
     def test_change_password_url(self):
-        self.assertEqual(self.url,'/change_password/')
+        self.assertEqual(self.url, '/change_password/')
 
     def test_get_change_password(self):
         self._login(self.user)

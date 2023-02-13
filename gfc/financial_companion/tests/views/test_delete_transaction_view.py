@@ -3,6 +3,7 @@ from financial_companion.forms import AddTransactionForm
 from financial_companion.models import Transaction, User
 from django.urls import reverse
 
+
 class DeleteTransactionViewTestCase(ViewTestCase):
     """Unit tests of the delete transaction view"""
 
@@ -11,7 +12,7 @@ class DeleteTransactionViewTestCase(ViewTestCase):
         self.user = User.objects.get(username='@johndoe')
 
     def test_delete_transaction_url(self):
-        self.assertEqual(self.url,'/delete_transaction/2')
+        self.assertEqual(self.url, '/delete_transaction/2')
 
     def test_get_delete_transaction(self):
         self._login(self.user)
@@ -19,9 +20,13 @@ class DeleteTransactionViewTestCase(ViewTestCase):
         before_count = Transaction.objects.count()
         response = self.client.get(self.url)
         after_count = Transaction.objects.count()
-        self.assertEqual(before_count-1,after_count)
+        self.assertEqual(before_count - 1, after_count)
         response_url = reverse('dashboard')
-        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertRedirects(
+            response,
+            response_url,
+            status_code=302,
+            target_status_code=200)
 
     def test_transaction_does_not_exist(self):
         self._login(self.user)
@@ -29,6 +34,10 @@ class DeleteTransactionViewTestCase(ViewTestCase):
         before_count = User.objects.count()
         response = self.client.get(self.url)
         after_count = User.objects.count()
-        self.assertEqual(before_count,after_count)
+        self.assertEqual(before_count, after_count)
         response_url = reverse('dashboard')
-        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
+        self.assertRedirects(
+            response,
+            response_url,
+            status_code=302,
+            target_status_code=200)

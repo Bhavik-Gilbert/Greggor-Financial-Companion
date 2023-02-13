@@ -1,0 +1,10 @@
+[
+    {
+        "model": "financial_companion.LinkRecurringTransaction",
+        "pk": 1,
+        "fields": {
+            "recurring_transaction" : "1",
+            "transaction" : "2"
+        }
+    }
+]
