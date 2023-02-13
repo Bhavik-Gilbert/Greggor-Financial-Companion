@@ -9,22 +9,31 @@ from django.conf import settings
 @login_required
 def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResponse:
     user = request.user
-    user_accounts = PotAccount.objects.filter(user = user.id)
+    user_accounts = PotAccount.objects.filter(user=user.id)
     transactions = []
 
     filter_send_types = ["sent", "all"]
     filter_receive_types = ["all", "received"]
-    
-    if not(filter_type in filter_send_types or filter_type in filter_receive_types):
+
+    if not (filter_type in filter_send_types or filter_type in filter_receive_types):
         return redirect('dashboard')
 
     for account in user_accounts:
         if filter_type in filter_send_types:
-            transactions = [*transactions, *Transaction.objects.filter(sender_account=account)]
+            transactions = [
+                *
+                transactions,
+                *
+                Transaction.objects.filter(
+                    sender_account=account)]
         if filter_type in filter_receive_types:
-            transactions = [*transactions, *Transaction.objects.filter(receiver_account=account)]
+            transactions = [
+                *
+                transactions,
+                *
+                Transaction.objects.filter(
+                    receiver_account=account)]
 
-    
     page = request.GET.get('page', 1)
     paginator = Paginator(transactions, settings.NUMBER_OF_TRANSACTIONS)
     try:
@@ -33,8 +42,9 @@ def view_users_transactions(request: HttpRequest, filter_type : str) -> HttpResp
         list_of_transactions = paginator.page(1)
     except EmptyPage:
         list_of_transactions = paginator.page(paginator.num_pages)
-    
-    return render(request, "pages/display_transactions.html", {'transactions': list_of_transactions})
+
+    return render(request, "pages/display_transactions.html",
+                  {'transactions': list_of_transactions})
 
 @login_required
 def view_users_transactions_redirect(request: HttpRequest) -> HttpResponse:
