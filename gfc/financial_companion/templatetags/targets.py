@@ -17,7 +17,8 @@ def get_completeness(current):
         transactions = get_user_transactions(current)
 
     timespan_int = timespan_map[current.timespan]
-    start_of_timespan_period = datetime.date.today() - datetime.timedelta(days = timespan_int)
+    start_of_timespan_period = datetime.date.today(
+    ) - datetime.timedelta(days=timespan_int)
 
     filtered_transactions = []
     for transaction in transactions:
@@ -33,11 +34,14 @@ def get_completeness(current):
 
     return round(completeness, 2)
 
+
 def get_category_transactions(current: CategoryTarget):
     return current.category.get_category_transactions()
 
+
 def get_account_transactions(current: AccountTarget):
     return current.account.get_account_transactions()
+
 
 def get_user_transactions(current: UserTarget):
     return current.user.get_user_transactions()
