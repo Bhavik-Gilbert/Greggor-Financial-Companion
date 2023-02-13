@@ -39,7 +39,9 @@ class CreateUserGroupFormTestCase(FormTestCase):
         self.assertEqual(after_count, before_count + 1)
         self.assertEqual(user_group.owner_email, self.test_user.email)
         self.assertEqual(user_group.name, 'Financial Club')
-        self.assertEqual(user_group.description, 'We are the best financial club')
+        self.assertEqual(
+            user_group.description,
+            'We are the best financial club')
 
     def test_form_updates_correctly(self):
         user_group = UserGroup.objects.get(id=1)
@@ -50,6 +52,7 @@ class CreateUserGroupFormTestCase(FormTestCase):
             instance=user_group)
         after_count = UserGroup.objects.count()
         self.assertEqual(current_user_group.name, 'Financial Club')
-        self.assertEqual(current_user_group.description, 'We are the best financial club')
+        self.assertEqual(
+            current_user_group.description,
+            'We are the best financial club')
         self.assertEqual(before_count, after_count)
-    
