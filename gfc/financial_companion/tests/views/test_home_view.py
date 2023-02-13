@@ -4,7 +4,6 @@ from .test_view_base import ViewTestCase
 from financial_companion.helpers import GreggorTypes
 from financial_companion.models import User
 
-
 class HomeViewTestCase(ViewTestCase):
     """Unit tests of the home view"""
 
@@ -13,16 +12,15 @@ class HomeViewTestCase(ViewTestCase):
         self.user = User.objects.get(username='@johndoe')
 
     def test_valid_log_in_url(self):
-        self.assertEqual(self.url, '/')
-
+        self.assertEqual(self.url,'/')
+    
     def test_valid_get_log_in(self):
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/index.html')
         logo_types: GreggorTypes = response.context['logo_types']
-        self.assertTrue(isinstance(logo_type, GreggorTypes)
-                        for logo_type in logo_types)
-
+        self.assertTrue(isinstance(logo_type, GreggorTypes) for logo_type in logo_types)
+    
     def test_valid_get_home_page_redirects_when_logged_in(self):
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url, follow=True)

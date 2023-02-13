@@ -11,7 +11,6 @@ from .user_model import User
 from .accounts_model import PotAccount
 from ..helpers import Timespan, TransactionType, CurrencyType
 
-
 class AbstractTarget(Model):
     """Abstract model for target spending and saving"""
 
@@ -34,7 +33,6 @@ class AbstractTarget(Model):
     class Meta:
         abstract = True
 
-
 class CategoryTarget(AbstractTarget):
     """Model for target spending and saving on categories"""
 
@@ -43,7 +41,6 @@ class CategoryTarget(AbstractTarget):
     class Meta:
         unique_together = ["transaction_type", "timespan", "category"]
 
-
 class UserTarget(AbstractTarget):
     """Model for target spending and saving of users"""
 
@@ -51,7 +48,6 @@ class UserTarget(AbstractTarget):
 
     class Meta:
         unique_together = ["transaction_type", "timespan", "user"]
-
 
 class AccountTarget(AbstractTarget):
     """Model for target spending and saving of users"""

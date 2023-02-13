@@ -2,7 +2,6 @@ from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.models import User, PotAccount, BankAccount
 
-
 class ViewAccountsViewTestCase(ViewTestCase):
     """Tests of the user view pot accounts view."""
 
@@ -12,7 +11,7 @@ class ViewAccountsViewTestCase(ViewTestCase):
         self.account = PotAccount.objects.get(name='ghi')
 
     def test_view_accounts_url(self):
-        self.assertEqual(self.url, '/view_accounts/')
+        self.assertEqual(self.url,'/view_accounts/')
 
     def test_get_view_accounts(self):
         self._login(self.user)

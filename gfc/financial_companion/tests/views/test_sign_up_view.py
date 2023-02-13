@@ -5,7 +5,6 @@ from .test_view_base import ViewTestCase
 from financial_companion.forms import UserSignUpForm
 from financial_companion.models import User
 
-
 class SignUpViewTestCase(ViewTestCase):
     """Unit tests of the sign up view"""
 
@@ -22,8 +21,9 @@ class SignUpViewTestCase(ViewTestCase):
         }
         self.user = User.objects.get(username='@johndoe')
 
+
     def test_sign_up_url(self):
-        self.assertEqual(self.url, '/sign_up/')
+        self.assertEqual(self.url,'/sign_up/')
 
     def test_get_sign_up(self):
         response = self.client.get(self.url)
@@ -55,13 +55,9 @@ class SignUpViewTestCase(ViewTestCase):
         before_count = User.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = User.objects.count()
-        self.assertEqual(after_count, before_count + 1)
+        self.assertEqual(after_count, before_count+1)
         response_url = reverse('dashboard')
-        self.assertRedirects(
-            response,
-            response_url,
-            status_code=302,
-            target_status_code=200)
+        self.assertRedirects(response, response_url, status_code=302, target_status_code=200)
         self.assertTemplateUsed(response, "pages/dashboard.html")
         user = User.objects.get(username='@janedoe')
         self.assertEqual(user.first_name, 'Jane')
@@ -80,3 +76,4 @@ class SignUpViewTestCase(ViewTestCase):
         self.assertEqual(after_count, before_count)
         self._assert_require_logout(self.url)
         self.assertEqual(after_count, before_count)
+

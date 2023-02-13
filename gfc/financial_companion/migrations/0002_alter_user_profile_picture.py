@@ -14,7 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='profile_picture',
-            field=models.ImageField(
-                blank=True, upload_to=financial_companion.models.user_model.change_filename),
+            field=models.ImageField(blank=True, upload_to=financial_companion.models.user_model.change_filename),
         ),
     ]

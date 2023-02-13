@@ -2,13 +2,19 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import RegexValidator
 import os
-from financial_companion.helpers import random_filename, TransactionType
-import financial_companion.models as fcmodels
-
+import random
+import string
+import time
+from datetime import datetime
 
 def change_filename(instance, filename):
-    return os.path.join('user_profile', random_filename(filename))
+    file_extension = filename.split('.')[-1]
+    #get filename
+    # set a random filename  ,  os.path.getmtime(instance)
+    filename_strings_to_add = [random.choice(string.ascii_letters), str(datetime.now())]
+    filename = '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
 
+    return os.path.join('user_profile', filename)
 
 class User(AbstractUser):
     """User model used for authentication"""
@@ -25,25 +31,7 @@ class User(AbstractUser):
     last_name: models.CharField = models.CharField(max_length=50, blank=False)
     email: models.EmailField = models.EmailField(unique=True, blank=False)
     bio: models.CharField = models.CharField(max_length=520, blank=True)
-    profile_picture: models.ImageField = models.ImageField(
-        upload_to=change_filename,
-        height_field=None,
-        width_field=None,
-        max_length=100,
-        blank=True)
+    profile_picture: models.ImageField = models.ImageField(upload_to=change_filename, height_field=None, width_field=None, max_length=100,blank=True)
 
-    def full_name(self) -> str:
+    def full_name(self):
         return f'{self.first_name} {self.last_name}'
-
-    def get_user_transactions(self, filter_type: str = "all") -> list:
-        """Return filtered list of the users transactions"""
-        user_accounts: list[fcmodels.PotAccount] = fcmodels.PotAccount.objects.filter(
-            user=self)
-        transactions: list[fcmodels.Transaction] = []
-
-        for account in user_accounts:
-            transactions = [
-                *transactions,
-                *account.get_account_transactions(filter_type)]
-
-        return transactions

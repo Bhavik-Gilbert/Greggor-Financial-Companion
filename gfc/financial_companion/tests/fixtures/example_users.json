@@ -12,8 +12,8 @@
             "is_active": true
           }
     },
-
-    {
+    
+    {    
        "model": "financial_companion.user",
         "pk": 2,
         "fields": {
@@ -25,7 +25,7 @@
             "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
             "is_active": true
         }
-
+    
     },
 
     {
@@ -36,7 +36,7 @@
             "last_name": "Kolling",
             "username": "@michaelkolling",
             "email": "michaelkolling@example.org",
-            "bio": "Michael Kollings BlueJ Financial Tracker",
+            "bio": "Michael Kollings's BlueJ Financial Tracker",
             "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
             "is_active": true
           }

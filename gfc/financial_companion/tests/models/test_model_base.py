@@ -3,7 +3,6 @@ from django.db.models import Model
 
 from ..test_base import BaseTestCase
 
-
 class ModelTestCase(BaseTestCase):
     """
     Base class for testing models.
@@ -25,8 +24,7 @@ class ModelTestCase(BaseTestCase):
         try:
             self.test_model.full_clean()
         except ValidationError:
-            self.fail(
-                f"Test {self.test_model.__class__.__name__} should be valid!")
+            self.fail(f"Test {self.test_model.__class__.__name__} should be valid!")
 
     def _assert_model_is_invalid(self) -> None:
         """
@@ -43,7 +41,6 @@ class ModelTestCase(BaseTestCase):
         Returns true if valid, otherwise false
         """
         if self.test_model is None:
-            self.fail(
-                "self.test_model_base was not set in the test's setUp() method!")
+            self.fail("self.test_model_base was not set in the test's setUp() method!")
         if not isinstance(self.test_model, Model):
             self.fail(f"self.test_model {self.test_model} is not a Model!")

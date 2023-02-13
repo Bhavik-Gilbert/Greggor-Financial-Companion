@@ -28,11 +28,11 @@ class AbstractModelTestCase(ModelTestCase):
         if not hasattr(self, 'model'):
             self.model: ModelBase = ModelBase(
                 self.mixin.__name__,
-                (self.mixin, ),
-                {'__module__': self.mixin.__module__}
+                ( self.mixin, ),
+                { '__module__': self.mixin.__module__ }
             )
 
-            # Create the schema for our base model.
+            # Create the schema for our base model. 
             # If a schema is already create then let's not create another one.
             try:
                 with connection.schema_editor() as schema_editor:
@@ -40,6 +40,7 @@ class AbstractModelTestCase(ModelTestCase):
                 super(AbstractModelTestCase, self).setUpClass()
             except ProgrammingError:
                 pass
+
 
     @classmethod
     def tearDownClass(self) -> None:

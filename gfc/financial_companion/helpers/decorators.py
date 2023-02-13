@@ -2,7 +2,6 @@
 from django.conf import settings
 from django.shortcuts import redirect
 
-
 def offline_required(view_function):
     """
     Decorator to require a user to be signed out to access this view.

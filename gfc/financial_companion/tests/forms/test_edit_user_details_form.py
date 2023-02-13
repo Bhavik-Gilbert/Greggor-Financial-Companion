@@ -4,7 +4,6 @@ from .test_form_base import FormTestCase
 from financial_companion.forms import EditUserDetailsForm
 from financial_companion.models import User
 
-
 class EditUserDetailsFormTestCase(FormTestCase):
     """Test of the sign up form"""
 
