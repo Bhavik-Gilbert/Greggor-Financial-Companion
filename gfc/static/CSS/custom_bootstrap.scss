@@ -1,4 +1,4 @@
-$body-bg: #e0e8f3;
+$body-bg: #f8fbff;
 $body-bg-dark: #0D2237;
 $body-color: #0D2237;
 
@@ -29,6 +29,13 @@ $theme-colors : (
 }
 .btn:hover {
     transform: scale(1.1) !important;
+}
+
+.btn.btn-xs {
+    padding: .25rem .45rem;
+    font-size: .7rem;
+    line-height: 1.4;
+    border-radius: .2rem;
 }
 
 .container {

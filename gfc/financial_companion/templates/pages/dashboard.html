@@ -11,8 +11,14 @@
         {% include 'partials/dashboard/welcome.html'%}
       </div>
       <div class="col">
-        {% include 'partials/dashboard/accounts.html'%}
-        {% include 'partials/dashboard/recent-transactions.html'%}
+        <div class="row gy-2">
+          <div class="row">
+            {% include 'partials/dashboard/accounts.html'%}
+          </div>
+          <div class="row">
+            {% include 'partials/dashboard/recent-transactions.html'%}
+          </div>
+        </div>
       </div>
     </div>
 

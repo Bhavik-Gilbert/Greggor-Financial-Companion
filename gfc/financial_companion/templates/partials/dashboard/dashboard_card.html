@@ -1,0 +1,9 @@
+<div class="card text-bg-primary mb-3">
+    <div class="card-body pb-0 px-0">
+        <h5 class="card-title">{% block card_title %}{% endblock %}</h5>
+        {% block card_content %}{% endblock %}
+    </div>
+    <div class="card-body mb-0 text-center">
+        <a href="{% block card_URL %}{% endblock %}" class="btn btn-success justify-content-center">{% block action_title %}{% endblock %}</a>
+    </div>
+</div>
