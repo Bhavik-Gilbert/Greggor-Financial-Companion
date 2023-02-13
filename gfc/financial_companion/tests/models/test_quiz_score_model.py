@@ -31,8 +31,9 @@ class QuizScoreModelTestCase(ModelTestCase):
         self.test_model.total_questions: int = -1
         self.test_model.correct_questions: int = self.test_model.total_questions
         self._assert_model_is_invalid()
-    
-    def test_invalid_total_questions_cannot_be_less_than_correct_questions(self):
+
+    def test_invalid_total_questions_cannot_be_less_than_correct_questions(
+            self):
         with self.assertRaises(Exception) as raised:
             self.test_model.total_questions: int = 1
             self.test_model.correct_questions: int = 2
@@ -41,7 +42,7 @@ class QuizScoreModelTestCase(ModelTestCase):
 
     def test_valid_get_score_is_correct(self):
         self.assertEqual(self.test_model.get_score(), 80)
-    
+
     def test_valid_get_score_cannot_be_over_100(self):
         self.test_model.correct_questions = 10
         self.test_model.total_questions = 5

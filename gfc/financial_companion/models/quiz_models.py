@@ -23,8 +23,10 @@ class QuizQuestion(models.Model):
     def clean(self) -> None:
         super().clean()
 
-        if len(self.get_potential_answers()) != len(set(self.get_potential_answers())):
-            raise IntegrityError({'potential_answer':(f'You cannot have the same response in more than one potential answer {self.get_potential_answers()}')})
+        if len(self.get_potential_answers()) != len(
+                set(self.get_potential_answers())):
+            raise IntegrityError({'potential_answer': (
+                f'You cannot have the same response in more than one potential answer {self.get_potential_answers()}')})
 
     def get_potential_answers(self) -> list[str]:
         """Returns list of potential answers"""
@@ -66,12 +68,13 @@ class QuizScore(models.Model):
 
     class Meta:
         ordering: list[str] = ['-time_of_submission']
-    
+
     def clean(self) -> None:
         super().clean()
 
         if self.total_questions < self.correct_questions:
-            raise IntegrityError({'correct questions':(f'there cannot be more correct questions than total questions total questions : {self.total_questions}, correct questions : {self.correct_questions}')})
+            raise IntegrityError({'correct questions': (
+                f'there cannot be more correct questions than total questions total questions : {self.total_questions}, correct questions : {self.correct_questions}')})
 
     def get_score(self):
         """Returns score as a percentage"""
