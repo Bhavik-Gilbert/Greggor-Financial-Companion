@@ -5,7 +5,8 @@ from .enums import CurrencyType
 import random
 import string
 from datetime import datetime
-
+from django.conf import settings
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def get_currency_symbol(currency_code: str):
     """Returns currency symbol for given currency code"""
@@ -51,3 +52,15 @@ def random_filename(filename):
             string.ascii_letters), str(
             datetime.now())]
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
+
+def paginate(page, transactions):
+    list_of_transactions = []
+    paginator = Paginator(transactions, settings.NUMBER_OF_TRANSACTIONS)
+    try:
+        list_of_transactions = paginator.page(page)
+    except PageNotAnInteger:
+        list_of_transactions = paginator.page(1)
+    except EmptyPage:
+        list_of_transactions = paginator.page(paginator.num_pages)
+    
+    return list_of_transactions
