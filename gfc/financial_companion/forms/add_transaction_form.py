@@ -7,6 +7,9 @@ class AddTransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
         fields = ['title','description', 'image', 'category', 'amount', 'currency','sender_account', 'receiver_account']
+        # widgets = {
+        #     'sender_account': autocomplete.
+        # }
 
     def save(self, instance: Transaction = None) -> Transaction:
         """Create a new transaction."""
@@ -38,11 +41,10 @@ class AddTransactionForm(forms.ModelForm):
             transaction.save()
         return transaction
 
-    # def clean(self):
-    #     """Clean the data and generate messages for any errors."""
-    #
-    #     super().clean()
-    #     new_password = self.cleaned_data.get('new_password')
-    #     password_confirmation = self.cleaned_data.get('password_confirmation')
-    #     if new_password != password_confirmation:
-    #         self.add_error('password_confirmation', 'Confirmation does not match password.')
+    def clean(self):
+        """Clean the data and generate messages for any errors."""
+
+        super().clean()
+        sender_account = self.cleaned_data.get('sender_account')
+        if not(hasattr(sender_account, "user")):
+            self.add_error('sender_account', 'Neither the sender or reciever are one of your accounts.')
