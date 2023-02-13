@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 try:
     with open(os.path.dirname(os.path.abspath(__file__)) + "\\hidden_keys\\secret_key.txt") as f:
         SECRET_KEY = f.read().strip()
-except:
+except BaseException:
     SECRET_KEY = 'django-insecure-)2rxjsa3d&2d83qxnyjyca(d(kl=tt6g*h&*et!-u$fa-w94_j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'financial_companion',
-    'widget_tweaks'
+    'widget_tweaks',
+    'django_q'
 ]
 
 MIDDLEWARE = [
@@ -148,12 +149,29 @@ LOGGED_IN_URL = "dashboard"
 # Number of transactions per page
 NUMBER_OF_TRANSACTIONS = 10
 
-#salt for secure string
+# salt for secure string
 try:
     with open(os.path.dirname(os.path.abspath(__file__)) + "\\hidden_keys\\salt_key.txt") as f:
         SALT_KEY = f.read().strip()
-except:
+except BaseException:
     SALT_KEY = "temporarysalt"
 
 # Default language for Faker
 FAKER_LOCALE = "en_GB"
+
+# Information for email password reset
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "greggorfinancialcompanion@gmail.com"
+EMAIL_HOST_PASSWORD = "ajoaavtgkujobzep"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+Q_CLUSTER = {
+    'name': "shop",
+    'retry': 60,
+    'timeout': 30,
+    'workers': 4,
+    'orm': 'default'
+}

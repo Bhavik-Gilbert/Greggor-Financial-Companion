@@ -4,6 +4,7 @@ from .test_view_base import ViewTestCase
 from financial_companion.forms import EditUserDetailsForm
 from financial_companion.models import User
 
+
 class EditUserDetailsViewTestCase(ViewTestCase):
     """Unit tests of the edit user details view"""
 
@@ -19,7 +20,7 @@ class EditUserDetailsViewTestCase(ViewTestCase):
         self.user = User.objects.get(username='@johndoe')
 
     def test_edit_user_details_url(self):
-        self.assertEqual(self.url,'/edit_user_details/')
+        self.assertEqual(self.url, '/edit_user_details/')
 
     def test_get_edit_user_details(self):
         self._login(self.user)

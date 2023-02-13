@@ -1,0 +1,1 @@
+from .test_monthly_newsletter_scheduler import MonthlyNewsletterSchedulerFunctionTestCase

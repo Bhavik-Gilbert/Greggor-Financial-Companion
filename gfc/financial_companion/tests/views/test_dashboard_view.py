@@ -2,6 +2,7 @@ from .test_view_base import ViewTestCase
 from financial_companion.models import User, Account, PotAccount, Transaction, AbstractTransaction
 from django.urls import reverse
 
+
 class DashboardViewTestCase(ViewTestCase):
     """Tests of the user dashboard view."""
 
@@ -10,11 +11,19 @@ class DashboardViewTestCase(ViewTestCase):
         self.user = User.objects.get(username='@johndoe')
         self.account = PotAccount.objects.get(name='ghi')
         user_transactions = []
-        user_transactions = [*user_transactions, *Transaction.objects.filter(sender_account=self.account), *Transaction.objects.filter(receiver_account=self.account)]
+        user_transactions = [
+            *
+            user_transactions,
+            *
+            Transaction.objects.filter(
+                sender_account=self.account),
+            *
+            Transaction.objects.filter(
+                receiver_account=self.account)]
         self.recent = user_transactions[0:3]
 
     def test_dashboard_url(self):
-        self.assertEqual(self.url,'/dashboard/')
+        self.assertEqual(self.url, '/dashboard/')
 
     def test_get_dashboard_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)
@@ -33,7 +42,12 @@ class DashboardViewTestCase(ViewTestCase):
         self.assertContains(response, self.account.description)
         self.assertContains(response, self.account.balance)
         self.assertContains(response, self.recent[0].title)
-        self.assertContains(response, self.recent[0].category.name)
+        self.assertContains(
+            response, self.recent[0].category.name.capitalize())
         self.assertContains(response, self.recent[0].amount)
-        self.assertContains(response, self.recent[0].sender_account.name)
-        self.assertContains(response, self.recent[0].receiver_account.name)
+        self.assertContains(
+            response,
+            self.recent[0].sender_account.name.capitalize())
+        self.assertContains(
+            response,
+            self.recent[0].receiver_account.name.capitalize())
