@@ -4,14 +4,14 @@ from financial_companion.models import User, Transaction
 from django.urls import reverse
 
 
-class DispalyTransactionsViewTestCase(ViewTestCase):
+class DisplayTransactionsViewTestCase(ViewTestCase):
     """Unit tests of the display transactions view"""
 
     def setUp(self):
         self.url = reverse('view_transactions', kwargs={'filter_type': "all"})
         self.user = User.objects.get(username='@johndoe')
 
-    def test_log_in_url(self):
+    def test_display_transactions_url(self):
         self.assertEqual(self.url, '/view_transactions/all')
 
     def test_post_when_all_filter_is_applied(self):
