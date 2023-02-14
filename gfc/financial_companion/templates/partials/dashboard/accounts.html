@@ -4,24 +4,30 @@
 {% block card_title %}Accounts:{% endblock %}
 
 {% block card_content %}
-<div class="accordion" id="accordionExample">
-  {% for account in accounts %}
-    <div class="accordion-item">
-      <h2 class="accordion-header" id="heading{{ account.name }}">
-        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ account.name }}" aria-expanded="true" aria-controls="collapse{{ account.name }}">
-          Account Name: {{ account.name }}
-        </button>
-      </h2>
-      <div id="collapse{{ account.name }}" class="accordion-collapse collapse" aria-labelledby="heading{{ account.name }}" data-bs-parent="#accordionExample">
-        <div class="accordion-body">
-          <p><strong>Account Description: </strong>{{ account.description }}</p>
-          <p><strong>Account Balance </strong>{{ account.currency.upper}}: {{account.balance}}</p>
+  {% if account %}
+    <div class="accordion" id="accordionExample">
+      {% for account in accounts %}
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="heading{{ account.name }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ account.name }}" aria-expanded="true" aria-controls="collapse{{ account.name }}">
+              Account Name: {{ account.name }}
+            </button>
+          </h2>
+          <div id="collapse{{ account.name }}" class="accordion-collapse collapse" aria-labelledby="heading{{ account.name }}" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <p><strong>Account Description: </strong>{{ account.description }}</p>
+              <p><strong>Account Balance </strong>{{ account.currency.upper}}: {{account.balance}}</p>
+            </div>
+          </div>
         </div>
-      </div>
+      {% endfor %}
     </div>
-  {% endfor %}
-</div>
+  {% else %}
+    {% include "partials/dashboard/no_content.html" with content_type_plural="accounts" %}
+  {% endif %}
 {% endblock %}}
+
+{% block content_type_plural %}Accounts{% endblock %}}
 
 {% block card_URL %}{% url 'view_accounts' %}{% endblock %}
 
