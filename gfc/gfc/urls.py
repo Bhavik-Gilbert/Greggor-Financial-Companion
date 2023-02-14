@@ -82,6 +82,7 @@ urlpatterns = [
         'change_password/',
         views.change_password_view,
         name="change_password"),
+    path('create_targets/<int:pk>',views.create_category_target_view, name = "create_targets"),
     path(
         'edit_category/<int:pk>',
         views.edit_category_view,

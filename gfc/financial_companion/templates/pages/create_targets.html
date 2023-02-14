@@ -1,0 +1,20 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}{{title}} Form{% endblock %}
+
+<!-- Content -->
+{% block content %}
+    <h1>{{title}} Form </h1>
+    <form method="post">
+        {% csrf_token %}
+        {% include 'partials/form.html' with form=form %}
+      <button type="submit" name="submit_type" value="Submit" class="btn btn-primary">
+        {% if form_toggle %}
+            Create {{title}}
+        {% else %}
+            Edit {{title}}
+        {% endif %}
+    </button>
+    </form>
+{% endblock %}
