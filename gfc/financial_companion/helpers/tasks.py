@@ -13,6 +13,8 @@ def send_monthly_newsletter_email():
     User = get_user_model()
     users = User.objects.all()
 
+    list_of_emails = []
+
     for user in users:
         # today = datetime.datetime.now()
         # transactions = user.get_user_transactions()
@@ -28,7 +30,7 @@ def send_monthly_newsletter_email():
         html_content = render_to_string(
             "partials/monthly_newsletter.html", context)
         text_content = strip_tags(html_content)
-        send_mail(
+        current_email = send_mail(
             'Monthly Newsletter',
             text_content,
             settings.EMAIL_HOST_USER,
@@ -36,4 +38,6 @@ def send_monthly_newsletter_email():
             html_message=html_content,
             fail_silently=False,
         )
-    print("EMAILS SENT")
+        list_of_emails.append(current_email)
+
+    return list_of_emails
