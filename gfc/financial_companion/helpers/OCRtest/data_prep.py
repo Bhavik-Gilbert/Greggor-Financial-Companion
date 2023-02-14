@@ -95,6 +95,8 @@ from keras.regularizers import L2
 from keras import backend as k
 from keras.optimizers import SGD
 from keras import regularizers
+from sklearn.metrics import classification_report
+
 
 
 class ResNet:
@@ -197,8 +199,16 @@ BS = 128
 
 opt = SGD(learning_rate = INIT_LR, decay= INIT_LR/EPOCHS)
 
-model = ResNet.build(32,32,1,len(le.classes_), (3,3,3), (64,64,128, 256), reg=0.0005)
+model = ResNet.build(32,32,1,len(le.classes_), (3,3,3), (64,64,128,256) , reg=0.0005)
 
-model.complie(loss="categorical_crossentropy", optimizer = opt, metrics= ["accuracy"])
+model.compile(loss="categorical_crossentropy", optimizer = opt, metrics= ["accuracy"])
 
 H = model.fit(aug.flow(trainX, trainY, batch_size=BS), validation_data=(testX, testY), steps_per_epoch=len(trainX) // BS, epochs=EPOCHS, class_weight= classWeight, verbose=1)
+
+labelNames = "01234456789"
+
+labelNames += "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+predictions = model.predict(testX, batch_size=BS)
+
+print(classification_report(testY.argmax(axis=1), predictions.argmax(axis=1), target_names=labelNames))
