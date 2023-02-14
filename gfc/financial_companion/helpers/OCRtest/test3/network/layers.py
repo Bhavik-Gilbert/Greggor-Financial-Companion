@@ -48,12 +48,12 @@ class OctConv2d(Layer):
 
     def __init__(self, filters, alpha, kernel_size=(3,3), strides=(1,1), padding="same", kernel_initializer="glorot_uniform", kernel_regularizer= None, kernel_contraint= None, **kwargs):
         assert alpha >= 0 and alpha <=1
-        assert filter >=0 and isinstance(filter, int)
+        assert filters >=0 and isinstance(filters, int)
 
         super().__init__(**kwargs)
 
         self.alpha = alpha
-        self.filter = filters,
+        self.filters = filters,
 
         self.kernel_size = kernel_size
         self.strides = strides
@@ -95,4 +95,35 @@ class OctConv2d(Layer):
         assert len(inputs) == 2
         high_input, low_input = inputs
 
-        high_to_high = k.conv2d
+        high_to_high = k.conv2d(high_input, self.high_to_high_kernel, strides=self.strides, padding=self.padding, data_format="channals_last")
+
+        high_to_low = k.pool2d(high_input, (2,2), strides=(2,2), pool_mode="avg")
+        high_to_low = k.conv2d(high_to_low, self.high_to_low_kernel, strides=self.strides, padding=self.padding, data_format = "channels_last")
+
+        low_to_high = k.conv2d(low_input, self.low_to_high_kernel, strides=self.strides, padding=self.padding, data_format="channels_last")
+        low_to_high = k.repeat_elements(low_to_high, 2, axis=1)
+        low_to_high = k.repeat_elements(low_to_high, 2, axis=2)
+
+        low_to_low = k.conv2d(low_input, self.low_to_low_kernel, strides=self.strides, padding=self.padding, data_format="channels_last")
+
+        high_add = high_to_high + low_to_high
+        low_add = low_to_low + high_to_low
+
+        return [high_add, low_add]
+
+    def compute_output_shape(self, input_shapes):
+
+        high_in_shape, low_in_shape = input_shapes
+
+        high_out_shape = (*high_in_shape[:3], self.high_channels)
+
+        low_out_shape = (*low_in_shape[:3], self.low_channels)
+
+        return [high_out_shape, low_out_shape]
+
+    def get_config(self):
+        base_config =  super().get_config()
+
+        out_config = {"filters": self.filters, "alpha": self.alpha, "filter": self.filters, "kernel_size": self.kernel_size, "stides": self.strides, "padding": self.padding, "kernel_initializer": self.kernel_initializer, "kernel_regularizer": self.kernel_regularizer, "kernel_contraint": self.kernel_contraint}
+
+        return out_config
