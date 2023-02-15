@@ -45,5 +45,6 @@ class User(AbstractUser):
             transactions = [
                 *transactions,
                 *account.get_account_transactions(filter_type)]
-
-        return transactions
+        transactions = list(dict.fromkeys(transactions))
+        return sorted(transactions, key=lambda x: x.time_of_transaction, reverse=True)
+ 

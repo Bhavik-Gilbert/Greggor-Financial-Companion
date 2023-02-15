@@ -70,6 +70,10 @@ urlpatterns = [
         views.view_users_transactions,
         name="view_transactions"),
     path(
+        'view_searched_transactions/<str:filter_type>/<str:search_type>',
+        views.view_search_filter_transactions,
+        name="view_search_transactions"),
+    path(
         'edit_user_details/',
         views.edit_user_details_view,
         name="edit_user_details"),

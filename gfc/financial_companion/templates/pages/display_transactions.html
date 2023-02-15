@@ -3,6 +3,17 @@
 
 {% block content %}
   <h1 style="text-align:center">Transactions</h1>
-  
+  <div align="center" class="w-50 container-fluid">
+    <a class="btn btn-primary" href="{% url 'add_transaction' %}">Add New</a>
+  </div>
+    &nbsp;
+  <div align="center" class="w-50 container-fluid">
+    {% include 'partials/search_bar.html' %}
+    &nbsp;
+    {% if search_filter%}
+    <h4>Displaying {{filter_type}} transactions with the substring: {{search_filter }}</h4>
+    {%endif%}
+    &nbsp;
+    </div>
   {%include 'partials/transaction_table.html'  with transactions=transactions redirect_name="view_transactions" %}
 {% endblock %}

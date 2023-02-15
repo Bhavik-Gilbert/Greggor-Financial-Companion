@@ -17,6 +17,7 @@
           </form>
         </div>
           &nbsp;
+        {% if transactions %}
         <table class="table  table-bordered table-striped" style="width:100%" style="text-align:center" >
           <thead class = "table-primary">
             <tr>
@@ -38,5 +39,9 @@
           {% endfor %}
         </table>
         {%include 'partials/pagination.html'  with page_obj=transactions %}
+        {%else%}
+          <h2 class="text-center"> There are currently no transactions to view</h2>
+        {%endif%}
+        
       </div>
     </div>
