@@ -20,6 +20,16 @@
         }
     },
     {
+        "model": "financial_companion.categorytarget",
+        "pk": 3,
+        "fields": {
+            "transaction_type": "income",
+            "timespan": "year",
+            "amount": "123",
+            "category": 2
+        }
+    },
+    {
         "model": "financial_companion.usertarget",
         "pk": 1,
         "fields": {

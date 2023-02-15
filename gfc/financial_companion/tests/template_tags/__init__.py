@@ -1,1 +1,2 @@
 from .test_get_greggor_logo_tag import GetGreggorTemplateTagTestCase
+from .test_target_tag import GetCompletenessTemplateTagTestCase
