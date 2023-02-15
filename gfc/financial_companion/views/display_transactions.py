@@ -17,7 +17,7 @@ def view_users_transactions(request: HttpRequest,
         return redirect('dashboard')
     
 
-    transactions: list[Transaction] = user.get_user_transactions(filter_type)
+    transactions: list[Transaction] = sorted(list(dict.fromkeys(user.get_user_transactions(filter_type))), key=lambda x: x.time_of_transaction, reverse=True)
     if request.method == "POST" and "search" in request.POST:
         if request.POST["search"].strip() == "" or request.POST["search"] is None:
             return redirect('view_transactions', filter_type= "all")
@@ -69,7 +69,7 @@ def view_search_filter_transactions(request: HttpRequest,filter_type: str, searc
         search_type = request.POST["search"]
         
     user: User = request.user
-    transactions: list[Transaction] = user.get_user_transactions(filter_type)
+    transactions: list[Transaction] = sorted(list(dict.fromkeys(user.get_user_transactions(filter_type))), key=lambda x: x.time_of_transaction, reverse=True)
     if search_type.strip() == "" or search_type is None:
         return redirect('view_transactions', filter_type= "all")
     else:
@@ -81,3 +81,5 @@ def view_search_filter_transactions(request: HttpRequest,filter_type: str, searc
 
     return render(request, "pages/display_transactions.html",
                   {'transactions': list_of_transactions, 'search_filter': search_type, 'filter_type': filter_type})
+
+            
