@@ -1,16 +1,5 @@
 from django.db import models
 
-
-class MessageType(models.TextChoices):
-    """ENUM defining bootstrap message types"""
-    DANGER: str = "danger"
-    SUCCESS: str = "success"
-    WARNING: str = "warning"
-    INFO: str = "info"
-    PRIMARY: str = "primary"
-    SECONDARY: str = "secondary"
-
-
 class Timespan(models.TextChoices):
     """ENUM for generic timespans"""
     DAY: str = "day"
