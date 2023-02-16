@@ -17,10 +17,6 @@ class IndividualCategoryViewTestCase(ViewTestCase):
             kwargs={
                 "pk": self.category.id,
                 "filter_type": "all"})
-        # self.target1: CategoryTarget = CategoryTarget.objects.get(id=1)
-        # self.target2: CategoryTarget = CategoryTarget.objects.get(id=3)
-        # self.target3: CategoryTarget = CategoryTarget.objects.get(id=4)
-        # self.target4: CategoryTarget = CategoryTarget.objects.get(id=5)
 
     def test_valid_individual_category_url(self):
         self.assertEqual(
