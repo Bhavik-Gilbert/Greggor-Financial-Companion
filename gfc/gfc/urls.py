@@ -148,8 +148,6 @@ urlpatterns = [
         name="individual_transaction"
     ),
     path('quiz/', views.quiz_view, name='quiz'),
-    path('quiz_questions/', views.quiz_question_view, name='quiz_questions'),
-    path('quiz_score/', views.quiz_score_view, name='quiz_score'),
     re_path(
         'quiz/(?P<question_total>\\d+)/$',
         views.quiz_view,
@@ -159,6 +157,16 @@ urlpatterns = [
         'quiz_ready/(?P<question_total>\\d+)/$',
         views.quiz_ready_view,
         name="quiz_ready"
+    ),
+    re_path(
+        'quiz_questions/(?P<pk>\\d+)/$',
+        views.quiz_question_view,
+        name="quiz_questions"
+    ),
+    re_path(
+        'quiz_score/(?P<pk>\\d+)/$',
+        views.quiz_score_view,
+        name="quiz_score"
     ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

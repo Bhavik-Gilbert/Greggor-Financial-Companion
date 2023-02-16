@@ -11,12 +11,17 @@
     <br>
 
     <h3>About</h3>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Take this opportunity to improve knowledge with greggor</li>
+        <li class="list-group-item">You have an unlimited amount of time for the quiz</li>
+        <li class="list-group-item">Once you submit, you cannot choose to retake the same quiz again, though the same questions may appear on future quizzes</li>
+        <li class="list-group-item">You can view your most recent and best scores on the main quiz page (previous page)</li>
+    </ul>
 
     <br><br>
 
-    <div method="post" class="container-fluid row gy-3" action="{% url quiz_questions %}">
-        {% csrf_token %}
-        <button type="submit" name="quiz_questions" value="{{quiz_questions}}" class="btn btn-primary col-12">Start Quiz</button>
+    <div method="post" class="container-fluid row gy-3">
+        <a href="{% url 'quiz_questions' pk=quiz_set.id %}" class="btn btn-primary col-12">Start Quiz</a>
     </div>
   </div>
 {% endblock %}

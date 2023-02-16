@@ -1,0 +1,30 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Start Quiz{% endblock %}
+
+<!-- Content -->
+{% block content %}
+  <h1>Quiz</h1>
+
+  <br>
+
+  <form method="POST" class="container-fluid">
+      {% csrf_token %}
+      
+      {% for quiz_question in quiz_set.questions.all %}
+        <h4>{{quiz_question.question}}</h4>
+        
+        {% for question in quiz_question.get_potential_answers %}
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="{{ quiz_question.id }}" id="{{ quiz_question }}_{{ question }}" value="{{question}}" checked>
+            <label class="form-check-label" for="{{ quiz_question }}_{{ question }}">
+              {{question}}
+            </label>
+          </div>
+        {% endfor %}
+        <br>
+      {% endfor %}
+        <button type="submit" name="quiz_submit" class="btn btn-primary">Submit Quiz</button>
+  </form>
+{% endblock %}

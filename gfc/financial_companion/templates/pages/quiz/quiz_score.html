@@ -1,0 +1,24 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Quiz Results{% endblock %}
+
+<!-- Content -->
+{% block content %}
+  <div align="center">
+    <h1>Quiz Results</h1>
+
+    <p>Questions Answered: {{quiz_score.total_questions}}</p>
+    <p>Correctly Answered: {{quiz_score.correct_questions}}</p>
+    <p>Percentage Correct: {{quiz_score.get_score}}%</p>
+    <p>Submission Time: {{quiz_score.time_of_submission}}</p>
+    
+    <br>
+
+    {% for question in quiz_score.quiz_set.questions.all %}
+        <p>{{question.question}}</p>
+        <p>{{question.get_answer}}
+    {% endfor %}
+
+  </div>
+{% endblock %}

@@ -190,7 +190,6 @@ class Command(BaseCommand):
         with open(question_path) as question_file:
             question_data_list: list[str] = question_file.readlines()
             for line_index in range(0, len(question_data_list), 7):
-                print(f'Seeding Question {QuizQuestion.objects.count()}', end='\r')
                 question = question_data_list[line_index].strip()
                 potential_answer_1: str = question_data_list[line_index + 1].strip()
                 potential_answer_2: str = question_data_list[line_index + 2].strip()
@@ -208,4 +207,6 @@ class Command(BaseCommand):
                         correct_answer=correct_answer,
                         seeded=True
                     )
+                
+                print(f'Seeding Question {QuizQuestion.objects.count()}', end='\r')
         print("QUESTIONS SEEDED")

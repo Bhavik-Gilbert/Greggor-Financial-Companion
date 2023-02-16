@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 from django.contrib import messages
 import random
-from ..models import QuizQuestion, QuizScore, User
+from ..models import QuizQuestion, QuizScore, QuizSet, User
 
 
 @login_required
@@ -19,13 +19,11 @@ def quiz_view(request: HttpRequest, question_total: int = 5) -> HttpResponse:
     recent_quiz_scores: list[QuizScore] = []
     if len(quiz_scores) >= 5:
         recent_quiz_scores = quiz_scores[0:5]
-        quiz_scores.sort(key=lambda score: score.get_score)
-        top_quiz_scores = quiz_scores[0:5]
+        top_quiz_scores = sorted(quiz_scores, key=lambda score: score.get_score)[0:5]
 
     elif len(quiz_scores) > 0:
         recent_quiz_scores = quiz_scores[0:len(quiz_scores)]
-        quiz_scores.sort(key=lambda score: score.get_score)
-        top_quiz_scores = quiz_scores[0:len(quiz_scores)]
+        top_quiz_scores = sorted(quiz_scores, key=lambda score: score.get_score)[0:5]
 
     return render(request, "pages/quiz/quiz.html", {
         "top_quiz_scores": top_quiz_scores,
@@ -48,41 +46,82 @@ def quiz_ready_view(request: HttpRequest,
         return redirect("quiz")
 
     quiz_questions: list[QuizQuestion] = random.sample(
-        QuizQuestion.objects.all(), question_total)
+        list(QuizQuestion.objects.all()), question_total)
 
-    return render(request, "pages/quiz_ready.html", {
-        "quiz_questions": quiz_questions
+    if not QuizSet.set_exists(quiz_questions):
+        quiz_set: QuizSet = QuizSet.objects.create(
+            seeded = False
+        )
+        
+        for question in quiz_questions:
+            quiz_set.questions.add(question)
+    else:
+        quiz_set: QuizSet = QuizSet.get_set_from_questions(quiz_questions)
+
+    if quiz_set is None:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "Quiz couldn't be generated")
+        return redirect("quiz") 
+
+    return render(request, "pages/quiz/quiz_ready.html", {
+        "quiz_set": quiz_set
     })
 
 @login_required
-def quiz_question_view(request: HttpRequest) -> HttpResponse:
+def quiz_question_view(request: HttpRequest, pk: int) -> HttpResponse:
     """View to partake in quizzes"""
-    find_in_post: list[str] = ["quiz_questions"]
 
-    if request.method != "POST" or not set(find_in_post).issubset(set(request.POST.keys())):
+    user: User = request.user
+    try:
+        quiz_set: QuizSet = QuizSet.objects.get(id=pk)
+    except Exception:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "The quiz specified does not exit")
         return redirect("quiz")
     
-    quiz_questions: list[QuizQuestion] = []
-    if "quiz_questions" in request.POST:
-        quiz_questions = request.POST["quiz_questions"]
+    if request.method == "POST":
+        if "quiz_submit" in request.POST:
+            total_questions: int = quiz_set.questions.count()
+            correct_answers: int = 0
+            for quiz_question in quiz_set.questions.all():
+                try:
+                    response_answer: str = request.POST[str(quiz_question.id)]
+                    if quiz_question.is_answer(response_answer):
+                        correct_answers += 1
+                except Exception:
+                    total_questions -= 1
+                
+            quiz_score: QuizScore = QuizScore.objects.create(
+                user=user,
+                total_questions=total_questions,
+                correct_questions=correct_answers,
+                quiz_set=quiz_set
+            )
 
-    return render(request, "pages/quiz_questions.html", {
-        "quiz_questions": quiz_questions
+            return redirect("quiz_score", pk=quiz_score.id)
+
+    return render(request, "pages/quiz/quiz_questions.html", {
+        "quiz_set": quiz_set
     })
 
 @login_required
-def quiz_score_view(request: HttpRequest) -> HttpResponse:
+def quiz_score_view(request: HttpRequest, pk: int) -> HttpResponse:
     """View to show score after quiz"""
+    user: User = request.user
 
-    find_in_post: list[str] = ["quiz_submit"]
-
-    if request.method != "POST" or not set(find_in_post).issubset(set(request.POST.keys())):
+    try:
+        quiz_score: QuizScore = QuizScore.objects.get(id=pk, user=user)
+    except Exception:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "The score specified does not exit")
         return redirect("quiz")
-    
-    if "quiz_score" in request.POST:
-        # submit questions and generate score
-        pass
 
-    return render(request, "pages/quiz_score.html", {
+    return render(request, "pages/quiz/quiz_score.html", {
         "quiz_score": quiz_score
     })
