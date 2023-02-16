@@ -152,10 +152,54 @@ class HRTModel:
         blstm = Dense(units=128, activation="tanh")(blstm)
 
         blstm = Bidirectional(LSTM(units=128, return_sequences=True)(blstm))
-        output_data = Dense(units=128, activation="softmax")(blstm)
+        output_data = Dense(units=d_model, activation="softmax")(blstm)
 
 
 
         return (input_data, output_data)
     
-    
+    def puigcerver(input_size, d_model):
+
+        input_data = Input(name="input", shape=input_data)
+
+        cnn = Conv2D(filters=16, kernel_size=(3,3), strides=(1,1), padding="same")(input_data)
+        cnn = BatchNormalization()(cnn)
+        cnn = LeakyReLU(alpha=0.01)(cnn)
+        cnn = MaxPooling2D(pool_size=(2,2), strides=(2,2), padding="valid")(cnn)
+
+        cnn = Conv2D(filters=32, kernel_size=(3,3), strides=(1,1), padding="same")(input_data)
+        cnn = BatchNormalization()(cnn)
+        cnn = LeakyReLU(alpha=0.01)(cnn)
+        cnn = MaxPooling2D(pool_size=(2,2), strides=(2,2), padding="valid")(cnn)
+
+        cnn = Dropout(rate=0.2)(cnn)
+        cnn = Conv2D(filters=48, kernel_size=(3,3), strides=(1,1), padding="same")(input_data)
+        cnn = BatchNormalization()(cnn)
+        cnn = LeakyReLU(alpha=0.01)(cnn)
+        cnn = MaxPooling2D(pool_size=(2,2), strides=(2,2), padding="valid")(cnn)
+
+        cnn = Dropout(rate=0.2)(cnn)
+        cnn = Conv2D(filters=64, kernel_size=(3,3), strides=(1,1), padding="same")(input_data)
+        cnn = BatchNormalization()(cnn)
+        cnn = LeakyReLU(alpha=0.01)(cnn)
+
+        cnn = Dropout(rate=0.2)(cnn)
+        cnn = Conv2D(filters=80, kernel_size=(3,3), strides=(1,1), padding="same")(input_data)
+        cnn = BatchNormalization()(cnn)
+        cnn = LeakyReLU(alpha=0.01)(cnn)
+
+        shape = cnn.get_shape()
+        blstm = Reshape((shape[1], shape[2] * shape[3]))(cnn)
+
+        blstm = Bidirectional(LSTM(units=256, return_sequences=True, dropout=0.5))(blstm)
+        blstm = Bidirectional(LSTM(units=256, return_sequences=True, dropout=0.5))(blstm)
+        blstm = Bidirectional(LSTM(units=256, return_sequences=True, dropout=0.5))(blstm)
+        blstm = Bidirectional(LSTM(units=256, return_sequences=True, dropout=0.5))(blstm)
+        blstm = Bidirectional(LSTM(units=256, return_sequences=True, dropout=0.5))(blstm)
+        blstm = Bidirectional(LSTM(units=256, return_sequences=True, dropout=0.5))(blstm)
+
+        blstm = Dropout(rate=0.5)(blstm)
+        output_data = Dense(units=d_model, activation="softmax")(blstm)
+
+        return (input_data, output_data)
+
