@@ -23,6 +23,7 @@ class Migration(migrations.Migration):
                 ('potential_answer_4', models.CharField(max_length=520)),
                 ('correct_answer', models.IntegerField(validators=[
                  django.core.validators.MaxValueValidator(4), django.core.validators.MinValueValidator(1)])),
+                 ('seeded', models.BooleanField()),
             ],
         ),
     ]

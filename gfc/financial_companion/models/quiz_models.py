@@ -19,6 +19,7 @@ class QuizQuestion(models.Model):
             MinValueValidator(1)
         ]
     )
+    seeded: models.BooleanField = models.BooleanField()
 
     def clean(self) -> None:
         super().clean()
@@ -50,7 +51,7 @@ class QuizQuestion(models.Model):
 class QuizSet(models.Model):
     """Model for storing a set of quiz questions"""
     questions: models.ManyToManyField = models.ManyToManyField(QuizQuestion)
-    generic: models.BooleanField = models.BooleanField(default=False)
+    seeded: models.BooleanField = models.BooleanField()
 
     @staticmethod
     def set_exists(quiz_questions: list[QuizQuestion]) -> bool:
@@ -62,7 +63,7 @@ class QuizSet(models.Model):
         return exists
     
     @staticmethod
-    def get_set_from_questions(quiz_questions: list[QuizQuestion]) -> QuizSet:
+    def get_set_from_questions(quiz_questions: list[QuizQuestion]):
         for quiz_set in QuizSet.objects.all():
             if quiz_questions == list(quiz_set.questions.all()):
                 return quiz_set
