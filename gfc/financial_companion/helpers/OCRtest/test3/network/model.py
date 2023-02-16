@@ -17,6 +17,8 @@ from keras.layers import Input, Add, Activation, Lambda, MaxPooling2D, Reshape
 from keras import optimizers
 from keras.utils import Progbar
 
+from tensorflow import math
+
 
 class HRTModel:
 
@@ -98,4 +100,62 @@ class HRTModel:
             decode, log = k.ctc_decode(x_test, x_test_len, greedy = self.greedy, beam_width=self.beam_width, top_paths=self.top_paths)
 
             probabilities.extend([np.exp(x) for x in log])
-            decode = [[[int]]]
+            decode = [[[int(p) for p in x if p != -1] for x in y] for y in decode]
+            predicts.extend(np.swapaxes(decode, 0, 1))
+
+            steps_done += 1
+            if verbose == 1:
+                 progbar.update(steps_done)
+
+        return (predicts, probabilities)
+    
+    @staticmethod
+    def ctc_loss_lambda_func(y_true, y_pred):
+
+        if len(y_true.shape) > 2:
+            y_true = tf.squeeze(y_true)
+
+        input_length = math.reduce_sum(y_pred, axis=-1, keepdims=False)
+        input_length = math.reduce_sum(input_length, axis=-1, keepdimss=True)
+
+        label_length = math.count_nonzero(y_true, axis=-1, keepdims=True, dtype="int64")
+
+        loss = k.ctc_batch_cost(y_true, y_pred, input_length, label_length)
+
+        loss =  tf.reduce_mean(loss)
+
+        return loss
+    
+    def bluche(input_size, d_model):
+
+        input_data = input(name="input", shape=input_size)
+        cnn = Reshape((input_size[0] // 2, input_size[1] // 2, input_size[2] * 4))(input_data)
+
+        cnn = Conv2D(filter=8, kernel_size=(3,3), strides=(1,1), padding="same", activation="tanh")(cnn)
+
+        cnn = Conv2D(filter=16, kernel_size=(2,4), stides=(2,4), padding="same", activation="tanh")(cnn)
+        cnn = GatedConv2D(filter=16, kernel_size=(3,3), strides=(1,1), padding="same")(cnn)
+
+        cnn = Conv2D(filter=32, kernel_size=(3,3), stides=(1,1), padding="same", activation="tanh")(cnn)
+        cnn = GatedConv2D(filter=32, kernel_size=(3,3), strides=(1,1), padding="same")(cnn)
+
+        cnn = Conv2D(filter=64, kernel_size=(3,4), stides=(2,4), padding="same", activation="tanh")(cnn)
+        cnn = GatedConv2D(filter=64, kernel_size=(3,3), strides=(1,1), padding="same")(cnn)
+
+        cnn = Conv2D(filter=128, kernel_size=(3,3), stides=(1,1), padding="same", activation="tanh")(cnn)
+        cnn = MaxPooling2D(pool_size=(1,4), strides=(1,4), padding="valid")(cnn)
+
+        shape = cnn.get_shape()
+        blstm = Reshape((shape[1], shape[2] * shape[3]))(cnn)
+
+        blstm = Bidirectional(LSTM(units=128, return_sequences=True)(blstm))
+        blstm = Dense(units=128, activation="tanh")(blstm)
+
+        blstm = Bidirectional(LSTM(units=128, return_sequences=True)(blstm))
+        output_data = Dense(units=128, activation="softmax")(blstm)
+
+
+
+        return (input_data, output_data)
+    
+    
