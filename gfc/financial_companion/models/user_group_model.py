@@ -36,3 +36,7 @@ class UserGroup(models.Model):
 
     def members_count(self):
         return self.members.count()
+    
+    def get_members(self):
+        members_of_group = self.members.all()
+        return ",".join([str(p) for p in members_of_group])

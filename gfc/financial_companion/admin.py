@@ -6,7 +6,8 @@ from .models import (
     Category,
     Account, PotAccount, BankAccount,
     Transaction,
-    CategoryTarget, AccountTarget, UserTarget
+    CategoryTarget, AccountTarget, UserTarget,
+    UserGroup
 )
 
 # Register your models here.
@@ -84,3 +85,10 @@ class AccountTarget(admin.ModelAdmin):
     list_display = [
         'transaction_type', 'timespan', 'amount', 'currency', 'account_id'
     ]
+
+@admin.register(UserGroup)
+class UserGroup(admin.ModelAdmin):
+    list_display = [
+        'name', 'description', 'owner_email', 'invite_code', 'get_members'
+    ]
+
