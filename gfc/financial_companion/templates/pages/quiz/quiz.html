@@ -10,8 +10,7 @@
 
     <br>
 
-    <form method="POST" class="container-fluid row gy-3">
-        {% csrf_token %}
+    <div class="container-fluid row gy-3">
         <h3 class="col-12">How many questions do you want?</h3>
         <div class="col-12">
             {% for quiz_total in quiz_total_choices %}
@@ -23,8 +22,8 @@
             {% endfor %}
         </div>
         
-        <button type="submit" name="start_quiz" value="start_quiz" class="btn btn-primary col-12">Start Quiz</button>
-    </form>
+        <a href="{% url 'quiz_ready' question_total=question_total %}" class="btn btn-primary col-12">Generate Quiz</a>
+    </div>
 
     <br><br>
 

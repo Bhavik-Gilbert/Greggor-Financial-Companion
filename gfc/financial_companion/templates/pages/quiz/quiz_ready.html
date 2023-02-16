@@ -1,0 +1,22 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Start Quiz{% endblock %}
+
+<!-- Content -->
+{% block content %}
+  <div align="center">
+    <h1>Start Quiz</h1>
+
+    <br>
+
+    <h3>About</h3>
+
+    <br><br>
+
+    <div method="post" class="container-fluid row gy-3" action="{% url quiz_questions %}">
+        {% csrf_token %}
+        <button type="submit" name="quiz_questions" value="{{quiz_questions}}" class="btn btn-primary col-12">Start Quiz</button>
+    </div>
+  </div>
+{% endblock %}
