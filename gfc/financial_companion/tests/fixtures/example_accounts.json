@@ -84,5 +84,35 @@
             "iban": "GB1234567890123456789012345678901",
             "interest_rate": 0.00
         }
+    },
+
+    {
+        "model": "financial_companion.Account",
+        "pk": 6,
+        "fields": {
+            "name": "jkl",
+            "description": "this is a test bank account with interest"
+        }
+    },
+
+    {
+        "model": "financial_companion.PotAccount",
+        "pk": 6,
+        "fields": {
+            "user": "1",
+            "balance": 20000,
+            "currency": "GBP"
+        }
+    },
+    {
+        "model": "financial_companion.BankAccount",
+        "pk": 6,
+        "fields": {
+            "bank_name": "Bank of Misha",
+            "account_number": "312454",
+            "sort_code": "223344",
+            "iban": "GB1234567890123456789012345678901",
+            "interest_rate": 3.00
+        }
     }
 ]
