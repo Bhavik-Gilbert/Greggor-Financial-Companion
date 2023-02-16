@@ -15,8 +15,6 @@ class CategoryTargetForm(forms.ModelForm):
         """Create a new target."""
         super().save(commit=False)
         if instance is None:
-            print("ASFASFASFFFFFFF")
-            print(current_category)
             category_target= CategoryTarget.objects.create(
                 category=current_category,
                 transaction_type=self.cleaned_data.get('transaction_type'),
