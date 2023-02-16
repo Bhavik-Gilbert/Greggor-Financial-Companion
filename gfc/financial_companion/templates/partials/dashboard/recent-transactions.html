@@ -4,7 +4,7 @@
 {% block card_title %}Recent Transactions:{% endblock %}
 
 {% block card_content %}
-  {% if transaction %}
+  {% if recent %}
     <div class="accordion" id="accordionExample">
     {% for transaction in recent %}
       <div class="accordion-item">
