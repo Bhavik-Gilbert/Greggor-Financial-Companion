@@ -37,17 +37,17 @@ class DashboardViewTestCase(ViewTestCase):
     def test_dashboard_displays_desired_info(self):
         self._login(self.user)
         response = self.client.get(self.url)
-        self.assertContains(response, self.user.full_name())
-        self.assertContains(response, self.account.name)
-        self.assertContains(response, self.account.description)
+        self.assertContains(response, self.user.full_name().title())
+        self.assertContains(response, self.account.name.capitalize())
+        self.assertContains(response, self.account.description.capitalize())
         self.assertContains(response, self.account.balance)
-        self.assertContains(response, self.recent[0].title)
+        self.assertContains(response, self.recent[0].title.capitalize())
         self.assertContains(
             response, self.recent[0].category.name.capitalize())
         self.assertContains(response, self.recent[0].amount)
         self.assertContains(
             response,
-            self.recent[0].sender_account.name)#.capitalize())
+            self.recent[0].sender_account.name.capitalize())
         self.assertContains(
             response,
-            self.recent[0].receiver_account.name)#.capitalize())
+            self.recent[0].receiver_account.name.capitalize())
