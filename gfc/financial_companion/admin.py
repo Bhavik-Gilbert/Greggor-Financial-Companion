@@ -86,9 +86,9 @@ class AccountTarget(admin.ModelAdmin):
         'transaction_type', 'timespan', 'amount', 'currency', 'account_id'
     ]
 
+
 @admin.register(UserGroup)
 class UserGroup(admin.ModelAdmin):
     list_display = [
         'name', 'description', 'owner_email', 'invite_code', 'get_members'
     ]
-

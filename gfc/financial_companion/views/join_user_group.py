@@ -6,6 +6,7 @@ from financial_companion.forms import JoinUserGroupForm
 from django.contrib.auth.decorators import login_required
 from ..models import UserGroup
 
+
 @login_required
 def join_user_group_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
@@ -13,19 +14,20 @@ def join_user_group_view(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             group_invite_code = form.cleaned_data.get('invite_code')
             try:
-                user_group: UserGroup = UserGroup.objects.get(invite_code=group_invite_code)
+                user_group: UserGroup = UserGroup.objects.get(
+                    invite_code=group_invite_code)
             except UserGroup.DoesNotExist:
                 messages.add_message(
-                request,
-                messages.ERROR,
-                "A group is not associated with the invite code provided")
+                    request,
+                    messages.ERROR,
+                    "A group is not associated with the invite code provided")
                 return redirect("all_groups_redirect")
             user = request.user
             if user_group.members.contains(user):
                 messages.add_message(
-                request,
-                messages.ERROR,
-                "You are already a member of this group")
+                    request,
+                    messages.ERROR,
+                    "You are already a member of this group")
                 return redirect("all_groups_redirect")
             user_group.add_member(user)
             messages.add_message(

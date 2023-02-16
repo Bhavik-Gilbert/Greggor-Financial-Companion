@@ -39,7 +39,8 @@ def all_groups_view(request: HttpRequest, search_name: str) -> HttpResponse:
         return render(request, "pages/all_groups.html",
                       {"groups": filterGroups, "form": form})
 
-    return render(request, "pages/all_groups.html", {"groups": userGroups, "form": form})
+    return render(request, "pages/all_groups.html",
+                  {"groups": userGroups, "form": form})
 
 
 @login_required
