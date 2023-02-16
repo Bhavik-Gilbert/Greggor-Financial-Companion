@@ -64,6 +64,27 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
         self.assertEqual(transactions, self._get_all_transactions(self.user_target))
 
     # test the filter trnasaction on each different time span
+    @freeze_time("2023-01-01 12:00:00")
+    def test_filter_transactions_with_timespan_day_and_time_within_a_day(self):
+        target: CategoryTarget = CategoryTarget.objects.get(id = 5)
+        non_filtered = target.category.get_category_transactions()
+
+    @freeze_time("2023-01-01 18:00:00")
+    def test_filter_transactions_with_timespan_day_and_time_outside_a_day(self):
+        target: CategoryTarget = CategoryTarget.objects.get(id = 5)
+        non_filtered = target.category.get_category_transactions()
+
+    def test_filter_transactions_with_timespan_week(self):
+        target: CategoryTarget = CategoryTarget.objects.get(id = 2)
+        non_filtered = target.category.get_category_transactions()
+
+    def test_filter_transactions_with_timespan_month(self):
+        target: CategoryTarget = CategoryTarget.objects.get(id = 3)
+        non_filtered = target.category.get_category_transactions()
+
+    def test_filter_transactions_with_timespan_year(self):
+        target: CategoryTarget = CategoryTarget.objects.get(id = 4)
+        non_filtered = target.category.get_category_transactions()
 
     # test the completeness on each target:
     @freeze_time("2023-01-01 12:00:00")

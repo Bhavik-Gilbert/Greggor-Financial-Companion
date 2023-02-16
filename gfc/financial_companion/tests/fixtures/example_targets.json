@@ -24,8 +24,28 @@
         "pk": 3,
         "fields": {
             "transaction_type": "income",
-            "timespan": "year",
+            "timespan": "month",
             "amount": "123",
+            "category": 2
+        }
+    },
+    {
+        "model": "financial_companion.categorytarget",
+        "pk": 4,
+        "fields": {
+            "transaction_type": "income",
+            "timespan": "year",
+            "amount": "1234",
+            "category": 2
+        }
+    },
+    {
+        "model": "financial_companion.categorytarget",
+        "pk": 5,
+        "fields": {
+            "transaction_type": "income",
+            "timespan": "day",
+            "amount": "1",
             "category": 2
         }
     },
