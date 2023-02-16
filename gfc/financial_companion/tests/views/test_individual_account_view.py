@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.db.models import Q
 from financial_companion.templatetags import get_completeness
 
+
 class IndividualAccountViewTestCase(ViewTestCase):
     """Unit tests of the individual account view"""
 
