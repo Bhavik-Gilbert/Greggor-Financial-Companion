@@ -10,6 +10,7 @@ from django.conf import settings
 from datetime import date, timedelta
 import financial_companion.models as fc_models
 
+
 def send_monthly_newsletter_email():
     User = get_user_model()
     users = User.objects.all()
@@ -38,6 +39,7 @@ def send_monthly_newsletter_email():
             fail_silently=False,
         )
     print("EMAILS SENT")
+
 
 def add_interest_to_bank_accounts():
     no_of_days_in_prev_month = (date.today().replace(day=1) - timedelta(days=1)).day
