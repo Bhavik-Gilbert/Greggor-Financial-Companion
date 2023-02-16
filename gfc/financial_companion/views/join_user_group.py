@@ -21,6 +21,12 @@ def join_user_group_view(request: HttpRequest) -> HttpResponse:
                 "A group is not associated with the invite code provided")
                 return redirect("all_groups_redirect")
             user = request.user
+            if user_group.members.contains(user):
+                messages.add_message(
+                request,
+                messages.ERROR,
+                "You are already a member of this group")
+                return redirect("all_groups_redirect")
             user_group.add_member(user)
             messages.add_message(
                 request,
