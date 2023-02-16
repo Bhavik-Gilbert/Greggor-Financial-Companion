@@ -30,7 +30,7 @@ def send_monthly_newsletter_email():
         html_content = render_to_string(
             "partials/monthly_newsletter.html", context)
         text_content = strip_tags(html_content)
-        current_email = send_mail(
+        send_mail(
             'Monthly Newsletter',
             text_content,
             settings.EMAIL_HOST_USER,
@@ -38,6 +38,5 @@ def send_monthly_newsletter_email():
             html_message=html_content,
             fail_silently=False,
         )
-        list_of_emails.append(current_email)
 
-    return list_of_emails
+
