@@ -15,3 +15,4 @@ from .individual_transaction import individual_transaction_view
 from .edit_user_details import edit_user_details_view
 from .profile import profile_view
 from .change_password import change_password_view
+from .quiz_view import quiz_view, quiz_question_view

@@ -147,6 +147,17 @@ urlpatterns = [
         views.individual_transaction_view,
         name="individual_transaction"
     ),
+    path('quiz/', views.quiz_view, name='quiz'),
+    re_path(
+        'quiz/(?P<question_total>\\d+)/$',
+        views.quiz_view,
+        name="quiz_with_question_total"
+    ),
+    re_path(
+        'quiz_questions/(?P<question_total>\\d+)/$',
+        views.quiz_question_view,
+        name="quiz_questions"
+    ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

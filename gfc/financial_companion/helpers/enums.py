@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Timespan(models.TextChoices):
     """ENUM for generic timespans"""
     DAY: str = "day"

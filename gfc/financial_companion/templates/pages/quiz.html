@@ -1,0 +1,44 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Quiz{% endblock %}
+
+<!-- Content -->
+{% block content %}
+  <div align="center">
+    <h1>Quiz</h1>
+
+    <br>
+
+    <form method="POST" class="container-fluid row gy-3">
+        {% csrf_token %}
+        <h3 class="col-12">How many questions do you want?</h3>
+        <div class="col-12">
+            {% for quiz_total in quiz_total_choices %}
+                {% if quiz_total == question_total %}
+                    <a href="{% url 'quiz_with_question_total' question_total=quiz_total %}" class="btn btn-secondary">{{quiz_total}}</a>
+                {% else %}
+                    <a href="{% url 'quiz_with_question_total' question_total=quiz_total %}" class="btn btn-outline-secondary">{{quiz_total}}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        
+        <button type="submit" name="start_quiz" value="start_quiz" class="btn btn-primary col-12">Start Quiz</button>
+    </form>
+
+    <br><br>
+
+    <h3>Scores</h3>
+    {% if top_quiz_scores or recent_quiz_scores %}
+        <h4>Highest</h4>
+            {%include 'partials/quiz/quiz_scores.html'  with quiz_scores=top_quiz_scores %}
+        
+        <br>
+
+        <h4>Recent</h4>
+            {%include 'partials/quiz/quiz_scores.html'  with quiz_scores=recent_quiz_scores %}
+    {% else %}
+        <h4>You haven't taken part in a quiz yet</h4>
+    {% endif %}
+  </div>
+{% endblock %}

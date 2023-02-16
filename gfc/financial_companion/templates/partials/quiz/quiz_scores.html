@@ -1,0 +1,21 @@
+{% for quiz_score in quiz_scores %}
+    {{quiz_scores}}
+{% endfor %}
+
+<table class="table table-bordered table-striped text-center">
+    <thead class = "table-primary">
+    <tr>
+        <th scope="col text-center">Total Questions</th>
+        <th scope="col text-center">Correct Questions</th>
+        <th scope="col text-center">Date Taken</th>
+    </tr>
+    </thead>
+    {% for quiz_score in quiz_scores %}
+    <tr class="text-center">
+        <td>{{ quiz_score.total_questions }}</td>
+        <td>{{ quiz_score.correct_questions }} </td>
+        <td>{{ quiz_score.time_of_submission }} </td>
+    </tr>
+    </form>
+    {% endfor %}
+</table>
