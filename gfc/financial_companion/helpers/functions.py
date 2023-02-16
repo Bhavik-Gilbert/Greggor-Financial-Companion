@@ -5,6 +5,8 @@ from .enums import CurrencyType
 import random
 import string
 from datetime import datetime
+from django.conf import settings
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def get_currency_symbol(currency_code: str):
@@ -51,3 +53,23 @@ def random_filename(filename):
             string.ascii_letters), str(
             datetime.now())]
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
+
+
+def paginate(page, list_input):
+    list_of_items = []
+    paginator = Paginator(list_input, settings.NUMBER_OF_TRANSACTIONS)
+    try:
+        list_of_items = paginator.page(page)
+    except PageNotAnInteger:
+        list_of_items = paginator.page(1)
+    except EmptyPage:
+        list_of_items = paginator.page(paginator.num_pages)
+
+    return list_of_items
+
+
+def get_random_invite_code(length):
+    """Generates a random invite code for User Groups"""
+    letters = string.ascii_uppercase
+    result_str = ''.join(random.choice(letters) for i in range(length))
+    return result_str

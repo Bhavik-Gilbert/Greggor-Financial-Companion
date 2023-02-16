@@ -7,7 +7,7 @@
           <li class="page-item disabled">
         {% endif %}
             <a class="page-link" href="?page=1">
-              Newest
+              &lt&lt
             </a>
           </li>
       {% endif %}
@@ -18,7 +18,7 @@
         <li class="page-item disabled">
           <a class="page-link" href="#">
       {% endif %}
-            Newer
+          &lt
           </a>
         </li>
       {% if page_obj.has_next %}
@@ -28,7 +28,7 @@
         <li class="page-item disabled">
           <a class="page-link" href="#">
       {% endif %}
-            Older
+          &gt
           </a>
         </li>
       {% if page_obj.has_other_pages %}
@@ -38,9 +38,14 @@
           <li class="page-item disabled">
         {% endif %}
             <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">
-              Oldest
+              &gt&gt
             </a>
           </li>
       {% endif %}
     </ul>
   </nav>
+
+
+
+
+  
