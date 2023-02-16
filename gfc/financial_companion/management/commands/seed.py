@@ -13,6 +13,7 @@ import datetime
 from random import randint, random
 import random
 from financial_companion.helpers import TransactionType, CurrencyType, MonetaryAccountType, Timespan
+from financial_companion.scheduler import create_monthly_newsletter_scheduler
 
 
 class Command(BaseCommand):
@@ -33,6 +34,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.create_basic_accounts()
         self.create_users()
+        create_monthly_newsletter_scheduler()
         print("SEEDING COMPLETE")
 
     def create_basic_accounts(self):

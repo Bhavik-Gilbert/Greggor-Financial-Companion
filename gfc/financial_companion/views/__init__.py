@@ -15,4 +15,5 @@ from .individual_transaction import individual_transaction_view
 from .edit_user_details import edit_user_details_view
 from .profile import profile_view
 from .change_password import change_password_view
-from .view_groups import all_groups_view
+from .create_user_group import create_user_group_view
+from .view_groups import all_groups_view, all_groups_redirect
