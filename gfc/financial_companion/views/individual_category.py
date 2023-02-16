@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from financial_companion.helpers import paginate
 from ..models import Category, Transaction, User, CategoryTarget, PotAccount
 from financial_companion.helpers import TransactionType
 
@@ -29,15 +29,7 @@ def individual_category_view(
     transactions: list[Transaction] = category.get_category_transactions(
         filter_type)
 
-    page: HttpRequest = request.GET.get(
-        'page', settings.NUMBER_OF_TRANSACTIONS)
-    paginator: Paginator = Paginator(transactions, 10)
-    try:
-        list_of_transactions: list[Paginator] = paginator.page(page)
-    except PageNotAnInteger:
-        list_of_transactions = paginator.page(1)
-    except EmptyPage:
-        list_of_transactions = paginator.page(paginator.num_pages)
+    list_of_transactions = paginate(request.GET.get('page', 1), transactions)
 
     return render(request, "pages/individual_category.html", {
         "category": category,

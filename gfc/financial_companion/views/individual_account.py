@@ -6,6 +6,7 @@ from django.conf import settings
 from ..models import Transaction, User, PotAccount, AccountTarget
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from financial_companion.helpers import TransactionType
+from financial_companion.helpers import paginate
 
 
 @login_required
@@ -29,14 +30,7 @@ def individual_account_view(
     transactions: list[Transaction] = account.get_account_transactions(
         filter_type)
 
-    page = request.GET.get('page', settings.NUMBER_OF_TRANSACTIONS)
-    paginator = Paginator(transactions, 10)
-    try:
-        listOfTransactions = paginator.page(page)
-    except PageNotAnInteger:
-        listOfTransactions = paginator.page(1)
-    except EmptyPage:
-        listOfTransactions = paginator.page(paginator.num_pages)
+    list_of_transactions = paginate(request.GET.get('page', 1), transactions)
 
     return render(request, "pages/individual_account.html",
                   {"account": account, "account_targets": account_targets, 'transactions': listOfTransactions})

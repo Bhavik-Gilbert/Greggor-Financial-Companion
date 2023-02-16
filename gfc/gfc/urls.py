@@ -37,17 +37,13 @@ urlpatterns = [
         views.category_list_redirect,
         name='categories_list_redirect'),
     path(
-        'groups/',
+        'groups/<str:search_name>/',
         views.all_groups_view,
         name='all_groups'),
-    # path(
-    #     'groups/<str:search_name>/',
-    #     views.all_groups,
-    #     name='all_groups'),
-    # path(
-    #     'groups/',
-    #     views.all_groups_redirect,
-    #     name='all_groups_redirect'),
+    path(
+        'groups/',
+        views.all_groups_redirect,
+        name='all_groups_redirect'),
     path(
         'add_monetary_account/',
         views.add_monetary_account_view,
@@ -94,6 +90,10 @@ urlpatterns = [
         'delete_category/<int:pk>',
         views.delete_category_view,
         name="delete_category"),
+    path(
+        'create_user_group/',
+        views.create_user_group_view,
+        name="create_user_group"),
     path(
         'reset_password',
         PasswordResetView.as_view(
