@@ -45,12 +45,6 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
         self.category_target: CategoryTarget = CategoryTarget.objects.get(id = 1)
         self.user_target: UserTarget = UserTarget.objects.get(id = 1)
 
-    # TODO: need to write tests
-
-    # "2023-01-01T12:00:00+00:00" - each transaction has this for its time
-
-    # @freeze_time("2023-01-01 12:00:00")
-
     def test_get_transaction_for_category_target(self):
         transactions = self.category_target.category.get_category_transactions()
         self.assertEqual(transactions, self._get_all_transactions(self.category_target))
