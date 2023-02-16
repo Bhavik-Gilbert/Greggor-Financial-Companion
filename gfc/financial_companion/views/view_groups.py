@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from ..models import UserGroup
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from financial_companion.forms import JoinUserGroupForm
 
 
 @login_required
@@ -12,6 +13,7 @@ def all_groups_view(request: HttpRequest, search_name: str) -> HttpResponse:
     user = request.user
     userEmail = user.email
     allGroups = UserGroup.objects.all()
+    form = JoinUserGroupForm()
 
     # need to get all the groups the user is in
     for group in allGroups:
@@ -35,9 +37,9 @@ def all_groups_view(request: HttpRequest, search_name: str) -> HttpResponse:
             if search_name in group.name:
                 filterGroups = [*filterGroups, group]
         return render(request, "pages/all_groups.html",
-                      {"groups": filterGroups})
+                      {"groups": filterGroups, "form": form})
 
-    return render(request, "pages/all_groups.html", {"groups": userGroups})
+    return render(request, "pages/all_groups.html", {"groups": userGroups, "form": form})
 
 
 @login_required
