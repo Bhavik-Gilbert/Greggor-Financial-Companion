@@ -34,6 +34,11 @@ def join_user_group_view(request: HttpRequest) -> HttpResponse:
                 request,
                 messages.SUCCESS,
                 "You have successfully joined the group")
-            return redirect("all_groups_redirect")
+            user = request.user
+            members = user_group.members.all()
+            is_owner = (user_group.owner_email == user.email)
+            count = user_group.members_count()
+            return render(request, "pages/individual_group.html",
+                      {"group": user_group, "members": members, "owner": is_owner, "count": count})
     else:
         return redirect("all_groups_redirect")
