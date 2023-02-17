@@ -163,6 +163,11 @@ urlpatterns = [
         views.individual_transaction_view,
         name="individual_transaction"
     ),
+    re_path(
+        'individual_group/(?P<pk>\\d+)/$',
+        views.individual_group_view,
+        name="individual_group"
+    ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
