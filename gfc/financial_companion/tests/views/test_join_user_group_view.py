@@ -51,3 +51,12 @@ class SignUpViewTestCase(ViewTestCase):
         after_count = self.group.members_count()
         self.assertEqual(after_count, before_count)
         self.assertFalse(self.group.members.contains(self.user))
+
+    def test_success_when_user_is_already_in_group(self):
+        self._login(self.user)
+        self.group.add_member(self.user)
+        before_count = self.group.members_count()
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = self.group.members_count()
+        self.assertEqual(after_count, before_count)
+        self.assertTrue(self.group.members.contains(self.user))
