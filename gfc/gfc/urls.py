@@ -183,6 +183,7 @@ urlpatterns = [
         'quiz_score/(?P<pk>\\d+)/$',
         views.quiz_score_view,
         name="quiz_score"
+    ),
     re_path(
         'individual_group/(?P<pk>\\d+)/$',
         views.individual_group_view,

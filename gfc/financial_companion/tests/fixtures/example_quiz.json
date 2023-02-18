@@ -8,7 +8,8 @@
             "potential_answer_2": "incorrect2",
             "potential_answer_3": "incorrect3",
             "potential_answer_4": "incorrect4",
-            "correct_answer": 1
+            "correct_answer": 1,
+            "seeded": false
         }
     },
     {
@@ -20,7 +21,16 @@
             "potential_answer_2": "jane",
             "potential_answer_3": "smith",
             "potential_answer_4": "doe",
-            "correct_answer": 1
+            "correct_answer": 1,
+            "seeded": false
+        }
+    },
+    {
+        "model": "financial_companion.QuizSet",
+        "pk": 1,
+        "fields": {
+            "questions": [1, 2],
+            "seeded": false
         }
     },
     {
@@ -30,7 +40,8 @@
             "user": "1",
             "correct_questions": "4",
             "total_questions": "5",
-            "time_of_submission" : "2023-01-01T12:00:00+00:00"
+            "time_of_submission" : "2023-01-01T12:00:00+00:00",
+            "quiz_set": 1
         }
     }
 ]
