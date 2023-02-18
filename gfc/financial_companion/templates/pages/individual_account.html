@@ -32,8 +32,7 @@
                             
                                 <p class="card-text">
                                     <p class="">Description: {{account.description}}</p>
-                                    <p class="">Balance: {{account.balance}}</p>
-                                    <p class="">Currency: {{account.currency}}</p>
+                                    <p class="">Balance: {{account.currency.upper}} {{account.balance}}</p>
                                     &nbsp;
                                 </p>
                                 
@@ -48,7 +47,7 @@
                             <div class="card-body">
             
                                 <p class="card-text">
-                                    <p class="">Bank Name:{{account.bank_name}}</p>
+                                    <p class="">Bank Name: {{account.bank_name.capitalize}}</p>
                                     <p class="">Sort Code: {{account.sort_code}}</p>
                                     <p class="">Account Number: {{account.account_number}}</p>
                                     <p class="">IBAN: {{account.iban}}</p>

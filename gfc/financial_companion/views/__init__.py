@@ -17,3 +17,4 @@ from .profile import profile_view
 from .change_password import change_password_view
 from .create_user_group import create_user_group_view
 from .view_groups import all_groups_view, all_groups_redirect
+from .view_savings_accounts import view_savings_accounts
