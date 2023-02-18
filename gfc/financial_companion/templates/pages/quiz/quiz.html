@@ -15,9 +15,9 @@
         <div class="col-12">
             {% for quiz_total in quiz_total_choices %}
                 {% if quiz_total == question_total %}
-                    <a href="{% url 'quiz_with_question_total' question_total=quiz_total %}" class="btn btn-secondary">{{quiz_total}}</a>
+                    <a href="{% url 'quiz_with_params' question_total=quiz_total sort_type=score_order_type %}" class="btn btn-secondary">{{quiz_total}}</a>
                 {% else %}
-                    <a href="{% url 'quiz_with_question_total' question_total=quiz_total %}" class="btn btn-outline-secondary">{{quiz_total}}</a>
+                    <a href="{% url 'quiz_with_params' question_total=quiz_total sort_type=score_order_type %}" class="btn btn-outline-secondary">{{quiz_total}}</a>
                 {% endif %}
             {% endfor %}
         </div>
@@ -27,15 +27,29 @@
 
     <br><br>
 
-    <h3>Scores</h3>
-    {% if top_quiz_scores or recent_quiz_scores %}
-        <h4>Highest</h4>
-            {%include 'partials/quiz/quiz_scores_table.html'  with quiz_scores=top_quiz_scores %}
-        
-        <br>
+    <form method="POST" class="container-fluid row justify-content-center">
+        {% csrf_token %}
+        <h3 class="col-md-auto">Scores</h3>
+        {% for score_list_order_type in score_list_order_types %}
+            <div class="col-lg-1">
+            {% if score_order_type == score_list_order_type %}
+                <a href="{% url 'quiz_with_params' question_total=question_total sort_type=score_list_order_type %}" class="btn btn-primary col-12">{{score_list_order_type.capitalize}}</a>
+            {% else %}
+                <a href="{% url 'quiz_with_params' question_total=question_total sort_type=score_list_order_type %}" class="btn btn-outline-secondary col-12">{{score_list_order_type.capitalize}}</a>
+            {% endif %}
+            </div>
+        {% endfor %}
+    </form>
+    
+    <br>
 
-        <h4>Recent</h4>
-            {%include 'partials/quiz/quiz_scores_table.html'  with quiz_scores=recent_quiz_scores %}
+    {% if quiz_scores %}
+        {% if score_order_type == score_list_order_types.HIGHEST %}
+            <h4>Highest</h4>
+        {% elif score_order_type == score_list_order_types.RECENT %}
+            <h4>Recent</h4>
+        {% endif %}
+        {%include 'partials/quiz/quiz_scores_table.html'  with quiz_scores=quiz_scores %}
     {% else %}
         <h4>You haven't taken part in a quiz yet</h4>
     {% endif %}

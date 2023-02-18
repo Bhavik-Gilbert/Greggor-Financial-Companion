@@ -3,6 +3,7 @@
     <tr>
         <th scope="col text-center">Total Questions</th>
         <th scope="col text-center">Correct Questions</th>
+        <th scope="col text-center">Percentage Correct</th>
         <th scope="col text-center">Date Taken</th>
     </tr>
     </thead>
@@ -10,8 +11,11 @@
     <tr class="text-center">
         <td>{{ quiz_score.total_questions }}</td>
         <td>{{ quiz_score.correct_questions }} </td>
+        <td>{{ quiz_score.get_score }}&#37; </td>
         <td>{{ quiz_score.time_of_submission }} </td>
     </tr>
     </form>
     {% endfor %}
 </table>
+
+{% include 'partials/pagination.html'  with page_obj=quiz_scores %}

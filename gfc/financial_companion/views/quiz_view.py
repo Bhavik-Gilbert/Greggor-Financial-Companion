@@ -4,30 +4,28 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 import random
 from ..models import QuizQuestion, QuizScore, QuizSet, User
-from ..helpers import paginate
+from ..helpers import paginate, ScoreListOrderType
 
 
 @login_required
-def quiz_view(request: HttpRequest, question_total: int = 5) -> HttpResponse:
+def quiz_view(request: HttpRequest, sort_type: str = ScoreListOrderType.RECENT, question_total: int = 5) -> HttpResponse:
     """View to start quizzes"""
 
     user: User = request.user
     quiz_scores: list[QuizScore] = QuizScore.objects.filter(user=user)
     question_total = int(question_total)
 
-    top_quiz_scores: list[QuizScore] = []
-    recent_quiz_scores: list[QuizScore] = []
-    if len(quiz_scores) >= 5:
-        recent_quiz_scores = quiz_scores[0:5]
-        top_quiz_scores = sorted(quiz_scores, key=lambda score: score.get_score)[0:5]
-
-    elif len(quiz_scores) > 0:
-        recent_quiz_scores = quiz_scores[0:len(quiz_scores)]
-        top_quiz_scores = sorted(quiz_scores, key=lambda score: score.get_score)[0:5]
+    print(len(quiz_scores))
+    if len(quiz_scores) > 0:
+        if sort_type == ScoreListOrderType.HIGHEST:
+            pagenated_quiz_scores = paginate(request.GET.get('page', 1), sorted(quiz_scores, key=lambda score: score.get_score(), reverse=True))
+        else:
+            pagenated_quiz_scores = paginate(request.GET.get('page', 1), quiz_scores)
 
     return render(request, "pages/quiz/quiz.html", {
-        "top_quiz_scores": top_quiz_scores,
-        "recent_quiz_scores": recent_quiz_scores,
+        "quiz_scores": pagenated_quiz_scores,
+        "score_order_type": sort_type,
+        "score_list_order_types": ScoreListOrderType,
         "question_total": question_total,
         "quiz_total_choices": [5, 10, 15, 20]
     })

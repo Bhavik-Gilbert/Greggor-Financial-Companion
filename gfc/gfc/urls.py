@@ -165,9 +165,9 @@ urlpatterns = [
     ),
     path('quiz/', views.quiz_view, name='quiz'),
     re_path(
-        'quiz/(?P<question_total>\\d+)/$',
+        'quiz/(?P<question_total>\\d+)/(?P<sort_type>\\w+)/$',
         views.quiz_view,
-        name="quiz_with_question_total"
+        name="quiz_with_params"
     ),
     re_path(
         'quiz_ready/(?P<question_total>\\d+)/$',

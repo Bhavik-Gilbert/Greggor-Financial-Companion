@@ -47,6 +47,12 @@ class MonetaryAccountType(models.TextChoices):
     BANK: str = "bank"
 
 
+class ScoreListOrderType(models.TextChoices):
+    """ENUM for score list order types"""
+    RECENT: str = "recent"
+    HIGHEST: str = "highest"
+
+
 class GreggorTypes(models.TextChoices):
     """ENUM for greggor logo types"""
     SAD: str = "sad"
