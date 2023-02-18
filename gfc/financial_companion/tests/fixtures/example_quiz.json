@@ -29,7 +29,7 @@
         "model": "financial_companion.QuizSet",
         "pk": 1,
         "fields": {
-            "questions": [1, 2],
+            "questions": [1],
             "seeded": false
         }
     },
