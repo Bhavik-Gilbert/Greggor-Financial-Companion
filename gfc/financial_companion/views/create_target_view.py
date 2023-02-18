@@ -1,11 +1,11 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
-from financial_companion.forms import CategoryTargetForm
+from financial_companion.forms import TargetForm
 from django.contrib.auth.decorators import login_required
 from ..models import Category, CategoryTarget
 from django.contrib import messages
 from django.db import IntegrityError
-
+from financial_companion.models import CategoryTarget, Category
 
 @login_required
 def create_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
@@ -18,22 +18,25 @@ def create_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
         return redirect("dashboard")
     title = "Category Target"
     if request.method == "POST":
-        form = CategoryTargetForm(request.POST)
+        form = TargetForm(request.POST, foreign_key = current_category)
         if form.is_valid():
             try:
-                form.save(current_category)
+                form.save(CategoryTarget, "category")
             except IntegrityError as e:
                 messages.add_message(
                 request,
                 messages.WARNING,
                 "This target can not be created as a target with the same timespan, transaction type and category exists")
                 return render(request, "pages/create_targets.html",
-                  {'form': CategoryTargetForm(), "form_toggle": True, 'title': title})
+                  {'form': TargetForm(foreign_key = current_category), "form_toggle": True, 'title': title})
+                  
             else:
                 return redirect('individual_category_redirect',
                             pk=current_category.id)
+
     else:
-        form = CategoryTargetForm()
+        form = TargetForm(foreign_key = current_category)
+    
     return render(request, "pages/create_targets.html",
                   {'form': form, "form_toggle": True, 'title': title})
 
@@ -51,21 +54,21 @@ def edit_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
         return redirect("dashboard")
     title = "Category Target"
     if request.method == "POST":
-        form = CategoryTargetForm(request.POST, instance = current_category_target)
+        form = TargetForm(request.POST, instance = current_category_target)
         if form.is_valid():
             try:
-                form.save(current_category_target.category, instance = current_category_target)
+                form.save(current_category_target.category, "category")
             except IntegrityError as e:
                 messages.add_message(
                 request,
                 messages.WARNING,
                 "This target can not be created as a target with the same timespan, transaction type and category exists")
                 return render(request, "pages/create_targets.html",
-                  {'form': CategoryTargetForm(), "form_toggle": True, 'title': title})
+                  {'form': TargetForm(), "form_toggle": True, 'title': title})
             else:
                 return redirect('individual_category_redirect',
                             pk=current_category_target.category.id)
     else:
-        form = CategoryTargetForm(instance = current_category_target)
+        form = TargetForm(instance = current_category_target)
     return render(request, "pages/create_targets.html",
                   {'form': form, "form_toggle": False, 'title': title})
