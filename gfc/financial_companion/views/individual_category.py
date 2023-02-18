@@ -20,7 +20,7 @@ def individual_category_view(
         return redirect("dashboard")
 
     category_targets: CategoryTarget = CategoryTarget.objects.filter(
-        category=category)
+        category=category).filter()
 
     if not (filter_type in TransactionType.get_send_list()
             or filter_type in TransactionType.get_received_list()):

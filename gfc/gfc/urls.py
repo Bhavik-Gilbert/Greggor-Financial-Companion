@@ -97,6 +97,10 @@ urlpatterns = [
         views.create_user_group_view,
         name="create_user_group"),
     path(
+        'join_user_group/',
+        views.join_user_group_view,
+        name="join_user_group"),
+    path(
         'reset_password',
         PasswordResetView.as_view(
             template_name="pages/email/password_reset.html"),
@@ -160,6 +164,11 @@ urlpatterns = [
         'individual_transaction/(?P<pk>\\d+)/$',
         views.individual_transaction_view,
         name="individual_transaction"
+    ),
+    re_path(
+        'individual_group/(?P<pk>\\d+)/$',
+        views.individual_group_view,
+        name="individual_group"
     ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

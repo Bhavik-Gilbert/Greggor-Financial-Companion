@@ -23,7 +23,9 @@
 
   {% include 'partials/navbar/navbar.html' %}
   {% include 'partials/messages.html' with messages=messages %}
-  <div class="container-fluid">{% block content %}{% endblock %}</div>
+  <div class="container">
+    <div class="mb-5 mt-4">{% block content %}{% endblock %}</div>
+  </div>
   <br>
 
 </body>

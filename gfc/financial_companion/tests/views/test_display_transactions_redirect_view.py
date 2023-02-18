@@ -3,7 +3,7 @@ from financial_companion.models import User
 from django.urls import reverse
 
 
-class DispalyTransactionRedirectViewTestCase(ViewTestCase):
+class DisplayTransactionRedirectViewTestCase(ViewTestCase):
     """Unit tests of the display transactions redirect view"""
 
     def setUp(self):
