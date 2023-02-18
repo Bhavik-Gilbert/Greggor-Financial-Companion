@@ -30,12 +30,12 @@
     <h3>Scores</h3>
     {% if top_quiz_scores or recent_quiz_scores %}
         <h4>Highest</h4>
-            {%include 'partials/quiz/quiz_scores.html'  with quiz_scores=top_quiz_scores %}
+            {%include 'partials/quiz/quiz_scores_table.html'  with quiz_scores=top_quiz_scores %}
         
         <br>
 
         <h4>Recent</h4>
-            {%include 'partials/quiz/quiz_scores.html'  with quiz_scores=recent_quiz_scores %}
+            {%include 'partials/quiz/quiz_scores_table.html'  with quiz_scores=recent_quiz_scores %}
     {% else %}
         <h4>You haven't taken part in a quiz yet</h4>
     {% endif %}
