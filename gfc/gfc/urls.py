@@ -37,6 +37,14 @@ urlpatterns = [
         views.category_list_redirect,
         name='categories_list_redirect'),
     path(
+        'groups/<str:search_name>/',
+        views.all_groups_view,
+        name='all_groups'),
+    path(
+        'groups/',
+        views.all_groups_redirect,
+        name='all_groups_redirect'),
+    path(
         'add_monetary_account/',
         views.add_monetary_account_view,
         name="add_monetary_account"),
@@ -82,6 +90,14 @@ urlpatterns = [
         'delete_category/<int:pk>',
         views.delete_category_view,
         name="delete_category"),
+    path(
+        'create_user_group/',
+        views.create_user_group_view,
+        name="create_user_group"),
+    path(
+        'join_user_group/',
+        views.join_user_group_view,
+        name="join_user_group"),
     path(
         'reset_password',
         PasswordResetView.as_view(
@@ -167,6 +183,10 @@ urlpatterns = [
         'quiz_score/(?P<pk>\\d+)/$',
         views.quiz_score_view,
         name="quiz_score"
+    re_path(
+        'individual_group/(?P<pk>\\d+)/$',
+        views.individual_group_view,
+        name="individual_group"
     ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

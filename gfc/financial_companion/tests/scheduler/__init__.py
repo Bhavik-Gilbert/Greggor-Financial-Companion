@@ -1,0 +1,3 @@
+from .test_monthly_newsletter_scheduler import MonthlyNewsletterSchedulerFunctionTestCase
+from .test_bank_account_interest_scheduler import BankAccountInterestSchedulerFunctionTestCase
+

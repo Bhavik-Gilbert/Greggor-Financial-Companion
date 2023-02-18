@@ -17,7 +17,7 @@ class CreateCategoryViewTestCase(ViewTestCase):
         }
         self.user = User.objects.get(username='@johndoe')
 
-    def test_log_out_url(self):
+    def test_create_category_url(self):
         self.assertEqual(self.url, '/create_category/')
 
     def test_get_create_category(self):
@@ -31,7 +31,7 @@ class CreateCategoryViewTestCase(ViewTestCase):
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
 
-    def test_unsuccesful_create_category_form_submission(self):
+    def test_unsuccessful_create_category_form_submission(self):
         self._login(self.user)
         response = self.client.get(self.url)
         self.form_input['name'] = ''
@@ -44,7 +44,7 @@ class CreateCategoryViewTestCase(ViewTestCase):
         form = response.context['form']
         self.assertTrue(isinstance(form, CategoryForm))
 
-    def test_succesful_category_form_submission(self):
+    def test_successful_category_form_submission(self):
         self._login(self.user)
         before_count = Category.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)

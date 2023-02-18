@@ -106,6 +106,3 @@ class UserModelTestCase(ModelTestCase):
         self.assertEqual(
             self.test_model.get_user_highest_quiz_score().get_score(), 80
         )
-
-    # TODO:
-    # Test image field
