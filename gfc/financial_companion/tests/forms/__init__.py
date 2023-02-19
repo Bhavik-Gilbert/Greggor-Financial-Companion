@@ -4,3 +4,4 @@ from .test_edit_user_details_form import EditUserDetailsFormTestCase
 from .test_log_in_form import LogInFormTestCase
 from .test_pot_account_form import PotAccountFormTestCase
 from .test_sign_up_form import SignUpFormTestCase
+from .test_join_user_group_form import JoinUserGroupFormTestCase

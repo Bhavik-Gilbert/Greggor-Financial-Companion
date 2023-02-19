@@ -7,13 +7,13 @@ from django.core.mail import EmailMessage
 from django.utils import timezone
 from datetime import datetime
 from django.conf import settings
+from datetime import date, timedelta
+import financial_companion.models as fc_models
 
 
 def send_monthly_newsletter_email():
     User = get_user_model()
     users = User.objects.all()
-
-    list_of_emails = []
 
     for user in users:
         # today = datetime.datetime.now()
@@ -38,5 +38,17 @@ def send_monthly_newsletter_email():
             html_message=html_content,
             fail_silently=False,
         )
+    print("EMAILS SENT")
 
 
+def add_interest_to_bank_accounts():
+    no_of_days_in_prev_month = (
+        date.today().replace(
+            day=1) -
+        timedelta(
+            days=1)).day
+    for account in fc_models.BankAccount.objects.all():
+        account.balance = account.balance * \
+            ((1 + (account.interest_rate / 365))**no_of_days_in_prev_month)
+        account.save()
+    print("INTEREST CALCULATED AND ADDED")

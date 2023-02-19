@@ -8,7 +8,7 @@ from django_q.models import Schedule
 
 def create_monthly_newsletter_scheduler():
     schedulers = Schedule.objects.filter(name="Monthly Newsletter")
-    if(len(schedulers) > 0):
+    if (len(schedulers) > 0):
         pass
     else:
         date_time_str = f'{timezone.now().month + 1}-01-{timezone.now().year}'
