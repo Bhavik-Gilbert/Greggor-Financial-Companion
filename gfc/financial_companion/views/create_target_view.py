@@ -48,7 +48,7 @@ def create_account_target_view(request: HttpRequest, pk: int) -> HttpResponse:
 @login_required
 def create_user_target_view(request: HttpRequest) -> HttpResponse:
     """View to allow users to add a target to a user"""
-    return create_target(request, UserTarget, request.user, TargetForm) 
+    to_return = create_target(request, UserTarget, request.user, TargetForm) 
 
     if to_return == None:
         return redirect('dashboard')
