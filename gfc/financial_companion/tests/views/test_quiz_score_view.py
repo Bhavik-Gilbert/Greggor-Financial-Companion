@@ -63,3 +63,33 @@ class QuizscoreViewTestCase(ViewTestCase):
 
     def test_valid_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)
+    
+    def test_valid_score_less_than_40(self):
+        self._login(self.user)
+        self.quiz_score.total_questions = 100
+        self.quiz_score.correct_questions = 39
+        self.quiz_score.save()
+        response: HttpResponse = self.client.get(self.url)
+        self._assert_response_contains(response, [
+            "You failed, take a chance to study the answers and try again"
+        ])
+    
+    def test_valid_score_greater_or_equal_to_70(self):
+        self._login(self.user)
+        self.quiz_score.total_questions = 100
+        self.quiz_score.correct_questions = 70
+        self.quiz_score.save()
+        response: HttpResponse = self.client.get(self.url)
+        self._assert_response_contains(response, [
+            "Great job you passed, why not try your hand at some other questions"
+        ])
+    
+    def test_valid_score_between_40_and_70(self):
+        self._login(self.user)
+        self.quiz_score.total_questions = 100
+        self.quiz_score.correct_questions = 50
+        self.quiz_score.save()
+        response: HttpResponse = self.client.get(self.url)
+        self._assert_response_contains(response, [
+            "Well done you pass, study the answers and try again to get even better"
+        ])
