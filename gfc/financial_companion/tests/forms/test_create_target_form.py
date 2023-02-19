@@ -71,7 +71,7 @@ class CreateTargetFormTestCase(FormTestCase):
     def test_form_must_save_correctly(self): 
         form = TargetForm(data=self.form_input, foreign_key = self.test_category)
         before_count = CategoryTarget.objects.count()
-        category_target = form.save(CategoryTarget, "category")
+        category_target = form.save("category", CategoryTarget, )
         after_count = CategoryTarget.objects.count()
         self.assertEqual(after_count, before_count + 1)
         self.assertEqual(category_target.timespan, 'month')
@@ -90,5 +90,5 @@ class CreateTargetFormTestCase(FormTestCase):
         }
         form = TargetForm(data=self.form_input, foreign_key = self.test_category)
         with self.assertRaises(IntegrityError):
-            self.assertFalse(form.save(CategoryTarget, "category"))
+            self.assertFalse(form.save("category", CategoryTarget))
 

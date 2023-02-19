@@ -7,8 +7,10 @@ import string
 from datetime import datetime
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
-
+from django.db import IntegrityError
+from django.shortcuts import render, redirect
+from django.contrib import messages
+import re
 def get_currency_symbol(currency_code: str):
     """Returns currency symbol for given currency code"""
     currency_code = currency_code.upper()
@@ -73,3 +75,30 @@ def get_random_invite_code(length):
     letters = string.ascii_uppercase
     result_str = ''.join(random.choice(letters) for i in range(length))
     return result_str
+
+def create_target(request, Target, current_item, TargetForm ):
+    title_first_word = re.split(r"\B([A-Z])", Target.__name__)[0] 
+    title = f'{title_first_word} Target Form'
+    form = TargetForm(request.POST, foreign_key = current_item)
+    if request.method == "POST":
+        if form.is_valid():
+            try:
+                form.save(title_first_word.lower(), Target)
+            except IntegrityError as e:
+                messages.add_message(
+                request,
+                messages.WARNING,
+                f'This target can not be created as a target with the same timespan, transaction type and {title_first_word.lower()} exists')
+                return render(request, "pages/create_targets.html",
+                {'form': TargetForm(foreign_key = current_item), "form_toggle": True, 'title': title})
+                
+            else:
+                return redirect('individual_category_redirect',
+                            pk=current_item.id)
+
+    else:
+        form = TargetForm(foreign_key = current_account)
+    return render(request, "pages/create_targets.html",
+                  {'form': form, "form_toggle": True, 'title': title})
+
+    

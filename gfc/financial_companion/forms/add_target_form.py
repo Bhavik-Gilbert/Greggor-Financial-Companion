@@ -22,7 +22,7 @@ class TargetForm(forms.Form):
     amount = forms.DecimalField(decimal_places=2, max_digits=15)
     currency = forms.ChoiceField(choices =CurrencyType.choices)
 
-    def save(self, Target : AbstractTarget, target_attribute: str):
+    def save(self, target_attribute: str,  Target : AbstractTarget = None):
         self.full_clean()
         if self.instance is None:
             target = Target()
