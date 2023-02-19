@@ -76,9 +76,9 @@ class ViewTestCase(BaseTestCase):
             status_code=302,
             target_status_code=200)
         self.assertTemplateUsed(response, "pages/dashboard.html")
-    
-    def _assert_response_contains(self, response: HttpResponse, contain_list: list[Any]):
+
+    def _assert_response_contains(
+            self, response: HttpResponse, contain_list: list[Any]):
         """Asserts the response contains the elements in the list"""
         for element in contain_list:
             self.assertContains(response, element)
-

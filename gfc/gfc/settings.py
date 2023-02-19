@@ -91,7 +91,7 @@ DATABASES = {
 FIXTURE_DIRS = [os.path.join(BASE_DIR, "financial_companion/tests/fixtures")]
 TEXT_DATA_DIRS = {
     "financial_companion": os.path.join(BASE_DIR, "financial_companion/data")
-    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

@@ -30,7 +30,7 @@ class FilterTransactionsViewTestCase(ViewTestCase):
             "individual_account", kwargs={
                 "pk": self.account.id,
                 "filter_type": "all"
-        })
+            })
         response = self.client.post(self.url, self.form_data)
         self.assertRedirects(
             response,
@@ -81,7 +81,7 @@ class FilterTransactionsViewTestCase(ViewTestCase):
             "individual_account", kwargs={
                 "pk": self.account.id,
                 "filter_type": "received"
-        })
+            })
         response = self.client.post(self.url, self.form_data)
         self.assertRedirects(
             response,

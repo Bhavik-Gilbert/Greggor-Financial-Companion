@@ -8,7 +8,8 @@ from ..helpers import paginate, ScoreListOrderType
 
 
 @login_required
-def quiz_view(request: HttpRequest, sort_type: str = ScoreListOrderType.RECENT, question_total: int = 5) -> HttpResponse:
+def quiz_view(request: HttpRequest, sort_type: str = ScoreListOrderType.RECENT,
+              question_total: int = 5) -> HttpResponse:
     """View to start quizzes"""
 
     user: User = request.user
@@ -18,9 +19,11 @@ def quiz_view(request: HttpRequest, sort_type: str = ScoreListOrderType.RECENT, 
 
     if len(quiz_scores) > 0:
         if sort_type == ScoreListOrderType.HIGHEST:
-            pagenated_quiz_scores = paginate(request.GET.get('page', 1), sorted(quiz_scores, key=lambda score: score.get_score(), reverse=True))
+            pagenated_quiz_scores = paginate(request.GET.get('page', 1), sorted(
+                quiz_scores, key=lambda score: score.get_score(), reverse=True))
         else:
-            pagenated_quiz_scores  = paginate(request.GET.get('page', 1), quiz_scores)
+            pagenated_quiz_scores = paginate(
+                request.GET.get('page', 1), quiz_scores)
 
     return render(request, "pages/quiz/quiz.html", {
         "quiz_scores": pagenated_quiz_scores,
@@ -33,7 +36,7 @@ def quiz_view(request: HttpRequest, sort_type: str = ScoreListOrderType.RECENT, 
 
 @login_required
 def quiz_ready_view(request: HttpRequest,
-                       question_total: int) -> HttpResponse:
+                    question_total: int) -> HttpResponse:
     """View to generate quizzes"""
     question_total = int(question_total)
     if question_total <= 0:
@@ -55,9 +58,9 @@ def quiz_ready_view(request: HttpRequest,
 
     if not QuizSet.set_exists(quiz_questions):
         quiz_set: QuizSet = QuizSet.objects.create(
-            seeded = False
+            seeded=False
         )
-        
+
         for question in quiz_questions:
             quiz_set.questions.add(question)
     else:
@@ -66,6 +69,7 @@ def quiz_ready_view(request: HttpRequest,
     return render(request, "pages/quiz/quiz_ready.html", {
         "quiz_set": quiz_set
     })
+
 
 @login_required
 def quiz_question_view(request: HttpRequest, pk: int) -> HttpResponse:
@@ -80,7 +84,7 @@ def quiz_question_view(request: HttpRequest, pk: int) -> HttpResponse:
             messages.ERROR,
             "The quiz specified does not exit")
         return redirect("quiz")
-    
+
     if request.method == "POST":
         if "quiz_submit" in request.POST:
             total_questions: int = quiz_set.questions.count()
@@ -92,7 +96,7 @@ def quiz_question_view(request: HttpRequest, pk: int) -> HttpResponse:
                         correct_answers += 1
                 except Exception:
                     total_questions -= 1
-            
+
             if total_questions == 0:
                 messages.add_message(
                     request,
@@ -113,6 +117,7 @@ def quiz_question_view(request: HttpRequest, pk: int) -> HttpResponse:
     return render(request, "pages/quiz/quiz_questions.html", {
         "quiz_set": quiz_set
     })
+
 
 @login_required
 def quiz_score_view(request: HttpRequest, pk: int) -> HttpResponse:

@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.contrib.messages import get_messages
 from typing import Any
 
+
 class QuizReadyViewTestCase(ViewTestCase):
     """Unit tests of the quiz ready view"""
 
@@ -21,6 +22,7 @@ class QuizReadyViewTestCase(ViewTestCase):
             "You can view your most recent and best scores on the main quiz page (previous page)",
             "About"
         ]
+
     def test_valid_quiz_ready_url(self):
         self.assertEqual(self.url, '/quiz_ready/1/')
 
@@ -31,7 +33,7 @@ class QuizReadyViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, 'pages/quiz/quiz_ready.html')
         self._assert_response_contains(response, self.page_contain_list)
         self.assertTrue(len(response.context["quiz_set"].questions.all()) == 1)
-    
+
     def test_invalid_redirects_if_question_total_is_less_than_1(self):
         self._login(self.user)
         url: str = f"{self.base_url}0/"
@@ -43,9 +45,11 @@ class QuizReadyViewTestCase(ViewTestCase):
             status_code=302,
             target_status_code=200)
         messages_list: list[Any] = list(get_messages(response.wsgi_request))
-        self.assertTrue(any(message.message == 'Invalid number of questions specified to create quiz' for message in messages_list))
+        self.assertTrue(any(
+            message.message == 'Invalid number of questions specified to create quiz' for message in messages_list))
 
-    def test_valid_redirects_if_question_total_is_higher_than_the_number_of_questions_available(self):
+    def test_valid_redirects_if_question_total_is_higher_than_the_number_of_questions_available(
+            self):
         self._login(self.user)
         url: str = f"{self.base_url}1000/"
         response_url: str = reverse("quiz")
@@ -56,9 +60,11 @@ class QuizReadyViewTestCase(ViewTestCase):
             status_code=302,
             target_status_code=200)
         messages_list: list[Any] = list(get_messages(response.wsgi_request))
-        self.assertTrue(any(message.message == 'Not enough questions in database to start quiz' for message in messages_list))
-    
-    def test_valid_new_quiz_set_made_if_questions_not_already_in_quiz_set_together(self):
+        self.assertTrue(any(
+            message.message == 'Not enough questions in database to start quiz' for message in messages_list))
+
+    def test_valid_new_quiz_set_made_if_questions_not_already_in_quiz_set_together(
+            self):
         QuizSet.objects.all().delete()
         quiz_set_count_before: int = QuizSet.objects.count()
         self._login(self.user)
@@ -66,15 +72,16 @@ class QuizReadyViewTestCase(ViewTestCase):
         self.assertEqual(response.status_code, 200)
         quiz_set_count_after: int = QuizSet.objects.count()
         self.assertEqual(quiz_set_count_before + 1, quiz_set_count_after)
-    
-    def test_valid_new_quiz_set_not_made_if_questions_already_in_quizset_together(self):
+
+    def test_valid_new_quiz_set_not_made_if_questions_already_in_quizset_together(
+            self):
         QuizSet.objects.all().delete()
         quiz_set: QuizSet = QuizSet.objects.create(
-            seeded = False
+            seeded=False
         )
         for question in QuizQuestion.objects.all():
             quiz_set.questions.add(question)
-        
+
         quiz_set_count_before: int = QuizSet.objects.count()
         self._login(self.user)
         url: str = f"{self.base_url}{QuizQuestion.objects.count()}/"
@@ -87,7 +94,7 @@ class QuizReadyViewTestCase(ViewTestCase):
         url: str = f"{self.base_url}hi/"
         response: HttpResponse = self.client.get(url)
         self.assertEqual(response.status_code, 404)
-    
+
     def test_invalid_question_total_must_be_int_try_float(self):
         url: str = f"{self.base_url}1.2/"
         response: HttpResponse = self.client.get(url)

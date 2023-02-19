@@ -185,18 +185,24 @@ class Command(BaseCommand):
                 currency=self.choose_random_enum(CurrencyType),
                 account=account
             )
-        
+
     def create_quiz_questions(self):
-        question_path: str = os.path.join(settings.TEXT_DATA_DIRS["financial_companion"], "seeder\\questions.txt")
+        question_path: str = os.path.join(
+            settings.TEXT_DATA_DIRS["financial_companion"],
+            "seeder\\questions.txt")
 
         with open(question_path) as question_file:
             question_data_list: list[str] = question_file.readlines()
             for line_index in range(0, len(question_data_list), 7):
                 question = question_data_list[line_index].strip()
-                potential_answer_1: str = question_data_list[line_index + 1].strip()
-                potential_answer_2: str = question_data_list[line_index + 2].strip()
-                potential_answer_3: str = question_data_list[line_index + 3].strip()
-                potential_answer_4: str = question_data_list[line_index + 4].strip()
+                potential_answer_1: str = question_data_list[line_index + 1].strip(
+                )
+                potential_answer_2: str = question_data_list[line_index + 2].strip(
+                )
+                potential_answer_3: str = question_data_list[line_index + 3].strip(
+                )
+                potential_answer_4: str = question_data_list[line_index + 4].strip(
+                )
                 correct_answer: int = int(question_data_list[line_index + 5])
 
                 if len(QuizQuestion.objects.filter(question=question)) == 0:
@@ -209,6 +215,8 @@ class Command(BaseCommand):
                         correct_answer=correct_answer,
                         seeded=True
                     )
-                
-                print(f'Seeding Question {QuizQuestion.objects.count()}', end='\r')
+
+                print(
+                    f'Seeding Question {QuizQuestion.objects.count()}',
+                    end='\r')
         print("QUESTIONS SEEDED")

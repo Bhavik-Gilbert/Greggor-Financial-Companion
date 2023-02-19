@@ -42,7 +42,7 @@ class Command(BaseCommand):
 
         for account in potAndBankAccounts:
             account.delete()
-        
+
         QuizSet.objects.filter(seeded=True).delete()
         QuizQuestion.objects.filter(seeded=True).delete()
 

@@ -13,9 +13,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='QuizSet',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('seeded', models.BooleanField()),
-                ('questions', models.ManyToManyField(to='financial_companion.quizquestion')),
+                ('questions', models.ManyToManyField(
+                    to='financial_companion.quizquestion')),
             ],
         ),
     ]

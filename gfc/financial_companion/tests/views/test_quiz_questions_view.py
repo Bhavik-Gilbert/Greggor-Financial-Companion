@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.contrib.messages import get_messages
 from typing import Any
 
+
 class QuizQuestionsViewTestCase(ViewTestCase):
     """Unit tests of the quiz questions view"""
 
@@ -12,7 +13,9 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         self.user: User = User.objects.get(username='@johndoe')
         self.quiz_set: QuizSet = QuizSet.objects.get(id=1)
         self.base_url = '/quiz_questions/'
-        self.url: str = reverse('quiz_questions', kwargs={"pk": self.quiz_set.id})
+        self.url: str = reverse(
+            'quiz_questions', kwargs={
+                "pk": self.quiz_set.id})
         self.page_contain_list: list[Any] = [
             "Quiz",
             "Submit Quiz",
@@ -46,8 +49,9 @@ class QuizQuestionsViewTestCase(ViewTestCase):
             status_code=302,
             target_status_code=200)
         messages_list: list[Any] = list(get_messages(response.wsgi_request))
-        self.assertTrue(any(message.message == 'The quiz specified does not exit' for message in messages_list))
-    
+        self.assertTrue(any(
+            message.message == 'The quiz specified does not exit' for message in messages_list))
+
     def test_valid_post_quiz_questions_submit_answer(self):
         # Set form input for each question
         form_input: dict[str, Any] = {"quiz_submit": ""}
@@ -58,7 +62,8 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         quiz_score_before: int = QuizScore.objects.count()
         quiz_score_id: int = QuizScore.objects.count() + 1
         response_url: str = reverse("quiz_score", kwargs={"pk": quiz_score_id})
-        response: HttpResponse = self.client.post(self.url, form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, form_input, follow=True)
         self.assertRedirects(
             response,
             response_url,
@@ -70,7 +75,7 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         quiz_score: QuizScore = QuizScore.objects.get(id=quiz_score_id)
         self.assertEqual(quiz_score.correct_questions, 1)
         self.assertEqual(quiz_score.total_questions, 1)
-    
+
     def test_invalid_post_quiz_questions_submit_withtout_some_answers(self):
         # Add another question to question set
         self.quiz_set.questions.add(QuizQuestion.objects.get(id=2))
@@ -84,7 +89,8 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         quiz_score_before: int = QuizScore.objects.count()
         quiz_score_id: int = QuizScore.objects.count() + 1
         response_url: str = reverse("quiz_score", kwargs={"pk": quiz_score_id})
-        response: HttpResponse = self.client.post(self.url, form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, form_input, follow=True)
         self.assertRedirects(
             response,
             response_url,
@@ -104,7 +110,8 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         self._login(self.user)
         quiz_score_before: int = QuizScore.objects.count()
         response_url: str = reverse("quiz")
-        response: HttpResponse = self.client.post(self.url, form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, form_input, follow=True)
         self.assertRedirects(
             response,
             response_url,
@@ -114,8 +121,9 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         self.assertEqual(quiz_score_before, quiz_score_after)
 
         messages_list: list[Any] = list(get_messages(response.wsgi_request))
-        self.assertTrue(any(message.message == 'No questions found in submission' for message in messages_list))
-    
+        self.assertTrue(any(
+            message.message == 'No questions found in submission' for message in messages_list))
+
     def test_invalid_post_quiz_questions_wihtout_submit_answer(self):
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url)
@@ -133,7 +141,7 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         url: str = f"{self.base_url}hi/"
         response: HttpResponse = self.client.get(url)
         self.assertEqual(response.status_code, 404)
-    
+
     def test_invalid_pk_must_be_int_try_float(self):
         url: str = f"{self.base_url}1.2/"
         response: HttpResponse = self.client.get(url)

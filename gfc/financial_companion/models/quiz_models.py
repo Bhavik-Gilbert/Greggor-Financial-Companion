@@ -48,6 +48,7 @@ class QuizQuestion(models.Model):
 
         return potential_answer == self.get_answer()
 
+
 class QuizSet(models.Model):
     """Model for storing a set of quiz questions"""
     questions: models.ManyToManyField = models.ManyToManyField(QuizQuestion)
@@ -57,17 +58,20 @@ class QuizSet(models.Model):
     def set_exists(quiz_questions: list[QuizQuestion]) -> bool:
         exists = False
         for quiz_set in QuizSet.objects.all():
-            if sorted(quiz_questions, key=lambda question: question.id) == sorted(list(quiz_set.questions.all()), key=lambda question: question.id):
+            if sorted(quiz_questions, key=lambda question: question.id) == sorted(
+                    list(quiz_set.questions.all()), key=lambda question: question.id):
                 exists = True
                 break
         return exists
-    
+
     @staticmethod
     def get_set_from_questions(quiz_questions: list[QuizQuestion]):
         for quiz_set in QuizSet.objects.all():
-            if sorted(quiz_questions, key=lambda question: question.id) == sorted(list(quiz_set.questions.all()), key=lambda question: question.id):
+            if sorted(quiz_questions, key=lambda question: question.id) == sorted(
+                    list(quiz_set.questions.all()), key=lambda question: question.id):
                 return quiz_set
         return None
+
 
 class QuizScore(models.Model):
     """Model for storing quiz scores"""
@@ -86,7 +90,8 @@ class QuizScore(models.Model):
     time_of_submission: models.DateTimeField = models.DateTimeField(
         auto_now_add=True
     )
-    quiz_set: models.ForeignKey = models.ForeignKey(QuizSet, on_delete=models.CASCADE)
+    quiz_set: models.ForeignKey = models.ForeignKey(
+        QuizSet, on_delete=models.CASCADE)
 
     class Meta:
         ordering: list[str] = ['-time_of_submission']
