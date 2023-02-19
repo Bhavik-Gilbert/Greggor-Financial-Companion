@@ -5,22 +5,20 @@
 
 <!-- Content -->
 {% block content %}
-  <div align="center">
-    <h1>Quiz Results</h1>
-
-    <p>Questions Answered: {{quiz_score.total_questions}}</p>
-    <p>Correctly Answered: {{quiz_score.correct_questions}}</p>
-    <p>Percentage Correct: {{quiz_score.get_score}}&#37;</p>
-    <p>Submission Time: {{quiz_score.time_of_submission}}</p>
+  <div class="row gy-5 justify-content-center text-center">
+    <h1 class="col-12">Quiz Results</h1>
     
-    <br>
+    <div class="col-12 row justify-content-center text-center">
+      <h5 class="col-auto">Questions Answered: {{quiz_score.total_questions}}</h5>
+      <h5 class="col-auto">Correctly Answered: {{quiz_score.correct_questions}}</h5>
+      <h5 class="col-auto">Percentage Correct: {{quiz_score.get_score}}&#37;</h5>
+      <h5 class="col-auto">Submission Time: {{quiz_score.time_of_submission}}</h5>
+    </div>
 
     {% for question in quiz_score.quiz_set.questions.all %}
-        <p>{{question.question}}</p>
-        <p>{{question.get_answer}}
+      {%include 'partials/quiz/quiz_results_card.html' with question=question %}
     {% endfor %}
 
-    <br><br>
     <a href="{% url 'quiz' %}" class="btn btn-primary col-12">Return to quizzes</a>
   </div>
 {% endblock %}
