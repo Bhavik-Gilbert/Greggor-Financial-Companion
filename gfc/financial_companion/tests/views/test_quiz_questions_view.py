@@ -15,7 +15,8 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         self.url: str = reverse('quiz_questions', kwargs={"pk": self.quiz_set.id})
         self.page_contain_list: list[Any] = [
             "Quiz",
-            "Submit Quiz"
+            "Submit Quiz",
+            "Leave Quiz"
         ]
 
     def test_valid_quiz_questions_url(self):

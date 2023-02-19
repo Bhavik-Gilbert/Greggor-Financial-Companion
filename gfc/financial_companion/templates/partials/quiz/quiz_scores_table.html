@@ -5,14 +5,16 @@
         <th scope="col text-center">Correct Questions</th>
         <th scope="col text-center">Percentage Correct</th>
         <th scope="col text-center">Date Taken</th>
+        <th scope="col text-center"></th>
     </tr>
     </thead>
     {% for quiz_score in quiz_scores %}
     <tr class="text-center">
         <td>{{ quiz_score.total_questions }}</td>
-        <td>{{ quiz_score.correct_questions }} </td>
-        <td>{{ quiz_score.get_score }}&#37; </td>
-        <td>{{ quiz_score.time_of_submission }} </td>
+        <td>{{ quiz_score.correct_questions }}</td>
+        <td>{{ quiz_score.get_score }}&#37;</td>
+        <td>{{ quiz_score.time_of_submission }}</td>
+        <td><a href="{% url 'quiz_score' pk=quiz_score.id %}" class="btn btn-primary">View Results</a></td>
     </tr>
     </form>
     {% endfor %}

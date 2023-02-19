@@ -14,6 +14,7 @@ class QuizReadyViewTestCase(ViewTestCase):
         self.user: User = User.objects.get(username='@johndoe')
         self.page_contain_list: list[Any] = [
             "Start Quiz",
+            "Leave Quiz",
             "Take this opportunity to improve knowledge with greggor",
             "You have an unlimited amount of time for the quiz",
             "Once you submit, you cannot choose to retake the same quiz again, though the same questions may appear on future quizzes",

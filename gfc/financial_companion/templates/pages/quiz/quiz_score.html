@@ -19,6 +19,9 @@
       {%include 'partials/quiz/quiz_results_card.html' with question=question %}
     {% endfor %}
 
-    <a href="{% url 'quiz' %}" class="btn btn-primary col-12">Return to quizzes</a>
+    <div class="col-12 row gy-3">
+      <a href="{% url 'quiz_questions' pk=quiz_score.quiz_set.id %}" class="btn btn-info col-12">Retake Quiz</a>
+      <a href="{% url 'quiz' %}" class="btn btn-primary col-12">Return to Quiz Page</a>
+    </div>
   </div>
 {% endblock %}

@@ -14,7 +14,8 @@ class QuizscoreViewTestCase(ViewTestCase):
         self.base_url = '/quiz_score/'
         self.url: str = reverse('quiz_score', kwargs={"pk": self.quiz_score.id})
         self.page_contain_list: list[Any] = [
-            "Return to quizzes",
+            "Return to Quiz Page",
+            "Retake Quiz",
             "Quiz Results",
             f"Questions Answered: {self.quiz_score.total_questions}",
             f"Correctly Answered: {self.quiz_score.correct_questions}",

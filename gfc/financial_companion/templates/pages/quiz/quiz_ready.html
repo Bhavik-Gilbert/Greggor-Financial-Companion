@@ -20,8 +20,9 @@
 
     <br><br>
 
-    <div method="post" class="container-fluid row gy-3">
+    <div class="container-fluid row gy-3">
         <a href="{% url 'quiz_questions' pk=quiz_set.id %}" class="btn btn-primary col-12">Start Quiz</a>
+        <a href="{% url 'quiz' %}" class="btn btn-danger col-12">Leave Quiz</a>
     </div>
   </div>
 {% endblock %}
