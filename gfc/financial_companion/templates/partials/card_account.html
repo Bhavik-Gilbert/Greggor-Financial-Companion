@@ -8,7 +8,8 @@
             <p class="card-text">{{ account.description }}</p>
         </div>
         <div class="card-footer">
-            <a href="{% url 'individual_account_redirect' pk=account.id %}" class="btn btn-outline-primary">View</a> <a style="float:center" href="#" class="btn btn-outline-danger" onclick="showAlert('account')">Delete</a>
+            <a href="{% url 'individual_account_redirect' pk=account.id %}" class="btn btn-outline-primary">View</a> 
+            <a href="{% url 'delete_monetary_account' pk=account.id %}" class="btn btn-outline-danger" onclick="showAlert('account')">Delete</a>
         </div>
     </div>
 </div>
