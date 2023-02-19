@@ -30,9 +30,12 @@ def get_completeness(current):
     for transaction in filtered_transactions:
         total += float(transaction.amount)
 
-    completeness = (total / float(current.amount)) * 100
-
-    return round(completeness, 2)
+    amount = current.amount
+    if amount == 0:
+        return round(0, 2)
+    else:
+        completeness = (total / float(current.amount)) * 100
+        return round(completeness, 2)
 
 
 def get_category_transactions(current: CategoryTarget):
