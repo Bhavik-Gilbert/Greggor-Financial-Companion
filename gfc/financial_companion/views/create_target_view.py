@@ -6,7 +6,8 @@ from ..models import Category, CategoryTarget, PotAccount, AccountTarget, UserTa
 from django.contrib import messages
 from django.db import IntegrityError
 from financial_companion.models import CategoryTarget, Category
-from financial_companion.helpers import create_target   
+from financial_companion.helpers import create_target
+
 
 @login_required
 def create_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
@@ -17,14 +18,18 @@ def create_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
             id=pk, user=request.user)
     except Exception:
         return redirect("dashboard")
-    to_return =  create_target(request, CategoryTarget, current_category, TargetForm) 
+    to_return = create_target(
+        request,
+        CategoryTarget,
+        current_category,
+        TargetForm)
 
-    if to_return == None:
+    if to_return is None:
         return redirect('individual_category_redirect',
-                            pk=current_category.id)
-    else: 
+                        pk=current_category.id)
+    else:
         return to_return
-    
+
 
 @login_required
 def create_account_target_view(request: HttpRequest, pk: int) -> HttpResponse:
@@ -36,26 +41,29 @@ def create_account_target_view(request: HttpRequest, pk: int) -> HttpResponse:
     except Exception:
         return redirect("dashboard")
 
-    to_return = create_target(request, AccountTarget, current_account, TargetForm) 
+    to_return = create_target(
+        request,
+        AccountTarget,
+        current_account,
+        TargetForm)
 
-    if to_return == None:
+    if to_return is None:
         return redirect('individual_account_redirect',
-                            pk=current_account.id)
-    else: 
+                        pk=current_account.id)
+    else:
         return to_return
-    
+
 
 @login_required
 def create_user_target_view(request: HttpRequest) -> HttpResponse:
     """View to allow users to add a target to a user"""
-    to_return = create_target(request, UserTarget, request.user, TargetForm) 
+    to_return = create_target(request, UserTarget, request.user, TargetForm)
 
-    if to_return == None:
+    if to_return is None:
         return redirect('dashboard')
-    else: 
+    else:
         return to_return
-    
-    
+
 
 @login_required
 def edit_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
@@ -65,26 +73,26 @@ def edit_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
         current_category_target: CategoryTarget = CategoryTarget.objects.get(
             id=pk)
         if current_category_target.category.user != request.user:
-            return redirect("categories_list", search_name = "all")
+            return redirect("categories_list", search_name="all")
     except Exception:
         return redirect("dashboard")
     title = "Category Target"
     if request.method == "POST":
-        form = TargetForm(request.POST, instance = current_category_target)
+        form = TargetForm(request.POST, instance=current_category_target)
         if form.is_valid():
             try:
-                form.save( "category")
+                form.save("category")
             except IntegrityError as e:
                 messages.add_message(
-                request,
-                messages.WARNING,
-                "This target can not be created as a target with the same timespan, transaction type and category exists")
+                    request,
+                    messages.WARNING,
+                    "This target can not be created as a target with the same timespan, transaction type and category exists")
                 return render(request, "pages/create_targets.html",
-                  {'form': TargetForm(instance = current_category_target), "form_toggle": True, 'title': title})
+                              {'form': TargetForm(instance=current_category_target), "form_toggle": True, 'title': title})
             else:
                 return redirect('individual_category_redirect',
-                            pk=current_category_target.category.id)
+                                pk=current_category_target.category.id)
     else:
-        form = TargetForm(instance = current_category_target)
+        form = TargetForm(instance=current_category_target)
     return render(request, "pages/create_targets.html",
                   {'form': form, "form_toggle": False, 'title': title})
