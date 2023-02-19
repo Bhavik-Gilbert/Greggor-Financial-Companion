@@ -36,6 +36,13 @@ def quiz_ready_view(request: HttpRequest,
                        question_total: int) -> HttpResponse:
     """View to generate quizzes"""
     question_total = int(question_total)
+    if question_total <= 0:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            'Invalid number of questions specified to create quiz')
+        return redirect("quiz")
+
     if QuizQuestion.objects.count() < question_total:
         messages.add_message(
             request,
@@ -55,13 +62,6 @@ def quiz_ready_view(request: HttpRequest,
             quiz_set.questions.add(question)
     else:
         quiz_set: QuizSet = QuizSet.get_set_from_questions(quiz_questions)
-
-    if quiz_set is None:
-        messages.add_message(
-            request,
-            messages.ERROR,
-            "Quiz couldn't be generated")
-        return redirect("quiz") 
 
     return render(request, "pages/quiz/quiz_ready.html", {
         "quiz_set": quiz_set

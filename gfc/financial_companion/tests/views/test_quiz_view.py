@@ -69,6 +69,16 @@ class QuizViewTestCase(ViewTestCase):
         QuizScore.objects.all().delete()
         response: HttpResponse = self.client.get(self.url)
         self._assert_response_contains(response, ["You haven't taken part in a quiz yet"])
+    
+    def test_invalid_question_total_must_be_int_try_str(self):
+        url: str = f"{self.url}hi/{ScoreListOrderType.RECENT}/"
+        response: HttpResponse = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+    
+    def test_invalid_question_total_must_be_int_try_float(self):
+        url: str = f"{self.url}1.2/{ScoreListOrderType.RECENT}/"
+        response: HttpResponse = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
 
     def test_valid_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)
