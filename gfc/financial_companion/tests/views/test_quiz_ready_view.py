@@ -5,8 +5,8 @@ from django.urls import reverse
 from django.contrib.messages import get_messages
 from typing import Any
 
-class QuizViewTestCase(ViewTestCase):
-    """Unit tests of the quiz view"""
+class QuizReadyViewTestCase(ViewTestCase):
+    """Unit tests of the quiz ready view"""
 
     def setUp(self):
         self.base_url = '/quiz_ready/'
@@ -20,10 +20,10 @@ class QuizViewTestCase(ViewTestCase):
             "You can view your most recent and best scores on the main quiz page (previous page)",
             "About"
         ]
-    def test_valid_quiz_url(self):
+    def test_valid_quiz_ready_url(self):
         self.assertEqual(self.url, '/quiz_ready/1/')
 
-    def test_valid_get_quiz(self):
+    def test_valid_get_ready_quiz(self):
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)

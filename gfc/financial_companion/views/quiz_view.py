@@ -92,7 +92,15 @@ def quiz_question_view(request: HttpRequest, pk: int) -> HttpResponse:
                         correct_answers += 1
                 except Exception:
                     total_questions -= 1
-                
+            
+            if total_questions == 0:
+                messages.add_message(
+                    request,
+                    messages.ERROR,
+                    "No questions found in submission"
+                )
+                return redirect("quiz")
+
             quiz_score: QuizScore = QuizScore.objects.create(
                 user=user,
                 total_questions=total_questions,
