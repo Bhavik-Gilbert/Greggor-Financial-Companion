@@ -12,3 +12,4 @@ from .test_user_group_model import UserGroupModelTestCase
 from .test_link_recurring_transaction_model import LinkRecurringTransactionTestCase
 from .test_quiz_question_model import QuizQuestionModelTestCase
 from .test_quiz_score_model import QuizScoreModelTestCase
+from .test_quiz_set_model import QuizSetModelTestCase

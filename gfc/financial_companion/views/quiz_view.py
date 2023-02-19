@@ -14,12 +14,13 @@ def quiz_view(request: HttpRequest, sort_type: str = ScoreListOrderType.RECENT, 
     user: User = request.user
     quiz_scores: list[QuizScore] = QuizScore.objects.filter(user=user)
     question_total = int(question_total)
+    pagenated_quiz_scores: list[QuizScore] = []
 
     if len(quiz_scores) > 0:
         if sort_type == ScoreListOrderType.HIGHEST:
-            pagenated_quiz_scores: list[QuizScore] = paginate(request.GET.get('page', 1), sorted(quiz_scores, key=lambda score: score.get_score(), reverse=True))
+            pagenated_quiz_scores = paginate(request.GET.get('page', 1), sorted(quiz_scores, key=lambda score: score.get_score(), reverse=True))
         else:
-            pagenated_quiz_scores: list[QuizScore]  = paginate(request.GET.get('page', 1), quiz_scores)
+            pagenated_quiz_scores  = paginate(request.GET.get('page', 1), quiz_scores)
 
     return render(request, "pages/quiz/quiz.html", {
         "quiz_scores": pagenated_quiz_scores,
