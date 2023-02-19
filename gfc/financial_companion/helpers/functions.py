@@ -93,11 +93,10 @@ def create_target(request, Target, current_item, TargetForm ):
                 {'form': TargetForm(foreign_key = current_item), "form_toggle": True, 'title': title})
                 
             else:
-                return redirect('individual_category_redirect',
-                            pk=current_item.id)
+                return None
 
     else:
-        form = TargetForm(foreign_key = current_account)
+        form = TargetForm(foreign_key = current_item )
     return render(request, "pages/create_targets.html",
                   {'form': form, "form_toggle": True, 'title': title})
 

@@ -17,7 +17,13 @@ def create_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
             id=pk, user=request.user)
     except Exception:
         return redirect("dashboard")
-    return create_target(request, CategoryTarget, current_category, TargetForm)
+    to_return =  create_target(request, CategoryTarget, current_category, TargetForm) 
+
+    if to_return == None:
+        return redirect('individual_category_redirect',
+                            pk=current_category.id)
+    else: 
+        return to_return
     
 
 @login_required
@@ -30,12 +36,25 @@ def create_account_target_view(request: HttpRequest, pk: int) -> HttpResponse:
     except Exception:
         return redirect("dashboard")
 
-    return create_target(request, AccountTarget, current_account, TargetForm) 
+    to_return = create_target(request, AccountTarget, current_account, TargetForm) 
+
+    if to_return == None:
+        return redirect('individual_account_redirect',
+                            pk=current_account.id)
+    else: 
+        return to_return
+    
 
 @login_required
 def create_user_target_view(request: HttpRequest) -> HttpResponse:
     """View to allow users to add a target to a user"""
     return create_target(request, UserTarget, request.user, TargetForm) 
+
+    if to_return == None:
+        return redirect('dashboard')
+    else: 
+        return to_return
+    
     
 
 @login_required
