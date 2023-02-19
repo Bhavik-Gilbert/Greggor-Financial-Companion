@@ -20,5 +20,7 @@
         <p>{{question.get_answer}}
     {% endfor %}
 
+    <br><br>
+    <a href="{% url 'quiz' %}" class="btn btn-primary col-12">Return to quizzes</a>
   </div>
 {% endblock %}

@@ -125,7 +125,7 @@ def quiz_score_view(request: HttpRequest, pk: int) -> HttpResponse:
         messages.add_message(
             request,
             messages.ERROR,
-            "The score specified does not exit")
+            "The score specified does not exist")
         return redirect("quiz")
 
     return render(request, "pages/quiz/quiz_score.html", {
