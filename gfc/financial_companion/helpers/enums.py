@@ -40,6 +40,7 @@ class MonetaryAccountType(models.TextChoices):
     """ENUM for transaction types"""
     POT: str = "pot"
     BANK: str = "bank"
+    GENERAL: str = "general"
 
 class GreggorTypes(models.TextChoices):
     """ENUM for greggor logo types"""

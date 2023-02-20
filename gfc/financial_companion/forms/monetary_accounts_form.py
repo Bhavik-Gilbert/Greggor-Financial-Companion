@@ -1,5 +1,5 @@
 from django import forms
-from financial_companion.models import PotAccount, BankAccount, User
+from financial_companion.models import PotAccount, BankAccount, User, Account
 from financial_companion.helpers import MonetaryAccountType
 from decimal import Decimal
 from typing import Any
@@ -10,8 +10,30 @@ def MonetaryAccountForm(*args, **kwargs) -> forms.ModelForm:
     kwargs.pop("form_type", None)
     if form_type == MonetaryAccountType.BANK:
         return BankAccountForm(*args, **kwargs)
-    else:
+    elif form_type == MonetaryAccountType.POT:
         return PotAccountForm(*args, **kwargs)
+    else:
+        return AccountForm(*args, **kwargs)
+
+class AccountForm(forms.ModelForm):
+    """Form to create an account not linked to a user"""
+
+    def __init__(self, *args, **kwargs) -> None:
+        self.user: int = kwargs.get("user")
+        kwargs.pop("user", None)
+        super(AccountForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model: Account = Account
+        fields = ['name', 'description']
+
+    def save(self):
+        super().save(commit=False)
+        account: Account = Account.objects.create(
+            name = self.cleaned_data.get("name"),
+            description = self.cleaned_data.get("description")
+        )
+        return account
 
 class PotAccountForm(forms.ModelForm):
     """Form to create pot account"""
@@ -25,7 +47,7 @@ class PotAccountForm(forms.ModelForm):
         model: PotAccount = PotAccount
         fields: list[str] = ["name", "description", "balance", "currency"]
         widgets: dict[str, Any] = {"description": forms.Textarea()}
-    
+
     def save(self, instance: PotAccount = None) -> PotAccount:
         super().save(commit=False)
 
@@ -45,7 +67,7 @@ class PotAccountForm(forms.ModelForm):
             monetary_account.currency: str = self.cleaned_data.get("currency")
             monetary_account.user: User = self.user
             monetary_account.save()
-        
+
         return monetary_account
 
 class BankAccountForm(forms.ModelForm):
@@ -60,7 +82,7 @@ class BankAccountForm(forms.ModelForm):
         model: BankAccount = BankAccount
         fields: list[str] = ["name", "description", "balance", "currency", "bank_name", "account_number", "sort_code", "iban", "interest_rate"]
         widgets: dict[str, Any] = {"description": forms.Textarea()}
-    
+
     def save(self, instance: BankAccount = None) -> BankAccount:
         super().save(commit=False)
 
@@ -90,5 +112,5 @@ class BankAccountForm(forms.ModelForm):
             monetary_account.interest_rate: Decimal = self.cleaned_data.get("interest_rate")
             monetary_account.user: User = self.user
             monetary_account.save()
-        
+
         return monetary_account

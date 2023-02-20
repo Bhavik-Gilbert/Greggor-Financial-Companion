@@ -27,6 +27,9 @@ class Account(Model):
 
     objects = InheritanceManager()
 
+    def __str__(self):
+        return f"{MonetaryAccountType.GENERAL}"
+
 class PotAccount(Account):
     user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
     balance: DecimalField = DecimalField(max_digits = 15, decimal_places=2)
