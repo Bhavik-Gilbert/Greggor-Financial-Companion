@@ -25,7 +25,6 @@ class AddTransactionFormTestCase(FormTestCase):
             "sender_account": 1,
             "receiver_account": 2,
         }
-        # print(self.form_input["image"])
 
     def test_form_contains_required_fields(self):
         form = AddTransactionForm()
@@ -102,7 +101,6 @@ class AddTransactionFormTestCase(FormTestCase):
         after_count = Transaction.objects.count()
         self.assertEqual(after_count, before_count + 1)
         self.assertEqual(transaction.description, 'This is a test transaction')
-        # print(transaction.image)
         # self.assertEqual(transaction.image, self.new_image)
         self.assertTrue(isinstance(transaction.category, Category))
         self.assertEqual(transaction.category.id, 1)

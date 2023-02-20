@@ -19,7 +19,7 @@ def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
 
     if request.method == "POST":
         if "account_type" in request.POST:
-            # # set form to account type
+            # set form to account type
             account_type = request.POST["account_type"]
             form = MonetaryAccountForm(form_type=account_type, user=user)
         elif "submit_type" in request.POST:
