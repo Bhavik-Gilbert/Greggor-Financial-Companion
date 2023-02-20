@@ -189,7 +189,7 @@ class Command(BaseCommand):
     def create_quiz_questions(self):
         question_path: str = os.path.join(
             settings.TEXT_DATA_DIRS["financial_companion"],
-            "seeder\\questions.txt")
+            f"seeder{os.sep}questions.txt")
 
         with open(question_path) as question_file:
             question_data_list: list[str] = question_file.readlines()
