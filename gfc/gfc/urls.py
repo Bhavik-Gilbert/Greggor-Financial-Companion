@@ -89,7 +89,7 @@ urlpatterns = [
     path(
         'create_targets/user/',
         views.create_user_target_view,
-        name="create_user_target_view"),
+        name="create_user_target"),
     path(
         'create_targets/account/<int:pk>',
         views.create_account_target_view,
