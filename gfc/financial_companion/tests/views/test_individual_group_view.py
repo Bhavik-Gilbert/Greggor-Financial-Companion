@@ -13,7 +13,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.group = UserGroup.objects.get(id=3)
         self.url: str = reverse(
             "individual_group", kwargs={
-            "pk": self.group.id})
+                "pk": self.group.id})
 
     def test_valid_individual_group_url(self):
         self.assertEqual(

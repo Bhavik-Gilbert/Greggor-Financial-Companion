@@ -26,7 +26,6 @@ class AddTransactionFormTestCase(FormTestCase):
             "receiver_account": 2,
         }
 
-
     def test_form_contains_required_fields(self):
         form = AddTransactionForm()
         self._assert_form_has_necessary_fields(
