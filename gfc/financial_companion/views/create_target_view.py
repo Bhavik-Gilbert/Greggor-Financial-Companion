@@ -7,6 +7,7 @@ from django.contrib import messages
 from financial_companion.models import CategoryTarget, Category
 import re
 
+
 def create_target(request, Target, current_item):
     title_first_word = re.split(r"\B([A-Z])", Target.__name__)[0]
     title = f'{title_first_word} Target Form'
@@ -45,7 +46,7 @@ def create_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
         request,
         CategoryTarget,
         current_category)
-    
+
     if to_return is None:
         return redirect('individual_category_redirect',
                         pk=current_category.id)

@@ -9,7 +9,7 @@ class CreateAccountTargetViewTestCase(ViewTestCase):
     """Tests of the create target account view."""
 
     def setUp(self):
-        self.url = reverse('create_account_target', kwargs={'pk':3})
+        self.url = reverse('create_account_target', kwargs={'pk': 3})
         self.test_user = User.objects.get(username='@johndoe')
         self.test_category = Account.objects.get(id=3)
         self.form_input = {
@@ -35,7 +35,7 @@ class CreateAccountTargetViewTestCase(ViewTestCase):
             status_code=302,
             target_status_code=200)
         self.assertTemplateUsed(response, "pages/dashboard.html")
-    
+
     def test_other_users_account_pk_entered(self):
         self._login(self.test_user)
         url: str = reverse(
@@ -57,14 +57,14 @@ class CreateAccountTargetViewTestCase(ViewTestCase):
         after_count = AccountTarget.objects.count()
         self.assertEqual(after_count, before_count + 1)
         self.assertTemplateUsed(response, 'pages/individual_account.html')
-    
+
     def test_invalid_account_target_form_submission(self):
         self._login(self.test_user)
         self.form_input['transaction_type'] = ''
         before_count = AccountTarget.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = AccountTarget.objects.count()
-        self.assertEqual(after_count, before_count )
+        self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/create_targets.html')
 
     def test_get_view_redirects_when_not_logged_in(self):

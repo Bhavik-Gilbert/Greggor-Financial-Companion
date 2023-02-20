@@ -10,7 +10,7 @@ class CreateCategoryTargetViewTestCase(ViewTestCase):
     """Tests of the create target category view."""
 
     def setUp(self):
-        self.url = reverse('create_category_target', kwargs={'pk':1})
+        self.url = reverse('create_category_target', kwargs={'pk': 1})
         self.test_user = User.objects.get(username='@johndoe')
         self.test_category = Category.objects.get(id=1)
         self.test_category_target = CategoryTarget.objects.get(id=1)
@@ -48,7 +48,7 @@ class CreateCategoryTargetViewTestCase(ViewTestCase):
             status_code=302,
             target_status_code=200)
         self.assertTemplateUsed(response, "pages/dashboard.html")
-    
+
     def test_other_users_category_pk_entered(self):
         self._login(self.test_user)
         url: str = reverse(
@@ -70,18 +70,18 @@ class CreateCategoryTargetViewTestCase(ViewTestCase):
         after_count = CategoryTarget.objects.count()
         self.assertEqual(after_count, before_count + 1)
         self.assertTemplateUsed(response, 'pages/individual_category.html')
-    
+
     def test_invalid_category_target_form_submission(self):
         self._login(self.test_user)
         self.form_input['transaction_type'] = ''
         before_count = CategoryTarget.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = CategoryTarget.objects.count()
-        self.assertEqual(after_count, before_count )
+        self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/create_targets.html')
-    
 
-    def test_unsuccessful_category_target_form_due_to_failing_unique_constraints(self):
+    def test_unsuccessful_category_target_form_due_to_failing_unique_constraints(
+            self):
         self.form_input = {
             'transaction_type': self.test_category_target.transaction_type,
             'timespan': self.test_category_target.timespan,
