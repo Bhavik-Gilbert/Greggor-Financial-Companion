@@ -11,7 +11,7 @@ def individual_group_view(request: HttpRequest, pk: int) -> HttpResponse:
     """View to see information on individual group"""
     try:
         group: UserGroup = UserGroup.objects.get(id=pk)
-    except group.DoesNotExist:
+    except UserGroup.DoesNotExist:
         return redirect("dashboard")
     else:
         user = request.user
