@@ -6,7 +6,7 @@ from financial_companion.forms import JoinUserGroupForm
 from financial_companion.models import User, UserGroup
 
 
-class SignUpViewTestCase(ViewTestCase):
+class JoinUserGroupViewTestCase(ViewTestCase):
     """Unit tests of the join user group view"""
 
     def setUp(self):

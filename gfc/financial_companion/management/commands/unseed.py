@@ -5,7 +5,9 @@ from financial_companion.models import (
     Account, PotAccount, BankAccount,
     CategoryTarget, UserTarget, AccountTarget,
     AbstractTransaction, Transaction,  # RecurringTransactions,
-    Category
+    Category,
+    QuizQuestion,
+    QuizSet
 )
 
 """ Unseeder CLass to clear all objects from Database"""
@@ -41,6 +43,9 @@ class Command(BaseCommand):
 
         for account in potAndBankAccounts:
             account.delete()
+
+        QuizSet.objects.filter(seeded=True).delete()
+        QuizQuestion.objects.filter(seeded=True).delete()
 
         users.delete()
         Schedule.objects.all().delete()

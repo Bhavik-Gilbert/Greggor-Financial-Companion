@@ -1,0 +1,47 @@
+[
+    {
+        "model": "financial_companion.QuizQuestion",
+        "pk": 1,
+        "fields": {
+            "question": "Pick correct",
+            "potential_answer_1": "correct",
+            "potential_answer_2": "incorrect2",
+            "potential_answer_3": "incorrect3",
+            "potential_answer_4": "incorrect4",
+            "correct_answer": 1,
+            "seeded": false
+        }
+    },
+    {
+        "model": "financial_companion.QuizQuestion",
+        "pk": 2,
+        "fields": {
+            "question": "Pick john",
+            "potential_answer_1": "john",
+            "potential_answer_2": "jane",
+            "potential_answer_3": "smith",
+            "potential_answer_4": "doe",
+            "correct_answer": 1,
+            "seeded": false
+        }
+    },
+    {
+        "model": "financial_companion.QuizSet",
+        "pk": 1,
+        "fields": {
+            "questions": [1],
+            "seeded": false
+        }
+    },
+    {
+        "model": "financial_companion.QuizScore",
+        "pk": 1,
+        "fields": {
+            "user": "1",
+            "correct_questions": "4",
+            "total_questions": "5",
+            "time_of_submission" : "2023-01-01T12:00:00+00:00",
+            "quiz_set": 1
+        }
+    }
+]

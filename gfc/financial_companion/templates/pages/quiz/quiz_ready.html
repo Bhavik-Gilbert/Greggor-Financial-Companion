@@ -1,0 +1,28 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Start Quiz{% endblock %}
+
+<!-- Content -->
+{% block content %}
+  <div align="center">
+    <h1>Start Quiz</h1>
+
+    <br>
+
+    <h3>About</h3>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">Take this opportunity to improve knowledge with greggor</li>
+        <li class="list-group-item">You have an unlimited amount of time for the quiz</li>
+        <li class="list-group-item">Once you submit, you cannot choose to retake the same quiz again, though the same questions may appear on future quizzes</li>
+        <li class="list-group-item">You can view your most recent and best scores on the main quiz page (previous page)</li>
+    </ul>
+
+    <br><br>
+
+    <div class="container-fluid row gy-3">
+        <a href="{% url 'quiz_questions' pk=quiz_set.id %}" class="btn btn-primary col-12">Start Quiz</a>
+        <a href="{% url 'quiz' %}" class="btn btn-danger col-12">Leave Quiz</a>
+    </div>
+  </div>
+{% endblock %}

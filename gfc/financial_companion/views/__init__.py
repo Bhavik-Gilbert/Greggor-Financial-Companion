@@ -16,6 +16,7 @@ from .individual_group import individual_group_view
 from .edit_user_details import edit_user_details_view
 from .profile import profile_view
 from .change_password import change_password_view
+from .quiz_view import quiz_view, quiz_question_view, quiz_ready_view, quiz_score_view
 from .create_user_group import create_user_group_view
 from .view_groups import all_groups_view, all_groups_redirect
 from .join_user_group import join_user_group_view
