@@ -53,7 +53,7 @@
       <div class="card">
         <img class="card-img-top" src="" alt="">
         <div class="card-body">
-          {% if owner %}
+          {% if is_owner %}
             <div class="col-12">
               <div class="row">
                 <div class="col-12 col-md-8 mt-1">
@@ -66,14 +66,14 @@
                 </div>
               </div>
             </div>
-            {%include 'partials/owners_members_table.html' with members=members %}
+            {%include 'partials/groups/owners_members_table.html' with members=members owners_email=owners_email %}
           {% else %}
             <div class="col-12 col-md-8">
               <div class="card-title">
                 <h4>Members:</h4>
               </div>
             </div>
-            {%include 'partials/users_members_table.html' with members=members %}
+            {%include 'partials/groups/users_members_table.html' with members=members %}
           {% endif %}
         </div>
       </div>

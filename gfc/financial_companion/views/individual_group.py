@@ -17,6 +17,7 @@ def individual_group_view(request: HttpRequest, pk: int) -> HttpResponse:
         user = request.user
         members = group.members.all()
         is_owner = (group.owner_email == user.email)
+        owners_email = group.owner_email
         count = group.members_count()
         return render(request, "pages/individual_group.html",
-                      {"group": group, "members": members, "owner": is_owner, "count": count})
+                      {"group": group, "members": members, "is_owner": is_owner, "owners_email": owners_email, "count": count})

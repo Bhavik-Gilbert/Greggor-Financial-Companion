@@ -15,7 +15,11 @@
           <td>{{ member.full_name }}</td>
           <td>{{ member.username }}</td>
           <td>
-            <a style="float:center" href="#" class="btn btn-danger justify-content-center" onclick="showAlert('member')">Remove Member</a>
+            {% if member.email == owners_email %}
+              <strong>(owner)</strong>
+            {% else %}
+              <a style="float:center" href="#" class="btn btn-danger justify-content-center" onclick="showAlert('member')">Remove Member</a>
+            {% endif %}
           </td>
         </tr>
       {% endfor %}
