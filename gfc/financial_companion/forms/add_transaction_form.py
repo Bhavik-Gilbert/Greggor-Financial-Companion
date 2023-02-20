@@ -4,12 +4,18 @@ from financial_companion.models import Transaction, Account, Category
 class AddTransactionForm(forms.ModelForm):
     """Form to add a new transaction"""
 
+    def __init__(self, *args, **kwargs):
+        super(AddTransactionForm, self).__init__(*args, **kwargs)
+        self.fields['category'].label_from_instance = self.label_from_instance
+        self.fields['sender_account'].label_from_instance = self.label_from_instance
+        self.fields['receiver_account'].label_from_instance = self.label_from_instance
+
+    def label_from_instance(self, obj):
+        return obj.name
+
     class Meta:
         model = Transaction
         fields = ['title','description', 'image', 'category', 'amount', 'currency','sender_account', 'receiver_account']
-        # widgets = {
-        #     'sender_account': autocomplete.
-        # }
 
     def save(self, instance: Transaction = None) -> Transaction:
         """Create a new transaction."""
@@ -46,5 +52,9 @@ class AddTransactionForm(forms.ModelForm):
 
         super().clean()
         sender_account = self.cleaned_data.get('sender_account')
-        if not(hasattr(sender_account, "user")):
-            self.add_error('sender_account', 'Neither the sender or reciever are one of your accounts.')
+        receiver_account = self.cleaned_data.get('receiver_account')
+        if sender_account == receiver_account:
+            self.add_error('receiver_account', 'The sender and receiver accounts cannot be the same.')
+
+        # if not(hasattr(sender_account, "user") and hasattr(receiver_account, "user")):
+        #     self.add_error('sender_account', 'Neither the sender or reciever are one of your accounts.')

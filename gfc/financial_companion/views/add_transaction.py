@@ -1,11 +1,10 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from financial_companion.forms import AddTransactionForm
-from ..models import Transaction, PotAccount, BankAccount, Account
+from ..models import Transaction, PotAccount, BankAccount, Account, Category
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from django.db.models import ForeignKey
 
 @login_required
 def add_transaction_view(request: HttpRequest) -> HttpResponse:
@@ -16,6 +15,7 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
     user_accounts = PotAccount.objects.filter(user = user.id)
     sent_or_received_accounts= set()
     ids = []
+    ids2 = set()
     transactions = set()
 
     for account in user_accounts:
@@ -25,20 +25,29 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
         ids.append(account.id)
 
     for transaction in transactions:
+        ids2.add(transaction.sender_account.id)
+        ids2.add(transaction.receiver_account.id)
         if ids.count(transaction.sender_account.id) == 0:
             sent_or_received_accounts.add(transaction.sender_account)
         if ids.count(transaction.receiver_account.id) == 0:
             sent_or_received_accounts.add(transaction.receiver_account)
 
-    print(sent_or_received_accounts)
+    categories = Category.objects.filter(user = user.id)
+
     if request.method == 'POST':
         form = AddTransactionForm(request.POST, request.FILES)
+        form.fields['category'].queryset = categories
+        form.fields['sender_account'].queryset = user_accounts
+        # form.fields['receiver_account'].queryset = user_accounts
         if form.is_valid():
             form.save()
             return redirect('dashboard')
     else:
         form = AddTransactionForm()
-    return render(request, "pages/add_transaction.html", {'form': form, 'edit': False, 'sent_or_received_accounts': sent_or_received_accounts, 'user_accounts': user_accounts})
+        form.fields['category'].queryset = categories
+        form.fields['sender_account'].queryset = user_accounts
+        # form.fields['receiver_account'].queryset = user_accounts
+    return render(request, "pages/add_transaction.html", {'form': form, 'edit': False, 'sent_or_received_accounts': sent_or_received_accounts, 'categories': categories})
 
 @login_required
 def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
