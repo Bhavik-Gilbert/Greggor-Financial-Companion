@@ -33,7 +33,7 @@ def individual_account_view(
     list_of_transactions = paginate(request.GET.get('page', 1), transactions)
 
     return render(request, "pages/individual_account.html",
-                  {"account": account, "account_targets": account_targets, 'transactions': transactions})
+                  {"account": account, "account_targets": account_targets, 'transactions': list_of_transactions})
 
 
 @login_required

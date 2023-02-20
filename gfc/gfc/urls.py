@@ -163,6 +163,27 @@ urlpatterns = [
         views.individual_transaction_view,
         name="individual_transaction"
     ),
+    path('quiz/', views.quiz_view, name='quiz'),
+    re_path(
+        'quiz/(?P<question_total>\\d+)/(?P<sort_type>\\w+)/$',
+        views.quiz_view,
+        name="quiz_with_params"
+    ),
+    re_path(
+        'quiz_ready/(?P<question_total>\\d+)/$',
+        views.quiz_ready_view,
+        name="quiz_ready"
+    ),
+    re_path(
+        'quiz_questions/(?P<pk>\\d+)/$',
+        views.quiz_question_view,
+        name="quiz_questions"
+    ),
+    re_path(
+        'quiz_score/(?P<pk>\\d+)/$',
+        views.quiz_score_view,
+        name="quiz_score"
+    ),
     re_path(
         'individual_group/(?P<pk>\\d+)/$',
         views.individual_group_view,
