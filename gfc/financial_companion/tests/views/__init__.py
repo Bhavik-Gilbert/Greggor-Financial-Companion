@@ -14,6 +14,7 @@ from .test_home_view import HomeViewTestCase
 from .test_individual_account_view import IndividualAccountViewTestCase
 from .test_individual_category_view import IndividualCategoryViewTestCase
 from .test_individual_transaction_view import IndividualTransactionViewTestCase
+from .test_individual_group_view import IndividualGroupViewTestCase
 from .test_log_in_view import LogInViewTestCase
 from .test_log_out_view import LogOutViewTestCase
 from .test_sign_up_view import SignUpViewTestCase

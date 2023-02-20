@@ -26,7 +26,8 @@
             "name": "SavingsRUs",
             "description": "Fun savers",
             "invite_code": "QRSTUVWX",
-            "owner_email": "johndoe@example.org"
+            "owner_email": "johndoe@example.org",
+            "members": [1, 2]
             }
     }
 ]
