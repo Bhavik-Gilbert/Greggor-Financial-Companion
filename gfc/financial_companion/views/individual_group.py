@@ -6,6 +6,7 @@ from django.conf import settings
 from ..models import User, UserGroup
 from ..helpers import paginate
 
+
 @login_required
 def individual_group_view(request: HttpRequest, pk: int) -> HttpResponse:
     """View to see information on individual group"""
