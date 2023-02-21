@@ -12,27 +12,12 @@
       <form action='{% url 'add_transaction'%}' method="post" enctype='multipart/form-data'>
     {% endif %}
       {% csrf_token %}
+    <div>
+      <a class="btn btn-primary" href="{% url 'create_category' %}">Add New Category</a>
+      &nbsp
+      <a class="btn btn-primary" href="{% url 'add_monetary_account' %}">Add Account</a>
+      <br></br>
+    </div>
       {% include 'partials/form.html' with form=form %}
-        <a class="btn btn-primary" href="{% url 'create_category' %}"> Add New Category</a>
-    &nbsp
-    <div>
-      <label for="sender_account">Sender Account:</label>
-      <select name="sender_account" id="sender_account" >
-        {% for account in sent_or_received_accounts %}
-          <option value={{account.id}}>{{account.name}}</option>
-        {% endfor %}
-      </select>
-      <a class="btn btn-primary" href="{% url 'add_monetary_account' %}">+</a>
-    </div>
-    &nbsp
-    <div>
-      <label for="receiver_account">Receiver Account:</label>
-      <select name="receiver_account" id="receiver_account" >
-        {% for account in sent_or_received_accounts %}
-          <option value={{account.id}}>{{account.name}}</option>
-        {% endfor %}
-      </select>
-      <a class="btn btn-primary" href="{% url 'add_monetary_account' %}">+</a>
-    </div>
     <input type="submit" value="Add Transaction" class="btn btn-primary">
 {% endblock %}

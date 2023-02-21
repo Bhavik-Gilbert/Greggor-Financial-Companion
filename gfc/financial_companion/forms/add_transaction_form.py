@@ -1,14 +1,15 @@
 from django import forms
-from financial_companion.models import Transaction, Account, Category
+from financial_companion.models import Transaction, Account, Category, PotAccount
 
 class AddTransactionForm(forms.ModelForm):
     """Form to add a new transaction"""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user, *args, **kwargs):
         super(AddTransactionForm, self).__init__(*args, **kwargs)
         self.fields['category'].label_from_instance = self.label_from_instance
         self.fields['sender_account'].label_from_instance = self.label_from_instance
         self.fields['receiver_account'].label_from_instance = self.label_from_instance
+        self.user = user
 
     def label_from_instance(self, obj):
         return obj.name
@@ -21,8 +22,6 @@ class AddTransactionForm(forms.ModelForm):
         """Create a new transaction."""
         super().save(commit=False)
         if instance is None:
-            print("sender")
-            print(self.cleaned_data.get('sender_account'))
             transaction = Transaction.objects.create(
                 title= self.cleaned_data.get('title'),
                 description=self.cleaned_data.get('description'),
@@ -33,7 +32,6 @@ class AddTransactionForm(forms.ModelForm):
                 sender_account = self.cleaned_data.get('sender_account'),
                 receiver_account=self.cleaned_data.get('receiver_account')
             )
-            print(transaction.sender_account.name)
         else:
             transaction: Transaction = instance
             transaction.title  = self.cleaned_data.get('title')
@@ -53,8 +51,12 @@ class AddTransactionForm(forms.ModelForm):
         super().clean()
         sender_account = self.cleaned_data.get('sender_account')
         receiver_account = self.cleaned_data.get('receiver_account')
+        users_accounts = PotAccount.objects.filter(user = self.user)
+        ids = []
+        for account in users_accounts:
+            ids.append(account.id)
         if sender_account == receiver_account:
             self.add_error('receiver_account', 'The sender and receiver accounts cannot be the same.')
-
-        # if not(hasattr(sender_account, "user") and hasattr(receiver_account, "user")):
-        #     self.add_error('sender_account', 'Neither the sender or reciever are one of your accounts.')
+        if not ((sender_account.id in ids) or (receiver_account.id in ids)):
+                self.add_error('sender_account', 'Neither the sender or reciever are one of your accounts')
+                self.add_error('receiver_account', 'Neither the sender or reciever are one of your accounts')

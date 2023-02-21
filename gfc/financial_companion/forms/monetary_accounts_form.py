@@ -10,30 +10,8 @@ def MonetaryAccountForm(*args, **kwargs) -> forms.ModelForm:
     kwargs.pop("form_type", None)
     if form_type == MonetaryAccountType.BANK:
         return BankAccountForm(*args, **kwargs)
-    elif form_type == MonetaryAccountType.POT:
-        return PotAccountForm(*args, **kwargs)
     else:
-        return AccountForm(*args, **kwargs)
-
-class AccountForm(forms.ModelForm):
-    """Form to create an account not linked to a user"""
-
-    def __init__(self, *args, **kwargs) -> None:
-        self.user: int = kwargs.get("user")
-        kwargs.pop("user", None)
-        super(AccountForm, self).__init__(*args, **kwargs)
-
-    class Meta:
-        model: Account = Account
-        fields = ['name', 'description']
-
-    def save(self):
-        super().save(commit=False)
-        account: Account = Account.objects.create(
-            name = self.cleaned_data.get("name"),
-            description = self.cleaned_data.get("description")
-        )
-        return account
+        return PotAccountForm(*args, **kwargs)
 
 class PotAccountForm(forms.ModelForm):
     """Form to create pot account"""
