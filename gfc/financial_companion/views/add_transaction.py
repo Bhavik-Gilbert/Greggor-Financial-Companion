@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 
+
 @login_required
 def add_transaction_view(request: HttpRequest) -> HttpResponse:
     """View to record a transaction made"""
@@ -23,6 +24,7 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
         form = AddTransactionForm(user)
         form.fields['category'].queryset = categories
     return render(request, "pages/add_transaction.html", {'form': form, 'edit': False})
+
 
 @login_required
 def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
@@ -51,5 +53,8 @@ def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         return redirect('dashboard')
     else:
         transaction.delete()
-        messages.add_message(request, messages.WARNING, "The transaction has been deleted")
+        messages.add_message(
+            request,
+            messages.WARNING,
+            "The transaction has been deleted")
         return redirect('dashboard')

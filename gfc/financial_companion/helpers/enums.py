@@ -1,13 +1,5 @@
 from django.db import models
 
-class MessageType(models.TextChoices):
-    """ENUM defining bootstrap message types"""
-    DANGER: str = "danger"
-    SUCCESS: str = "success"
-    WARNING: str = "warning"
-    INFO: str = "info"
-    PRIMARY: str = "primary"
-    SECONDARY: str = "secondary"
 
 class Timespan(models.TextChoices):
     """ENUM for generic timespans"""
@@ -16,10 +8,22 @@ class Timespan(models.TextChoices):
     MONTH: str = "month"
     YEAR: str = "year"
 
+
 class TransactionType(models.TextChoices):
     """ENUM for transaction types"""
     INCOME: str = "income"
     EXPENSE: str = "expense"
+
+    @staticmethod
+    def get_send_list() -> list[str]:
+        """Filter list for sent transactions"""
+        return ["sent", "all"]
+
+    @staticmethod
+    def get_received_list() -> list[str]:
+        """Filter list for received transactions"""
+        return ["all", "received"]
+
 
 class CurrencyType(models.TextChoices):
     """ENUM for currency types"""
@@ -36,10 +40,18 @@ class CurrencyType(models.TextChoices):
     CHF: str = "CHF"
     KZT: str = "KZT"
 
+
 class MonetaryAccountType(models.TextChoices):
     """ENUM for transaction types"""
     POT: str = "pot"
     BANK: str = "bank"
+
+
+class ScoreListOrderType(models.TextChoices):
+    """ENUM for score list order types"""
+    RECENT: str = "recent"
+    HIGHEST: str = "highest"
+
 
 class GreggorTypes(models.TextChoices):
     """ENUM for greggor logo types"""

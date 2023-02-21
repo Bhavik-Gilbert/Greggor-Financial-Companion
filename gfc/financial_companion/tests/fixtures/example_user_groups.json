@@ -1,0 +1,33 @@
+[
+    {
+        "model": "financial_companion.UserGroup",
+        "pk": 1,
+        "fields": {
+            "name": "Saving Club",
+            "description": "Save with us",
+            "invite_code": "ABCDEFGH",
+            "owner_email": "johndoe@example.org"
+            }
+    },
+    {
+        "model": "financial_companion.UserGroup",
+        "pk": 2,
+        "fields": {
+            "name": "Spending Club",
+            "description": "Spend with us",
+            "invite_code": "IJKLMNOP",
+            "owner_email": "janedoe@example.org"
+            }
+    },
+    {
+        "model": "financial_companion.UserGroup",
+        "pk": 3,
+        "fields": {
+            "name": "SavingsRUs",
+            "description": "Fun savers",
+            "invite_code": "QRSTUVWX",
+            "owner_email": "johndoe@example.org",
+            "members": [1, 2]
+            }
+    }
+]

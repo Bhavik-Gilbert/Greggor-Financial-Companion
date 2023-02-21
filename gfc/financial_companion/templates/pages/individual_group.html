@@ -1,0 +1,84 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Group{% endblock %}
+
+<!-- Content -->
+{% block content %}
+<div class="card py-3 px-4 bg-primary">
+  <div class="row gy-3">
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12 col-md-8">
+          <h1 class="text-white">{{group.name.capitalize}}</h1>
+        </div>
+        <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-end">
+          <a href="#"><button type="button" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit Details</button></a>
+          <button type="button" class="btn btn-danger px-3 mx-2 py-1 mb-md-4">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="container">
+        <div class="row">
+          <div class="card">
+            <img class="card-img-top" src="" alt="">
+
+            <div class="card-body">
+              <p class="card-text">
+                <p>Join code: {{group.invite_code}}</p>
+                <p>Description: {{group.description}}</p>
+                <p>Number of members: {{count}}</p>
+              </p>
+            </div>
+
+            <div class="card-footer text-muted">
+              If you have any questions regarding the group please contanct the owner at: <strong>{{group.owner_email}}</strong>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <div class="container">
+    <div class="row">
+      <div class="card">
+        <img class="card-img-top" src="" alt="">
+        <div class="card-body">
+          {% if is_owner %}
+            <div class="col-12">
+              <div class="row">
+                <div class="col-12 col-md-8 mt-1">
+                  <div class="card-title">
+                    <h4>Members:</h4>
+                  </div>
+                </div>
+                <div class="col-12 col-md-4 mb-3 d-flex justify-content-start justify-content-md-end">
+                  <a href="#" class="btn btn-primary">Add member</a>
+                </div>
+              </div>
+            </div>
+            {%include 'partials/groups/owners_members_table.html' with members=members owners_email=owners_email %}
+          {% else %}
+            <div class="col-12 col-md-8">
+              <div class="card-title">
+                <h4>Members:</h4>
+              </div>
+            </div>
+            {%include 'partials/groups/users_members_table.html' with members=members %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

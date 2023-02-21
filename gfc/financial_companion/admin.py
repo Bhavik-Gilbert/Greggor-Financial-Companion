@@ -1,15 +1,18 @@
 """Configuration of the admin interface of financial_companion."""
 
 from django.contrib import admin
-from .models import  (
-    User, 
-    Category, 
-    Account, PotAccount, BankAccount, 
-    Transaction, 
-    CategoryTarget, AccountTarget, UserTarget
+from .models import (
+    User,
+    Category,
+    Account, PotAccount, BankAccount,
+    Transaction,
+    CategoryTarget, AccountTarget, UserTarget,
+    UserGroup
 )
 
 # Register your models here.
+
+
 @admin.register(User)
 class User(admin.ModelAdmin):
     """Configuration of the admin interface for users."""
@@ -17,6 +20,7 @@ class User(admin.ModelAdmin):
     list_display = [
         'username', 'first_name', 'last_name', 'email', 'is_staff', 'profile_picture'
     ]
+
 
 @admin.register(Category)
 class Category(admin.ModelAdmin):
@@ -26,6 +30,7 @@ class Category(admin.ModelAdmin):
         'id', 'name', 'description'
     ]
 
+
 @admin.register(Account)
 class Account(admin.ModelAdmin):
     """Configuration of the admin interface for account."""
@@ -33,6 +38,7 @@ class Account(admin.ModelAdmin):
     list_display = [
         'id', 'name', 'description'
     ]
+
 
 @admin.register(PotAccount)
 class PotAccount(admin.ModelAdmin):
@@ -42,6 +48,7 @@ class PotAccount(admin.ModelAdmin):
         'id', 'name', 'description', 'user', 'balance', 'currency'
     ]
 
+
 @admin.register(BankAccount)
 class BankAccount(admin.ModelAdmin):
     """Configuration of the admin interface for bank account."""
@@ -49,7 +56,8 @@ class BankAccount(admin.ModelAdmin):
     list_display = [
         'id', 'name', 'description', 'user', 'balance', 'currency',
         'bank_name', 'account_number', 'sort_code', 'iban', 'interest_rate'
-        ]
+    ]
+
 
 @admin.register(Transaction)
 class Transaction(admin.ModelAdmin):
@@ -57,11 +65,13 @@ class Transaction(admin.ModelAdmin):
         'id', 'title', 'amount', 'currency', 'sender_account', 'receiver_account', 'category', 'description'
     ]
 
+
 @admin.register(CategoryTarget)
 class CategoryTarget(admin.ModelAdmin):
     list_display = [
         'transaction_type', 'timespan', 'amount', 'currency', 'category_id'
     ]
+
 
 @admin.register(UserTarget)
 class UserTarget(admin.ModelAdmin):
@@ -69,8 +79,16 @@ class UserTarget(admin.ModelAdmin):
         'transaction_type', 'timespan', 'amount', 'currency', 'user'
     ]
 
+
 @admin.register(AccountTarget)
 class AccountTarget(admin.ModelAdmin):
     list_display = [
         'transaction_type', 'timespan', 'amount', 'currency', 'account_id'
+    ]
+
+
+@admin.register(UserGroup)
+class UserGroup(admin.ModelAdmin):
+    list_display = [
+        'name', 'description', 'owner_email', 'invite_code', 'get_members'
     ]

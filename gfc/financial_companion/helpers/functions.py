@@ -5,6 +5,9 @@ from .enums import CurrencyType
 import random
 import string
 from datetime import datetime
+from django.conf import settings
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 def get_currency_symbol(currency_code: str):
     """Returns currency symbol for given currency code"""
@@ -15,7 +18,9 @@ def get_currency_symbol(currency_code: str):
     else:
         return ""
 
-def convert_currency(amount: float, current_currency_code: str, target_currency_code: str):
+
+def convert_currency(amount: float, current_currency_code: str,
+                     target_currency_code: str):
     """Converts balance from one currency to another"""
     current_currency_code = current_currency_code.upper()
     target_currency_code = target_currency_code.upper()
@@ -28,15 +33,43 @@ def convert_currency(amount: float, current_currency_code: str, target_currency_
         if current_currency_code == CurrencyType.KZT:
             return amount * kzt_rates.get_exchange_rate(target_currency_code)
         else:
-            return amount * kzt_rates.get_exchange_rate(current_currency_code, from_kzt=True)
+            return amount * \
+                kzt_rates.get_exchange_rate(
+                    current_currency_code, from_kzt=True)
 
-    c: CurrencyConverter = CurrencyConverter(fallback_on_missing_rate=True, fallback_on_wrong_date=True)
+    c: CurrencyConverter = CurrencyConverter(
+        fallback_on_missing_rate=True,
+        fallback_on_wrong_date=True)
     return c.convert(amount, current_currency_code, target_currency_code)
+
 
 def random_filename(filename):
     """Generates a random filename"""
     file_extension = filename.split('.')[-1]
 
     # set a random filename
-    filename_strings_to_add = [random.choice(string.ascii_letters), str(datetime.now())]
+    filename_strings_to_add = [
+        random.choice(
+            string.ascii_letters), str(
+            datetime.now())]
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
+
+
+def paginate(page, list_input):
+    list_of_items = []
+    paginator = Paginator(list_input, settings.NUMBER_OF_TRANSACTIONS)
+    try:
+        list_of_items = paginator.page(page)
+    except PageNotAnInteger:
+        list_of_items = paginator.page(1)
+    except EmptyPage:
+        list_of_items = paginator.page(paginator.num_pages)
+
+    return list_of_items
+
+
+def get_random_invite_code(length):
+    """Generates a random invite code for User Groups"""
+    letters = string.ascii_uppercase
+    result_str = ''.join(random.choice(letters) for i in range(length))
+    return result_str
