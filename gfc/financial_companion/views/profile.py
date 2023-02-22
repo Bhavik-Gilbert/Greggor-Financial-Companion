@@ -11,16 +11,13 @@ def profile_view(request: HttpRequest) -> HttpResponse:
     user = request.user
     return render(request, 'pages/profile.html')
 
+
 @login_required
 def delete_profile_view(request: HttpRequest) -> HttpResponse:
-    try:
-        user = User.objects.get(id=request.user.id)
-    except ObjectDoesNotExist:
-        return redirect('dashboard')
-    else:
-        user.delete()
-        messages.add_message(
-            request,
-            messages.WARNING,
-            "Your profile has been deleted")
-        return redirect('log_out')
+    user = request.user
+    user.delete()
+    messages.add_message(
+        request,
+        messages.WARNING,
+        "Your profile has been deleted")
+    return redirect('home')

@@ -23,7 +23,7 @@
           &nbsp
           <a class="btn btn-primary" href="{% url 'change_password' %}">Change Password</a>
           &nbsp
-          <a class="btn btn-primary" href="{% url 'delete_profile' %}">Delete Profile</a>
+          <a class="btn btn-primary" onclick="return confirm('Are you sure you want to delete your profile?')" href="{% url 'delete_profile' %}">Delete Profile</a>
       </div>
   </div>
 
