@@ -73,6 +73,7 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
         "form": form
     })
 
+
 @login_required
 def delete_monetary_account_view(
         request: HttpRequest, pk: int) -> HttpResponse:

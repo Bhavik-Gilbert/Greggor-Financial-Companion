@@ -12,7 +12,7 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
     """View to record a transaction made"""
 
     user = request.user
-    categories = Category.objects.filter(user = user.id)
+    categories = Category.objects.filter(user=user.id)
 
     if request.method == 'POST':
         form = AddTransactionForm(user, request.POST, request.FILES)
@@ -23,7 +23,8 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
     else:
         form = AddTransactionForm(user)
         form.fields['category'].queryset = categories
-    return render(request, "pages/add_transaction.html", {'form': form, 'edit': False})
+    return render(request, "pages/add_transaction.html",
+                  {'form': form, 'edit': False})
 
 
 @login_required
@@ -34,16 +35,19 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         return redirect('dashboard')
     else:
         user = request.user
-        categories = Category.objects.filter(user = user.id)
+        categories = Category.objects.filter(user=user.id)
         if request.method == 'POST':
-            form = AddTransactionForm(user, request.POST,request.FILES, instance=transaction)
+            form = AddTransactionForm(
+                user, request.POST, request.FILES, instance=transaction)
             form.fields['category'].queryset = categories
             if form.is_valid():
                 form.save(instance=transaction)
                 return redirect('dashboard')
         form = AddTransactionForm(user, instance=transaction)
         form.fields['category'].queryset = categories
-        return render(request, "pages/add_transaction.html", {'form': form, 'edit': True, 'pk':pk})
+        return render(request, "pages/add_transaction.html",
+                      {'form': form, 'edit': True, 'pk': pk})
+
 
 @login_required
 def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:

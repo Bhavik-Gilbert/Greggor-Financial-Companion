@@ -38,7 +38,7 @@ class AddTransactionForm(forms.ModelForm):
                 category=self.cleaned_data.get('category'),
                 amount=self.cleaned_data.get('amount'),
                 currency=self.cleaned_data.get('currency'),
-                sender_account = self.cleaned_data.get('sender_account'),
+                sender_account=self.cleaned_data.get('sender_account'),
                 receiver_account=self.cleaned_data.get('receiver_account')
             )
         else:
@@ -62,12 +62,18 @@ class AddTransactionForm(forms.ModelForm):
         super().clean()
         sender_account = self.cleaned_data.get('sender_account')
         receiver_account = self.cleaned_data.get('receiver_account')
-        users_accounts = PotAccount.objects.filter(user = self.user)
+        users_accounts = PotAccount.objects.filter(user=self.user)
         ids = []
         for account in users_accounts:
             ids.append(account.id)
         if sender_account == receiver_account:
-            self.add_error('receiver_account', 'The sender and receiver accounts cannot be the same.')
+            self.add_error(
+                'receiver_account',
+                'The sender and receiver accounts cannot be the same.')
         elif not ((sender_account.id in ids) or (receiver_account.id in ids)):
-                self.add_error('sender_account', 'Neither the sender or reciever are one of your accounts')
-                self.add_error('receiver_account', 'Neither the sender or reciever are one of your accounts')
+            self.add_error(
+                'sender_account',
+                'Neither the sender or reciever are one of your accounts')
+            self.add_error(
+                'receiver_account',
+                'Neither the sender or reciever are one of your accounts')
