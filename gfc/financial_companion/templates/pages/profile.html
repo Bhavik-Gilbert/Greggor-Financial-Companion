@@ -18,10 +18,10 @@
       <p class="card-text"><b>Name:</b> {{user.first_name}} {{user.last_name}}</p>
       <p class="card-text"><b>Email:</b> {{user.email}}</p>
       <p class="card-text"><b>Bio:</b>  {{user.bio}}</p>
-      <div align="center" class="w-50 container-fluid">
-          <a class="btn btn-primary" href="{% url 'edit_user_details' %}">Edit Profile</a>
-          &nbsp
+      <div align="center">
           <a class="btn btn-primary" href="{% url 'change_password' %}">Change Password</a>
+          &nbsp
+          <a class="btn btn-primary" href="{% url 'edit_user_details' %}">Edit Profile</a>
           &nbsp
           <a class="btn btn-primary" onclick="return confirm('Are you sure you want to delete your profile?')" href="{% url 'delete_profile' %}">Delete Profile</a>
       </div>
