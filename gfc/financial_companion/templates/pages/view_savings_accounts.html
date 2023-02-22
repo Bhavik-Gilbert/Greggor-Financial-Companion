@@ -9,69 +9,74 @@
 <head>
     <meta charset = "utf-8">
     <meta name = "viewport" content = "width=device-width, initial-scale=1">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"> </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"> </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   
     <script>
       function viewProjection() {
-        // Retrieves the user selection for the station and the day of the week
-        const account = document.getElementById('accountDropdown').value;
-        const projectionTimescale = document.getElementById('projectionTimescaleDropdown').value;
-  
-        var crowdingInfo; // contains the API data containing the crowding information of the given station for a given day of week
+        // Retrieves the user selection for the account and the projection timescale (in months)
+        const accountInfo = (document.getElementById('accountDropdown').value).split(",");
+        const balance = accountInfo[0];
+        const interest_rate = accountInfo[1]/100;
+        const currencySymbol = accountInfo[2];
+        const projectionTimescale_inMonths = document.getElementById('projectionTimescaleDropdown').value;
   
         $(document).ready(() => {
-          // retrives the crowding information as a JSON object via the TFL crowding API
-          $.ajax({
-            "url" : "https://api.tfl.gov.uk/crowding/" + stationID + "/" + dayOfWeek,
-            "type" : "GET",
-            "data" : {"app_key" : "b6cf7f135eaa428c9d340b33b19a20be", "Cache-Control" : "no-cache"},
-            "dataType" : "JSON"
-          })
-          .done((data) => {
-            crowdingInfo = data;
   
-            var crowdingPercentages = [];
-            var timeBands = [];
-  
-            // stores the time bands and crowding in seperate arrays for use in the bar chart
-            crowdingInfo.timeBands.forEach(timeBand => {
-              crowdingPercentages.push(timeBand.percentageOfBaseLine * 100);
-              timeBands.push(timeBand.timeBand);
-            });
-            setChart(crowdingPercentages, timeBands)
-            setAmPmPeakTimes(crowdingInfo)
-            setTable(crowdingInfo)
-          })
+          var balances = [];
+          var timeBands = [];
+
+          balanceTotal = balance;
+          shortMonthName = new Intl.DateTimeFormat("en-UK", {month:"short"}).format
+
+          for (let i = 1; i <= projectionTimescale_inMonths; i++) {
+            balances.push(balanceTotal);
+            date = new Date;
+            timeBands.push(shortMonthName(date.setMonth(date.getMonth() + i)) + " " + date.getFullYear().toString().substring(2));
+            tempBalanceTotal = balanceTotal * ((1 + (interest_rate/365))**30);
+            if (tempBalanceTotal >= 0) {
+              balanceTotal = tempBalanceTotal
+            }
+          }
+          setFigures_Income_Balance(balances, currencySymbol);
+          setChart(balances, timeBands);
         });
       }
+
+      function setFigures_Income_Balance(balances, currencySymbol) {
+        const projected_income_text = document.getElementById('projected_income');
+        const projected_total_text = document.getElementById('projected_total');
+
+        projected_income_text.innerText = currencySymbol + " " + (parseFloat(balances[balances.length-1]) - parseFloat(balances[0])).toFixed(2);
+        projected_total_text.innerText = currencySymbol + " " + parseFloat(balances[balances.length-1]).toFixed(2);
+      }
   
-      function setChart(values, timeBands) {
+      function setChart(balances, timeBands) {
         //finds the canvas HTML element
         const projectionChart = document.getElementById('projectionChart');
   
-        if (crowdingChart.attributes.length > 1) { // if there is a chart in the canvas.
-          Chart.getChart(crowdingChart).destroy(); // clear the canvas
+        if (projectionChart.attributes.length > 1) { // if there is a chart in the canvas.
+          Chart.getChart(projectionChart).destroy(); // clear the canvas
         }
+
+        Chart.defaults.color = '{{primary}} !IMPORTANT';
+
         // creates the bar chart showing crowding percentages at the selected station over the course of the selected day of week
-        new Chart(crowdingChart, {
-          type: 'bar',
+        new Chart(projectionChart, {
+          type: 'line',
           data: {
             labels: timeBands,
             datasets: [{
-              label: 'Crowding',
-              data: crowdingPercentages,
-              borderWidth: 1,
-              backgroundColor: '#000000' //black
-            }]
+              label: 'Interest',
+              data: balances,
+              backgroundColor: 'white', //black
+              borderColor: 'orange',
+              borderWidth: 4
+            }],
+            
           },
           options: {
-            scales: {
-              y: {
-                beginAtZero: true,
-                max:100
-              }
-            }
+            
           }
         });
       }
@@ -86,22 +91,17 @@
         <label>Account:</label>
         <select class = "form-select form-select" name = "accountDropdown" id = "accountDropdown" autocomplete="off">
           {% for account in bank_accounts %}
-            <option class="mx-3" value = '{{account.name}}' selected="
-              {% if account == bank_accounts|first %}
-                selected
-              {% else %}
-              {% endif %}"
-            >{{account.name.capitalize}}</option>
+            <option class="mx-3" value='{{account.balance}},{{account.interest_rate}},{{account.currency.upper}}'>{{account.name.capitalize}}</option>
           {% endfor %}
         </select>
       </div>
       <div class = "col-2 align-bottom">
         <label>Projection Timescale:</label>
         <select class = "form-select form-select" name = "projectionTimescaleDropdown" id = "projectionTimescaleDropdown" autocomplete="off">
-          <option value = "1month">1 Month</option>
-          <option value = "6month">6 Months</option>
-          <option value = "1year" selected="selected">1 Year</option>
-          <option value = "5year">5 Years</option>
+          <option value = "6">6 Months</option>
+          <option value = "12" selected="selected">1 Year</option>
+          <option value = "24">2 Years</option>
+          <option value = "60">5 Years</option>
         </select>
       </div>
       <div class = "col-sm-1 mb-0">
@@ -111,16 +111,20 @@
     </div>
 
     <div class="row g-1 g-md-2 mt-2">
-      <div class = "col-8">
+      <div class = "col-9">
         <!--- The bar chart showing the crowding percentage in the selected station over the course of the selected day --->
         <div class="card text-bg-primary">
-          <div class="card-body pb-0 px-0 mx-3">
+          <div class="card-body px-0 mx-3">
             <h4 class="card-title mb-3" id="projectionChartTitle">Projection</h5>
-            <canvas id = "projectionChart"></canvas>
+              <div class="card text-bg-light">
+                <div class="card-body px-0 mx-3">
+                  <canvas id = "projectionChart"></canvas>
+                </div>
+              </div>
            </div>
         </div>
       </div>
-      <div class = "col-4">
+      <div class = "col-3">
         <div class="card mx-0 text-bg-primary">
           <div class="card-body pb-0 px-0 mx-3">
             <h4 class="card-title mb-3" id="projectionChartTitle">Projection</h5>
