@@ -78,6 +78,28 @@ class CreateTargetFormTestCase(FormTestCase):
         self.assertEqual(category_target.transaction_type, 'income')
         self.assertEqual(category_target.currency, 'USD')
         self.assertEqual(category_target.amount, 200)
+    
+    def test_form_updates_correctly(self):
+        category_target = CategoryTarget.objects.get(id=1)
+        form = TargetForm(instance=category_target, data=self.form_input, form_type = CategoryTarget, foreign_key = self.test_category)
+        before_count = CategoryTarget.objects.count()
+        current_category_target = form.save()
+        after_count = CategoryTarget.objects.count()
+        self.assertEqual(current_category_target.timespan, 'month')
+        self.assertEqual(current_category_target.transaction_type, 'income')
+    
+    def test_form_thorws_error_when_updating_invalid_data(self):
+        category_target = CategoryTarget.objects.get(id=1)
+        self.other_category_target = CategoryTarget.objects.get(id=2)
+        self.form_input = {
+            'transaction_type': self.other_category_target.transaction_type,
+            'timespan': self.other_category_target.timespan,
+            'amount': 200,
+            'currency': 'USD'
+        }
+        form = TargetForm(instance=category_target, data=self.form_input, form_type = CategoryTarget, foreign_key = self.test_category)
+        with self.assertRaises(IntegrityError):
+            self.assertFalse(form.save())
 
     def test_target_must_be_unique_for_a_category(self):
         self.test_category_target = CategoryTarget.objects.get(id=1)

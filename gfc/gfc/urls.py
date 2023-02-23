@@ -98,15 +98,15 @@ urlpatterns = [
         views.create_account_target_view,
         name="create_account_target"),
     path(
-        'edit_target/category/<int:pk>/',
+        'edit_target/category/<int:pk>',
         views.edit_category_target_view,
         name="edit_category_target"),
     path(
-        'edit_target/account/<int:pk>/',
+        'edit_target/account/<int:pk>',
         views.edit_account_target_view,
         name="edit_account_target"),
     path(
-        'edit_target/user/<int:pk>/',
+        'edit_target/user/<int:pk>',
         views.edit_user_target_view,
         name="edit_user_target"),
     path(

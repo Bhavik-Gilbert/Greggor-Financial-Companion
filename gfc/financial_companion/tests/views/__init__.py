@@ -23,3 +23,9 @@ from .test_delete_transaction_view import DeleteTransactionViewTestCase
 from .test_quiz_view import QuizViewTestCase
 from .test_quiz_ready_view import QuizReadyViewTestCase
 from .test_quiz_questions_view import QuizQuestionsViewTestCase
+from .test_create_category_target_view import CreateCategoryTargetViewTestCase
+from .test_edit_category_target_view import EditCategoryTargetViewTestCase
+from .test_create_user_target_view import CreateUserTargetViewTestCase
+from .test_edit_user_target_view import EditUserTargetViewTestCase
+from .test_create_account_target_view import CreateAccountTargetViewTestCase
+from .test_edit_account_target_view import EditAccountTargetViewTestCase
