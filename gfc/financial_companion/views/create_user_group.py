@@ -24,3 +24,20 @@ def create_user_group_view(request: HttpRequest) -> HttpResponse:
         form = CreateUserGroupForm()
     return render(request, "pages/create_user_group.html",
                   {'form': form})
+
+@login_required
+def delete_user_group_view(request: HttpRequest, pk: int) -> HttpResponse:
+    """View to allow users to delete a user group"""
+    # check is id valid
+    try:
+        current_user_group: UserGroup = UserGroup.objects.get(
+            id=pk, owner_email=request.user.email)
+    except Exception:
+        return redirect("dashboard")
+
+    current_user_group.delete()
+    messages.add_message(
+        request,
+        messages.WARNING,
+        "This user group has been deleted")
+    return redirect("all_groups_redirect")
