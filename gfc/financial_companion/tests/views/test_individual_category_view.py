@@ -3,6 +3,7 @@ from financial_companion.models import User, Category, CategoryTarget, Transacti
 from django.http import HttpResponse
 from django.urls import reverse
 from django.db.models import Q
+from financial_companion.templatetags import get_completeness
 
 
 class IndividualCategoryViewTestCase(ViewTestCase):
@@ -67,6 +68,11 @@ class IndividualCategoryViewTestCase(ViewTestCase):
         category_targets: Category = response.context["category_targets"]
         for target in category_targets:
             self.assertTrue(isinstance(target, CategoryTarget))
+            self.assertContains(response, target.transaction_type.capitalize())
+            self.assertContains(response, target.timespan.capitalize())
+            self.assertContains(response, get_completeness(target))
+            self.assertContains(response, target.currency.upper())
+            self.assertContains(response, target.amount)
         self.assertGreater(len(category_targets), 0)
 
     def test_valid_category_does_not_have_targets(self):

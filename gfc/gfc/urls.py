@@ -86,6 +86,30 @@ urlpatterns = [
         views.change_password_view,
         name="change_password"),
     path(
+        'create_target/category/<int:pk>',
+        views.create_category_target_view,
+        name="create_category_target"),
+    path(
+        'create_target/user/',
+        views.create_user_target_view,
+        name="create_user_target"),
+    path(
+        'create_target/account/<int:pk>',
+        views.create_account_target_view,
+        name="create_account_target"),
+    path(
+        'edit_target/category/<int:pk>/',
+        views.edit_category_target_view,
+        name="edit_category_target"),
+    path(
+        'edit_target/account/<int:pk>/',
+        views.edit_account_target_view,
+        name="edit_account_target"),
+    path(
+        'edit_target/user/<int:pk>/',
+        views.edit_user_target_view,
+        name="edit_user_target"),
+    path(
         'edit_category/<int:pk>',
         views.edit_category_view,
         name="edit_category"),
@@ -97,6 +121,10 @@ urlpatterns = [
         'create_user_group/',
         views.create_user_group_view,
         name="create_user_group"),
+    path(
+        'join_user_group/',
+        views.join_user_group_view,
+        name="join_user_group"),
     path(
         'reset_password',
         PasswordResetView.as_view(
@@ -165,6 +193,32 @@ urlpatterns = [
         'individual_transaction/(?P<pk>\\d+)/$',
         views.individual_transaction_view,
         name="individual_transaction"
+    ),
+    path('quiz/', views.quiz_view, name='quiz'),
+    re_path(
+        'quiz/(?P<question_total>\\d+)/(?P<sort_type>\\w+)/$',
+        views.quiz_view,
+        name="quiz_with_params"
+    ),
+    re_path(
+        'quiz_ready/(?P<question_total>\\d+)/$',
+        views.quiz_ready_view,
+        name="quiz_ready"
+    ),
+    re_path(
+        'quiz_questions/(?P<pk>\\d+)/$',
+        views.quiz_question_view,
+        name="quiz_questions"
+    ),
+    re_path(
+        'quiz_score/(?P<pk>\\d+)/$',
+        views.quiz_score_view,
+        name="quiz_score"
+    ),
+    re_path(
+        'individual_group/(?P<pk>\\d+)/$',
+        views.individual_group_view,
+        name="individual_group"
     ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

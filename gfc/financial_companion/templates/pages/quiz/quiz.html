@@ -1,0 +1,57 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Quiz{% endblock %}
+
+<!-- Content -->
+{% block content %}
+  <div align="center">
+    <h1>Quiz</h1>
+
+    <br>
+
+    <div class="container-fluid row gy-3">
+        <h3 class="col-12">How many questions do you want?</h3>
+        <div class="col-12">
+            {% for quiz_total in quiz_total_choices %}
+                {% if quiz_total == question_total %}
+                    <a href="{% url 'quiz_with_params' question_total=quiz_total sort_type=score_order_type %}" class="btn btn-secondary">{{quiz_total}}</a>
+                {% else %}
+                    <a href="{% url 'quiz_with_params' question_total=quiz_total sort_type=score_order_type %}" class="btn btn-outline-secondary">{{quiz_total}}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        
+        <a href="{% url 'quiz_ready' question_total=question_total %}" class="btn btn-primary col-12">Generate Quiz</a>
+    </div>
+
+    <br><br>
+
+    <form method="POST" class="container-fluid row justify-content-center">
+        {% csrf_token %}
+        <h3 class="col-md-auto">Scores</h3>
+        {% for score_list_order_type in score_list_order_types %}
+            <div class="col-lg-1">
+            {% if score_order_type == score_list_order_type %}
+                <a href="{% url 'quiz_with_params' question_total=question_total sort_type=score_list_order_type %}" class="btn btn-primary col-12">{{score_list_order_type.capitalize}}</a>
+            {% else %}
+                <a href="{% url 'quiz_with_params' question_total=question_total sort_type=score_list_order_type %}" class="btn btn-outline-secondary col-12">{{score_list_order_type.capitalize}}</a>
+            {% endif %}
+            </div>
+        {% endfor %}
+    </form>
+    
+    <br>
+
+    {% if quiz_scores %}
+        {% if score_order_type == score_list_order_types.HIGHEST %}
+            <h4>Highest</h4>
+        {% elif score_order_type == score_list_order_types.RECENT %}
+            <h4>Recent</h4>
+        {% endif %}
+        {%include 'partials/quiz/quiz_scores_table.html'  with quiz_scores=quiz_scores %}
+    {% else %}
+        <h4>You haven't taken part in a quiz yet</h4>
+    {% endif %}
+  </div>
+{% endblock %}
