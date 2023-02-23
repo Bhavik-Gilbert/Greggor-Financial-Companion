@@ -12,12 +12,12 @@
       <form action='{% url 'add_transaction'%}' method="post" enctype='multipart/form-data'>
     {% endif %}
       {% csrf_token %}
+    <div>
+      <a class="btn btn-primary" href="{% url 'create_category' %}">Add New Category</a>
+      &nbsp
+      <a class="btn btn-primary" href="{% url 'add_monetary_account' %}">Add New Account</a>
+      <br></br>
+    </div>
       {% include 'partials/form.html' with form=form %}
-      <input type='checkbox' list='senders' placeholder="Sender" class="form-control">
-      <datalist id = 'senders'>
-        {% for sender in senders %}
-          <option value={{sender.title}}></option>
-        {% endfor %}
-      </datalist>
     <input type="submit" value="Add Transaction" class="btn btn-primary">
 {% endblock %}
