@@ -48,7 +48,10 @@ urlpatterns = [
         'add_monetary_account/',
         views.add_monetary_account_view,
         name="add_monetary_account"),
-    path('view_accounts/', views.view_user_pot_accounts, name='view_accounts'),
+    path(
+        'view_accounts/', 
+        views.view_user_pot_accounts, 
+        name='view_accounts'),
     path(
         'create_category/',
         views.create_category_view,
@@ -142,6 +145,10 @@ urlpatterns = [
         PasswordResetCompleteView.as_view(
             template_name="pages/email/password_reset_complete.html"),
         name='password_reset_complete'),
+    path(
+        'view_savings_accounts/', 
+        views.view_savings_accounts, 
+        name='view_savings_accounts'),
     re_path(
         'individual_account/(?P<pk>\\d+)/(?P<filter_type>\\w+)/$',
         views.individual_account_view,

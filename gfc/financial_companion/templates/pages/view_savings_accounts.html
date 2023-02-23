@@ -1,0 +1,138 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Savings Accounts{% endblock %}
+
+<!-- Content -->
+{% block content %}
+<h1>Savings Accounts</h1>
+<head>
+    <meta charset = "utf-8">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  
+    <script>
+      function viewProjection() {
+        // Retrieves the user selection for the account and the projection timescale (in months)
+        const accountInfo = (document.getElementById('accountDropdown').value).split(",");
+        const balance = accountInfo[0];
+        const interest_rate = accountInfo[1]/100;
+        const currencySymbol = accountInfo[2];
+        const projectionTimescale_inMonths = document.getElementById('projectionTimescaleDropdown').value;
+  
+        $(document).ready(() => {
+  
+          var balances = [];
+          var timeBands = [];
+
+          balanceTotal = balance;
+          shortMonthName = new Intl.DateTimeFormat("en-UK", {month:"short"}).format
+
+          for (let i = 1; i <= projectionTimescale_inMonths; i++) {
+            balances.push(balanceTotal);
+            date = new Date;
+            timeBands.push(shortMonthName(date.setMonth(date.getMonth() + i)) + " " + date.getFullYear().toString().substring(2));
+            tempBalanceTotal = balanceTotal * ((1 + (interest_rate/365))**30);
+            if (tempBalanceTotal >= 0) {
+              balanceTotal = tempBalanceTotal
+            }
+          }
+          setFigures_Income_Balance(balances, currencySymbol);
+          setChart(balances, timeBands);
+        });
+      }
+
+      function setFigures_Income_Balance(balances, currencySymbol) {
+        const projected_income_text = document.getElementById('projected_income');
+        const projected_total_text = document.getElementById('projected_total');
+
+        projected_income_text.innerText = currencySymbol + " " + (parseFloat(balances[balances.length-1]) - parseFloat(balances[0])).toFixed(2);
+        projected_total_text.innerText = currencySymbol + " " + parseFloat(balances[balances.length-1]).toFixed(2);
+      }
+  
+      function setChart(balances, timeBands) {
+        //finds the canvas HTML element
+        const projectionChart = document.getElementById('projectionChart');
+  
+        if (projectionChart.attributes.length > 1) { // if there is a chart in the canvas.
+          Chart.getChart(projectionChart).destroy(); // clear the canvas
+        }
+
+        Chart.defaults.color = '{{primary}} !IMPORTANT';
+
+        // creates the bar chart showing crowding percentages at the selected station over the course of the selected day of week
+        new Chart(projectionChart, {
+          type: 'line',
+          data: {
+            labels: timeBands,
+            datasets: [{
+              label: 'Interest',
+              data: balances,
+              backgroundColor: 'white', //black
+              borderColor: 'orange',
+              borderWidth: 4
+            }],
+            
+          },
+          options: {
+            
+          }
+        });
+      }
+    </script>
+  
+  </head>
+  
+  <body>
+    <div class = "row justify-content-start align-items-end g-2 mt-2">
+      <div class = "col-4 align-bottom">
+        <!--- The two dropdown lists to allow the user to select the station and the day of the week --->
+        <label>Account:</label>
+        <select class = "form-select form-select" name = "accountDropdown" id = "accountDropdown" autocomplete="off">
+          {% for account in bank_accounts %}
+            <option class="mx-3" value='{{account.balance}},{{account.interest_rate}},{{account.currency.upper}}'>{{account.name.capitalize}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class = "col-2 align-bottom">
+        <label>Projection Timescale:</label>
+        <select class = "form-select form-select" name = "projectionTimescaleDropdown" id = "projectionTimescaleDropdown" autocomplete="off">
+          <option value = "6">6 Months</option>
+          <option value = "12" selected="selected">1 Year</option>
+          <option value = "24">2 Years</option>
+          <option value = "60">5 Years</option>
+        </select>
+      </div>
+      <div class = "col-sm-1 mb-0">
+        <br>
+        <button type="submit" class="btn btn-primary" onclick="viewProjection()">Apply</button>
+      </div>
+    </div>
+
+    <div class="row g-1 g-md-2 mt-2">
+      <div class = "col-9">
+        <!--- The bar chart showing the crowding percentage in the selected station over the course of the selected day --->
+        <div class="card text-bg-primary">
+          <div class="card-body px-0 mx-3">
+            <h4 class="card-title mb-3" id="projectionChartTitle">Projection</h5>
+              <div class="card text-bg-light">
+                <div class="card-body px-0 mx-3">
+                  <canvas id = "projectionChart"></canvas>
+                </div>
+              </div>
+           </div>
+        </div>
+      </div>
+      <div class = "col-3">
+        <div class="card mx-0 text-bg-primary">
+          <div class="card-body pb-0 px-0 mx-3">
+            <h4 class="card-title mb-3" id="projectionChartTitle">Projection</h5>
+            <p><strong>Projected Income: </strong><span id = "projected_income"></span></p>
+            <p><strong>Projected Total: </strong><span id = "projected_total"></span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+</body>
+{% endblock %}
