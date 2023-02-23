@@ -9,7 +9,7 @@
   <div class="row">
    <div class="card mb-3 w-75 mx-auto mt-2 text-center" >
       <h5 class="card-title "><b><u>Profile</u></b></h5>
-      {%if user.profile_picture.url == None %}
+      {%if user.profile_picture.url != None %}
       <p><img src="{{ user.profile_picture.url }}" alt="Profile picture of {{ user.username }}" class="rounded center " ></p>
       {% else %}
         <p class="card-text"><b>Profile Picture:</b> Your profile picture has not been uploaded yet</p>
@@ -18,10 +18,12 @@
       <p class="card-text"><b>Name:</b> {{user.first_name}} {{user.last_name}}</p>
       <p class="card-text"><b>Email:</b> {{user.email}}</p>
       <p class="card-text"><b>Bio:</b>  {{user.bio}}</p>
-      <div align="center" class="w-50 container-fluid">
+      <div align="center">
+          <a class="btn btn-primary" href="{% url 'change_password' %}">Change Password</a>
+          &nbsp
           <a class="btn btn-primary" href="{% url 'edit_user_details' %}">Edit Profile</a>
-        &nbsp
-        <a class="btn btn-primary" href="{% url 'change_password' %}">Change Password</a>
+          &nbsp
+          <a class="btn btn-primary" onclick="return confirm('Are you sure you want to delete your profile?')" href="{% url 'delete_profile' %}">Delete Profile</a>
       </div>
   </div>
 
