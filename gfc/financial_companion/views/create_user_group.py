@@ -33,7 +33,11 @@ def delete_user_group_view(request: HttpRequest, pk: int) -> HttpResponse:
         current_user_group: UserGroup = UserGroup.objects.get(
             id=pk, owner_email=request.user.email)
     except Exception:
-        return redirect("dashboard")
+        messages.add_message(
+        request,
+        messages.WARNING,
+        "Failed to delete user group")
+        return redirect("all_groups_redirect")
 
     current_user_group.delete()
     messages.add_message(
