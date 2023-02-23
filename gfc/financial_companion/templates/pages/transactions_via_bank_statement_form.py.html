@@ -1,0 +1,13 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Add Transactions{% endblock %}
+
+<!-- Content -->
+{% block content %}
+    <h1>Upload Bank Statement As PDF</h1>
+    <form method="post" enctype='multipart/form-data'>
+      {% csrf_token %}
+      {% include 'partials/form.html' with form=form %}
+    <input type="submit" value="Upload Statement" class="btn btn-primary">
+{% endblock %}

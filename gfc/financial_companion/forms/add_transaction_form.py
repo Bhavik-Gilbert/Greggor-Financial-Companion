@@ -1,5 +1,7 @@
 from django import forms
+from django.core.validators import FileExtensionValidator
 from financial_companion.models import Transaction, Account, Category
+from financial_companion.helpers import ParseStatementPDF
 
 
 class AddTransactionForm(forms.ModelForm):
@@ -45,3 +47,17 @@ class AddTransactionForm(forms.ModelForm):
                 'receiver_account')
             transaction.save()
         return transaction
+
+class AddTransactionsViaBankStatementForm(forms.Form):
+    """Form to upload bank statement to add new transactions"""
+
+    bank_statement: forms.FileField = forms.FileField(
+        validators=[FileExtensionValidator(['pdf'])]
+    )
+
+    def save(self):
+        bank_statement = self.cleaned_data["bank_statement"]
+        bank_statement_file_path: str = bank_statement.temporary_file_path()
+        bank_statement_parser: ParseStatementPDF = ParseStatementPDF()
+
+        print(bank_statement_file_path)

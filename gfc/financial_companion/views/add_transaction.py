@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
-from financial_companion.forms import AddTransactionForm
-from ..models import Transaction
+from financial_companion.forms import AddTransactionForm, AddTransactionsViaBankStatementForm
+from financial_companion.models import Transaction
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -53,3 +53,18 @@ def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
             messages.WARNING,
             "The transaction has been deleted")
         return redirect('dashboard')
+    
+@login_required
+def add_transactions_via_bank_statement(request: HttpRequest) -> HttpResponse:
+    if request.method == 'POST':
+        form: AddTransactionsViaBankStatementForm = AddTransactionsViaBankStatementForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('view_transactions_redirect')
+    else:
+        form: AddTransactionsViaBankStatementForm = AddTransactionsViaBankStatementForm()
+    return render(request, "pages/transactions_via_bank_statement_form.py.html",
+                      {
+                        'form': form
+                    }
+    )
