@@ -19,7 +19,7 @@ class CreateUserTargetViewTestCase(ViewTestCase):
         }
 
     def test_create_user_target_url(self):
-        self.assertEqual(self.url, '/create_targets/user/')
+        self.assertEqual(self.url, '/create_target/user/')
 
     def test_successful_user_target_form_submission(self):
         self._login(self.test_user)

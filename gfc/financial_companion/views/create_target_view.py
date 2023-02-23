@@ -10,25 +10,25 @@ import re
 
 def create_target(request, Target, current_item):
     title_first_word = re.split(r"\B([A-Z])", Target.__name__)[0]
-    title = f'{title_first_word} Target Form'
-    form = TargetForm(request.POST, foreign_key=current_item)
+    title = f'{title_first_word} Target'
+    form = TargetForm(request.POST, foreign_key=current_item, form_type = Target)
     if request.method == "POST":
         if form.is_valid():
             try:
-                form.save(title_first_word.lower(), Target)
+                form.save()
             except Exception as e:
                 messages.add_message(
                     request,
                     messages.WARNING,
                     f'This target can not be created as a target with the same timespan, transaction type and {title_first_word.lower()} exists')
                 return render(request, "pages/create_targets.html",
-                              {'form': TargetForm(foreign_key=current_item), "form_toggle": True, 'title': title})
+                              {'form': TargetForm(foreign_key=current_item, form_type = Target), "form_toggle": True, 'title': title})
 
             else:
+        
                 return None
-
     else:
-        form = TargetForm(foreign_key=current_item)
+        form = TargetForm(foreign_key=current_item, form_type = Target)
     return render(request, "pages/create_targets.html",
                   {'form': form, "form_toggle": True, 'title': title})
 
@@ -87,9 +87,33 @@ def create_user_target_view(request: HttpRequest) -> HttpResponse:
         return to_return
 
 
+def edit_target(request, Target, current_item, foreign_key):
+    title_first_word = re.split(r"\B([A-Z])", Target.__name__)[0]
+    title = f'{title_first_word} Target'
+    if request.method == "POST":
+        form = TargetForm(request.POST, foreign_key=foreign_key, instance=current_item,  form_type = Target)
+        if form.is_valid() :
+            try:
+                form.save()
+            except Exception as e:
+                messages.add_message(
+                    request,
+                    messages.WARNING,
+                    f'This target can not be created as a target with the same timespan, transaction type and {title_first_word.lower()} exists')
+                return render(request, "pages/create_targets.html",
+                              {'form': TargetForm( foreign_key=foreign_key, instance=current_item,  form_type = Target), "form_toggle": False, 'title': title})
+            else:
+                return None
+    else:
+        
+        form = TargetForm( foreign_key=foreign_key, instance=current_item,  form_type = Target)
+    return render(request, "pages/create_targets.html",
+                  {'form': form, "form_toggle": False, 'title': title})
+
+
 @login_required
 def edit_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
-    """View to allow users to add a target to a category"""
+    """View to allow users to edit a category target"""
     # check is id valid
     try:
         current_category_target: CategoryTarget = CategoryTarget.objects.get(
@@ -98,23 +122,61 @@ def edit_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
             return redirect("categories_list", search_name="all")
     except Exception:
         return redirect("dashboard")
-    title = "Category Target"
-    if request.method == "POST":
-        form = TargetForm(request.POST, instance=current_category_target)
-        if form.is_valid():
-            try:
-                form.save("category")
-            except IntegrityError as e:
-                messages.add_message(
-                    request,
-                    messages.WARNING,
-                    "This target can not be created as a target with the same timespan, transaction type and category exists")
-                return render(request, "pages/create_targets.html",
-                              {'form': TargetForm(instance=current_category_target), "form_toggle": True, 'title': title})
-            else:
-                return redirect('individual_category_redirect',
+
+    to_return = edit_target(
+        request,
+        CategoryTarget,
+        current_category_target,
+        current_category_target.category)
+
+    if to_return is None:
+        return redirect('individual_category_redirect',
                                 pk=current_category_target.category.id)
     else:
-        form = TargetForm(instance=current_category_target)
-    return render(request, "pages/create_targets.html",
-                  {'form': form, "form_toggle": False, 'title': title})
+        return to_return
+
+@login_required
+def edit_account_target_view(request: HttpRequest, pk: int) -> HttpResponse:
+    """View to allow users to edit an account target"""
+    # check is id valid
+    try:
+        current_account_target: AccountTarget = AccountTarget.objects.get(
+            id=pk)
+        if current_account_target.account.user != request.user:
+            return redirect("view_accounts")
+    except Exception:
+        return redirect("dashboard")
+    to_return = edit_target(
+        request,
+        AccountTarget,
+        current_account_target,
+        current_account_target.account)
+
+    if to_return is None:
+        return redirect('individual_account_redirect',
+                        pk=current_account_target.account.id)
+    else:
+        return to_return
+
+@login_required
+def edit_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
+    """View to allow users to edit an account target"""
+    # check is id valid
+    try:
+        current_user_target: UserTarget = UserTarget.objects.get(
+            id=pk)
+        if current_user_target.user != request.user:
+            return redirect("dashboard")
+    except Exception:
+        return redirect("dashboard")
+    to_return = edit_target(
+        request,
+        UserTarget,
+        current_user_target,
+        request.user) 
+
+    if to_return is None:
+        return redirect("dashboard")
+    else:
+        return to_return
+                

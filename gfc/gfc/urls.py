@@ -83,21 +83,29 @@ urlpatterns = [
         views.change_password_view,
         name="change_password"),
     path(
-        'create_targets/category/<int:pk>',
+        'create_target/category/<int:pk>',
         views.create_category_target_view,
         name="create_category_target"),
     path(
-        'create_targets/user/',
+        'create_target/user/',
         views.create_user_target_view,
         name="create_user_target"),
     path(
-        'create_targets/account/<int:pk>',
+        'create_target/account/<int:pk>',
         views.create_account_target_view,
         name="create_account_target"),
     path(
-        'edit_category_target/<int:pk>/',
+        'edit_target/category/<int:pk>/',
         views.edit_category_target_view,
-        name="edit_category_targets"),
+        name="edit_category_target"),
+    path(
+        'edit_target/account/<int:pk>/',
+        views.edit_account_target_view,
+        name="edit_account_target"),
+    path(
+        'edit_target/user/<int:pk>/',
+        views.edit_user_target_view,
+        name="edit_user_target"),
     path(
         'edit_category/<int:pk>',
         views.edit_category_view,

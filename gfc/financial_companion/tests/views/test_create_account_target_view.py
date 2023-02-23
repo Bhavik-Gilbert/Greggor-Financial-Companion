@@ -20,7 +20,7 @@ class CreateAccountTargetViewTestCase(ViewTestCase):
         }
 
     def test_create_account_target_url(self):
-        self.assertEqual(self.url, '/create_targets/account/3')
+        self.assertEqual(self.url, '/create_target/account/3')
 
     def test_invalid_pk_entered(self):
         self._login(self.test_user)
