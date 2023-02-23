@@ -3,22 +3,24 @@ from django.shortcuts import render, redirect
 from ..models import UserGroup
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from financial_companion.forms import JoinUserGroupForm
 
 
 @login_required
 def all_groups_view(request: HttpRequest, search_name: str) -> HttpResponse:
 
-    userGroups = []
+    user_groups = []
     user = request.user
-    userEmail = user.email
-    allGroups = UserGroup.objects.all()
+    user_email = user.email
+    all_groups = UserGroup.objects.all()
+    form = JoinUserGroupForm()
 
     # need to get all the groups the user is in
-    for group in allGroups:
-        if group.owner_email == userEmail:
-            userGroups = [*userGroups, group]
+    for group in all_groups:
+        if group.owner_email == user_email:
+            user_groups = [*user_groups, group]
         elif group.is_member(user):
-            userGroups = [*userGroups, group]
+            user_groups = [*user_groups, group]
 
     # handling the search
     if request.method == "POST" and "search" in request.POST:
@@ -30,14 +32,15 @@ def all_groups_view(request: HttpRequest, search_name: str) -> HttpResponse:
                             search_name=(request.POST["search"]))
 
     if (search_name != "all"):
-        filterGroups = []
-        for group in userGroups:
+        filter_groups = []
+        for group in user_groups:
             if search_name in group.name:
-                filterGroups = [*filterGroups, group]
+                filter_groups = [*filter_groups, group]
         return render(request, "pages/all_groups.html",
-                      {"groups": filterGroups})
+                      {"groups": filter_groups, "form": form})
 
-    return render(request, "pages/all_groups.html", {"groups": userGroups})
+    return render(request, "pages/all_groups.html",
+                  {"groups": user_groups, "form": form})
 
 
 @login_required

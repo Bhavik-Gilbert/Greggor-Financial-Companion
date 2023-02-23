@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-12">
+    <table class="table table-bordered table-striped" style="width:100%" style="text-align:center" >
+      <thead class = "table-primary">
+        <tr>
+          <th scope="col" style="text-align:center">User ID</th>
+          <th scope="col" style="text-align:center">Name</th>
+          <th scope="col" style="text-align:center">Username</th>
+          <th scope="col" style="text-align:center">Action</th>
+        </tr>
+      </thead>
+      {% for member in members %}
+        <tr style="text-align:center">
+          <td>{{ member.id }}</td>
+          <td>{{ member.full_name }}</td>
+          <td>{{ member.username }}</td>
+          <td>
+            {% if member.email == owners_email %}
+              <strong>(owner)</strong>
+            {% else %}
+              <a style="float:center" href="#" class="btn btn-danger justify-content-center" onclick="showAlert('member')">Remove Member</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+    {%include 'partials/pagination.html'  with page_obj=members %}
+  </div>
+</div>

@@ -47,3 +47,10 @@ class User(AbstractUser):
                 *account.get_account_transactions(filter_type)]
 
         return transactions
+
+    def get_user_highest_quiz_score(self):
+        """Return users highest quiz score"""
+        user_scores: list[fcmodels.QuizScore] = fcmodels.QuizScore.objects.filter(
+            user=self
+        )
+        return max(user_scores, key=lambda quiz_score: quiz_score.get_score())
