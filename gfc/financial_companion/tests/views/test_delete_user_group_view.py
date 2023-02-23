@@ -28,7 +28,9 @@ class DeleteUserGroupViewTestCase(ViewTestCase):
     def test_user_tries_to_delete_group_as_a_non_owner(self):
         self._login(self.user)
         self.url = reverse('delete_user_group', kwargs={"pk": 2})
-        response_url: str = reverse("all_groups", kwargs={"search_name": "all"})
+        response_url: str = reverse(
+            "all_groups", kwargs={
+                "search_name": "all"})
         before_count = UserGroup.objects.count()
         response = self.client.get(self.url, follow=True)
         after_count = UserGroup.objects.count()
@@ -43,7 +45,9 @@ class DeleteUserGroupViewTestCase(ViewTestCase):
     def test_user_provides_invalid_pk(self):
         self._login(self.user)
         self.url = reverse('delete_user_group', kwargs={"pk": 300})
-        response_url: str = reverse("all_groups", kwargs={"search_name": "all"})
+        response_url: str = reverse(
+            "all_groups", kwargs={
+                "search_name": "all"})
         before_count = UserGroup.objects.count()
         response = self.client.get(self.url, follow=True)
         after_count = UserGroup.objects.count()

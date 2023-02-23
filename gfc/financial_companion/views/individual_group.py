@@ -20,7 +20,6 @@ def individual_group_view(request: HttpRequest, pk: int) -> HttpResponse:
         is_owner = (group.owner_email == user.email)
         owners_email = group.owner_email
         count = group.members_count()
-        
 
         if count > 0:
             pagenated_members_list = paginate(
