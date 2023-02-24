@@ -1,4 +1,5 @@
 {% extends "page.html" %}
+{% load math %}
 
 <!-- Title -->
 {% block title %}Savings Accounts{% endblock %}
@@ -15,43 +16,85 @@
     <script>
       function viewProjection() {
         // Retrieves the user selection for the account and the projection timescale (in months)
-        const accountInfo = (document.getElementById('accountDropdown').value).split(",");
-        const balance = accountInfo[0];
-        const interest_rate = accountInfo[1]/100;
-        const currencySymbol = accountInfo[2];
+        const accountsInfo = (document.getElementById('accountDropdown').value).split("|").map(account => account.split(",")).filter(account => account.length > 1);
         const projectionTimescale_inMonths = document.getElementById('projectionTimescaleDropdown').value;
+        const lineColours = [theme.primary, theme.secondary, theme.success, theme.warning, theme.danger, theme.dark];
+        const mainCurrencySymbol = accountsInfo[0][2];
   
         $(document).ready(() => {
-  
-          var balances = [];
+          clearFigures_Income_Balance();
           var timeBands = [];
-
-          balanceTotal = balance;
-          shortMonthName = new Intl.DateTimeFormat("en-UK", {month:"short"}).format
-
+          shortMonthName = new Intl.DateTimeFormat("en-UK", {month:"short"}).format;
           for (let i = 1; i <= projectionTimescale_inMonths; i++) {
-            balances.push(balanceTotal);
             date = new Date;
             timeBands.push(shortMonthName(date.setMonth(date.getMonth() + i)) + " " + date.getFullYear().toString().substring(2));
-            tempBalanceTotal = balanceTotal * ((1 + (interest_rate/365))**30);
-            if (tempBalanceTotal >= 0) {
-              balanceTotal = tempBalanceTotal
-            }
           }
-          setFigures_Income_Balance(balances, currencySymbol);
-          setChart(balances, timeBands);
+          accountsDataset = [];
+          for (account in accountsInfo) {
+            accountsDataset.push(getDatasetForAccount(accountsInfo[account], mainCurrencySymbol, timeBands, lineColours[account % lineColours.length]));
+          }
+
+          setChart(accountsDataset, timeBands, mainCurrencySymbol);
         });
       }
 
-      function setFigures_Income_Balance(balances, currencySymbol) {
-        const projected_income_text = document.getElementById('projected_income');
-        const projected_total_text = document.getElementById('projected_total');
+      function getDatasetForAccount(account, mainCurrencySymbol, timeBands, lineColour) {
+        const balance = account[0];
+        const interest_rate = account[1]/100;
+        const currencySymbol = account[2];
+        const accountName = account[3];
+        var conversion = 1.0;
+        if (account.length == 5) {
+          conversion = account[4];
+        }
 
-        projected_income_text.innerText = currencySymbol + " " + (parseFloat(balances[balances.length-1]) - parseFloat(balances[0])).toFixed(2);
-        projected_total_text.innerText = currencySymbol + " " + parseFloat(balances[balances.length-1]).toFixed(2);
+        var balances = [];
+
+        balanceTotal = balance;
+
+        for (month in timeBands) {
+          balances.push(balanceTotal);
+          tempBalanceTotal = balanceTotal * ((1 + (interest_rate/365))**30);
+          if (tempBalanceTotal >= 0) {
+            balanceTotal = tempBalanceTotal
+          }
+        }
+
+        setFigures_Income_Balance(balances, conversion, mainCurrencySymbol);
+
+        return ({
+              label: accountName,
+              data: balances,
+              backgroundColor: lineColour,
+              borderColor: lineColour,
+              borderWidth: 4
+            });
+      }
+
+      function clearFigures_Income_Balance() {
+        document.getElementById('projected_income_num').innerText = 0.00;
+        document.getElementById('projected_total_num').innerText = 0.00;
+      }
+
+      function setFigures_Income_Balance(balances, conversion, mainCurrencySymbol) {
+        const projected_income_num_text = document.getElementById('projected_income_num');
+        const projected_total_num_text = document.getElementById('projected_total_num');
+        const projected_income_currency_text = document.getElementById('projected_income_currency');
+        const projected_total_currency_text = document.getElementById('projected_total_currency');
+
+        let projected_income_num = parseFloat(projected_income_num_text.innerText);
+        let projected_total_num = parseFloat(projected_total_num_text.innerText);
+
+        projected_income_num += parseFloat(conversion) * (parseFloat(balances[balances.length-1]) - parseFloat(balances[0]));
+        projected_total_num += parseFloat(conversion) * parseFloat(balances[balances.length-1]);
+
+        projected_income_currency_text.innerText = mainCurrencySymbol;
+        projected_total_currency_text.innerText = mainCurrencySymbol;
+        projected_income_num_text.innerText = projected_income_num.toFixed(2);
+        projected_total_num_text.innerText = projected_total_num.toFixed(2);
       }
   
-      function setChart(balances, timeBands) {
+      function setChart(accountsDataset, timeBands, mainCurrencySymbol) {
         //finds the canvas HTML element
         const projectionChart = document.getElementById('projectionChart');
   
@@ -66,17 +109,23 @@
           type: 'line',
           data: {
             labels: timeBands,
-            datasets: [{
-              label: 'Interest',
-              data: balances,
-              backgroundColor: 'white', //black
-              borderColor: 'orange',
-              borderWidth: 4
-            }],
-            
+            datasets: accountsDataset,         
           },
           options: {
-            
+            scales: {
+              y: {
+                title: {
+                  display: true,
+                  text: "Balance ("+mainCurrencySymbol+")",
+                }
+              },
+              x: {
+                title: {
+                  display: true,
+                  text: "Month",
+                }
+              }
+            }
           }
         });
       }
@@ -84,55 +133,84 @@
   
   </head>
   
-  <body>
-    <div class = "row justify-content-start align-items-end g-2 mt-2">
-      <div class = "col-4 align-bottom">
-        <!--- The two dropdown lists to allow the user to select the station and the day of the week --->
-        <label>Account:</label>
-        <select class = "form-select form-select" name = "accountDropdown" id = "accountDropdown" autocomplete="off">
-          {% for account in bank_accounts %}
-            <option class="mx-3" value='{{account.balance}},{{account.interest_rate}},{{account.currency.upper}}'>{{account.name.capitalize}}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class = "col-2 align-bottom">
-        <label>Projection Timescale:</label>
-        <select class = "form-select form-select" name = "projectionTimescaleDropdown" id = "projectionTimescaleDropdown" autocomplete="off">
-          <option value = "6">6 Months</option>
-          <option value = "12" selected="selected">1 Year</option>
-          <option value = "24">2 Years</option>
-          <option value = "60">5 Years</option>
-        </select>
-      </div>
-      <div class = "col-sm-1 mb-0">
-        <br>
-        <button type="submit" class="btn btn-primary" onclick="viewProjection()">Apply</button>
-      </div>
-    </div>
-
-    <div class="row g-1 g-md-2 mt-2">
-      <div class = "col-9">
-        <!--- The bar chart showing the crowding percentage in the selected station over the course of the selected day --->
-        <div class="card text-bg-primary">
-          <div class="card-body px-0 mx-3">
-            <h4 class="card-title mb-3" id="projectionChartTitle">Projection</h5>
-              <div class="card text-bg-light">
-                <div class="card-body px-0 mx-3">
-                  <canvas id = "projectionChart"></canvas>
-                </div>
-              </div>
-           </div>
+  <body onload="viewProjection()">
+    <div class="container mt-3"></div>
+    {% if bank_accounts %}
+      <div class = "row justify-content-start align-items-end g-2">
+        <div class = "col-4 align-bottom">
+          <!--- The two dropdown lists to allow the user to select the station and the day of the week --->
+          <label>Account:</label>
+          <select class = "form-select form-select" name = "accountDropdown" id = "accountDropdown" autocomplete="off">
+            {% for account in bank_accounts %}
+              <option class="mx-3" value='{{account.balance}},{{account.interest_rate}},{{account.currency.upper}},{{account.name.capitalize}}'>{{account.name.capitalize}}</option>
+            {% endfor %}
+            <option class="mx-3" value='
+              {% for acc in bank_accounts %}
+                {{acc.balance}},{{acc.interest_rate}},{{acc.currency.upper}},{{acc.name.capitalize}},
+                {% for currency, conversion in conversion_to_main_currency.items %}
+                  {% if currency.lower == main_currency.lower %}
+                    {{conversion}}
+                  {% endif %}
+                {% endfor %}
+                |
+              {% endfor %}'
+              >-- SHOW ALL --
+            </option>
+          </select>
+        </div>
+        <div class = "col-2 align-bottom">
+          <label>Projection Timescale:</label>
+          <select class = "form-select form-select" name = "projectionTimescaleDropdown" id = "projectionTimescaleDropdown" autocomplete="off">
+            <option value = "6">6 Months</option>
+            <option value = "12" selected="selected">1 Year</option>
+            <option value = "24">2 Years</option>
+            <option value = "60">5 Years</option>
+          </select>
+        </div>
+        <div class = "col-sm-1 mb-0">
+          <br>
+          <button type="submit" class="btn btn-primary" onclick="viewProjection()">Apply</button>
         </div>
       </div>
-      <div class = "col-3">
-        <div class="card mx-0 text-bg-primary">
-          <div class="card-body pb-0 px-0 mx-3">
-            <h4 class="card-title mb-3" id="projectionChartTitle">Projection</h5>
-            <p><strong>Projected Income: </strong><span id = "projected_income"></span></p>
-            <p><strong>Projected Total: </strong><span id = "projected_total"></span></p>
+
+      <div class="row g-4 mt-2">
+        <div class = "col-9">
+          <!--- The bar chart showing the crowding percentage in the selected station over the course of the selected day --->
+          <div class="card text-bg-primary">
+            <div class="card-body px-0 mx-3">
+              <h4 class="card-title mb-3" id="projectionChartTitle">Projection</h5>
+                <div class="card text-bg-light">
+                  <div class="card-body py-1 px-0 mx-3">
+                    <canvas id="projectionChart"></canvas>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class = "col-3">
+          <div class="card mx-0 text-bg-primary">
+            <div class="card-body pb-0 px-0 mx-3">
+              <h5 class="card-title mb-3" id="projectionChartTitle">Projected Figures</h5>
+              <p class="pb-0 mb-0"><strong>Income: </strong><span id = "projected_income_currency">CUR</span> <span id = "projected_income_num">0.0</span></p>
+              <p class="pt-0 mb-0"><strong>Total: </strong><span id = "projected_total_currency">CUR</span> <span id = "projected_total_num">0.0</span></p>
+            </div>
+          </div>
+          <div class="card mt-2 mx-0 text-bg-primary">
+            <div class="card-body pb-0 px-0 mx-3">
+              <h5 class="card-title mb-3" id="projectionChartTitle">Conversion Rates</h5>
+              {% for currency, conversion in conversion_to_main_currency.items %}
+                {% if currency.lower != main_currency.lower %}
+                  <p class="pb-0 mb-0"><strong>{{currency}}</strong> 1.00 = <strong>{{main_currency}}</strong> {{conversion|sig_figs:6}}</p>
+                  <p class="pt-0 mt-0"><strong>{{main_currency}}</strong> 1.00 = <strong>{{currency}}</strong> {{1|divide:conversion|sig_figs:6}}</p>
+                {% endif %}
+              {% endfor %}
+            </div>
           </div>
         </div>
       </div>
+    {% else %}
+      {% include "partials/dashboard/no_content.html" with content_type_plural="bank accounts with interest" %}
+    {% endif %}
     </div>
-</body>
+  </body>
 {% endblock %}

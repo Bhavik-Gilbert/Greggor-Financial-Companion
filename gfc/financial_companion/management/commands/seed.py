@@ -114,7 +114,7 @@ class Command(BaseCommand):
             end='\r')
 
     def create_accounts_for_user(self, user, categories):
-        randomNumOfPotAccounts = randint(0, self.MAX_ACCOUNTS_PER_USER)
+        randomNumOfPotAccounts = randint(1, self.MAX_ACCOUNTS_PER_USER)
         randomNumOfBankAccount = randint(
             0, self.MAX_ACCOUNTS_PER_USER - randomNumOfPotAccounts)
         for i in range(0, randomNumOfPotAccounts):

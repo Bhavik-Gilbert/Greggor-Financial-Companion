@@ -8,12 +8,12 @@ $min-contrast-ratio: 2;
 @import "bootstrap/scss/_variables";
 
 $colors: (
-    "blue": #2d7bd8,
+    "blue": #217ceb,
     "orange": #FF842B,
 );
 
 $theme-colors : (
-    "primary": #217ceb,
+    "primary": $blue,
     "secondary": $orange-400,
     "success": $teal-300,
     "info": $orange,
