@@ -3,6 +3,7 @@ import pandas as pd
 import re
 import dateutil.parser as dparser
 from typing import Any
+from financial_companion.helpers import TransactionType
 
 class ParseStatementPDF:
     def __init__(self):
@@ -43,12 +44,12 @@ class ParseStatementPDF:
         """
 
         if len(transactions) > 1:
-            if not ((transactions[1]["balance"] - transactions[0]["balance"] > 0 and transactions[1]["transaction_type"] == "income") or (transactions[1]["balance"] - transactions[0]["balance"] < 0 and transactions[1]["transaction_type"] == "expense")):
+            if not ((transactions[1]["balance"] - transactions[0]["balance"] > 0 and transactions[1]["transaction_type"] == TransactionType.INCOME) or (transactions[1]["balance"] - transactions[0]["balance"] < 0 and transactions[1]["transaction_type"] == TransactionType.EXPENSE)):
                 for transaction in transactions:
-                    if transaction["transaction_type"] == "income":
-                        transaction["transaction_type"] = "expense"
-                    elif transaction["transaction_type"] == "expense":
-                        transaction["transaction_type"] = "income"
+                    if transaction["transaction_type"] == TransactionType.INCOME:
+                        transaction["transaction_type"] = TransactionType.EXPENSE
+                    elif transaction["transaction_type"] == TransactionType.EXPENSE:
+                        transaction["transaction_type"] = TransactionType.INCOME
         
         return transactions
     
@@ -79,10 +80,10 @@ class ParseStatementPDF:
         """Updates amount and transaction type data if statement dataframe row income or expense block is valid"""
         if not pd.isna(statement_dataframe_row[indexes["income"]]) and float(re.sub(self.number_regex, '', str(statement_dataframe_row[indexes["income"]]))) >= 0:
                 self.amount = abs(float(re.sub(self.number_regex, '', str(statement_dataframe_row[indexes["income"]]))))
-                self.transaction_type = "income"
+                self.transaction_type = TransactionType.INCOME
         elif not pd.isna(statement_dataframe_row[indexes["expense"]]):
             self.amount = abs(float(re.sub(self.number_regex, '', str(statement_dataframe_row[indexes["expense"]]))))
-            self.transaction_type = "expense"
+            self.transaction_type = TransactionType.EXPENSE
     
     def set_description_from_datataframe_row(self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
         """Updates object description data if statement dataframe row descritiption block is not empty"""
