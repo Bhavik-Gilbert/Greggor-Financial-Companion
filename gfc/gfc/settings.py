@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'financial_companion',
     'widget_tweaks',
-    'django_q'
+    'django_q',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
@@ -143,6 +144,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# File upload handler
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler']
 
 
 # User model for authentication and login purposes
