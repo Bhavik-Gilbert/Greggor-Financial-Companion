@@ -60,7 +60,7 @@ class PotAccount(Account):
         max_length=3
     )
 
-    def __str__(self):
+    def get_type(self):
         return f"{MonetaryAccountType.POT}"
 
 
@@ -106,5 +106,5 @@ class BankAccount(PotAccount):
         default=0.0,
     )
 
-    def __str__(self):
+    def get_type(self):
         return f"{MonetaryAccountType.BANK}"

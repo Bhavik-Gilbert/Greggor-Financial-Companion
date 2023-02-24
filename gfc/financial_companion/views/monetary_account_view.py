@@ -51,7 +51,7 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
         return redirect("dashboard")
 
     user: User = request.user
-    account_type: MonetaryAccountType = str(this_monetary_account)
+    account_type: MonetaryAccountType = this_monetary_account.get_type()
 
     # determine account type
 
