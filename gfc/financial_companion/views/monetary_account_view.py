@@ -30,7 +30,6 @@ def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
             if form.is_valid():
                 form.save()
                 return redirect("dashboard")
-
     return render(request, "pages/monetary_accounts_form.html", {
         "form_toggle": True,
         "account_type": account_type,
@@ -51,7 +50,7 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
         return redirect("dashboard")
 
     user: User = request.user
-    account_type: MonetaryAccountType = str(this_monetary_account)
+    account_type: MonetaryAccountType = this_monetary_account.get_type()
 
     # determine account type
 
@@ -67,7 +66,6 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
     else:
         form: forms.ModelForm = MonetaryAccountForm(
             form_type=account_type, user=user, instance=this_monetary_account)
-
     return render(request, "pages/monetary_accounts_form.html", {
         "form_toggle": False,
         "account_type": account_type,

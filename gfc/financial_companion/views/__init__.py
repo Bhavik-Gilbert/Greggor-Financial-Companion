@@ -3,7 +3,7 @@ from .sign_up import sign_up_view
 from .log_in import log_in_view
 from .log_in import log_out_view
 from .dashboard import dashboard_view
-from .add_transaction import add_transaction_view, edit_transaction_view, delete_transaction_view
+from .add_transaction import add_transaction_view, edit_transaction_view, delete_transaction_view, add_transactions_via_bank_statement
 from .monetary_account_view import add_monetary_account_view, edit_monetary_account_view, delete_monetary_account_view
 from .category_views import category_list_view, category_list_redirect
 from .view_accounts import view_user_pot_accounts
@@ -14,7 +14,7 @@ from .individual_account import individual_account_view, individual_account_redi
 from .individual_transaction import individual_transaction_view
 from .individual_group import individual_group_view
 from .edit_user_details import edit_user_details_view
-from .profile import profile_view
+from .profile import profile_view, delete_profile_view
 from .change_password import change_password_view
 from .quiz_view import quiz_view, quiz_question_view, quiz_ready_view, quiz_score_view
 from .create_user_group import create_user_group_view

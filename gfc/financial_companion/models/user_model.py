@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import RegexValidator
 import os
-from financial_companion.helpers import random_filename, TransactionType
+from financial_companion.helpers import random_filename
 import financial_companion.models as fcmodels
 
 
@@ -46,7 +46,8 @@ class User(AbstractUser):
                 *transactions,
                 *account.get_account_transactions(filter_type)]
 
-        return transactions
+        return sorted(
+            transactions, key=lambda transaction: transaction.time_of_transaction, reverse=True)
 
     def get_user_highest_quiz_score(self):
         """Return users highest quiz score"""

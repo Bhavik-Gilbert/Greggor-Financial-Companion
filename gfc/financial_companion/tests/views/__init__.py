@@ -23,3 +23,4 @@ from .test_delete_transaction_view import DeleteTransactionViewTestCase
 from .test_quiz_view import QuizViewTestCase
 from .test_quiz_ready_view import QuizReadyViewTestCase
 from .test_quiz_questions_view import QuizQuestionsViewTestCase
+from .test_delete_profile_view import DeleteProfileViewTestCase

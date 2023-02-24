@@ -18,7 +18,7 @@ class EditTransactionViewTestCase(ViewTestCase):
             "amount": 152.95,
             "currency": "USD",
             "sender_account": 1,
-            "receiver_account": 2,
+            "receiver_account": 3,
         }
         self.user = User.objects.get(username='@johndoe')
 
@@ -80,7 +80,7 @@ class EditTransactionViewTestCase(ViewTestCase):
         self.assertEqual(transaction.amount, Decimal("152.95"))
         self.assertEqual(transaction.currency, 'USD')
         self.assertEqual(transaction.sender_account.id, 1)
-        self.assertEqual(transaction.receiver_account.id, 2)
+        self.assertEqual(transaction.receiver_account.id, 3)
 
     def test_invalid_transaction_id_given(self):
         self._login(self.user)

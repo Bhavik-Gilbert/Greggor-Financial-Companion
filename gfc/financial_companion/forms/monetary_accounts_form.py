@@ -1,5 +1,5 @@
 from django import forms
-from financial_companion.models import PotAccount, BankAccount, User
+from financial_companion.models import PotAccount, BankAccount, User, Account
 from financial_companion.helpers import MonetaryAccountType
 from decimal import Decimal
 from typing import Any
