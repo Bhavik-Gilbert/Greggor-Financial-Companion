@@ -11,11 +11,17 @@ from datetime import datetime
 class ParseStatementPDF:
     def __init__(self):
         self.number_regex: str = r'[^-\d.]'
+        self.ignore_in_description: list[str] = [
+            "transfer",
+            "purchase",
+            "payment"
+        ]
         self.reset_object()
 
     def reset_object(self):
         """Sets all transaction data to none"""
         self.date: datetime = None
+        self.balance: float = None
         self.reset_data()
 
     def reset_data(self):
@@ -23,7 +29,6 @@ class ParseStatementPDF:
         self.amount: float = None
         self.transaction_type: str = None
         self.description: str = None
-        self.balance: float = None
 
     def get_pdf_statement_column_expense_indexes(
             self, statement_dataframe_list: list[pd.DataFrame]) -> tuple[int, int, bool]:
@@ -109,12 +114,13 @@ class ParseStatementPDF:
     def set_description_from_datataframe_row(
             self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
         """Updates object description data if statement dataframe row descritiption block is not empty"""
-        if not pd.isna(statement_dataframe_row[indexes["description"]]):
+        description: str = statement_dataframe_row[indexes["description"]]
+        if not pd.isna(description) and description.lower() not in self.ignore_in_description:
             if self.description is None:
                 self.description: str = [
-                    str(statement_dataframe_row[indexes["description"]])]
+                    str(description)]
             else:
-                self.description += [statement_dataframe_row[indexes["description"]]]
+                self.description += [description]
 
     def set_all_data_from_dataframe_row(
             self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
@@ -130,6 +136,9 @@ class ParseStatementPDF:
             self, transactions, new_transaction: dict[str, Any]) -> list[dict[str, Any]]:
         """Returns transactions list, adding new transaction if valid"""
         if not all(new_transaction.values()):
+            new_transaction.pop("description", None)
+            if all(new_transaction_data is None for new_transaction_data in new_transaction.values()):
+                self.reset_data()
             return transactions
 
         self.reset_data()

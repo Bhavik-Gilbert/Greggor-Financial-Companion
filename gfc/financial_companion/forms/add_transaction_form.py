@@ -119,7 +119,7 @@ class AddTransactionsViaBankStatementForm(forms.Form):
         transactions: list[Transaction] = []
         for parsed_transaction in parsed_transactions_list:
             title: str = " ".join(parsed_transaction["description"])
-            description: str = "Generate via bank statement"
+            description: str = "Generated via bank statement"
             date: datetime = make_aware(parsed_transaction["date"])
 
             transaction_exists_query: dict[str, Any] = {
