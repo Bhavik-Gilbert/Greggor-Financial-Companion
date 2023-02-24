@@ -74,6 +74,7 @@ urlpatterns = [
         views.edit_user_details_view,
         name="edit_user_details"),
     path('profile/', views.profile_view, name="profile"),
+    path('delete_profile/', views.delete_profile_view, name="delete_profile"),
     path(
         'view_transactions/',
         views.view_users_transactions_redirect,

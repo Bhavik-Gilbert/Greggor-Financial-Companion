@@ -1,7 +1,7 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from financial_companion.forms import AddTransactionForm, AddTransactionsViaBankStatementForm
-from financial_companion.models import Transaction, User
+from financial_companion.models import Transaction, PotAccount, BankAccount, Account, Category, User
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -11,13 +11,18 @@ from typing import Any
 def add_transaction_view(request: HttpRequest) -> HttpResponse:
     """View to record a transaction made"""
 
+    user = request.user
+    categories = Category.objects.filter(user=user.id)
+
     if request.method == 'POST':
-        form = AddTransactionForm(request.POST, request.FILES)
+        form = AddTransactionForm(user, request.POST, request.FILES)
+        form.fields['category'].queryset = categories
         if form.is_valid():
             form.save()
             return redirect('dashboard')
     else:
-        form = AddTransactionForm()
+        form = AddTransactionForm(user)
+        form.fields['category'].queryset = categories
     return render(request, "pages/add_transaction.html",
                   {'form': form, 'edit': False})
 
@@ -29,13 +34,17 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
     except ObjectDoesNotExist:
         return redirect('dashboard')
     else:
+        user = request.user
+        categories = Category.objects.filter(user=user.id)
         if request.method == 'POST':
             form = AddTransactionForm(
-                request.POST, request.FILES, instance=transaction)
+                user, request.POST, request.FILES, instance=transaction)
+            form.fields['category'].queryset = categories
             if form.is_valid():
                 form.save(instance=transaction)
                 return redirect('dashboard')
-        form = AddTransactionForm(instance=transaction)
+        form = AddTransactionForm(user, instance=transaction)
+        form.fields['category'].queryset = categories
         return render(request, "pages/add_transaction.html",
                       {'form': form, 'edit': True, 'pk': pk})
 
