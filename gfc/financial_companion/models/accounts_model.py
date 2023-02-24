@@ -35,23 +35,19 @@ class Account(Model):
 
         if filter_type in TransactionType.get_send_list():
             transactions = [
-                *
-                transactions,
-                *
-                fcmodels.Transaction.objects.filter(
+                *transactions,
+                *fcmodels.Transaction.objects.filter(
                     sender_account=self)]
         if filter_type in TransactionType.get_received_list():
             transactions = [
-                *
-                transactions,
-                *
-                fcmodels.Transaction.objects.filter(
+                *transactions,
+                *fcmodels.Transaction.objects.filter(
                     receiver_account=self)]
 
-        return transactions
+        return sorted(transactions, key=lambda transaction: transaction.time_of_transaction, reverse=True)
     
     def __str__(self):
-        return str(self.name).capitalize()
+        return str(self.name)
 
     @staticmethod
     def create_basic_account(account_name: str):
