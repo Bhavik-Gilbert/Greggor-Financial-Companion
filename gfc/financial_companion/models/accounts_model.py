@@ -43,9 +43,10 @@ class Account(Model):
                 *transactions,
                 *fcmodels.Transaction.objects.filter(
                     receiver_account=self)]
-            
-        return sorted(transactions, key=lambda transaction: transaction.time_of_transaction, reverse=True)
-    
+
+        return sorted(
+            transactions, key=lambda transaction: transaction.time_of_transaction, reverse=True)
+
     def __str__(self):
         return str(self.name)
 

@@ -14,11 +14,15 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recurringtransaction',
             name='image',
-            field=models.ImageField(blank=True, upload_to=financial_companion.models.transaction_models.change_filename),
+            field=models.ImageField(
+                blank=True,
+                upload_to=financial_companion.models.transaction_models.change_filename),
         ),
         migrations.AlterField(
             model_name='transaction',
             name='image',
-            field=models.ImageField(blank=True, upload_to=financial_companion.models.transaction_models.change_filename),
+            field=models.ImageField(
+                blank=True,
+                upload_to=financial_companion.models.transaction_models.change_filename),
         ),
     ]

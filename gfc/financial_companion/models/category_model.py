@@ -15,4 +15,5 @@ class Category(models.Model):
         """Return filtered list of the categories transactions"""
         transactions: fcmodels.Transaction = list(set(self.user.get_user_transactions(filter_type)) & set(
             fcmodels.Transaction.objects.filter(category=self)))
-        return sorted(transactions, key=lambda transaction: transaction.time_of_transaction, reverse=True)
+        return sorted(
+            transactions, key=lambda transaction: transaction.time_of_transaction, reverse=True)
