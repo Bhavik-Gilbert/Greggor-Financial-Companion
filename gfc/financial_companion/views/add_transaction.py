@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from typing import Any
 
+
 @login_required
 def add_transaction_view(request: HttpRequest) -> HttpResponse:
     """View to record a transaction made"""
@@ -62,13 +63,15 @@ def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
             messages.WARNING,
             "The transaction has been deleted")
         return redirect('dashboard')
-    
+
+
 @login_required
 def add_transactions_via_bank_statement(request: HttpRequest) -> HttpResponse:
     user: User = request.user
 
     if request.method == 'POST':
-        form: AddTransactionsViaBankStatementForm = AddTransactionsViaBankStatementForm(request.POST, request.FILES, user=user)
+        form: AddTransactionsViaBankStatementForm = AddTransactionsViaBankStatementForm(
+            request.POST, request.FILES, user=user)
         if form.is_valid():
             try:
                 transactions: list[Transaction] = form.save()
@@ -80,14 +83,15 @@ def add_transactions_via_bank_statement(request: HttpRequest) -> HttpResponse:
                 return redirect('view_transactions_redirect')
             except Exception:
                 messages.add_message(
-                    request, 
+                    request,
                     messages.ERROR,
                     "Error scanning document, please ensure it is a valid bank statement"
                 )
     else:
-        form: AddTransactionsViaBankStatementForm = AddTransactionsViaBankStatementForm(user = user)
+        form: AddTransactionsViaBankStatementForm = AddTransactionsViaBankStatementForm(
+            user=user)
     return render(request, "pages/transactions_via_bank_statement_form.py.html",
-                    {
-                        'form': form
-                    }
-    )
+                  {
+                      'form': form
+                  }
+                  )

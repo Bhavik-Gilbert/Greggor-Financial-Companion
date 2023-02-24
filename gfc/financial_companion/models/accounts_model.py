@@ -43,7 +43,7 @@ class Account(Model):
                 *transactions,
                 *fcmodels.Transaction.objects.filter(
                     receiver_account=self)]
-
+            
         return sorted(transactions, key=lambda transaction: transaction.time_of_transaction, reverse=True)
     
     def __str__(self):
@@ -53,18 +53,20 @@ class Account(Model):
     def create_basic_account(account_name: str):
         """Creates and returns an account object with only a name"""
         return Account.objects.create(
-            name = account_name
+            name=account_name
         )
 
     @staticmethod
     def get_or_create_account(account_name: str, user: User = None):
         """Returns account if it exists or creates a new one"""
         try:
-            accounts_list: list[Account] = Account.objects.filter(name=account_name).select_subclasses()
+            accounts_list: list[Account] = Account.objects.filter(
+                name=account_name).select_subclasses()
             get_account: Account = None
 
             for account in accounts_list:
-                if (account.__class__ == Account) or (account.__class__ == PotAccount and account.user == user):
+                if (account.__class__ == Account) or (
+                        account.__class__ == PotAccount and account.user == user):
                     get_account = account
                     break
 
@@ -74,6 +76,7 @@ class Account(Model):
             return get_account
         except Exception:
             return None
+
 
 class PotAccount(Account):
     user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
