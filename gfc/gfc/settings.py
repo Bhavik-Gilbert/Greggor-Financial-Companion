@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'financial_companion',
     'widget_tweaks',
-    'django_q'
+    'django_q',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
