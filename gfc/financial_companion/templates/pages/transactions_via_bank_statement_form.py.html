@@ -5,7 +5,8 @@
 
 <!-- Content -->
 {% block content %}
-    <h1>Upload Bank Statement As PDF</h1>
+    <h1>Upload Bank Statement</h1>
+    <p>Upload your bank statement as a pdf to upload all transactions for the month at once</p>
     <form method="post" enctype='multipart/form-data'>
       {% csrf_token %}
       {% include 'partials/form.html' with form=form %}

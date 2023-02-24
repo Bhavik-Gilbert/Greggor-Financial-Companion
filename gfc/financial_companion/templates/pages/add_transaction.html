@@ -12,12 +12,19 @@
       <form action='{% url 'add_transaction'%}' method="post" enctype='multipart/form-data'>
     {% endif %}
       {% csrf_token %}
-    <div>
-      <a class="btn btn-primary" href="{% url 'create_category' %}">Add New Category</a>
-      &nbsp
-      <a class="btn btn-primary" href="{% url 'add_monetary_account' %}">Add New Account</a>
-      <br></br>
+        
+    <div class="row mb-4 gx-2">
+      <div class="col-md-auto">
+        <a class="btn btn-primary" href="{% url 'create_category' %}">Add New Category</a>
+      </div>
+      <div class="col-md-auto">
+        <a class="btn btn-primary" href="{% url 'add_monetary_account' %}">Add New Account</a>
+      </div>
+      <div class="col-md-auto">
+        <a class="btn btn-primary" href="{% url 'add_transaction_via_bank_statement' %}">Upload Bank Statement</a>
+      </div>
     </div>
+
       {% include 'partials/form.html' with form=form %}
     <input type="submit" value="Add Transaction" class="btn btn-primary">
 {% endblock %}
