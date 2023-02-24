@@ -6,6 +6,7 @@ from datetime import datetime
 from django.utils.timezone import make_aware
 from typing import Any
 
+
 class AddTransactionForm(forms.ModelForm):
     """Form to add a new transaction"""
 
@@ -59,7 +60,7 @@ class AddTransactionForm(forms.ModelForm):
                 'receiver_account')
             transaction.save()
         return transaction
-    
+
     def clean(self):
         """Clean the data and generate messages for any errors."""
 
@@ -93,11 +94,15 @@ class AddTransactionsViaBankStatementForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
-        user=kwargs.pop("user", None)
-        super(AddTransactionsViaBankStatementForm, self).__init__(*args, **kwargs)
+        user = kwargs.pop("user", None)
+        super(
+            AddTransactionsViaBankStatementForm,
+            self).__init__(
+            *args,
+            **kwargs)
 
         self.fields['account']: forms.ModelChoiceField = forms.ModelChoiceField(
-            queryset = PotAccount.objects.filter(user=user)
+            queryset=PotAccount.objects.filter(user=user)
         )
 
     def save(self):
@@ -109,7 +114,8 @@ class AddTransactionsViaBankStatementForm(forms.Form):
 
         bank_statement_file_path: str = bank_statement.temporary_file_path()
         bank_statement_parser: ParseStatementPDF = ParseStatementPDF()
-        parsed_transactions_list: list[dict[str, Any]] = bank_statement_parser.get_transactions_from_pdf_statement(bank_statement_file_path)
+        parsed_transactions_list: list[dict[str, Any]] = bank_statement_parser.get_transactions_from_pdf_statement(
+            bank_statement_file_path)
         transactions: list[Transaction] = []
         for parsed_transaction in parsed_transactions_list:
             title: str = " ".join(parsed_transaction["description"])
@@ -125,9 +131,10 @@ class AddTransactionsViaBankStatementForm(forms.Form):
             }
             if len(Transaction.objects.filter(**transaction_exists_query)):
                 continue
-            
+
             new_transaction: Transaction = Transaction()
-            new_transaction.receiver_account, new_transaction.sender_account = bank_statement_parser.get_sender_receiver(parsed_transaction, account)
+            new_transaction.receiver_account, new_transaction.sender_account = bank_statement_parser.get_sender_receiver(
+                parsed_transaction, account)
             new_transaction.title: str = title
             new_transaction.description: str = description
             new_transaction.amount: float = parsed_transaction["amount"]
