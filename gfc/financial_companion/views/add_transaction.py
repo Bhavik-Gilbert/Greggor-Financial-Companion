@@ -81,7 +81,8 @@ def add_transactions_via_bank_statement(request: HttpRequest) -> HttpResponse:
                     f"{len(transactions)} new transactions added"
                 )
                 return redirect('view_transactions_redirect')
-            except Exception:
+            except Exception as e:
+                print(e)
                 messages.add_message(
                     request,
                     messages.ERROR,
