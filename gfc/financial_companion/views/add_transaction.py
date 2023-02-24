@@ -1,11 +1,11 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from financial_companion.forms import AddTransactionForm, AddTransactionsViaBankStatementForm
-from financial_companion.models import Transaction
+from financial_companion.models import Transaction, User
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-
+from typing import Any
 
 @login_required
 def add_transaction_view(request: HttpRequest) -> HttpResponse:
@@ -56,15 +56,29 @@ def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
     
 @login_required
 def add_transactions_via_bank_statement(request: HttpRequest) -> HttpResponse:
+    user: User = request.user
+
     if request.method == 'POST':
-        form: AddTransactionsViaBankStatementForm = AddTransactionsViaBankStatementForm(request.POST, request.FILES)
+        form: AddTransactionsViaBankStatementForm = AddTransactionsViaBankStatementForm(request.POST, request.FILES, user=user)
         if form.is_valid():
-            form.save()
-            return redirect('view_transactions_redirect')
+            try:
+                transactions: list[Transaction] = form.save()
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    f"{len(transactions)} new transactions added"
+                )
+                return redirect('view_transactions_redirect')
+            except Exception:
+                messages.add_message(
+                    request, 
+                    messages.ERROR,
+                    "Error scanning document, please ensure it is a valid bank statement"
+                )
     else:
-        form: AddTransactionsViaBankStatementForm = AddTransactionsViaBankStatementForm()
+        form: AddTransactionsViaBankStatementForm = AddTransactionsViaBankStatementForm(user = user)
     return render(request, "pages/transactions_via_bank_statement_form.py.html",
-                      {
+                    {
                         'form': form
                     }
     )

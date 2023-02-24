@@ -4,6 +4,8 @@ import re
 import dateutil.parser as dparser
 from typing import Any
 from financial_companion.helpers import TransactionType
+import financial_companion.models as fcmodels
+from datetime import datetime
 
 class ParseStatementPDF:
     def __init__(self):
@@ -12,15 +14,15 @@ class ParseStatementPDF:
     
     def reset_object(self):
         """Sets all transaction data to none"""
-        self.date = None
+        self.date: datetime = None
         self.reset_data()
     
     def reset_data(self):
         """Sets all transaction data except date to none"""
-        self.amount = None
-        self.transaction_type = None
-        self.description = None
-        self.balance = None
+        self.amount: float = None
+        self.transaction_type: str = None
+        self.description: str = None
+        self.balance: float = None
     
     def get_pdf_statement_column_expense_indexes(self, statement_dataframe_list: list[pd.DataFrame]) -> tuple[int, int, bool]:
         """Checks if income and expense fields are separate or together"""
@@ -47,9 +49,9 @@ class ParseStatementPDF:
             if not ((transactions[1]["balance"] - transactions[0]["balance"] > 0 and transactions[1]["transaction_type"] == TransactionType.INCOME) or (transactions[1]["balance"] - transactions[0]["balance"] < 0 and transactions[1]["transaction_type"] == TransactionType.EXPENSE)):
                 for transaction in transactions:
                     if transaction["transaction_type"] == TransactionType.INCOME:
-                        transaction["transaction_type"] = TransactionType.EXPENSE
+                        transaction["transaction_type"]: str = TransactionType.EXPENSE
                     elif transaction["transaction_type"] == TransactionType.EXPENSE:
-                        transaction["transaction_type"] = TransactionType.INCOME
+                        transaction["transaction_type"]: str = TransactionType.INCOME
         
         return transactions
     
@@ -60,14 +62,14 @@ class ParseStatementPDF:
         """
         if self.balance is None and len(statement_dataframe.columns[indexes["balance"]]) > 0:
             try:
-                self.balance = float(re.sub(self.number_regex, '', str(statement_dataframe.columns[indexes["balance"]])))
+                self.balance: float = float(re.sub(self.number_regex, '', str(statement_dataframe.columns[indexes["balance"]])))
             except Exception:
                 pass
   
     def set_date_from_datataframe_row(self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
         """Updates object date data if statement dataframe row date block is understandable"""
         try:
-            self.date = pd.to_datetime(dparser.parse(str(statement_dataframe_row[indexes["date"]]), fuzzy=True), infer_datetime_format=True)
+            self.date: datetime = pd.to_datetime(dparser.parse(str(statement_dataframe_row[indexes["date"]]), fuzzy=True), infer_datetime_format=True)
         except Exception:
             pass
     
@@ -79,17 +81,17 @@ class ParseStatementPDF:
     def set_amount_and_transaction_type_from_datataframe_row(self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
         """Updates amount and transaction type data if statement dataframe row income or expense block is valid"""
         if not pd.isna(statement_dataframe_row[indexes["income"]]) and float(re.sub(self.number_regex, '', str(statement_dataframe_row[indexes["income"]]))) >= 0:
-                self.amount = abs(float(re.sub(self.number_regex, '', str(statement_dataframe_row[indexes["income"]]))))
-                self.transaction_type = TransactionType.INCOME
+            self.amount: float = abs(float(re.sub(self.number_regex, '', str(statement_dataframe_row[indexes["income"]]))))
+            self.transaction_type: str = TransactionType.INCOME
         elif not pd.isna(statement_dataframe_row[indexes["expense"]]):
-            self.amount = abs(float(re.sub(self.number_regex, '', str(statement_dataframe_row[indexes["expense"]]))))
-            self.transaction_type = TransactionType.EXPENSE
+            self.amount: float = abs(float(re.sub(self.number_regex, '', str(statement_dataframe_row[indexes["expense"]]))))
+            self.transaction_type: str = TransactionType.EXPENSE
     
     def set_description_from_datataframe_row(self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
         """Updates object description data if statement dataframe row descritiption block is not empty"""
         if not pd.isna(statement_dataframe_row[indexes["description"]]):
             if self.description is None:
-                self.description = [str(statement_dataframe_row[indexes["description"]])]
+                self.description: str = [str(statement_dataframe_row[indexes["description"]])]
             else:
                 self.description += [statement_dataframe_row[indexes["description"]]]
     
@@ -105,7 +107,6 @@ class ParseStatementPDF:
         if not all(new_transaction.values()):
             return transactions
         
-        # TODO: Allow user to choose which description row for account and description, or autoparse it for them
         self.reset_data()
         return [*transactions, new_transaction]
     
@@ -149,3 +150,16 @@ class ParseStatementPDF:
             transactions: list[dict[str, Any]] = self.get_transactions_from_dataframe_list(statement_dataframe_list, indexes)
 
         return transactions
+
+    def get_sender_receiver(self, parsed_transaction: dict[str, Any], account) -> tuple:
+        """
+        Gets the other account from parsed transaction via name
+        Returns pair (receiver_account, sender_account)
+        """
+        other_account: fcmodels.Account = fcmodels.Account.get_or_create_account(parsed_transaction["description"][0]) 
+        if parsed_transaction["transaction_type"] == TransactionType.INCOME:
+            return account, other_account
+        elif parsed_transaction["transaction_type"] == TransactionType.EXPENSE:
+            return other_account, account
+        
+        return account, other_account
