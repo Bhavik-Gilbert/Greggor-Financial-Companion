@@ -240,8 +240,6 @@ def delete_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
     try:
         current_user_target: UserTarget = UserTarget.objects.get(
             id=pk, user=request.user)
-        # if current_user_target.user != request.user:
-        #     return redirect("dashboard")
     except Exception:
         return redirect("dashboard")
     else:
