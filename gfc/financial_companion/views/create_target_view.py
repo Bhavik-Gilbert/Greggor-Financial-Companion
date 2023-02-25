@@ -160,7 +160,7 @@ def edit_account_target_view(request: HttpRequest, pk: int) -> HttpResponse:
 
 @login_required
 def edit_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
-    """View to allow users to edit an account target"""
+    """View to allow users to edit a user target"""
     # check is id valid
     try:
         current_user_target: UserTarget = UserTarget.objects.get(
@@ -179,4 +179,65 @@ def edit_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
         return redirect("dashboard")
     else:
         return to_return
+
+
+@login_required
+def delete_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
+    """View to allow users to delete a category target"""
+    # check is id valid
+    try:
+        current_category_target: CategoryTarget = CategoryTarget.objects.get(
+            id=pk)
+        category_id = current_category_target.category.id
+        if current_category_target.category.user != request.user:
+            return redirect("categories_list", search_name="all")
+    except Exception:
+        return redirect("dashboard")
+    else:
+        current_category_target.delete()
+    messages.add_message(
+        request,
+        messages.WARNING,
+        "This category target has been deleted")
+    return redirect('individual_category_redirect',pk=category_id)
+
+@login_required
+def delete_account_target_view(request: HttpRequest, pk: int) -> HttpResponse:
+    """View to allow users to delete an account target"""
+    # check is id valid
+    try:
+        current_account_target: AccountTarget = AccountTarget.objects.get(
+            id=pk)
+        account_id = current_account_target.account.id
+        if current_account_target.account.user != request.user:
+            return redirect("view_accounts")
+    except Exception:
+        return redirect("dashboard")
+    else:
+        current_account_target.delete()
+    messages.add_message(
+        request,
+        messages.WARNING,
+        "This account target has been deleted")
+    return redirect('individual_account_redirect',
+                        pk=account_id)
+
+@login_required
+def delete_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
+    """View to allow users to delete an user target"""
+    # check is id valid
+    try:
+        current_user_target: UserTarget = UserTarget.objects.get(
+            id=pk,user = request.user)
+        # if current_user_target.user != request.user:
+        #     return redirect("dashboard")
+    except Exception:
+        return redirect("dashboard")
+    else:
+        current_user_target.delete()
+    messages.add_message(
+        request,
+        messages.WARNING,
+        "This user target has been deleted")
+    return redirect("dashboard")
                 

@@ -110,6 +110,18 @@ urlpatterns = [
         views.edit_user_target_view,
         name="edit_user_target"),
     path(
+        'delete_target/category/<int:pk>',
+        views.delete_category_target_view,
+        name="delete_category_target"),
+    path(
+        'delete_target/account/<int:pk>',
+        views.delete_account_target_view,
+        name="delete_account_target"),
+    path(
+        'delete_target/user/<int:pk>',
+        views.delete_user_target_view,
+        name="delete_user_target"),
+    path(
         'edit_category/<int:pk>',
         views.edit_category_view,
         name="edit_category"),
