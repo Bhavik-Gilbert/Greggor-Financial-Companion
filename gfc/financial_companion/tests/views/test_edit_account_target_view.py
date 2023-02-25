@@ -11,7 +11,6 @@ class EditAccountTargetViewTestCase(ViewTestCase):
     def setUp(self):
         self.url = reverse('edit_account_target', kwargs={'pk': 1})
         self.test_user = User.objects.get(username='@johndoe')
-        self.test_category = Account.objects.get(id=3)
         self.form_input = {
             'transaction_type': 'income',
             'timespan': 'month',

@@ -6,7 +6,7 @@ from financial_companion.models import User, Category, CategoryTarget
 
 
 class CreateCategoryTargetViewTestCase(ViewTestCase):
-    """Tests of the create target category view."""
+    """Tests of the create category target view."""
 
     def setUp(self):
         self.url = reverse('create_category_target', kwargs={'pk': 1})

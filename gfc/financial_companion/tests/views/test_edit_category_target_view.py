@@ -22,7 +22,7 @@ class EditCategoryTargetViewTestCase(ViewTestCase):
     def test_edit_category_target_url(self):
         self.assertEqual(self.url, '/edit_target/category/1')
 
-    def test_get_target_category_form(self):
+    def test_get_edit_target_category_form(self):
         self._login(self.test_user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)

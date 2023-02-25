@@ -6,7 +6,7 @@ from financial_companion.models import User, UserTarget
 
 
 class CreateUserTargetViewTestCase(ViewTestCase):
-    """Tests of the create target user view."""
+    """Tests of the create user target view."""
 
     def setUp(self):
         self.url = reverse('create_user_target')
