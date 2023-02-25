@@ -5,6 +5,7 @@ from financial_companion.helpers import ParseStatementPDF, CurrencyType
 from datetime import datetime
 from django.utils.timezone import make_aware
 from typing import Any
+from decimal import Decimal
 
 
 class AddTransactionForm(forms.ModelForm):
@@ -97,8 +98,8 @@ class AddTransactionsViaBankStatementForm(forms.Form):
     update_balance = forms.ChoiceField(
         label="Update Account Balance (Select if you want to set the balance of this account to the close balance on the statement provided)",
         choices=(
-            ("False", False),
-            ("True", True)
+            (False, "No"),
+            (True, "Yes")
         )
     )
 
@@ -118,10 +119,10 @@ class AddTransactionsViaBankStatementForm(forms.Form):
         super().full_clean()
 
         bank_statement: forms.FileInput = self.cleaned_data["bank_statement"]
-        account: Account = self.cleaned_data["account"]
+        account: PotAccount = self.cleaned_data["account"]
         currency: CurrencyType = self.cleaned_data["account_currency"]
         update_balance: bool = self.cleaned_data["update_balance"]
-
+        
         bank_statement_file_path: str = bank_statement.temporary_file_path()
         bank_statement_parser: ParseStatementPDF = ParseStatementPDF()
         parsed_transactions_list: list[dict[str, Any]] = bank_statement_parser.get_transactions_from_pdf_statement(
@@ -156,6 +157,6 @@ class AddTransactionsViaBankStatementForm(forms.Form):
             transactions = [*transactions, new_transaction]
 
         if update_balance == "True" and len(parsed_transactions_list) > 0:
-            account.balance = parsed_transactions_list[-1]["balance"]
+            account.balance: Decimal = parsed_transactions_list[-1]["balance"]
             account.save()
         return transactions

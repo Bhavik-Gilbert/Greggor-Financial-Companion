@@ -117,7 +117,7 @@ class ParseStatementPDF:
         description: str = statement_dataframe_row[indexes["description"]]
         if not pd.isna(description) and description.lower() not in self.ignore_in_description:
             if self.description is None:
-                self.description: str = [
+                self.description: list[str] = [
                     str(description)]
             else:
                 self.description += [description]
