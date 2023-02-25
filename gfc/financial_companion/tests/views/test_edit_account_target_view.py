@@ -55,7 +55,7 @@ class EditAccountTargetViewTestCase(ViewTestCase):
         before_count = AccountTarget.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = AccountTarget.objects.count()
-        self.assertEqual(after_count, before_count )
+        self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/individual_account.html')
 
     def test_invalid_account_target_form_submission(self):
@@ -69,4 +69,3 @@ class EditAccountTargetViewTestCase(ViewTestCase):
 
     def test_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)
-

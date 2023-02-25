@@ -20,11 +20,16 @@ class CreateTargetFormTestCase(FormTestCase):
         }
 
     def test_valid_create_category_target_form(self):
-        form = TargetForm(data=self.form_input, form_type = CategoryTarget, foreign_key = self.test_category)
+        form = TargetForm(
+            data=self.form_input,
+            form_type=CategoryTarget,
+            foreign_key=self.test_category)
         self.assertTrue(form.is_valid())
 
     def test_form_has_necessary_fields(self):
-        form = TargetForm(form_type = CategoryTarget, foreign_key = self.test_category)
+        form = TargetForm(
+            form_type=CategoryTarget,
+            foreign_key=self.test_category)
         self._assert_form_has_necessary_fields(
             form,
             'transaction_type',
@@ -35,41 +40,65 @@ class CreateTargetFormTestCase(FormTestCase):
 
     def test_transaction_type_can_not_be_blank(self):
         self.form_input['transaction_type'] = None
-        form = TargetForm(data=self.form_input, form_type = CategoryTarget, foreign_key = self.test_category)
+        form = TargetForm(
+            data=self.form_input,
+            form_type=CategoryTarget,
+            foreign_key=self.test_category)
         self.assertFalse(form.is_valid())
 
     def test_transaction_type_can_not_be_invalid_option(self):
         self.form_input['transaction_type'] = 'Invalid'
-        form = TargetForm(data=self.form_input, form_type = CategoryTarget, foreign_key = self.test_category)
+        form = TargetForm(
+            data=self.form_input,
+            form_type=CategoryTarget,
+            foreign_key=self.test_category)
         self.assertFalse(form.is_valid())
 
     def test_currency_can_not_be_blank(self):
         self.form_input['currency'] = None
-        form = TargetForm(data=self.form_input, form_type = CategoryTarget,  foreign_key = self.test_category)
+        form = TargetForm(
+            data=self.form_input,
+            form_type=CategoryTarget,
+            foreign_key=self.test_category)
         self.assertFalse(form.is_valid())
 
     def test_currency_can_not_be_invalid_option(self):
         self.form_input['currency'] = 'Invalid'
-        form = TargetForm(data=self.form_input, form_type = CategoryTarget, foreign_key = self.test_category)
+        form = TargetForm(
+            data=self.form_input,
+            form_type=CategoryTarget,
+            foreign_key=self.test_category)
         self.assertFalse(form.is_valid())
 
     def test_timespan_can_not_be_blank(self):
         self.form_input['timespan'] = None
-        form = TargetForm(data=self.form_input, form_type = CategoryTarget, foreign_key = self.test_category)
+        form = TargetForm(
+            data=self.form_input,
+            form_type=CategoryTarget,
+            foreign_key=self.test_category)
         self.assertFalse(form.is_valid())
 
     def test_timespan_can_not_be_invalid_option(self):
         self.form_input['timespan'] = 'Invalid'
-        form = TargetForm(data=self.form_input, form_type = CategoryTarget, foreign_key = self.test_category)
+        form = TargetForm(
+            data=self.form_input,
+            form_type=CategoryTarget,
+            foreign_key=self.test_category)
         self.assertFalse(form.is_valid())
 
     def test_amount_can_not_be_blank(self):
         self.form_input['amount'] = None
-        form = TargetForm(data=self.form_input, form_type = CategoryTarget, foreign_key = self.test_category)
+        form = TargetForm(
+            data=self.form_input,
+            form_type=CategoryTarget,
+            foreign_key=self.test_category)
         self.assertFalse(form.is_valid())
 
     def test_form_must_save_correctly(self):
-        form = TargetForm(data=self.form_input, foreign_key=self.test_category, form_type = CategoryTarget)
+        form = TargetForm(
+            data=self.form_input,
+            foreign_key=self.test_category,
+            form_type=CategoryTarget)
         before_count = CategoryTarget.objects.count()
         category_target = form.save()
         after_count = CategoryTarget.objects.count()
@@ -78,16 +107,20 @@ class CreateTargetFormTestCase(FormTestCase):
         self.assertEqual(category_target.transaction_type, 'income')
         self.assertEqual(category_target.currency, 'USD')
         self.assertEqual(category_target.amount, 200)
-    
+
     def test_form_updates_correctly(self):
         category_target = CategoryTarget.objects.get(id=1)
-        form = TargetForm(instance=category_target, data=self.form_input, form_type = CategoryTarget, foreign_key = self.test_category)
+        form = TargetForm(
+            instance=category_target,
+            data=self.form_input,
+            form_type=CategoryTarget,
+            foreign_key=self.test_category)
         before_count = CategoryTarget.objects.count()
         current_category_target = form.save()
         after_count = CategoryTarget.objects.count()
         self.assertEqual(current_category_target.timespan, 'month')
         self.assertEqual(current_category_target.transaction_type, 'income')
-    
+
     def test_form_thorws_error_when_updating_invalid_data(self):
         category_target = CategoryTarget.objects.get(id=1)
         self.other_category_target = CategoryTarget.objects.get(id=2)
@@ -97,7 +130,11 @@ class CreateTargetFormTestCase(FormTestCase):
             'amount': 200,
             'currency': 'USD'
         }
-        form = TargetForm(instance=category_target, data=self.form_input, form_type = CategoryTarget, foreign_key = self.test_category)
+        form = TargetForm(
+            instance=category_target,
+            data=self.form_input,
+            form_type=CategoryTarget,
+            foreign_key=self.test_category)
         with self.assertRaises(IntegrityError):
             self.assertFalse(form.save())
 
@@ -109,6 +146,9 @@ class CreateTargetFormTestCase(FormTestCase):
             'amount': 200,
             'currency': 'USD'
         }
-        form = TargetForm(data=self.form_input, foreign_key=self.test_category, form_type = CategoryTarget)
+        form = TargetForm(
+            data=self.form_input,
+            foreign_key=self.test_category,
+            form_type=CategoryTarget)
         with self.assertRaises(IntegrityError):
             self.assertFalse(form.save())

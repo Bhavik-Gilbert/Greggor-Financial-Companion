@@ -53,7 +53,9 @@ class EditCategoryTargetViewTestCase(ViewTestCase):
             "edit_category_target", kwargs={
                 "pk": 6})
         response: HttpResponse = self.client.get(url, follow=True)
-        response_url: str = reverse("categories_list", kwargs = {'search_name':"all"})
+        response_url: str = reverse(
+            "categories_list", kwargs={
+                'search_name': "all"})
         self.assertRedirects(
             response,
             response_url,
@@ -78,7 +80,8 @@ class EditCategoryTargetViewTestCase(ViewTestCase):
         self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/create_targets.html')
 
-    def test_unsuccessful_edit_category_target_form_due_to_failing_unique_constraints(self):
+    def test_unsuccessful_edit_category_target_form_due_to_failing_unique_constraints(
+            self):
         self.other_category_target = CategoryTarget.objects.get(id=3)
         self.form_input = {
             'transaction_type': self.other_category_target.transaction_type,

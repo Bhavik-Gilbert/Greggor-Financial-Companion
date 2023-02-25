@@ -54,7 +54,7 @@ class EditUserTargetViewTestCase(ViewTestCase):
         before_count = UserTarget.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = UserTarget.objects.count()
-        self.assertEqual(after_count, before_count )
+        self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/dashboard.html')
 
     def test_invalid_user_target_form_submission(self):

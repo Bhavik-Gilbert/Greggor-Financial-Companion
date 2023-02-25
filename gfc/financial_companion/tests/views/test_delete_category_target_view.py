@@ -26,7 +26,9 @@ class DeleteCategoryTargetViewTestCase(ViewTestCase):
     def test_user_tries_to_delete_someone_elses_category_target(self):
         self._login(self.user)
         self.url = reverse('delete_category_target', kwargs={"pk": 6})
-        response_url: str = reverse("categories_list", kwargs={"search_name": "all"})
+        response_url: str = reverse(
+            "categories_list", kwargs={
+                "search_name": "all"})
         response = self.client.get(self.url, follow=True)
         self.assertRedirects(
             response,
