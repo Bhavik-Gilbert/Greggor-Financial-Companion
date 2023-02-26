@@ -77,6 +77,7 @@ urlpatterns = [
         views.edit_user_details_view,
         name="edit_user_details"),
     path('profile/', views.profile_view, name="profile"),
+    path('delete_profile/', views.delete_profile_view, name="delete_profile"),
     path(
         'view_transactions/',
         views.view_users_transactions_redirect,
@@ -133,6 +134,10 @@ urlpatterns = [
         'create_user_group/',
         views.create_user_group_view,
         name="create_user_group"),
+    path(
+        'delete_user_group/<int:pk>',
+        views.delete_user_group_view,
+        name="delete_user_group"),
     path(
         'join_user_group/',
         views.join_user_group_view,
@@ -232,6 +237,9 @@ urlpatterns = [
         views.individual_group_view,
         name="individual_group"
     ),
+    path('add_transaction_via_bank_statement',
+         views.add_transactions_via_bank_statement,
+         name='add_transaction_via_bank_statement'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

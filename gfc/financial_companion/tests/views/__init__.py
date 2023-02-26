@@ -32,3 +32,5 @@ from .test_edit_account_target_view import EditAccountTargetViewTestCase
 from .test_delete_category_target_view import DeleteCategoryTargetViewTestCase
 from .test_delete_account_target_view import DeleteAccountTargetViewTestCase
 from .test_delete_user_target_view import DeleteUserTargetViewTestCase
+from .test_delete_profile_view import DeleteProfileViewTestCase
+

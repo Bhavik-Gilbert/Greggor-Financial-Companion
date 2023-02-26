@@ -18,7 +18,7 @@ class AddTransactionViewTestCase(ViewTestCase):
             "amount": 152.95,
             "currency": "USD",
             "sender_account": 1,
-            "receiver_account": 2,
+            "receiver_account": 3,
         }
         self.user = User.objects.get(username='@johndoe')
 
@@ -67,7 +67,7 @@ class AddTransactionViewTestCase(ViewTestCase):
         self.assertEqual(transaction.amount, Decimal("152.95"))
         self.assertEqual(transaction.currency, 'USD')
         self.assertEqual(transaction.sender_account.id, 1)
-        self.assertEqual(transaction.receiver_account.id, 2)
+        self.assertEqual(transaction.receiver_account.id, 3)
 
     def test_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)

@@ -16,7 +16,7 @@ def view_users_transactions(request: HttpRequest,
             or filter_type in TransactionType.get_received_list()):
         return redirect('dashboard')
 
-    transactions: list[Transaction] = user.get_user_transactions(filter_type)
+    transactions: list[Transaction] = sorted(list(dict.fromkeys(user.get_user_transactions(filter_type))), key=lambda x: x.time_of_transaction, reverse=True)
 
     list_of_transactions = paginate(request.GET.get('page', 1), transactions)
 
