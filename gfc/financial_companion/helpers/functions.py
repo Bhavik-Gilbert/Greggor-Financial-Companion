@@ -73,3 +73,18 @@ def get_random_invite_code(length):
     letters = string.ascii_uppercase
     result_str = ''.join(random.choice(letters) for i in range(length))
     return result_str
+
+def get_number_of_completed_targets(targets):
+    total = 0
+    for target in targets:
+        if target.is_complete():
+            total += 1
+    return total
+
+def get_sorted_members_based_on_completed_targets(members):
+    members_and_completed = []
+    for member in members:
+        targets = member.get_all_targets()
+        completed = get_number_of_completed_targets(targets)
+        members_and_completed = [*members_and_completed, (member, completed)]
+    return sorted(members_and_completed, key = lambda x: x[1], reverse=True)
