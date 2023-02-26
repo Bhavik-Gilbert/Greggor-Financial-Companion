@@ -47,6 +47,7 @@ def delete_user_group_view(request: HttpRequest, pk: int) -> HttpResponse:
         "This user group has been deleted")
     return redirect("all_groups_redirect")
 
+
 @login_required
 def edit_user_group_view(request: HttpRequest, pk: int) -> HttpResponse:
     """View to allow users to edit a user group"""
@@ -66,9 +67,9 @@ def edit_user_group_view(request: HttpRequest, pk: int) -> HttpResponse:
         if form.is_valid():
             form.save(current_user=request.user, instance=current_user_group)
             messages.add_message(
-            request,
-            messages.SUCCESS,
-            "Successfully edited user group")
+                request,
+                messages.SUCCESS,
+                "Successfully edited user group")
             return redirect('individual_group',
                             pk=current_user_group.id)
     else:
