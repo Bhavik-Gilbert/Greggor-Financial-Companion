@@ -23,7 +23,7 @@ class BaseTestCase(TestCase):
     ]
 
     def setUp(self) -> None:
-        pass
+        super().setUp()
 
     def _get_upload_file(self, app_file_path) -> TemporaryUploadedFile:
         """
