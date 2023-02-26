@@ -42,4 +42,5 @@ class CreateUserGroupForm(forms.ModelForm):
             user_group.name = self.cleaned_data.get('name')
             user_group.description = self.cleaned_data.get('description')
             user_group.group_picture = self.cleaned_data.get('group_picture')
+            user_group.save()
         return user_group

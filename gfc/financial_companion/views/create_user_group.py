@@ -23,7 +23,7 @@ def create_user_group_view(request: HttpRequest) -> HttpResponse:
     else:
         form = CreateUserGroupForm()
     return render(request, "pages/create_user_group.html",
-                  {'form': form})
+                  {'form': form, 'form_toggle': True})
 
 
 @login_required
@@ -65,10 +65,14 @@ def edit_user_group_view(request: HttpRequest, pk: int) -> HttpResponse:
         form = CreateUserGroupForm(request.POST, instance=current_user_group)
         if form.is_valid():
             form.save(current_user=request.user, instance=current_user_group)
+            messages.add_message(
+            request,
+            messages.SUCCESS,
+            "Successfully edited user group")
             return redirect('individual_group',
                             pk=current_user_group.id)
     else:
         form = CreateUserGroupForm(instance=current_user_group)
 
     return render(request, "pages/create_user_group.html",
-                  {'form': form})
+                  {'form': form, 'form_toggle': False})
