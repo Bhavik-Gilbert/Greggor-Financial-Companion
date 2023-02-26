@@ -37,8 +37,9 @@ class BaseTestCase(TestCase):
         with open(local_file_path, 'rb') as local_file:
             file_name: str = local_file.name
             file_length: int = os.path.getsize(local_file_path)
-            
-            upload_file: TemporaryUploadedFile = TemporaryUploadedFile(file_name, "application/binary", file_length, 'utf-8')
+
+            upload_file: TemporaryUploadedFile = TemporaryUploadedFile(
+                file_name, "application/binary", file_length, 'utf-8')
             upload_file.file.write(local_file.read())
             upload_file.file.seek(0)
 

@@ -122,7 +122,7 @@ class AddTransactionsViaBankStatementForm(forms.Form):
         account: PotAccount = self.cleaned_data["account"]
         currency: CurrencyType = self.cleaned_data["account_currency"]
         update_balance: bool = self.cleaned_data["update_balance"]
-        
+
         bank_statement_file_path: str = bank_statement.temporary_file_path()
         bank_statement_parser: ParseStatementPDF = ParseStatementPDF()
         parsed_transactions_list: list[dict[str, Any]] = bank_statement_parser.get_transactions_from_pdf_statement(

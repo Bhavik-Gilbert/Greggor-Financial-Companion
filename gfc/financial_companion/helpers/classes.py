@@ -115,7 +115,8 @@ class ParseStatementPDF:
             self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
         """Updates object description data if statement dataframe row descritiption block is not empty"""
         description: str = statement_dataframe_row[indexes["description"]]
-        if not pd.isna(description) and description.lower() not in self.ignore_in_description:
+        if not pd.isna(description) and description.lower(
+        ) not in self.ignore_in_description:
             if self.description is None:
                 self.description: list[str] = [
                     str(description)]
@@ -138,17 +139,18 @@ class ParseStatementPDF:
         if all(new_transaction.values()):
             self.reset_data()
             return [*transactions, new_transaction]
-    
+
         new_transaction.pop("description", None)
-        if all(new_transaction_data is None for new_transaction_data in new_transaction.values()):
+        if all(
+                new_transaction_data is None for new_transaction_data in new_transaction.values()):
             self.reset_data()
         return transactions
-    
+
     def get_transaction_from_dataframe_row(self, statement_dataframe_row: list[Any], indexes: dict[str, int],
-                                        transactions: list[dict[str, Any]] = []) -> list[dict[str, Any]]:
+                                           transactions: list[dict[str, Any]] = []) -> list[dict[str, Any]]:
         """Returns list of transaction data of currenct transactions and dataframe row"""
         self.set_all_data_from_dataframe_row(
-                statement_dataframe_row, indexes)
+            statement_dataframe_row, indexes)
 
         new_transaction = {
             "date": self.date,
@@ -170,7 +172,8 @@ class ParseStatementPDF:
         self.set_initial_balance_from_dataframe(statement_dataframe, indexes)
 
         for statement_dataframe_row in statement_dataframe.iloc():
-            transactions = self.get_transaction_from_dataframe_row(statement_dataframe_row, indexes, transactions)
+            transactions = self.get_transaction_from_dataframe_row(
+                statement_dataframe_row, indexes, transactions)
 
         return self.set_expense_and_income_columns_correct_way_around(
             transactions)

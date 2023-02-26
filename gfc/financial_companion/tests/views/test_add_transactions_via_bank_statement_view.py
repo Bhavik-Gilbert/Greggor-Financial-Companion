@@ -16,9 +16,12 @@ class AddTransactionsViaBankStatementViewTestCase(ViewTestCase):
     def setUp(self):
         self.url = reverse('add_transactions_via_bank_statement')
         self.user: User = User.objects.get(username="@johndoe")
-        self.account: PotAccount = PotAccount.objects.filter(user=self.user).first()
-        bank_statement_path: str = os.path.join("financial_companion", "tests", "data", "bank_statement.pdf")
-        uploaded_bank_statement: TemporaryUploadedFile = self._get_upload_file(bank_statement_path)
+        self.account: PotAccount = PotAccount.objects.filter(
+            user=self.user).first()
+        bank_statement_path: str = os.path.join(
+            "financial_companion", "tests", "data", "bank_statement.pdf")
+        uploaded_bank_statement: TemporaryUploadedFile = self._get_upload_file(
+            bank_statement_path)
 
         self.form_input: dict[str, Any] = {
             "bank_statement": uploaded_bank_statement,
@@ -34,31 +37,39 @@ class AddTransactionsViaBankStatementViewTestCase(ViewTestCase):
         self._login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'pages/add_transactions_via_bank_statement_form.html')
+        self.assertTemplateUsed(
+            response, 'pages/add_transactions_via_bank_statement_form.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, AddTransactionsViaBankStatementForm))
         self.assertFalse(form.is_bound)
 
     def test_valid_unsuccesfully_add_transaction_via_bank_statement(self):
         self._login(self.user)
-        self.form_input.pop('bank_statement') 
-        before_count = Transaction.objects.filter(Q(sender_account=self.account)|Q(receiver_account=self.account)).count()
+        self.form_input.pop('bank_statement')
+        before_count = Transaction.objects.filter(
+            Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
         response = self.client.post(self.url, self.form_input)
-        after_count = Transaction.objects.filter(Q(sender_account=self.account)|Q(receiver_account=self.account)).count()
+        after_count = Transaction.objects.filter(
+            Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
         self.assertEqual(after_count, before_count)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'pages/add_transactions_via_bank_statement_form.html')
+        self.assertTemplateUsed(
+            response, 'pages/add_transactions_via_bank_statement_form.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, AddTransactionsViaBankStatementForm))
         self.assertTrue(form.is_bound)
 
     def test_valid_succesfully_add_transaction_via_bank_statement(self):
         self._login(self.user)
-        before_count = Transaction.objects.filter(Q(sender_account=self.account)|Q(receiver_account=self.account)).count()
+        before_count = Transaction.objects.filter(
+            Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
         response = self.client.post(self.url, self.form_input, follow=True)
-        after_count = Transaction.objects.filter(Q(sender_account=self.account)|Q(receiver_account=self.account)).count()
+        after_count = Transaction.objects.filter(
+            Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
         self.assertEqual(after_count, before_count + 29)
-        response_url = reverse('view_transactions', kwargs={"filter_type":"all"})
+        response_url = reverse(
+            'view_transactions', kwargs={
+                "filter_type": "all"})
         self.assertRedirects(
             response,
             response_url,
@@ -68,24 +79,28 @@ class AddTransactionsViaBankStatementViewTestCase(ViewTestCase):
         messages_list: list[Any] = list(get_messages(response.wsgi_request))
         self.assertTrue(any(
             'new transactions added' in message.message for message in messages_list))
-    
-    def test_invalid_succesfully_add_transaction_via_bank_statement_invalid_pdf(self):
-        bank_statement_path: str = os.path.join("financial_companion", "tests", "data", "invalid_bank_statement.pdf")
-        uploaded_bank_statement: TemporaryUploadedFile = self._get_upload_file(bank_statement_path)
+
+    def test_invalid_succesfully_add_transaction_via_bank_statement_invalid_pdf(
+            self):
+        bank_statement_path: str = os.path.join(
+            "financial_companion", "tests", "data", "invalid_bank_statement.pdf")
+        uploaded_bank_statement: TemporaryUploadedFile = self._get_upload_file(
+            bank_statement_path)
         self.form_input["bank_statement"] = uploaded_bank_statement
         self._login(self.user)
-        before_count = Transaction.objects.filter(Q(sender_account=self.account)|Q(receiver_account=self.account)).count()
+        before_count = Transaction.objects.filter(
+            Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
         response = self.client.post(self.url, self.form_input, follow=True)
-        after_count = Transaction.objects.filter(Q(sender_account=self.account)|Q(receiver_account=self.account)).count()
+        after_count = Transaction.objects.filter(
+            Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
         self.assertEqual(after_count, before_count)
         response_url = self.url
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'pages/add_transactions_via_bank_statement_form.html')
+        self.assertTemplateUsed(
+            response, 'pages/add_transactions_via_bank_statement_form.html')
         messages_list: list[Any] = list(get_messages(response.wsgi_request))
         self.assertTrue(any(
             'Error scanning document, please ensure it is a valid bank statement' == message.message for message in messages_list))
-    
-    
 
     def test_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)
