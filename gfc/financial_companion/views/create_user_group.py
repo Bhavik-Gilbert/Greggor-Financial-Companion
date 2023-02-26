@@ -46,3 +46,29 @@ def delete_user_group_view(request: HttpRequest, pk: int) -> HttpResponse:
         messages.WARNING,
         "This user group has been deleted")
     return redirect("all_groups_redirect")
+
+@login_required
+def edit_user_group_view(request: HttpRequest, pk: int) -> HttpResponse:
+    """View to allow users to edit a user group"""
+    # check is id valid
+    try:
+        current_user_group: UserGroup = UserGroup.objects.get(
+            id=pk, owner_email=request.user.email)
+    except Exception:
+        messages.add_message(
+            request,
+            messages.WARNING,
+            "You do not have permission to edit this user group")
+        return redirect("all_groups_redirect")
+
+    if request.method == "POST":
+        form = CreateUserGroupForm(request.POST, instance=current_user_group)
+        if form.is_valid():
+            form.save(current_user=request.user, instance=current_user_group)
+            return redirect('individual_group',
+                            pk=current_user_group.id)
+    else:
+        form = CreateUserGroupForm(instance=current_user_group)
+
+    return render(request, "pages/create_user_group.html",
+                  {'form': form})

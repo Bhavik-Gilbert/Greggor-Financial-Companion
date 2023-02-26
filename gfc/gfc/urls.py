@@ -100,6 +100,10 @@ urlpatterns = [
         views.delete_user_group_view,
         name="delete_user_group"),
     path(
+        'edit_user_group/<int:pk>',
+        views.edit_user_group_view,
+        name='edit_user_group'),
+    path(
         'join_user_group/',
         views.join_user_group_view,
         name="join_user_group"),
