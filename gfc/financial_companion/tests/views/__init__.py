@@ -24,3 +24,6 @@ from .test_quiz_view import QuizViewTestCase
 from .test_quiz_ready_view import QuizReadyViewTestCase
 from .test_quiz_questions_view import QuizQuestionsViewTestCase
 from .test_delete_profile_view import DeleteProfileViewTestCase
+from .test_create_user_group_view import CreateUserGroupViewTestCase
+from .test_delete_user_group_view import DeleteUserGroupViewTestCase
+from .test_edit_user_group_view import EditUserGroupViewTestCase
