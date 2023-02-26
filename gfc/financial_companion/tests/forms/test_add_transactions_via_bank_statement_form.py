@@ -1,5 +1,5 @@
 from financial_companion.forms import AddTransactionsViaBankStatementForm
-from financial_companion.models import Transaction, Account, User, PotAccount
+from financial_companion.models import Transaction, User, PotAccount
 from financial_companion.helpers import CurrencyType
 from .test_form_base import FormTestCase
 from django.core.files.uploadedfile import TemporaryUploadedFile

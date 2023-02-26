@@ -24,3 +24,4 @@ from .test_quiz_view import QuizViewTestCase
 from .test_quiz_ready_view import QuizReadyViewTestCase
 from .test_quiz_questions_view import QuizQuestionsViewTestCase
 from .test_delete_profile_view import DeleteProfileViewTestCase
+from .test_add_transactions_via_bank_statement_view import AddTransactionsViaBankStatementViewTestCase
