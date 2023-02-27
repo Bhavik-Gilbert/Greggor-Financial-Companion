@@ -20,7 +20,7 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
         form.fields['category'].queryset = categories
         if form.is_valid():
             form.save()
-            return redirect('dashboard')
+            return redirect('view_transactions', filter_type="all")
     else:
         form = AddTransactionForm(user)
         form.fields['category'].queryset = categories
@@ -43,7 +43,7 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
             form.fields['category'].queryset = categories
             if form.is_valid():
                 form.save(instance=transaction)
-                return redirect('dashboard')
+                return redirect('individual_transaction', pk= pk)
         form = AddTransactionForm(user, instance=transaction)
         form.fields['category'].queryset = categories
         return render(request, "pages/add_transaction.html",
@@ -62,7 +62,7 @@ def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
             request,
             messages.WARNING,
             "The transaction has been deleted")
-        return redirect('dashboard')
+        return redirect('view_transactions', filter_type="all")
 
 
 @login_required
