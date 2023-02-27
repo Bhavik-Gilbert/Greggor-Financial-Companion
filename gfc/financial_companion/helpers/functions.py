@@ -7,6 +7,7 @@ import string
 from datetime import datetime
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+import inflect
 
 
 def get_currency_symbol(currency_code: str):
@@ -82,9 +83,12 @@ def get_number_of_completed_targets(targets):
     return total
 
 def get_sorted_members_based_on_completed_targets(members):
-    members_and_completed = []
+    member_completed_pos_list = []
+    pos = 1
+    p = inflect.engine() #used to convert a number into a position
     for member in members:
         targets = member.get_all_targets()
         completed = get_number_of_completed_targets(targets)
-        members_and_completed = [*members_and_completed, (member, completed)]
-    return sorted(members_and_completed, key = lambda x: x[1], reverse=True)
+        member_completed_pos_list = [*member_completed_pos_list, (member, completed, p.ordinal(pos))]
+        pos += 1
+    return sorted(member_completed_pos_list, key = lambda x: x[1], reverse=True)
