@@ -5,7 +5,7 @@ from financial_companion.helpers import random_filename
 
 
 def change_filename(instance, filename):
-    return os.path.join('user_profile', random_filename(filename))
+    return os.path.join('group_profile', random_filename(filename))
 
 
 class UserGroup(models.Model):

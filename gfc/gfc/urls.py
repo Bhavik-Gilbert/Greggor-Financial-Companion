@@ -194,9 +194,9 @@ urlpatterns = [
         views.individual_group_view,
         name="individual_group"
     ),
-    path('add_transaction_via_bank_statement',
+    path('add_transactions_via_bank_statement/',
          views.add_transactions_via_bank_statement,
-         name='add_transaction_via_bank_statement'),
+         name='add_transactions_via_bank_statement'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
