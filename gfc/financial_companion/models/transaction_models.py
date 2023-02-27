@@ -9,7 +9,6 @@ from django.db.models import (
     ForeignKey,
     CASCADE, SET_NULL
 )
-from django.core.exceptions import ValidationError
 from .accounts_model import Account
 from .category_model import Category
 from ..helpers import CurrencyType, Timespan, random_filename, timespan_map
@@ -39,7 +38,7 @@ class AbstractTransaction(Model):
         height_field=None,
         width_field=None,
         max_length=100,
-        upload_to='change_filename'
+        upload_to=change_filename
     )
 
     category = ForeignKey(Category, on_delete=SET_NULL, null=True, blank=True)

@@ -25,11 +25,21 @@
         <p class="text-white h6">Groups</p>
       </a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'quiz' %}">
+        <p class="text-white h6">Quizzes</p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="https://www.etsy.com/uk/shop/GreggorFanClub" target="_blank">
+        <p class="text-white h6">Merch</p>
+      </a>
+    </li>
   </ul>
   <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="user-account-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <span class="bi-person-fill"></span>
+        {% include 'partials/navbar/profile_picture.html' %}
       </a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="user-account-dropdown">
         <li><a class="dropdown-item" href="{% url 'profile' %}">Profile</a></li>

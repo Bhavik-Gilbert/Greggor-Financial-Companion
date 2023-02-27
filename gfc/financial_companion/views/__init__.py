@@ -3,7 +3,7 @@ from .sign_up import sign_up_view
 from .log_in import log_in_view
 from .log_in import log_out_view
 from .dashboard import dashboard_view
-from .add_transaction import add_transaction_view, edit_transaction_view, delete_transaction_view
+from .add_transaction import add_transaction_view, edit_transaction_view, delete_transaction_view, add_transactions_via_bank_statement
 from .monetary_account_view import add_monetary_account_view, edit_monetary_account_view, delete_monetary_account_view
 from .category_views import category_list_view, category_list_redirect
 from .view_accounts import view_user_pot_accounts
@@ -12,7 +12,13 @@ from .create_category import create_category_view, edit_category_view, delete_ca
 from .individual_category import individual_category_view, individual_category_redirect
 from .individual_account import individual_account_view, individual_account_redirect
 from .individual_transaction import individual_transaction_view
+from .individual_group import individual_group_view
 from .edit_user_details import edit_user_details_view
-from .profile import profile_view
+from .profile import profile_view, delete_profile_view
 from .change_password import change_password_view
+from .quiz_view import quiz_view, quiz_question_view, quiz_ready_view, quiz_score_view
+from .create_user_group import create_user_group_view, delete_user_group_view
 from .view_groups import all_groups_view, all_groups_redirect
+from .create_target_view import create_category_target_view, edit_category_target_view, create_account_target_view, create_user_target_view, edit_account_target_view, edit_user_target_view, delete_user_target_view, delete_account_target_view, delete_category_target_view
+from .join_user_group import join_user_group_view
+from .view_savings_accounts import view_savings_accounts

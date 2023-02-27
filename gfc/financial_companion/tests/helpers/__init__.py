@@ -1,3 +1,5 @@
 from .test_get_currency_symbol import GetCurrencySymbolHelperFunctionTestCase
-from .test_convert_currency import ConverCurrencyHelperFunctionTestCase
+from .test_convert_currency import ConvertCurrencyHelperFunctionTestCase
 from .test_random_filename import RandomFilenameHelperFunctionTestCase
+from .test_paginate import PaginateFunctionTestCase
+from .test_parse_statement_pdf_class import ParseStatementPDFClassTestCase

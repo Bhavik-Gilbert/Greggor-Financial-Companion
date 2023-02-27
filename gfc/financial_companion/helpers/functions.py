@@ -4,7 +4,9 @@ from kzt_exchangerates import Rates as KZTRates
 from .enums import CurrencyType
 import random
 import string
-from datetime import datetime, date
+from datetime import datetime
+from django.conf import settings
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def get_currency_symbol(currency_code: str):
@@ -52,29 +54,29 @@ def random_filename(filename):
             datetime.now())]
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
 
+
 def calculate_percentages(spent_per_category : dict(), total):
     no_of_categories = len(spent_per_category)
     for key, value in spent_per_category.items():
         percentage = (value / total) * 100
         spent_per_category.update({key : percentage})
 
-        
 
-    
+def paginate(page, list_input):
+    list_of_items = []
+    paginator = Paginator(list_input, settings.NUMBER_OF_TRANSACTIONS)
+    try:
+        list_of_items = paginator.page(page)
+    except PageNotAnInteger:
+        list_of_items = paginator.page(1)
+    except EmptyPage:
+        list_of_items = paginator.page(paginator.num_pages)
+
+    return list_of_items
 
 
-#TODO: Move this code to transaction model
-    """ 
-def get_transactions_from_last_week(time_choice):
-    transactions = []
-    timespan_int = timespan_map[time_choice.timespan]
-    start_of_timespan_period = datetime.date.today(
-    ) - datetime.timedelta(days=timespan_int)
-
-    filtered_transactions = []
-    for transaction in transactions:
-        if transaction.time_of_transaction.date() >= start_of_timespan_period:
-            filtered_transactions = [*filtered_transactions, transaction]   
-    print(filtered_transactions)
-    return filtered_transactions
- """
+def get_random_invite_code(length):
+    """Generates a random invite code for User Groups"""
+    letters = string.ascii_uppercase
+    result_str = ''.join(random.choice(letters) for i in range(length))
+    return result_str

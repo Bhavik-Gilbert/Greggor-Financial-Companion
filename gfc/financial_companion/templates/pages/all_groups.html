@@ -9,11 +9,17 @@
 
     <div align="center" class="w-50 container-fluid">
       <h1>Groups</h1>
-      <a class="btn btn-primary">Add New</a>
+      <a class="btn btn-primary" href="{% url 'create_user_group'%}">Add New</a>
       {% if groups %}
         <a class="btn btn-primary" href="{% url 'all_groups' search_name='all'%}">View All</a>
       {% endif %}
       <br/><br>
+      <form action='{% url 'join_user_group' %}' method="post" class="input-group  d-flex justify-content-center">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Join" class="btn btn-primary">
+      </form>
+      <br>
       {% include 'partials/search_bar.html' %}
     </div>
 
@@ -21,7 +27,7 @@
 
     {%if groups%}
       <div class="row">
-        {% include 'partials/group_card.html' %}
+        {% include 'partials/groups/group_card.html' %}
       </div>
     {% else %}
       <h2 class="text-center">You have no groups yet</h2>

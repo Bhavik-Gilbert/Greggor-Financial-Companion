@@ -11,6 +11,46 @@
     },
     {
         "model": "financial_companion.categorytarget",
+        "pk": 3,
+        "fields": {
+            "transaction_type": "expense",
+            "timespan": "week",
+            "amount": "1",
+            "category": 1
+        }
+    },
+    {
+        "model": "financial_companion.categorytarget",
+        "pk": 4,
+        "fields": {
+            "transaction_type": "expense",
+            "timespan": "month",
+            "amount": "12",
+            "category": 1
+        }
+    },
+    {
+        "model": "financial_companion.categorytarget",
+        "pk": 5,
+        "fields": {
+            "transaction_type": "expense",
+            "timespan": "year",
+            "amount": "123",
+            "category": 1
+        }
+    },
+    {
+        "model": "financial_companion.categorytarget",
+        "pk": 6,
+        "fields": {
+            "transaction_type": "expense",
+            "timespan": "year",
+            "amount": "123",
+            "category": 3
+        }
+    },
+    {
+        "model": "financial_companion.categorytarget",
         "pk": 2,
         "fields": {
             "transaction_type": "expense",

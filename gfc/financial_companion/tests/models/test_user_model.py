@@ -102,5 +102,7 @@ class UserModelTestCase(ModelTestCase):
         self.test_model.profile_picture = ''
         self._assert_model_is_valid()
 
-    # TODO:
-    # Test image field
+    def test_get_user_highest_quiz_score(self):
+        self.assertEqual(
+            self.test_model.get_user_highest_quiz_score().get_score(), 80
+        )

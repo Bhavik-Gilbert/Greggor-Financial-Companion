@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
 from pathlib import Path
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -42,7 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'financial_companion',
-    'widget_tweaks'
+    'widget_tweaks',
+    'django_q',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +90,9 @@ DATABASES = {
 }
 
 FIXTURE_DIRS = [os.path.join(BASE_DIR, "financial_companion/tests/fixtures")]
-
+TEXT_DATA_DIRS = {
+    "financial_companion": os.path.join(BASE_DIR, "financial_companion/data")
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -106,6 +111,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+# Message tags enum
+MESSAGE_TAGS = {
+    messages.DEBUG: 'alert-secondary',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
 
 
 # Internationalization
@@ -130,6 +144,10 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# File upload handler
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler']
 
 
 # User model for authentication and login purposes
@@ -166,3 +184,11 @@ EMAIL_HOST_PASSWORD = "ajoaavtgkujobzep"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
+
+Q_CLUSTER = {
+    'name': "shop",
+    'retry': 60,
+    'timeout': 30,
+    'workers': 4,
+    'orm': 'default'
+}
