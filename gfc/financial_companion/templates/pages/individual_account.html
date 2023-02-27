@@ -16,6 +16,7 @@
                     <h1 class="text-white">Account Name: {{account.name.capitalize}}</h1>
                 </div>
                 <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-end">
+                    <a href="{% url 'create_account_target' pk=account.id %}" class="btn btn-light px-3 mx-2 py-1 mb-md-4">Add Target</a>
                     <a href="{% url 'edit_monetary_account' pk=account.id %}" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit</a>
                     <a href="{% url 'delete_monetary_account' pk=account.id %}" class="btn btn-danger px-3 mx-2 py-1 mb-md-4">Delete</a>
                 </div>
