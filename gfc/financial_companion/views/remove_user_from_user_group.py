@@ -9,7 +9,7 @@ from ..models import UserGroup, User
 
 @login_required
 def remove_user_from_user_group_view(request: HttpRequest, group_pk: int, user_pk: int) -> HttpResponse:
-    """View to remove user from user group"""
+    """View to remove a user from user group"""
     try:
         current_user_group: UserGroup = UserGroup.objects.get(
             id=group_pk)
