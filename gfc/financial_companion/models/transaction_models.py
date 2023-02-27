@@ -12,7 +12,8 @@ from django.db.models import (
 from django.core.exceptions import ValidationError
 from .accounts_model import Account
 from .category_model import Category
-from ..helpers import CurrencyType, Timespan, random_filename
+from ..helpers import CurrencyType, Timespan, random_filename, timespan_map
+from datetime import datetime, date
 import os
 
 
@@ -76,6 +77,19 @@ class Transaction(AbstractTransaction):
         blank=False,
         auto_now_add=True
     )
+
+    def get_transactions_from_last_week(time_choice):
+        transactions = []
+        timespan_int = timespan_map[time_choice.timespan]
+        start_of_timespan_period = datetime.date.today(
+        ) - datetime.timedelta(days=timespan_int)
+
+        filtered_transactions = []
+        for transaction in transactions:
+            if transaction.time_of_transaction.date() >= start_of_timespan_period:
+                filtered_transactions = [*filtered_transactions, transaction]   
+        print(filtered_transactions)
+        return filtered_transactions
 
     class Meta:
         ordering = ['-time_of_transaction']

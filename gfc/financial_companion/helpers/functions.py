@@ -1,7 +1,7 @@
 from currency_symbols import CurrencySymbols
 from currency_converter import CurrencyConverter
 from kzt_exchangerates import Rates as KZTRates
-from financial_companion.models import Transaction, Category
+from ..models import Transaction, Category
 from financial_companion.helpers import timespan_map
 from .enums import CurrencyType
 import random
@@ -54,7 +54,7 @@ def random_filename(filename):
             datetime.now())]
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
 
-def get_category_splits(transactions: list(Transaction)):
+def get_category_splits(transactions: list()):
     spent_per_category= dict()
     no_of_categories = Category.objects.count()
     for x in transactions:
@@ -63,8 +63,21 @@ def get_category_splits(transactions: list(Transaction)):
         else:
             spent_per_category.update({x.category : spent_per_category.get(x.category) + x.amount })
     print(spent_per_category)
+    return spent_per_category
+
+def calculate_percentages(spent_per_category : dict(), total):
+    no_of_categories = len(spent_per_category)
+    for key, value in spent_per_category.items():
+        percentage = (value / total) * 100
+        spent_per_category.update({key : percentage})
+
         
+
     
+
+
+#TODO: Move this code to transaction model
+    """ 
 def get_transactions_from_last_week(time_choice):
     transactions = []
     timespan_int = timespan_map[time_choice.timespan]
@@ -75,5 +88,6 @@ def get_transactions_from_last_week(time_choice):
     for transaction in transactions:
         if transaction.time_of_transaction.date() >= start_of_timespan_period:
             filtered_transactions = [*filtered_transactions, transaction]   
-    
-
+    print(filtered_transactions)
+    return filtered_transactions
+ """
