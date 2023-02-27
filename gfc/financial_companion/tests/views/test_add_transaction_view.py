@@ -53,13 +53,13 @@ class AddTransactionViewTestCase(ViewTestCase):
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = Transaction.objects.count()
         self.assertEqual(after_count, before_count + 1)
-        response_url = reverse('dashboard')
+        response_url = reverse('view_transactions', kwargs={'filter_type': "all"})
         self.assertRedirects(
             response,
             response_url,
             status_code=302,
             target_status_code=200)
-        self.assertTemplateUsed(response, 'pages/dashboard.html')
+        self.assertTemplateUsed(response, 'pages/display_transactions.html')
         transaction = Transaction.objects.get(title='Test')
         self.assertEqual(transaction.description, 'This is a test transaction')
         # self.assertEqual(transaction.image, "transaction_reciept.jpeg")

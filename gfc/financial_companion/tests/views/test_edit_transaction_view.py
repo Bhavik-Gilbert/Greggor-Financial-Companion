@@ -64,13 +64,13 @@ class EditTransactionViewTestCase(ViewTestCase):
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = Transaction.objects.count()
         self.assertEqual(after_count, before_count)
-        response_url = reverse('dashboard')
+        response_url = reverse('individual_transaction',kwargs={'pk' : 2} )
         self.assertRedirects(
             response,
             response_url,
             status_code=302,
             target_status_code=200)
-        self.assertTemplateUsed(response, 'pages/dashboard.html')
+        self.assertTemplateUsed(response, 'pages/individual_transaction.html')
         transaction = Transaction.objects.get(id=2)
         transaction.refresh_from_db()
         self.assertEqual(transaction.title, "Test")
