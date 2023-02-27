@@ -2,12 +2,12 @@ from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 
 from .test_view_base import ViewTestCase
-from financial_companion.forms import CreateUserGroupForm
+from financial_companion.forms import UserGroupForm
 from financial_companion.models import User, UserGroup
 
 
 class EditUserGroupViewTestCase(ViewTestCase):
-    """Tests of the edit category view."""
+    """Tests of the edit user group view."""
 
     def setUp(self):
         self.url = reverse('edit_user_group', kwargs={"pk": 1})
@@ -28,7 +28,7 @@ class EditUserGroupViewTestCase(ViewTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/create_user_group.html')
         form = response.context['form']
-        self.assertTrue(isinstance(form, CreateUserGroupForm))
+        self.assertTrue(isinstance(form, UserGroupForm))
         self.assertFalse(form.is_bound)
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
@@ -44,7 +44,7 @@ class EditUserGroupViewTestCase(ViewTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/create_user_group.html')
         form = response.context['form']
-        self.assertTrue(isinstance(form, CreateUserGroupForm))
+        self.assertTrue(isinstance(form, UserGroupForm))
 
     def test_successful_edit_user_group_form_submission(self):
         self._login(self.user)
