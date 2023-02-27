@@ -4,7 +4,7 @@ from django.utils import timezone
 from decimal import Decimal
 
 from ...helpers import Timespan
-from ...models import AbstractTransaction, RecurringTransaction
+from ...models import AbstractTransaction, RecurringTransaction, Transaction
 
 
 class RecurringTransactionTestCase(ModelTestCase):
@@ -31,3 +31,16 @@ class RecurringTransactionTestCase(ModelTestCase):
     def test_interval_valid(self):
         self.test_model.interval = Timespan.MONTH
         self._assert_model_is_valid()
+
+    def test_valid_add_transaction(self):
+        transaction: Transaction = Transaction.objects.all().first()
+        self.assertEqual(0, len(self.test_model.transactions.all()))
+        self.test_model.add_transaction(transaction)
+        self.assertEqual(1, len(self.test_model.transactions.all()))
+    
+    def test_valid_add_transaction_does_not_add_same_transaction_twice(self):
+        transaction: Transaction = Transaction.objects.all().first()
+        self.assertEqual(0, len(self.test_model.transactions.all()))
+        self.test_model.add_transaction(transaction)
+        self.test_model.add_transaction(transaction)
+        self.assertEqual(1, len(self.test_model.transactions.all()))

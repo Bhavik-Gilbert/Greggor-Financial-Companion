@@ -7,9 +7,10 @@ from django.db.models import (
     DateTimeField,
     DateField,
     ForeignKey,
+    ManyToManyField,
     CASCADE, SET_NULL
 )
-from .accounts_model import Account
+from .accounts_model import Account, PotAccount
 from .category_model import Category
 from ..helpers import CurrencyType, Timespan, random_filename, timespan_map
 from datetime import datetime, date
@@ -78,14 +79,30 @@ class Transaction(AbstractTransaction):
     )
 
     @staticmethod
-    def get_transactions_from_last_week(time_choice):
-        transactions = []
+    def get_users_transactions(user):
+        user_accounts = PotAccount.objects.filter(user=user.id)
+        user_transactions = []
+        for account in user_accounts:
+            user_transactions = [
+                *
+                user_transactions,
+                *
+                Transaction.objects.filter(
+                    sender_account=account),
+                *
+                Transaction.objects.filter(
+                    receiver_account=account)]
+
+    @staticmethod
+    def get_transactions_from_time_period(time_choice, user):
+        user_transactions = Transaction.get_users_transactions(user)
+        
         timespan_int = timespan_map[time_choice.timespan]
         start_of_timespan_period = datetime.date.today(
         ) - datetime.timedelta(days=timespan_int)
 
         filtered_transactions = []
-        for transaction in transactions:
+        for transaction in user_transactions:
             if transaction.time_of_transaction.date() >= start_of_timespan_period:
                 filtered_transactions = [*filtered_transactions, transaction]   
         print(filtered_transactions)
@@ -123,13 +140,18 @@ class RecurringTransaction(AbstractTransaction):
         blank=False,
     )
 
+    transactions: ManyToManyField = ManyToManyField(Transaction)
+
     class Meta:
         ordering = ['-interval']
+    
+    def add_transaction(self, transaction: Transaction):
+        """Add transaction to transaction in recurring transaction"""
+        self.transactions.add(transaction)
 
+# class LinkRecurringTransaction(Model):
+#     """Model for linking individual transactions with their respective recurring transaction"""
 
-class LinkRecurringTransaction(Model):
-    """Model for linking individual transactions with their respective recurring transaction"""
+#     recurring_transaction = ForeignKey(RecurringTransaction, on_delete=CASCADE)
 
-    recurring_transaction = ForeignKey(RecurringTransaction, on_delete=CASCADE)
-
-    transaction = ForeignKey(Transaction, on_delete=CASCADE)
+#     transaction = ForeignKey(Transaction, on_delete=CASCADE)
