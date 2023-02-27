@@ -78,6 +78,7 @@ class Transaction(AbstractTransaction):
         auto_now_add=True
     )
 
+    @staticmethod
     def get_transactions_from_last_week(time_choice):
         transactions = []
         timespan_int = timespan_map[time_choice.timespan]
@@ -90,6 +91,18 @@ class Transaction(AbstractTransaction):
                 filtered_transactions = [*filtered_transactions, transaction]   
         print(filtered_transactions)
         return filtered_transactions
+    
+    @staticmethod
+    def get_category_splits(transactions: list):
+        spent_per_category= dict()
+        no_of_categories = Category.objects.count()
+        for x in transactions:
+            if (len(spent_per_category) == 0) | spent_per_category.get(x.category) == None:
+                spent_per_category[x.category] = x.amount
+            else:
+                spent_per_category.update({x.category : spent_per_category.get(x.category) + x.amount })
+        print(spent_per_category)
+        return spent_per_category
 
     class Meta:
         ordering = ['-time_of_transaction']

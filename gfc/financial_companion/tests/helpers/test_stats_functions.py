@@ -11,21 +11,10 @@ from decimal import Decimal
 from ...helpers import CurrencyType
 from ...models import AbstractTransaction, Transaction
 
-class StatisticsFuunctionsTestCase(HelperTestCase):
-    
-    fixtures: list[str] = [
-        "example_abstract_transactions.json",
-        "example_category.json",
-        "example_accounts.json",
-        "example_users.json"]
-
-    @classmethod
-    def setUpClass(self):
-        """Create temporary model"""
-        self.mixin: AbstractTransaction = AbstractTransaction
-        super().setUpClass()
+class StatisticsFunctionsTestCase(HelperTestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.test_model: ModelBase = self.model.objects.get(id=1)
 
+    def test_something(self):
+        pass

@@ -1,8 +1,6 @@
 from currency_symbols import CurrencySymbols
 from currency_converter import CurrencyConverter
 from kzt_exchangerates import Rates as KZTRates
-from ..models import Transaction, Category
-from financial_companion.helpers import timespan_map
 from .enums import CurrencyType
 import random
 import string
@@ -53,17 +51,6 @@ def random_filename(filename):
             string.ascii_letters), str(
             datetime.now())]
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
-
-def get_category_splits(transactions: list()):
-    spent_per_category= dict()
-    no_of_categories = Category.objects.count()
-    for x in transactions:
-        if (len(spent_per_category) == 0) | spent_per_category.get(x.category) == None:
-            spent_per_category[x.category] = x.amount
-        else:
-            spent_per_category.update({x.category : spent_per_category.get(x.category) + x.amount })
-    print(spent_per_category)
-    return spent_per_category
 
 def calculate_percentages(spent_per_category : dict(), total):
     no_of_categories = len(spent_per_category)
