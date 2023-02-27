@@ -36,6 +36,6 @@ def individual_group_view(request: HttpRequest, pk: int, leaderboard: str) -> Ht
         return render(request, "pages/individual_group.html",
                 {"group": group, "members": pagenated_members_list, "is_owner": is_owner, "owners_email": owners_email, "count": count, "leaderboard": leaderboard=="True"})
 
-
+@login_required
 def individual_group_redirect(request: HttpRequest, pk: int) -> HttpResponse:
     return redirect('individual_group', pk=pk, leaderboard="False")
