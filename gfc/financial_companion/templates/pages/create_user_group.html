@@ -1,14 +1,20 @@
 {% extends "page.html" %}
 
 <!-- Title -->
-{% block title %}Create User Group{% endblock %}
+{% block title %}User Group Form{% endblock %}
 
 <!-- Content -->
 {% block content %}
-    <h1>Create User Group</h1>
-    <form action='{% url 'create_user_group' %}' method="post" enctype='multipart/form-data'>
-      {% csrf_token %}
-      {% include 'partials/form.html' with form=form %}
-    <input type="submit" value="Create Group" class="btn btn-primary">
+    <h1>User Group Form</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% include 'partials/form.html' with form=form %}
+      <button type="submit" name="submit_type" value="Submit" class="btn btn-primary">
+        {% if form_toggle %}
+            Create User Group
+        {% else %}
+            Edit User Group
+        {% endif %}
+    </button>
     </form>
 {% endblock %}
