@@ -13,12 +13,12 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.group = UserGroup.objects.get(id=3)
         self.url: str = reverse(
             "individual_group", kwargs={
-                "pk": self.group.id})
+                "pk": self.group.id, "leaderboard":"False"})
 
     def test_valid_individual_group_url(self):
         self.assertEqual(
             self.url,
-            f"/individual_group/{self.group.id}/")
+            f"/individual_group/{self.group.id}/False/")
 
     def test_valid_get_view_individual_group(self):
         self._login(self.owner)
@@ -37,7 +37,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self._login(self.owner)
         url: str = reverse(
             "individual_group", kwargs={
-                "pk": self.group.id + 99999999})
+                "pk": self.group.id + 99999999, "leaderboard":"False"})
         response: HttpResponse = self.client.get(url, follow=True)
         response_url: str = reverse("dashboard")
         self.assertRedirects(

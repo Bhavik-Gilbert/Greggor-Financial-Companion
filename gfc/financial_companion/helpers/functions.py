@@ -83,12 +83,17 @@ def get_number_of_completed_targets(targets):
     return total
 
 def get_sorted_members_based_on_completed_targets(members):
-    member_completed_pos_list = []
-    pos = 1
-    p = inflect.engine() #used to convert a number into a position
+    member_completed_list = []
     for member in members:
         targets = member.get_all_targets()
         completed = get_number_of_completed_targets(targets)
-        member_completed_pos_list = [*member_completed_pos_list, (member, completed, p.ordinal(pos))]
+        member_completed_list = [*member_completed_list, (member, completed)]
+    member_completed_list = sorted(member_completed_list, key = lambda x: x[1], reverse=True)
+
+    pos = 1
+    p = inflect.engine() #used to convert a number into a position
+    member_completed_pos_list = []
+    for tuple in member_completed_list:
+        member_completed_pos_list = [*member_completed_pos_list, (*tuple, p.ordinal(pos))]
         pos += 1
-    return sorted(member_completed_pos_list, key = lambda x: x[1], reverse=True)
+    return member_completed_pos_list

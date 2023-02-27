@@ -21,6 +21,8 @@ def individual_group_view(request: HttpRequest, pk: int, leaderboard: str) -> Ht
         owners_email = group.owner_email
         count = group.members_count()
 
+        sorted_members = []
+
         if leaderboard == "True":
             sorted_members = get_sorted_members_based_on_completed_targets(members)
             if count > 0:
