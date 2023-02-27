@@ -41,6 +41,16 @@
     },
     {
         "model": "financial_companion.categorytarget",
+        "pk": 6,
+        "fields": {
+            "transaction_type": "expense",
+            "timespan": "year",
+            "amount": "123",
+            "category": 3
+        }
+    },
+    {
+        "model": "financial_companion.categorytarget",
         "pk": 2,
         "fields": {
             "transaction_type": "expense",

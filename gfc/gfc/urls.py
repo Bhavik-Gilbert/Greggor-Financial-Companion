@@ -48,7 +48,10 @@ urlpatterns = [
         'add_monetary_account/',
         views.add_monetary_account_view,
         name="add_monetary_account"),
-    path('view_accounts/', views.view_user_pot_accounts, name='view_accounts'),
+    path(
+        'view_accounts/',
+        views.view_user_pot_accounts,
+        name='view_accounts'),
     path(
         'create_category/',
         views.create_category_view,
@@ -83,6 +86,42 @@ urlpatterns = [
         'change_password/',
         views.change_password_view,
         name="change_password"),
+    path(
+        'create_target/category/<int:pk>',
+        views.create_category_target_view,
+        name="create_category_target"),
+    path(
+        'create_target/user/',
+        views.create_user_target_view,
+        name="create_user_target"),
+    path(
+        'create_target/account/<int:pk>',
+        views.create_account_target_view,
+        name="create_account_target"),
+    path(
+        'edit_target/category/<int:pk>',
+        views.edit_category_target_view,
+        name="edit_category_target"),
+    path(
+        'edit_target/account/<int:pk>',
+        views.edit_account_target_view,
+        name="edit_account_target"),
+    path(
+        'edit_target/user/<int:pk>',
+        views.edit_user_target_view,
+        name="edit_user_target"),
+    path(
+        'delete_target/category/<int:pk>',
+        views.delete_category_target_view,
+        name="delete_category_target"),
+    path(
+        'delete_target/account/<int:pk>',
+        views.delete_account_target_view,
+        name="delete_account_target"),
+    path(
+        'delete_target/user/<int:pk>',
+        views.delete_user_target_view,
+        name="delete_user_target"),
     path(
         'edit_category/<int:pk>',
         views.edit_category_view,
@@ -127,6 +166,10 @@ urlpatterns = [
         PasswordResetCompleteView.as_view(
             template_name="pages/email/password_reset_complete.html"),
         name='password_reset_complete'),
+    path(
+        'view_savings_accounts/',
+        views.view_savings_accounts,
+        name='view_savings_accounts'),
     re_path(
         'individual_account/(?P<pk>\\d+)/(?P<filter_type>\\w+)/$',
         views.individual_account_view,
@@ -198,9 +241,9 @@ urlpatterns = [
         views.individual_group_view,
         name="individual_group"
     ),
-    path('add_transaction_via_bank_statement',
+    path('add_transactions_via_bank_statement/',
          views.add_transactions_via_bank_statement,
-         name='add_transaction_via_bank_statement'),
+         name='add_transactions_via_bank_statement'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:
