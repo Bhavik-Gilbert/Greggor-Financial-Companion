@@ -78,22 +78,24 @@ def get_random_invite_code(length):
     result_str = ''.join(random.choice(letters) for i in range(length))
     return result_str
 
-def get_conversions_for_accounts(bank_accounts, mainCurrency):
+def get_conversions_for_accounts(bank_accounts, mainCurrency = "GBP"):
     otherCurrencies = []
     conversions: Dict[str,float] = {}
     conversions.update({str(mainCurrency) : 1.0})
-    conversions.update({"GBP" : convert_currency(1, "GBP", mainCurrency)})
-    i = 1
+    i = 0
     while (i < len(bank_accounts)):
         currency = bank_accounts[i].currency
         conversions.update({str(currency) : convert_currency(1, currency, mainCurrency)})
         i += 1;
+    if (len(conversions.keys()) == 1 and not("GBP" in conversions)):
+        conversions.update({"GBP" : convert_currency(1, "GBP", mainCurrency)})
+
     return conversions
 
 def get_projection_timescale_options():
     return {6 : "6 Months", 12: "1 Year", 24: "2 Years", 60: "5 Years"}
 
-def get_projections_balances(accounts, includeNetSpend = False, max_timescale_in_months = max(get_projection_timescale_options().keys())):
+def get_projections_balances(accounts, max_timescale_in_months:int = max(get_projection_timescale_options().keys())):
     timescales = get_projection_timescale_options()
     accountDictionary = {}
     for account in accounts:
@@ -114,7 +116,7 @@ def get_projections_balances(accounts, includeNetSpend = False, max_timescale_in
     return accountDictionary
 
 
-def get_short_month_names_for_timescale(max_timescale_in_months = max(get_projection_timescale_options().keys())):
+def get_short_month_names_for_timescale(max_timescale_in_months:int = max(get_projection_timescale_options().keys())):
     currentDate = datetime.today()
     i = 1
     dates = []
@@ -125,7 +127,7 @@ def get_short_month_names_for_timescale(max_timescale_in_months = max(get_projec
 
     return dates
 
-def get_number_of_days_in_prev_month(offset_inMonths):
+def get_number_of_days_in_prev_month(offset_inMonths:int = 0):
     date = datetime.today() + relativedelta(months = offset_inMonths)
     no_of_days_in_prev_month = (
         date.replace(

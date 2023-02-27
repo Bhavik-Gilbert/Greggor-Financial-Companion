@@ -9,6 +9,7 @@ from datetime import datetime
 from django.conf import settings
 from datetime import date, timedelta
 import financial_companion.models as fc_models
+from financial_companion.helpers import get_number_of_days_in_prev_month
 
 
 def send_monthly_newsletter_email():
@@ -47,4 +48,3 @@ def add_interest_to_bank_accounts():
         account.balance = account.balance * \
             ((1 + (account.interest_rate / 365))**no_of_days_in_prev_month)
         account.save()
-    print("INTEREST CALCULATED AND ADDED")
