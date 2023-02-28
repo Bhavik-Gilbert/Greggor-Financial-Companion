@@ -11,10 +11,38 @@ def MonetaryAccountForm(*args, **kwargs) -> forms.ModelForm:
     kwargs.pop("form_type", None)
     if form_type == MonetaryAccountType.BANK:
         return BankAccountForm(*args, **kwargs)
-    else:
+    elif form_type == MonetaryAccountType.POT:
         return PotAccountForm(*args, **kwargs)
+    else:
+        return AccountForm(*args, **kwargs)
 
+class AccountForm(forms.ModelForm):
+    """form to create accounts"""
 
+    def __init__(self, *args, **kwargs) -> None:
+        super(AccountForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model: Account = Account
+        fields: list[str] = ["name", "description"]
+        widgets: dict[str, Any] = {"description": forms.Textarea()}
+
+    def save(self, instance: Account = None) -> Account:
+        super.save(commit = False)
+
+        if instance is None:
+            account: Account = Account.objects.create(
+                name = self.cleaned_data.get("name"),
+                description = self.cleaned_data.get("description")
+            )
+
+        else: 
+            monetary_account = instance
+            monetary_account.name: str = self.cleaned_data.get("name")
+            monetary_account.description: str = self.cleaned_data.get("description")
+            
+        return monetary_account
+    
 class PotAccountForm(forms.ModelForm):
     """Form to create pot account"""
 
