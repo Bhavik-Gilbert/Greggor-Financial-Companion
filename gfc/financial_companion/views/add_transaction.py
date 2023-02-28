@@ -20,6 +20,10 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
         form.fields['category'].queryset = categories
         if form.is_valid():
             form.save()
+            messages.add_message(
+            request,
+            messages.SUCCESS,
+            "Your transaction has been successfully added!")
             return redirect('view_transactions', filter_type="all")
     else:
         form = AddTransactionForm(user)
@@ -33,7 +37,11 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
     try:
         transaction = Transaction.objects.get(id=pk)
     except ObjectDoesNotExist:
-        return redirect('dashboard')
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "The transaction can not be deleted.")
+        return redirect('view_transactions', filter_type="all")
     else:
         user = request.user
         categories = Category.objects.filter(user=user.id)
@@ -43,6 +51,10 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
             form.fields['category'].queryset = categories
             if form.is_valid():
                 form.save(instance=transaction)
+                messages.add_message(
+            request,
+            messages.SUCCESS,
+            "Your transaction has been successfully updated!")
                 return redirect('individual_transaction', pk= pk)
         form = AddTransactionForm(user, instance=transaction)
         form.fields['category'].queryset = categories

@@ -77,13 +77,17 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
         }
         response: HttpResponse = self.client.post(
             self.pot_url, form_input, follow=True)
-        response_url: str = reverse("dashboard")
+        response_url: str = reverse(
+            "individual_account",
+            kwargs={
+                "pk": self.pot_account.id,
+                "filter_type": "all"})
         self.assertRedirects(
             response,
             response_url,
             status_code=302,
             target_status_code=200)
-        self.assertTemplateUsed(response, "pages/dashboard.html")
+        self.assertTemplateUsed(response, "pages/individual_account.html")
         pot_account_count_after: int = PotAccount.objects.count()
         bank_account_count_after: int = BankAccount.objects.count()
         self.assertEqual(pot_account_count_before, pot_account_count_after)
@@ -107,13 +111,17 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
         }
         response: HttpResponse = self.client.post(
             self.bank_url, form_input, follow=True)
-        response_url: str = reverse("dashboard")
+        response_url: str = reverse(
+            "individual_account",
+            kwargs={
+                "pk": self.bank_account.id,
+                "filter_type": "all"})
         self.assertRedirects(
             response,
             response_url,
             status_code=302,
             target_status_code=200)
-        self.assertTemplateUsed(response, "pages/dashboard.html")
+        self.assertTemplateUsed(response, "pages/individual_account.html")
         pot_account_count_after: int = PotAccount.objects.count()
         bank_account_count_after: int = BankAccount.objects.count()
         self.assertEqual(pot_account_count_before, pot_account_count_after)
