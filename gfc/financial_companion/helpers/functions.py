@@ -60,6 +60,7 @@ def calculate_percentages(spent_per_category : dict(), total):
     for key, value in spent_per_category.items():
         percentage = (value / total) * 100
         spent_per_category.update({key : percentage})
+    return spent_per_category
 
 
 def paginate(page, list_input):

@@ -12,8 +12,8 @@ from django.db.models import (
 )
 from .accounts_model import Account, PotAccount
 from .category_model import Category
-from ..helpers import CurrencyType, Timespan, random_filename, timespan_map
-from datetime import datetime, date
+from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, TransactionType
+import datetime
 import os
 
 
@@ -80,44 +80,53 @@ class Transaction(AbstractTransaction):
 
     @staticmethod
     def get_users_transactions(user):
-        user_accounts = PotAccount.objects.filter(user=user.id)
+        user_accounts = PotAccount.objects.filter(user=user)
         user_transactions = []
         for account in user_accounts:
             user_transactions = [
-                *
-                user_transactions,
-                *
-                Transaction.objects.filter(
-                    sender_account=account),
-                *
-                Transaction.objects.filter(
-                    receiver_account=account)]
+                *user_transactions,
+                *account.get_account_transactions("sent")
+            ]
+        
+        return user_transactions
+    
+    @staticmethod
+    def calculate_total(transactions: list):
+        total = 0
+        for x in transactions:
+            total += x.amount
+        return total
+
 
     @staticmethod
     def get_transactions_from_time_period(time_choice, user):
         user_transactions = Transaction.get_users_transactions(user)
         
-        timespan_int = timespan_map[time_choice.timespan]
-        start_of_timespan_period = datetime.date.today(
+        timespan_int = timespan_map[time_choice]
+        start_of_timespan_period = datetime.datetime.today(
         ) - datetime.timedelta(days=timespan_int)
 
         filtered_transactions = []
         for transaction in user_transactions:
-            if transaction.time_of_transaction.date() >= start_of_timespan_period:
+            if transaction.time_of_transaction.timestamp() >= start_of_timespan_period.timestamp():
                 filtered_transactions = [*filtered_transactions, transaction]   
-        print(filtered_transactions)
         return filtered_transactions
     
     @staticmethod
     def get_category_splits(transactions: list):
+        #print(len(transactions))
         spent_per_category= dict()
         no_of_categories = Category.objects.count()
         for x in transactions:
-            if (len(spent_per_category) == 0) | spent_per_category.get(x.category) == None:
+            #print(str(x))
+            if ((len(spent_per_category) == 0) | (spent_per_category.get(x.category) == None)):
+                #print("AMOUNT :" + str(x.amount))
                 spent_per_category[x.category] = x.amount
             else:
                 spent_per_category.update({x.category : spent_per_category.get(x.category) + x.amount })
-        print(spent_per_category)
+                #print(spent_per_category.get(x.category))
+        #print("spent per cat: ")
+        #print(str(spent_per_category))
         return spent_per_category
 
     class Meta:
@@ -148,10 +157,3 @@ class RecurringTransaction(AbstractTransaction):
     def add_transaction(self, transaction: Transaction):
         """Add transaction to transaction in recurring transaction"""
         self.transactions.add(transaction)
-
-# class LinkRecurringTransaction(Model):
-#     """Model for linking individual transactions with their respective recurring transaction"""
-
-#     recurring_transaction = ForeignKey(RecurringTransaction, on_delete=CASCADE)
-
-#     transaction = ForeignKey(Transaction, on_delete=CASCADE)
