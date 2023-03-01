@@ -70,7 +70,7 @@ def edit_user_group_view(request: HttpRequest, pk: int) -> HttpResponse:
                 request,
                 messages.SUCCESS,
                 "Successfully edited user group")
-            return redirect('individual_group',
+            return redirect('individual_group_redirect',
                             pk=current_user_group.id)
     else:
         form = UserGroupForm(instance=current_user_group)
