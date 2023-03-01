@@ -21,7 +21,10 @@
             <p><strong>Sender Account: </strong>{{transaction.sender_account.name.capitalize}}</p>
             <p><strong>Receiver Account: </strong>{{transaction.receiver_account.name.capitalize}}</p>
             <p><strong>Time of Transaction: </strong>{{transaction.time_of_transaction}}</p>
-          </div>
+            <a class="btn btn-primary" href="{% url 'edit_transaction' transaction.id %}">Edit</a>
+          &nbsp
+            <a class="btn btn-primary" href="{% url 'delete_transaction' transaction.id %}">Delete</a>
+        </div>
         </div>
       </div>
     {% endfor %}
@@ -34,4 +37,3 @@
 {% block card_URL %}{% url 'view_transactions_redirect' %}{% endblock %}
 
 {% block action_title %}View All Transactions{% endblock %}
-

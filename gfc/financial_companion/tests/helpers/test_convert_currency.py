@@ -2,7 +2,7 @@ from .test_helper_base import HelperTestCase
 from financial_companion.helpers import convert_currency, CurrencyType
 
 
-class ConverCurrencyHelperFunctionTestCase(HelperTestCase):
+class ConvertCurrencyHelperFunctionTestCase(HelperTestCase):
     """Test for the convert_currency helpers function"""
 
     def test_valid_currencies_supported(self):
