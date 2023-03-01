@@ -13,7 +13,6 @@ from ..helpers import Timespan, TransactionType, CurrencyType
 from financial_companion.templatetags import get_completeness
 
 
-
 class AbstractTarget(Model):
     """Abstract model for target spending and saving"""
 

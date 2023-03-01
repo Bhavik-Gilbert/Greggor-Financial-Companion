@@ -75,6 +75,7 @@ def get_random_invite_code(length):
     result_str = ''.join(random.choice(letters) for i in range(length))
     return result_str
 
+
 def get_number_of_completed_targets(targets):
     total = 0
     for target in targets:
@@ -82,18 +83,23 @@ def get_number_of_completed_targets(targets):
             total += 1
     return total
 
+
 def get_sorted_members_based_on_completed_targets(members):
     member_completed_list = []
     for member in members:
         targets = member.get_all_targets()
         completed = get_number_of_completed_targets(targets)
         member_completed_list = [*member_completed_list, (member, completed)]
-    member_completed_list = sorted(member_completed_list, key = lambda x: x[1], reverse=True)
+    member_completed_list = sorted(
+        member_completed_list,
+        key=lambda x: x[1],
+        reverse=True)
 
     pos = 1
-    p = inflect.engine() #used to convert a number into a position
+    p = inflect.engine()  # used to convert a number into a position
     member_completed_pos_list = []
     for tuple in member_completed_list:
-        member_completed_pos_list = [*member_completed_pos_list, (*tuple, p.ordinal(pos))]
+        member_completed_pos_list = [
+            *member_completed_pos_list, (*tuple, p.ordinal(pos))]
         pos += 1
     return member_completed_pos_list

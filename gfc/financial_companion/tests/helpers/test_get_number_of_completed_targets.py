@@ -4,13 +4,14 @@ from financial_companion.models import User
 from freezegun import freeze_time
 import datetime
 
+
 class GetNumberOfCompletedTaregtsHelperFunctionTestCase(HelperTestCase):
     """Test for the get_number_of_completed_targets helpers function"""
 
     def setUp(self):
         self.user = User.objects.get(username='@johndoe')
         self.targets = self.user.get_all_targets()
-        self.total = 6  #6 / 7 will be complete at the first time check
+        self.total = 6  # 6 / 7 will be complete at the first time check
 
     @freeze_time("2023-01-01 13:00:00")
     def test_get_completed_within_day(self):

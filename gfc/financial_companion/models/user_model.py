@@ -61,25 +61,29 @@ class User(AbstractUser):
 
         all_targets = []
 
-        all_user_targets = fcmodels.UserTarget.objects.filter(user = user)
+        all_user_targets = fcmodels.UserTarget.objects.filter(user=user)
 
         all_accounts = fcmodels.PotAccount.objects.filter(user=user.id)
         all_account_targets = []
         for account in all_accounts:
             all_account_targets = [
                 *all_account_targets,
-                *fcmodels.AccountTarget.objects.filter(account = account)
+                *fcmodels.AccountTarget.objects.filter(account=account)
             ]
 
-        all_categories = fcmodels.Category.objects.filter(user = user)
+        all_categories = fcmodels.Category.objects.filter(user=user)
         all_category_targets = []
         for category in all_categories:
             all_category_targets = [
                 *all_category_targets,
-                *fcmodels.CategoryTarget.objects.filter(category = category)
+                *fcmodels.CategoryTarget.objects.filter(category=category)
             ]
 
-        all_targets = [*all_targets, *all_user_targets, *all_account_targets, *all_category_targets]
+        all_targets = [
+            *all_targets,
+            *all_user_targets,
+            *all_account_targets,
+            *all_category_targets]
 
         return all_targets
 

@@ -230,8 +230,8 @@ class Command(BaseCommand):
             UserGroup.objects.create(
                 name=self.faker.word(),
                 description=self.faker.text(),
-                invite_code = get_random_invite_code(8),
-                owner_email = owner.email
+                invite_code=get_random_invite_code(8),
+                owner_email=owner.email
             )
         all_groups = UserGroup.objects.all()
         for group in all_groups:

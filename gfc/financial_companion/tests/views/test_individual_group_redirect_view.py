@@ -22,7 +22,7 @@ class IndividualGroupRedirectViewTestCase(ViewTestCase):
         self.assertTrue(self._is_logged_in())
         response_url = reverse(
             'individual_group', kwargs={
-                'pk': self.group.id, 'leaderboard':'False'})
+                'pk': self.group.id, 'leaderboard': 'False'})
         self.assertRedirects(
             response,
             response_url,

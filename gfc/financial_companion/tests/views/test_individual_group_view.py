@@ -13,7 +13,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.group = UserGroup.objects.get(id=3)
         self.url: str = reverse(
             "individual_group", kwargs={
-                "pk": self.group.id, "leaderboard":"False"})
+                "pk": self.group.id, "leaderboard": "False"})
 
     def test_valid_individual_group_url(self):
         self.assertEqual(
@@ -39,7 +39,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self._login(self.owner)
         url: str = reverse(
             "individual_group", kwargs={
-                "pk": self.group.id, "leaderboard":"True"})
+                "pk": self.group.id, "leaderboard": "True"})
         response: HttpResponse = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/individual_group.html")
@@ -59,7 +59,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self._login(self.owner)
         url: str = reverse(
             "individual_group", kwargs={
-                "pk": self.group.id + 99999999, "leaderboard":"False"})
+                "pk": self.group.id + 99999999, "leaderboard": "False"})
         response: HttpResponse = self.client.get(url, follow=True)
         response_url: str = reverse("dashboard")
         self.assertRedirects(

@@ -8,7 +8,8 @@ from ..helpers import paginate, get_number_of_completed_targets, get_sorted_memb
 
 
 @login_required
-def individual_group_view(request: HttpRequest, pk: int, leaderboard: str) -> HttpResponse:
+def individual_group_view(request: HttpRequest, pk: int,
+                          leaderboard: str) -> HttpResponse:
     """View to see information on individual group"""
     try:
         group: UserGroup = UserGroup.objects.get(id=pk)
@@ -24,7 +25,8 @@ def individual_group_view(request: HttpRequest, pk: int, leaderboard: str) -> Ht
         count = group.members_count()
 
         if leaderboard == "True":
-            sorted_members_with_stats = get_sorted_members_based_on_completed_targets(sorted_members_list)
+            sorted_members_with_stats = get_sorted_members_based_on_completed_targets(
+                sorted_members_list)
             if count > 0:
                 pagenated_members_list = paginate(
                     request.GET.get('page', 1), sorted_members_with_stats)
@@ -34,7 +36,8 @@ def individual_group_view(request: HttpRequest, pk: int, leaderboard: str) -> Ht
                     request.GET.get('page', 1), sorted_members_list)
 
         return render(request, "pages/individual_group.html",
-                {"group": group, "members": pagenated_members_list, "is_owner": is_owner, "owners_email": owners_email, "count": count, "leaderboard": leaderboard=="True"})
+                      {"group": group, "members": pagenated_members_list, "is_owner": is_owner, "owners_email": owners_email, "count": count, "leaderboard": leaderboard == "True"})
+
 
 @login_required
 def individual_group_redirect(request: HttpRequest, pk: int) -> HttpResponse:
