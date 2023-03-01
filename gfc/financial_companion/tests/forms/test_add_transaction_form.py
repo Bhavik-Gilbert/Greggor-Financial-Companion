@@ -14,7 +14,7 @@ class AddTransactionFormTestCase(FormTestCase):
 
     def setUp(self):
         self.user = User.objects.get(username='@johndoe')
-        image_path = "financial_companion/tests/helpers/dragon.jpeg"
+        image_path = "financial_companion/tests/data/dragon.jpeg"
         # self.new_image = SimpleUploadedFile(name='dragon.jpeg', content=open(image_path, 'rb').read(), content_type='image/jpeg')
         self.form_input = {
             "title": "Test",
