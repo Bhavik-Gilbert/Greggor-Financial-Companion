@@ -1,10 +1,8 @@
 from .test_abstract_model_base import AbstractModelTestCase
 from django.db.models.base import ModelBase
 from decimal import Decimal
-
 from ...helpers import Timespan, TransactionType, CurrencyType
 from ...models import AbstractTarget
-
 
 class AbstractTargetModelTestCase(AbstractModelTestCase):
     """Test file for abstract target model class"""
@@ -93,4 +91,4 @@ class AbstractTargetModelTestCase(AbstractModelTestCase):
 
     def test_valid_target_is_complete(self) -> None:
         complete = self.test_model.is_complete()
-        self.assertTrue(complete == True or complete == False)
+        self.assertEqual(complete, False)
