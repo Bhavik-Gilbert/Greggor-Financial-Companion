@@ -23,7 +23,7 @@ def send_monthly_newsletter_email():
         # print(len(filtered_transactions))
         context = {
             "user": user,
-            "month": calendar.month_name[datetime.now(tz=None).month],
+            "month": calendar.month_name[(datetime.now(tz=None).month)-1],
             "transactions": user.get_user_transactions()[:10]
 
         }

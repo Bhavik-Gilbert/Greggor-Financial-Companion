@@ -72,7 +72,7 @@ def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         transaction.delete()
         messages.add_message(
             request,
-            messages.WARNING,
+            messages.ERROR,
             "The transaction has been deleted")
         return redirect('view_transactions', filter_type="all")
 

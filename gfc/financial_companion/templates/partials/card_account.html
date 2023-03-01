@@ -9,7 +9,7 @@
         </div>
         <div class="card-footer">
             <a href="{% url 'individual_account_redirect' pk=account.id %}" class="btn btn-outline-primary">View</a> 
-            <a href="{% url 'delete_monetary_account' pk=account.id %}" class="btn btn-outline-danger" onclick="showAlert('account')">Delete</a>
+            <a href="{% url 'delete_monetary_account' pk=account.id %}" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this account?')">Delete</a>
         </div>
     </div>
 </div>
