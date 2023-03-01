@@ -7,7 +7,7 @@
         <p class="card-text">Description: {{ group.description }}</p>
         </div>
         <div class="card-footer text-muted justify-content-center">
-            <a href="{% url 'individual_group' pk=group.id %}" class="btn btn-primary justify-content-center">View</a>
+            <a href="{% url 'individual_group_redirect' pk=group.id %}" class="btn btn-primary justify-content-center">View</a>
         </div>
     </div>
 </div>

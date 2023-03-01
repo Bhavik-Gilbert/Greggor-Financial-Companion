@@ -10,6 +10,7 @@ from .category_model import Category
 from .user_model import User
 from .accounts_model import PotAccount
 from ..helpers import Timespan, TransactionType, CurrencyType
+from financial_companion.templatetags import get_completeness
 
 
 class AbstractTarget(Model):
@@ -33,6 +34,12 @@ class AbstractTarget(Model):
 
     class Meta:
         abstract = True
+
+    def is_complete(self):
+        if get_completeness(self) >= 100:
+            return True
+        else:
+            return False
 
 
 class CategoryTarget(AbstractTarget):

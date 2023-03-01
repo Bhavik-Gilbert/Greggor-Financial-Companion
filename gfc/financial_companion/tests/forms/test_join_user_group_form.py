@@ -7,7 +7,7 @@ from financial_companion.models import User
 
 
 class JoinUserGroupFormTestCase(FormTestCase):
-    """Test of the sign up form"""
+    """Test of the join user group form"""
 
     def setUp(self):
         self.url = reverse('join_user_group')

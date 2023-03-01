@@ -5,6 +5,7 @@ from financial_companion.helpers import ParseStatementPDF, CurrencyType
 from datetime import datetime
 from django.utils.timezone import make_aware
 from typing import Any
+from decimal import Decimal
 
 
 class AddTransactionForm(forms.ModelForm):
@@ -87,10 +88,19 @@ class AddTransactionForm(forms.ModelForm):
 class AddTransactionsViaBankStatementForm(forms.Form):
     """Form to upload bank statement to add new transactions"""
     bank_statement: forms.FileField = forms.FileField(
-        validators=[FileExtensionValidator(['pdf'])]
+        validators=[FileExtensionValidator(['pdf'])],
+        label="Bank Statement PDF"
     )
     account_currency: forms.ChoiceField = forms.ChoiceField(
-        choices=CurrencyType.choices
+        choices=CurrencyType.choices,
+        label="Account Currency"
+    )
+    update_balance = forms.ChoiceField(
+        label="Update Account Balance (Select if you want to set the balance of this account to the close balance on the statement provided)",
+        choices=(
+            (False, "No"),
+            (True, "Yes")
+        )
     )
 
     def __init__(self, *args, **kwargs):
@@ -109,8 +119,9 @@ class AddTransactionsViaBankStatementForm(forms.Form):
         super().full_clean()
 
         bank_statement: forms.FileInput = self.cleaned_data["bank_statement"]
-        account: Account = self.cleaned_data["account"]
+        account: PotAccount = self.cleaned_data["account"]
         currency: CurrencyType = self.cleaned_data["account_currency"]
+        update_balance: bool = self.cleaned_data["update_balance"]
 
         bank_statement_file_path: str = bank_statement.temporary_file_path()
         bank_statement_parser: ParseStatementPDF = ParseStatementPDF()
@@ -119,7 +130,7 @@ class AddTransactionsViaBankStatementForm(forms.Form):
         transactions: list[Transaction] = []
         for parsed_transaction in parsed_transactions_list:
             title: str = " ".join(parsed_transaction["description"])
-            description: str = "Generate via bank statement"
+            description: str = "Generated via bank statement"
             date: datetime = make_aware(parsed_transaction["date"])
 
             transaction_exists_query: dict[str, Any] = {
@@ -144,4 +155,8 @@ class AddTransactionsViaBankStatementForm(forms.Form):
             new_transaction.save()
 
             transactions = [*transactions, new_transaction]
+
+        if update_balance == "True" and len(parsed_transactions_list) > 0:
+            account.balance: Decimal = parsed_transactions_list[-1]["balance"]
+            account.save()
         return transactions
