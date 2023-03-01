@@ -1,19 +1,19 @@
 {% extends "page.html" %}
 
 <!-- Title -->
-{% block title %}User Group Form{% endblock %}
+{% block title %}{{title}} Form{% endblock %}
 
 <!-- Content -->
 {% block content %}
-    <h1>User Group Form</h1>
+    <h1>{{title}} Form </h1>
     <form method="post">
         {% csrf_token %}
         {% include 'partials/form.html' with form=form %}
       <button type="submit" name="submit_type" value="Submit" class="btn btn-primary">
         {% if form_toggle %}
-            Create User Group
+            Create {{title}}
         {% else %}
-            Edit User Group
+            Edit {{title}}
         {% endif %}
     </button>
     </form>

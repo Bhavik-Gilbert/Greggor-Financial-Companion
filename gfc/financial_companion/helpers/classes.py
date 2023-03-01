@@ -11,11 +11,17 @@ from datetime import datetime
 class ParseStatementPDF:
     def __init__(self):
         self.number_regex: str = r'[^-\d.]'
+        self.ignore_in_description: list[str] = [
+            "transfer",
+            "purchase",
+            "payment"
+        ]
         self.reset_object()
 
     def reset_object(self):
         """Sets all transaction data to none"""
         self.date: datetime = None
+        self.balance: float = None
         self.reset_data()
 
     def reset_data(self):
@@ -23,15 +29,14 @@ class ParseStatementPDF:
         self.amount: float = None
         self.transaction_type: str = None
         self.description: str = None
-        self.balance: float = None
 
-    def get_pdf_statement_column_expense_indexes(
+    def get_dataframe_list_statement_column_expense_indexes(
             self, statement_dataframe_list: list[pd.DataFrame]) -> tuple[int, int, bool]:
         """Checks if income and expense fields are separate or together"""
         if pd.isna(statement_dataframe_list[0].iloc[0][-3]) or re.sub(self.number_regex, '',
                                                                       statement_dataframe_list[0].iloc[0][-3])[1:].replace(".", "", 1).replace("-", "", 1).isnumeric():
             return -3, -2, False
-        if re.sub(self.number_regex, '', statement_dataframe_list[0].iloc[0][-2])[
+        if not pd.isna(statement_dataframe_list[0].iloc[0][-2]) and re.sub(self.number_regex, '', statement_dataframe_list[0].iloc[0][-2])[
                 1:].replace(".", "", 1).replace("-", "", 1).isnumeric():
             return -2, -2, False
 
@@ -42,7 +47,7 @@ class ParseStatementPDF:
         """Returns list of transaction data from list of dataframes"""
         for statement_dataframe in statement_dataframe_list:
             transactions = self.get_transactions_from_dataframe(
-                statement_dataframe, transactions, indexes)
+                statement_dataframe, indexes, transactions)
         return transactions
 
     def set_expense_and_income_columns_correct_way_around(
@@ -109,12 +114,14 @@ class ParseStatementPDF:
     def set_description_from_datataframe_row(
             self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
         """Updates object description data if statement dataframe row descritiption block is not empty"""
-        if not pd.isna(statement_dataframe_row[indexes["description"]]):
+        description: str = statement_dataframe_row[indexes["description"]]
+        if not pd.isna(description) and description.lower(
+        ) not in self.ignore_in_description:
             if self.description is None:
-                self.description: str = [
-                    str(statement_dataframe_row[indexes["description"]])]
+                self.description: list[str] = [
+                    str(description)]
             else:
-                self.description += [statement_dataframe_row[indexes["description"]]]
+                self.description += [description]
 
     def set_all_data_from_dataframe_row(
             self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
@@ -127,16 +134,37 @@ class ParseStatementPDF:
             statement_dataframe_row, indexes)
 
     def add_new_transaction(
-            self, transactions, new_transaction: dict[str, Any]) -> list[dict[str, Any]]:
+            self, transactions: list[dict[str, Any]], new_transaction: dict[str, Any]) -> list[dict[str, Any]]:
         """Returns transactions list, adding new transaction if valid"""
-        if not all(new_transaction.values()):
-            return transactions
+        if all(new_transaction.values()):
+            self.reset_data()
+            return [*transactions, new_transaction]
 
-        self.reset_data()
-        return [*transactions, new_transaction]
+        new_transaction.pop("description", None)
+        if all(
+                new_transaction_data is None for new_transaction_data in new_transaction.values()):
+            self.reset_data()
+        return transactions
 
-    def get_transactions_from_dataframe(self, statement_dataframe: pd.DataFrame,
-                                        transactions: list[dict[str, Any]], indexes: dict[str, int]) -> list[dict[str, Any]]:
+    def get_transaction_from_dataframe_row(self, statement_dataframe_row: list[Any], indexes: dict[str, int],
+                                           transactions: list[dict[str, Any]] = []) -> list[dict[str, Any]]:
+        """Returns list of transaction data of currenct transactions and dataframe row"""
+        self.set_all_data_from_dataframe_row(
+            statement_dataframe_row, indexes)
+
+        new_transaction = {
+            "date": self.date,
+            "amount": self.amount,
+            "balance": self.balance,
+            "transaction_type": self.transaction_type,
+            "description": self.description
+        }
+
+        return self.add_new_transaction(
+            transactions, new_transaction)
+
+    def get_transactions_from_dataframe(self, statement_dataframe: pd.DataFrame, indexes: dict[str, int],
+                                        transactions: list[dict[str, Any]] = []) -> list[dict[str, Any]]:
         """Returns list of transaction data from dataframe"""
         statement_dataframe.dropna(
             how='all', axis=1, inplace=True
@@ -144,42 +172,32 @@ class ParseStatementPDF:
         self.set_initial_balance_from_dataframe(statement_dataframe, indexes)
 
         for statement_dataframe_row in statement_dataframe.iloc():
-            self.set_all_data_from_dataframe_row(
-                statement_dataframe_row, indexes)
-
-            new_transaction = {
-                "date": self.date,
-                "amount": self.amount,
-                "balance": self.balance,
-                "transaction_type": self.transaction_type,
-                "description": self.description
-            }
-
-            transactions = self.add_new_transaction(
-                transactions, new_transaction)
+            transactions = self.get_transaction_from_dataframe_row(
+                statement_dataframe_row, indexes, transactions)
 
         return self.set_expense_and_income_columns_correct_way_around(
             transactions)
 
     def get_transactions_from_pdf_statement(
-            self, statement_name: str) -> list[dict[str, Any]]:
-        """Returns list of dictionary of transaction data from pdf"""
+            self, statement_path: str) -> list[dict[str, Any]]:
+        """
+        Returns list of dictionary of transaction data from pdf
+        Run in try except block to handle errors
+        """
         statement_dataframe_list: list[pd.DataFrame] = tabula.read_pdf(
-            statement_name, pages='all')
-
-        if len(statement_dataframe_list) <= 0:
-            return []
+            statement_path, pages='all')
 
         indexes: dict[str, int] = {}
         indexes["date"] = 0
         indexes["balance"] = -1
-        indexes["income"], indexes["expense"], fail = self.get_pdf_statement_column_expense_indexes(
+        indexes["income"], indexes["expense"], fail = self.get_dataframe_list_statement_column_expense_indexes(
             statement_dataframe_list)
         indexes["description"] = indexes["income"] - 1
 
         self.reset_object()
+        transactions: list[dict[str, Any]] = []
         if not fail:
-            transactions: list[dict[str, Any]] = self.get_transactions_from_dataframe_list(
+            transactions = self.get_transactions_from_dataframe_list(
                 statement_dataframe_list, indexes)
 
         return transactions
@@ -197,4 +215,4 @@ class ParseStatementPDF:
         elif parsed_transaction["transaction_type"] == TransactionType.EXPENSE:
             return other_account, account
 
-        return account, other_account
+        return other_account, account
