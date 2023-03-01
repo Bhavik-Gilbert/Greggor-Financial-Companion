@@ -4,6 +4,7 @@ from decimal import Decimal
 from ...helpers import Timespan, TransactionType, CurrencyType
 from ...models import AbstractTarget
 
+
 class AbstractTargetModelTestCase(AbstractModelTestCase):
     """Test file for abstract target model class"""
 

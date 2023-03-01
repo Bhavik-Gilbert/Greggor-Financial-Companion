@@ -4,6 +4,7 @@ from ...models import UserTarget
 from freezegun import freeze_time
 import datetime
 
+
 class UserTargetModelTestCase(ModelTestCase):
     """Test file for UserTarget model class"""
 
