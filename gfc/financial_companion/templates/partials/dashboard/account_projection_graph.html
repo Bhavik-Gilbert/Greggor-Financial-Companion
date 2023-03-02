@@ -15,7 +15,6 @@
             }
         }
         function calculate_dataset(accountsInfo, projectionTimescale_inMonths, mainCurrencySymbol = "{{main_currency}}", conversions_dict = JSON.parse("{{conversion_to_main_currency_JSON|escapejs}}")) {
-            console.log(accountsInfo);
             lineColours = [theme.primary, theme.secondary, theme.success, theme.warning, theme.danger, theme.dark]
             $(document).ready(() => {
                 var timeBands = {{timescales_strings|safe}};
@@ -32,9 +31,11 @@
             
         function getDatasetForAccount(account, mainCurrencySymbol, timeBands, lineColour, conversions_dict) {
             
-            const conversion = conversions_dict[account.currency];
-            account.balances = account.balances.map(balance => balance * conversion);
-                         
+            if (account.currency != mainCurrencySymbol) {
+                const conversion = conversions_dict[account.currency];
+                account.balances = account.balances.map(balance => balance * conversion);
+            }
+
             return ({
                 label: account.name,
                 data: account.balances,

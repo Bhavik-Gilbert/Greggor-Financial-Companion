@@ -20,24 +20,29 @@
         account_ids = JSON.parse(document.getElementById('accountDropdown').value);
         const accountsInfo = JSON.parse("{{bank_account_infos|escapejs}}");
         const conversions_dict = JSON.parse("{{conversion_to_main_currency_JSON|escapejs}}");
+        const projectionTimescale_inMonths = document.getElementById('projectionTimescaleDropdown').value;
         mainCurrencySymbol = "{{main_currency}}"
 
         clearFigures_Income_Balance();
+
+        if (account_ids.length == 1) {
+          mainCurrencySymbol = accountsInfo[account_ids[0]].currency;
+        }
 
         var selectedAccountsInfo = [];
         for (acc in accountsInfo) {
           if (account_ids.includes(Number(acc))) {
             const account = accountsInfo[acc]
             selectedAccountsInfo.push(account);
-            const conversion = conversions_dict[account.currency];
-            setFigures_Income_Balance(account.balances, conversion, mainCurrencySymbol);
+            var conversion = 1;
+            if (account.currency != mainCurrencySymbol) {
+              conversion = conversions_dict[account.currency];
+            }
+            setFigures_Income_Balance(account.balances, projectionTimescale_inMonths, conversion, mainCurrencySymbol);
           }
         }
         
-        const projectionTimescale_inMonths = document.getElementById('projectionTimescaleDropdown').value;
-        
         calculate_dataset(selectedAccountsInfo, projectionTimescale_inMonths, mainCurrencySymbol, conversions_dict)
-        
       }
 
       function clearFigures_Income_Balance() {
@@ -45,7 +50,8 @@
         document.getElementById('projected_total_num').innerText = 0.00;
       }
 
-      function setFigures_Income_Balance(balances, conversion, mainCurrencySymbol) {
+      function setFigures_Income_Balance(balances, timescale, conversion, mainCurrencySymbol) {
+        timescale -= 1;
         const projected_income_num_text = document.getElementById('projected_income_num');
         const projected_total_num_text = document.getElementById('projected_total_num');
         const projected_income_currency_text = document.getElementById('projected_income_currency');
@@ -54,8 +60,8 @@
         let projected_income_num = parseFloat(projected_income_num_text.innerText);
         let projected_total_num = parseFloat(projected_total_num_text.innerText);
 
-        projected_income_num += parseFloat(conversion) * (parseFloat(balances[balances.length-1]) - parseFloat(balances[0]));
-        projected_total_num += parseFloat(conversion) * parseFloat(balances[balances.length-1]);
+        projected_income_num += parseFloat(conversion) * (parseFloat(balances[timescale]) - parseFloat(balances[0]));
+        projected_total_num += parseFloat(conversion) * parseFloat(balances[timescale]);
 
         projected_income_currency_text.innerText = mainCurrencySymbol;
         projected_total_currency_text.innerText = mainCurrencySymbol;
