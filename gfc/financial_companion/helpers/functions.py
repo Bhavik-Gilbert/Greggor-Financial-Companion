@@ -12,9 +12,6 @@ from dateutil.relativedelta import relativedelta
 import calendar
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-<< << << < HEAD
-== == == =
->>>>>> > 9d5966528c359df0626489fddeac741167e3efc4
 
 
 def get_currency_symbol(currency_code: str):
