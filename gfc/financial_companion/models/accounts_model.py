@@ -12,7 +12,7 @@ from model_utils.managers import InheritanceManager
 
 from financial_companion.models import User
 import financial_companion.models as fcmodels
-from ..helpers import CurrencyType, MonetaryAccountType, TransactionType
+from ..helpers import CurrencyType, AccountType, TransactionType
 
 
 class Account(Model):
@@ -89,7 +89,7 @@ class PotAccount(Account):
     )
 
     def get_type(self):
-        return f"{MonetaryAccountType.POT}"
+        return f"{AccountType.POT}"
 
 
 def only_int(value):
@@ -135,4 +135,4 @@ class BankAccount(PotAccount):
     )
 
     def get_type(self):
-        return f"{MonetaryAccountType.BANK}"
+        return f"{AccountType.BANK}"

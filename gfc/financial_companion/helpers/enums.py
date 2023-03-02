@@ -41,10 +41,11 @@ class CurrencyType(models.TextChoices):
     KZT: str = "KZT"
 
 
-class MonetaryAccountType(models.TextChoices):
+class AccountType(models.TextChoices):
     """ENUM for transaction types"""
     POT: str = "pot"
     BANK: str = "bank"
+    REGULAR: str = "regular"
 
 
 class ScoreListOrderType(models.TextChoices):
