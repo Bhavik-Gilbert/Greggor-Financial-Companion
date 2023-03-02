@@ -1,0 +1,53 @@
+<head>
+  <meta charset = "utf-8">
+  <meta name = "viewport" content = "width=device-width, initial-scale=1">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+</head>
+
+<script>
+
+  function setChart(chartDataset, chartLabels, y_axisLabel, x_axisLabel, chartType='line', y_beginsAtZero=false, x_beginsAtZero=false) {
+    const ctx = document.getElementById("chart");
+
+    if (ctx.attributes.length > 1) { // if there is a chart in the canvas.
+          Chart.getChart(ctx).destroy(); // clear the canvas
+    }
+
+    Chart.defaults.color = '{{primary}} !IMPORTANT';
+
+    new Chart(ctx, {
+      type: chartType,
+      data: {
+        labels: chartLabels,
+        datasets: chartDataset
+      },
+      options: {
+        scales: {
+          y: {
+            title: {
+                  display: true,
+                  text: y_axisLabel,
+                },
+            beginAtZero: y_beginsAtZero
+          },
+          x: {
+            title: {
+                  display: true,
+                  text: x_axisLabel,
+                },
+            beginAtZero: x_beginsAtZero
+          }
+        }
+      }
+    });
+  }
+</script>
+
+<body>
+  <div class="card text-bg-light">
+    <div class="card-body py-1 px-0 mx-3">
+      <canvas id="chart"></canvas>
+    </div>
+  </div>
+</body>
