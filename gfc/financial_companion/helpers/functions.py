@@ -1,3 +1,6 @@
+import inflect
+import financial_companion.models as fcmodels
+from json import dumps
 from currency_symbols import CurrencySymbols
 from currency_converter import CurrencyConverter
 from kzt_exchangerates import Rates as KZTRates
@@ -9,12 +12,9 @@ from dateutil.relativedelta import relativedelta
 import calendar
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-<<<<<<< HEAD
-from json import dumps
-import financial_companion.models as fcmodels
-=======
-import inflect
->>>>>>> 9d5966528c359df0626489fddeac741167e3efc4
+<< << << < HEAD
+== == == =
+>>>>>> > 9d5966528c359df0626489fddeac741167e3efc4
 
 
 def get_currency_symbol(currency_code: str):
@@ -175,6 +175,8 @@ def get_data_for_account_projection(user):
         'conversion_to_main_currency': conversions,
         'main_currency': mainCurrency
     }
+
+
 def get_number_of_completed_targets(targets):
     total = 0
     for target in targets:
