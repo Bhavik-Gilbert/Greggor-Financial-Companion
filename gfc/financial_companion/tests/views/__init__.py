@@ -38,6 +38,3 @@ from .test_delete_category_target_view import DeleteCategoryTargetViewTestCase
 from .test_delete_account_target_view import DeleteAccountTargetViewTestCase
 from .test_delete_user_target_view import DeleteUserTargetViewTestCase
 from .test_delete_profile_view import DeleteProfileViewTestCase
-<< << << < HEAD
-== == == =
->>>>>> > 9d5966528c359df0626489fddeac741167e3efc4

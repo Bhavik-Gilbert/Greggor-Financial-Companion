@@ -15,19 +15,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   
     <script>
+      function roundToDecimalPlaces(element, dp) {
+        element.value = parseFloat(element.value).toFixed(dp);
+        if (dp == 0) {
+          element.value = parseInt(element.value);
+        }
+      }
+
       function getUserChoices() {
         // Retrieves the user selection for the account and the projection timescale (in months)
         account_ids = JSON.parse(document.getElementById('accountDropdown').value);
         const accountsInfo = JSON.parse("{{bank_account_infos|escapejs}}");
         const conversions_dict = JSON.parse("{{conversion_to_main_currency_JSON|escapejs}}");
         const projectionTimescale_inMonths = document.getElementById('projectionTimescaleDropdown').value;
-        mainCurrencySymbol = "{{main_currency}}"
+        const currencyChosen = document.getElementById('currencyDropdown').value;
 
-        clearFigures_Income_Balance();
+        mainCurrencySymbol = "{{main_currency}}";
 
-        if (account_ids.length == 1) {
+        if (currencyChosen != "DEFAULT") {
+          mainCurrencySymbol = currencyChosen;
+        }
+        else if (account_ids.length == 1) {
           mainCurrencySymbol = accountsInfo[account_ids[0]].currency;
         }
+
+        clearFigures_Income_Balance();
 
         var selectedAccountsInfo = [];
         for (acc in accountsInfo) {
@@ -36,13 +48,16 @@
             selectedAccountsInfo.push(account);
             var conversion = 1;
             if (account.currency != mainCurrencySymbol) {
-              conversion = conversions_dict[account.currency];
+              conversion = conversions_dict[mainCurrencySymbol];
+              if (account.currency == '{{main_currency}}') {
+                conversion = 1/conversion
+                conversions_dict[account.currency] = conversion;
+              }
             }
             setFigures_Income_Balance(account.balances, projectionTimescale_inMonths, conversion, mainCurrencySymbol);
           }
         }
-        
-        calculate_dataset(selectedAccountsInfo, projectionTimescale_inMonths, mainCurrencySymbol, conversions_dict)
+        calculate_dataset(selectedAccountsInfo, projectionTimescale_inMonths, mainCurrencySymbol, conversions_dict);
       }
 
       function clearFigures_Income_Balance() {
@@ -76,7 +91,7 @@
     <div class="container mt-3"></div>
     {% if bank_accounts %}
       <div class = "row justify-content-start align-items-end g-2">
-        <div class = "col-4 align-bottom">
+        <div class = "col-3 align-bottom">
           <!--- The two dropdown lists to allow the user to select the station and the day of the week --->
           <label>Account:</label>
           <select class = "form-select form-select" name = "accountDropdown" id = "accountDropdown" autocomplete="off">
@@ -94,6 +109,27 @@
             {% endfor %}
           </select>
         </div>
+        <div class = "col-2 align-bottom">
+          <label>Currency:</label>
+          <select class = "form-select form-select" name="currencyDropdown" id="currencyDropdown" autocomplete="off">
+            <option value="DEFAULT" selected="selected">Default</option>
+            {% for currency in conversion_to_main_currency.keys %}
+              <option value = "{{currency}}">{{currency}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <!--
+        <div class = "col-2 align-bottom">
+          <label>Standing Order:</label>
+            <input type="number" onchange="roundToDecimalPlaces(this,2)" value="0" step="50" class="form-control" name="standingOrderInput" id="standingOrderInput" autocomplete="off">
+          </input>
+        </div>
+        <div class = "col-1 align-bottom">
+          <label>Frequency (months):</label>
+            <input type="number" onchange="roundToDecimalPlaces(this,0)" value="0" step="12" class="form-control" name="frequencyInput" id="frequencyInput" autocomplete="off">
+          </input>
+        </div>
+        -->
         <div class = "col-sm-1 mb-0">
           <br>
           <button type="submit" class="btn btn-primary" onclick="getUserChoices()">Apply</button>
