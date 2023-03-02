@@ -26,10 +26,10 @@ def dashboard_view(request: HttpRequest) -> HttpResponse:
     recent_transactions = user_transactions[0:3]
 
     context = {
-        'accounts': user_accounts, 
-        'recent': recent_transactions, 
+        'accounts': user_accounts,
+        'recent': recent_transactions,
     }
 
     context.update(get_data_for_account_projection(user))
-    
+
     return render(request, "pages/dashboard.html", context)

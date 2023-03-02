@@ -30,7 +30,7 @@ class GetNumberOfDaysInPrevMonthHelperFunctionTestCase(HelperTestCase):
         days = get_number_of_days_in_prev_month(offset)
         self.assertGreater(days, 0)
         self.assertEqual(days, 31)
-    
+
     @freeze_time("2022-08-04 12:00:00")
     def test_return_days_negative_offset(self):
         """Offset Month = May '22; Prev Mont = April '22"""

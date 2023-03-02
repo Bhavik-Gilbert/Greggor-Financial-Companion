@@ -7,9 +7,11 @@ class GetShortMonthNamesForTimescaleHelperFunctionTestCase(HelperTestCase):
     """Test for the test_get_short_month_names_for_timescale helpers function"""
 
     def setUp(self):
-        self.valid_bank_accounts = BankAccount.objects.filter(interest_rate__gt=0)
+        self.valid_bank_accounts = BankAccount.objects.filter(
+            interest_rate__gt=0)
         self.no_bank_accounts = BankAccount.objects.filter(id__lt=0)
-        self.max_timescale_in_months = max(get_projection_timescale_options().keys())
+        self.max_timescale_in_months = max(
+            get_projection_timescale_options().keys())
 
     def test_return_dates_valid_max_timescale(self):
         timescale_in_months = 5
@@ -24,7 +26,7 @@ class GetShortMonthNamesForTimescaleHelperFunctionTestCase(HelperTestCase):
         timescale_in_months = 0
         dates = get_short_month_names_for_timescale(timescale_in_months)
         self.assertEqual(len(dates), timescale_in_months)
-    
+
     def test_return_dates_invalid_max_timescale(self):
         dates = get_short_month_names_for_timescale(-1)
         self.assertEqual(len(dates), 0)

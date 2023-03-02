@@ -11,7 +11,7 @@ import re
 def create_target(request, Target, current_item):
     title_first_word = re.split(r"\B([A-Z])", Target.__name__)[0]
     title = f'{title_first_word} Target'
-    form = TargetForm(request.POST, foreign_key=current_item, form_type = Target)
+    form = TargetForm(request.POST, foreign_key=current_item, form_type=Target)
     if request.method == "POST":
         if form.is_valid():
             try:
@@ -22,13 +22,13 @@ def create_target(request, Target, current_item):
                     messages.WARNING,
                     f'This target can not be created as a target with the same timespan, transaction type and {title_first_word.lower()} exists')
                 return render(request, "pages/create_targets.html",
-                              {'form': TargetForm(foreign_key=current_item, form_type = Target), "form_toggle": True, 'title': title})
+                              {'form': TargetForm(foreign_key=current_item, form_type=Target), "form_toggle": True, 'title': title})
 
             else:
-        
+
                 return None
     else:
-        form = TargetForm(foreign_key=current_item, form_type = Target)
+        form = TargetForm(foreign_key=current_item, form_type=Target)
     return render(request, "pages/create_targets.html",
                   {'form': form, "form_toggle": True, 'title': title})
 
@@ -91,8 +91,12 @@ def edit_target(request, Target, current_item, foreign_key):
     title_first_word = re.split(r"\B([A-Z])", Target.__name__)[0]
     title = f'{title_first_word} Target'
     if request.method == "POST":
-        form = TargetForm(request.POST, foreign_key=foreign_key, instance=current_item,  form_type = Target)
-        if form.is_valid() :
+        form = TargetForm(
+            request.POST,
+            foreign_key=foreign_key,
+            instance=current_item,
+            form_type=Target)
+        if form.is_valid():
             try:
                 form.save()
             except Exception as e:
@@ -101,12 +105,15 @@ def edit_target(request, Target, current_item, foreign_key):
                     messages.WARNING,
                     f'This target can not be created as a target with the same timespan, transaction type and {title_first_word.lower()} exists')
                 return render(request, "pages/create_targets.html",
-                              {'form': TargetForm( foreign_key=foreign_key, instance=current_item,  form_type = Target), "form_toggle": False, 'title': title})
+                              {'form': TargetForm(foreign_key=foreign_key, instance=current_item, form_type=Target), "form_toggle": False, 'title': title})
             else:
                 return None
     else:
-        
-        form = TargetForm( foreign_key=foreign_key, instance=current_item,  form_type = Target)
+
+        form = TargetForm(
+            foreign_key=foreign_key,
+            instance=current_item,
+            form_type=Target)
     return render(request, "pages/create_targets.html",
                   {'form': form, "form_toggle": False, 'title': title})
 
@@ -131,9 +138,10 @@ def edit_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
 
     if to_return is None:
         return redirect('individual_category_redirect',
-                                pk=current_category_target.category.id)
+                        pk=current_category_target.category.id)
     else:
         return to_return
+
 
 @login_required
 def edit_account_target_view(request: HttpRequest, pk: int) -> HttpResponse:
@@ -158,6 +166,7 @@ def edit_account_target_view(request: HttpRequest, pk: int) -> HttpResponse:
     else:
         return to_return
 
+
 @login_required
 def edit_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
     """View to allow users to edit an account target"""
@@ -173,10 +182,9 @@ def edit_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
         request,
         UserTarget,
         current_user_target,
-        request.user) 
+        request.user)
 
     if to_return is None:
         return redirect("dashboard")
     else:
         return to_return
-                

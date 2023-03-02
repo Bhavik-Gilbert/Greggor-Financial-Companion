@@ -7,9 +7,11 @@ register = template.Library()
 def getKeyList(dictionary):
     return [*dictionary.keys()]
 
+
 @register.filter
 def list(value):
     return [value]
+
 
 @register.filter
 def length(list_in):

@@ -11,18 +11,19 @@ class GetDataForAccountProjectionHelperFunctionTestCase(HelperTestCase):
         self.invalid_user = -1
 
     def test_return_context_valid_user_with_savings_accounts(self):
-        self.context = get_data_for_account_projection(self.valid_user_with_savings_accounts)
+        self.context = get_data_for_account_projection(
+            self.valid_user_with_savings_accounts)
         self._assert_context_is_valid()
         self._assert_bank_accounts_is_(True)
         self._assert_bank_accounts_info_is_(True)
 
-    
     def test_return_context_valid_user_without_savings_accounts(self):
-        self.context = get_data_for_account_projection(self.valid_user_without_savings_accounts)
+        self.context = get_data_for_account_projection(
+            self.valid_user_without_savings_accounts)
         self._assert_context_is_valid()
         self._assert_bank_accounts_is_(False)
         self._assert_bank_accounts_info_is_(False)
-    
+
     def test_return_context_invalid_user(self):
         self.context = get_data_for_account_projection(self.invalid_user)
         self._assert_context_is_valid()
@@ -57,12 +58,12 @@ class GetDataForAccountProjectionHelperFunctionTestCase(HelperTestCase):
         self.assertIsInstance(conversion_to_main_currency_JSON, str)
         self.assertIsInstance(conversion_to_main_currency, dict)
         self.assertIsInstance(main_currency, str)
-    
+
     def _assert_bank_accounts_is_(self, validity):
         bank_accounts = self.context['bank_accounts']
         self.assertTrue((len(bank_accounts) != 0) == validity)
         self.assertIsInstance(bank_accounts, dict)
-    
+
     def _assert_bank_accounts_info_is_(self, validity):
         bank_account_infos = self.context['bank_account_infos']
         self.assertTrue((len(bank_account_infos) != 2) == validity)
