@@ -1,5 +1,5 @@
 from django import template
-from ..models import Transaction, CategoryTarget, AccountTarget, UserTarget
+import financial_companion.models as fcmodels
 from financial_companion.helpers import timespan_map
 import datetime
 register = template.Library()
@@ -9,11 +9,11 @@ register = template.Library()
 def get_completeness(current):
     transactions = []
 
-    if isinstance(current, CategoryTarget):
+    if isinstance(current, fcmodels.CategoryTarget):
         transactions = get_category_transactions(current)
-    elif isinstance(current, AccountTarget):
+    elif isinstance(current, fcmodels.AccountTarget):
         transactions = get_account_transactions(current)
-    elif isinstance(current, UserTarget):
+    elif isinstance(current, fcmodels.UserTarget):
         transactions = get_user_transactions(current)
 
     timespan_int = timespan_map[current.timespan]
@@ -38,13 +38,13 @@ def get_completeness(current):
         return round(completeness, 2)
 
 
-def get_category_transactions(current: CategoryTarget):
+def get_category_transactions(current):
     return current.category.get_category_transactions()
 
 
-def get_account_transactions(current: AccountTarget):
+def get_account_transactions(current):
     return current.account.get_account_transactions()
 
 
-def get_user_transactions(current: UserTarget):
+def get_user_transactions(current):
     return current.user.get_user_transactions()

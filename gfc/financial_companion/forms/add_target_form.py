@@ -9,7 +9,7 @@ class TargetForm(forms.Form):
     """Form to add a target"""
 
     def __init__(self, *args, **kwargs) -> None:
-        self.foreign_key: AbstractTarget = kwargs.get("foreign_key")
+        self.foreign_key = kwargs.get("foreign_key")
         kwargs.pop("foreign_key", None)
         self.instance: AbstractTarget = kwargs.get("instance")
         kwargs.pop("instance", None)

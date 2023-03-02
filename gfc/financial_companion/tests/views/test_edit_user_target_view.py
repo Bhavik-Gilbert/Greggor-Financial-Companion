@@ -2,16 +2,15 @@ from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.forms import TargetForm
-from financial_companion.models import User, Account, AccountTarget
+from financial_companion.models import User, UserTarget
 
 
-class CreateAccountTargetViewTestCase(ViewTestCase):
-    """Tests of the create account target view."""
+class EditUserTargetViewTestCase(ViewTestCase):
+    """Tests of the edit user target view."""
 
     def setUp(self):
-        self.url = reverse('create_account_target', kwargs={'pk': 3})
+        self.url = reverse('edit_user_target', kwargs={'pk': 1})
         self.test_user = User.objects.get(username='@johndoe')
-        self.test_category = Account.objects.get(id=3)
         self.form_input = {
             'transaction_type': 'income',
             'timespan': 'month',
@@ -19,13 +18,13 @@ class CreateAccountTargetViewTestCase(ViewTestCase):
             'currency': 'USD'
         }
 
-    def test_create_account_target_url(self):
-        self.assertEqual(self.url, '/create_target/account/3')
+    def test_edit_user_target_url(self):
+        self.assertEqual(self.url, '/edit_target/user/1')
 
     def test_invalid_pk_entered(self):
         self._login(self.test_user)
         url: str = reverse(
-            "create_account_target", kwargs={
+            "edit_user_target", kwargs={
                 "pk": 99999999})
         response: HttpResponse = self.client.get(url, follow=True)
         response_url: str = reverse("dashboard")
@@ -36,11 +35,11 @@ class CreateAccountTargetViewTestCase(ViewTestCase):
             target_status_code=200)
         self.assertTemplateUsed(response, "pages/dashboard.html")
 
-    def test_other_users_account_pk_entered(self):
+    def test_other_users_user_target_pk_entered(self):
         self._login(self.test_user)
         url: str = reverse(
-            "create_account_target", kwargs={
-                "pk": 1})
+            "edit_user_target", kwargs={
+                "pk": 2})
         response: HttpResponse = self.client.get(url, follow=True)
         response_url: str = reverse("dashboard")
         self.assertRedirects(
@@ -50,20 +49,20 @@ class CreateAccountTargetViewTestCase(ViewTestCase):
             target_status_code=200)
         self.assertTemplateUsed(response, "pages/dashboard.html")
 
-    def test_successful_account_target_form_submission(self):
+    def test_successful_edit_user_target_form_submission(self):
         self._login(self.test_user)
-        before_count = AccountTarget.objects.count()
+        before_count = UserTarget.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
-        after_count = AccountTarget.objects.count()
-        self.assertEqual(after_count, before_count + 1)
-        self.assertTemplateUsed(response, 'pages/individual_account.html')
+        after_count = UserTarget.objects.count()
+        self.assertEqual(after_count, before_count)
+        self.assertTemplateUsed(response, 'pages/dashboard.html')
 
-    def test_invalid_account_target_form_submission(self):
+    def test_invalid_user_target_form_submission(self):
         self._login(self.test_user)
         self.form_input['transaction_type'] = ''
-        before_count = AccountTarget.objects.count()
+        before_count = UserTarget.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
-        after_count = AccountTarget.objects.count()
+        after_count = UserTarget.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/create_targets.html')
 

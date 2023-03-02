@@ -9,8 +9,12 @@ from dateutil.relativedelta import relativedelta
 import calendar
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+<<<<<<< HEAD
 from json import dumps
 import financial_companion.models as fcmodels
+=======
+import inflect
+>>>>>>> 9d5966528c359df0626489fddeac741167e3efc4
 
 
 def get_currency_symbol(currency_code: str):
@@ -171,3 +175,30 @@ def get_data_for_account_projection(user):
         'conversion_to_main_currency': conversions,
         'main_currency': mainCurrency
     }
+def get_number_of_completed_targets(targets):
+    total = 0
+    for target in targets:
+        if target.is_complete():
+            total += 1
+    return total
+
+
+def get_sorted_members_based_on_completed_targets(members):
+    member_completed_list = []
+    for member in members:
+        targets = member.get_all_targets()
+        completed = get_number_of_completed_targets(targets)
+        member_completed_list = [*member_completed_list, (member, completed)]
+    member_completed_list = sorted(
+        member_completed_list,
+        key=lambda x: x[1],
+        reverse=True)
+
+    pos = 1
+    p = inflect.engine()  # used to convert a number into a position
+    member_completed_pos_list = []
+    for tuple in member_completed_list:
+        member_completed_pos_list = [
+            *member_completed_pos_list, (*tuple, p.ordinal(pos))]
+        pos += 1
+    return member_completed_pos_list

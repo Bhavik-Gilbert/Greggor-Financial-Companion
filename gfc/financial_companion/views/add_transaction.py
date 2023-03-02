@@ -90,7 +90,7 @@ def add_transactions_via_bank_statement(request: HttpRequest) -> HttpResponse:
     else:
         form: AddTransactionsViaBankStatementForm = AddTransactionsViaBankStatementForm(
             user=user)
-    return render(request, "pages/transactions_via_bank_statement_form.py.html",
+    return render(request, "pages/add_transactions_via_bank_statement_form.html",
                   {
                       'form': form
                   }

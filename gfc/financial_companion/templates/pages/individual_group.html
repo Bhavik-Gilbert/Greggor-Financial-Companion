@@ -12,10 +12,12 @@
         <div class="col-12 col-md-8">
           <h1 class="text-white">{{group.name.capitalize}}</h1>
         </div>
+        {% if is_owner %}
         <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-end">
-          <a href="#"><button type="button" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit Details</button></a>
-          <button type="button" class="btn btn-danger px-3 mx-2 py-1 mb-md-4">Delete</button>
+          <a href="{% url 'edit_user_group' pk=group.id %}"><button type="button" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit Details</button></a>
+          <a href="{% url 'delete_user_group' pk=group.id %}"><button type="button" class="btn btn-danger px-3 mx-2 py-1 mb-md-4" onclick="return confirm('Are you sure you want to delete this user group?')">Delete</button></a>
         </div>
+        {% endif %}
       </div>
     </div>
 
@@ -47,33 +49,63 @@
 
 <br>
 
+<div style="text-align:center">
+  <a href="{% url 'individual_group' pk=group.id leaderboard=True %}"><button type="button" class="btn btn-primary px-3 mx-2 py-1 mb-md-4">View Leaderboard</button></a>
+  <a href="{% url 'individual_group_redirect' pk=group.id %}"><button type="button" class="btn btn-primary px-3 mx-2 py-1 mb-md-4">View Members</button></a>
+</div>
+
+<br>
+
 <div class="row">
   <div class="container">
     <div class="row">
       <div class="card">
         <img class="card-img-top" src="" alt="">
         <div class="card-body">
-          {% if is_owner %}
+          {% if leaderboard %}
             <div class="col-12">
               <div class="row">
                 <div class="col-12 col-md-8 mt-1">
                   <div class="card-title">
-                    <h4>Members:</h4>
+                    <h4>Leaderboard:</h4>
                   </div>
                 </div>
-                <div class="col-12 col-md-4 mb-3 d-flex justify-content-start justify-content-md-end">
-                  <a href="#" class="btn btn-primary">Add member</a>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="card-text">
+                    <p>
+                      This leaderboard ranks you based on the number of targets that you have completed.
+                      Looking forard to see who will be taking the number spot. Good luck to you all.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-            {%include 'partials/groups/owners_members_table.html' with members=members owners_email=owners_email %}
+            {%include 'partials/groups/completed_leaderboard.html' with members=members comlpeted=comlpeted %}
           {% else %}
-            <div class="col-12 col-md-8">
-              <div class="card-title">
-                <h4>Members:</h4>
+            {% if is_owner %}
+              <div class="col-12">
+                <div class="row">
+                  <div class="col-12 col-md-8 mt-1">
+                    <div class="card-title">
+                      <h4>Members:</h4>
+                    </div>
+                  </div>
+                  <div class="col-12 col-md-4 mb-3 d-flex justify-content-start justify-content-md-end">
+                    <a href="#" class="btn btn-primary">Add member</a>
+                  </div>
+                </div>
               </div>
-            </div>
-            {%include 'partials/groups/users_members_table.html' with members=members %}
+              {%include 'partials/groups/owners_members_table.html' with members=members owners_email=owners_email %}
+            {% else %}
+              <div class="col-12 col-md-8">
+                <div class="card-title">
+                  <h4>Members:</h4>
+                </div>
+              </div>
+              {%include 'partials/groups/users_members_table.html' with members=members %}
+            {% endif %}
           {% endif %}
         </div>
       </div>
