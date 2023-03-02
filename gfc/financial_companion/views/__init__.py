@@ -24,3 +24,4 @@ from .join_user_group import join_user_group_view
 from .view_savings_accounts import view_savings_accounts
 from .remove_user_from_user_group import remove_user_from_user_group_view
 from .make_owner_of_user_group import make_owner_of_user_group_view
+from .add_user_to_user_group_view import add_user_to_user_group_view
