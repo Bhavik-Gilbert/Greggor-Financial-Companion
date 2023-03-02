@@ -51,3 +51,7 @@ class DashboardViewTestCase(ViewTestCase):
         self.assertContains(
             response,
             self.recent[0].receiver_account.name.capitalize())
+        self.assertTemplateUsed(
+            response,
+            'partials/dashboard/account_projection_graph.html'
+        )

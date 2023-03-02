@@ -8,7 +8,7 @@ class GetConversionsForAccountsHelperFunctionTestCase(HelperTestCase):
 
     def setUp(self):
         self.valid_bank_accounts = BankAccount.objects.filter(interest_rate__gt=0)
-        self.no_bank_accounts = BankAccount.objects.filter(id__lt=0)
+        self.no_valid_bank_accounts = BankAccount.objects.filter(id__lt=0)
 
     def test_valid_bank_accounts_valid_currency_code(self):
         for currency_code in CurrencyType:
