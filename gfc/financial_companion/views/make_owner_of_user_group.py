@@ -34,7 +34,7 @@ def make_owner_of_user_group_view(request: HttpRequest, group_pk: int, user_pk: 
         messages.add_message(
             request,
             messages.SUCCESS,
-            "Successfully removed user from user group")
+            "Successfully made user owner of user group")
         return redirect('individual_group',
                             pk=current_user_group.id)
     else:

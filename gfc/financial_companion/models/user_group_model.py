@@ -43,3 +43,4 @@ class UserGroup(models.Model):
     
     def make_owner(self, user):
         self.owner_email = user.email
+        self.save()
