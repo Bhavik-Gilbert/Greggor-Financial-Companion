@@ -8,3 +8,4 @@ from .user_change_password_form import UserChangePasswordForm
 from .create_user_group_form import UserGroupForm
 from .add_target_form import TargetForm
 from .join_user_group_form import JoinUserGroupForm
+from .add_user_to_user_group_form import AddUserToUserGroupForm
