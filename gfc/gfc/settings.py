@@ -28,7 +28,7 @@ except BaseException:
     SECRET_KEY = 'django-insecure-)2rxjsa3d&2d83qxnyjyca(d(kl=tt6g*h&*et!-u$fa-w94_j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True # TODO: set false before submission 
+DEBUG = True  # TODO: set false before submission
 
 ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
