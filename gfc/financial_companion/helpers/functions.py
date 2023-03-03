@@ -37,7 +37,8 @@ def convert_currency(amount: float, current_currency_code: str,
         if current_currency_code == CurrencyType.KZT or target_currency_code == CurrencyType.KZT:
             kzt_rates = KZTRates()
             if current_currency_code == CurrencyType.KZT:
-                return amount * kzt_rates.get_exchange_rate(target_currency_code)
+                return amount * \
+                    kzt_rates.get_exchange_rate(target_currency_code)
             else:
                 return amount * \
                     kzt_rates.get_exchange_rate(
