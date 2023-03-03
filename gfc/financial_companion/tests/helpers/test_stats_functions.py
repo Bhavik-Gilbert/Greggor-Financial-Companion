@@ -26,7 +26,7 @@ class StatisticsFunctionsTestCase(HelperTestCase):
         self._set_transactions_now(self.transactions)
         self.assertEqual(len(Transaction.get_category_splits(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user))), 1)
 
-    def test_percentage_function(self):
+    def test_valid_percentage_function(self):
         self._set_transactions_now(self.transactions)
         total = Transaction.calculate_total(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user))
         categories = Transaction.get_category_splits(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user))
