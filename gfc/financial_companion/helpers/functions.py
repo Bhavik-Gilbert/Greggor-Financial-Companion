@@ -33,19 +33,25 @@ def convert_currency(amount: float, current_currency_code: str,
     if current_currency_code == target_currency_code or current_currency_code not in CurrencyType or target_currency_code not in CurrencyType:
         return amount
 
-    if current_currency_code == CurrencyType.KZT or target_currency_code == CurrencyType.KZT:
-        kzt_rates = KZTRates()
-        if current_currency_code == CurrencyType.KZT:
-            return amount * kzt_rates.get_exchange_rate(target_currency_code)
-        else:
-            return amount * \
-                kzt_rates.get_exchange_rate(
-                    current_currency_code, from_kzt=True)
+    try:
+        if current_currency_code == CurrencyType.KZT or target_currency_code == CurrencyType.KZT:
+            kzt_rates = KZTRates()
+            if current_currency_code == CurrencyType.KZT:
+                return amount * kzt_rates.get_exchange_rate(target_currency_code)
+            else:
+                return amount * \
+                    kzt_rates.get_exchange_rate(
+                        current_currency_code, from_kzt=True)
+    except Exception:
+        raise Exception("KZT Rates converter not working")
 
-    c: CurrencyConverter = CurrencyConverter(
-        fallback_on_missing_rate=True,
-        fallback_on_wrong_date=True)
-    return c.convert(amount, current_currency_code, target_currency_code)
+    try:
+        c: CurrencyConverter = CurrencyConverter(
+            fallback_on_missing_rate=True,
+            fallback_on_wrong_date=True)
+        return c.convert(amount, current_currency_code, target_currency_code)
+    except Exception:
+        raise Exception("Converter not working")
 
 
 def random_filename(filename):
@@ -81,15 +87,12 @@ def get_random_invite_code(length):
 
 
 def get_conversions_for_accounts(bank_accounts, mainCurrency="GBP"):
-    otherCurrencies = []
-    conversions: Dict[str, float] = {}
+    conversions: dict[str, float] = {}
     conversions.update({str(mainCurrency): 1.0})
-    i = 0
-    while (i < len(bank_accounts)):
-        currency = bank_accounts[i].currency
+    for bank_account in bank_accounts:
+        currency = bank_account.currency
         conversions.update(
             {str(currency): convert_currency(1, currency, mainCurrency)})
-        i += 1
     if (len(conversions.keys()) == 1 and not ("GBP" in conversions)):
         conversions.update({"GBP": convert_currency(1, "GBP", mainCurrency)})
 
@@ -196,8 +199,8 @@ def get_sorted_members_based_on_completed_targets(members):
     pos = 1
     p = inflect.engine()  # used to convert a number into a position
     member_completed_pos_list = []
-    for tuple in member_completed_list:
+    for member_completed in member_completed_list:
         member_completed_pos_list = [
-            *member_completed_pos_list, (*tuple, p.ordinal(pos))]
+            *member_completed_pos_list, (*member_completed, p.ordinal(pos))]
         pos += 1
     return member_completed_pos_list
