@@ -249,6 +249,7 @@ urlpatterns = [
     path('add_transactions_via_bank_statement/',
          views.add_transactions_via_bank_statement,
          name='add_transactions_via_bank_statement'),
+    path('spending_summary/', views.spending_summary, name='spending_summary')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

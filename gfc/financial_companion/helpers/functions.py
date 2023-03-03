@@ -63,7 +63,7 @@ def random_filename(filename):
 def calculate_percentages(spent_per_category : dict(), total):
     no_of_categories = len(spent_per_category)
     for key, value in spent_per_category.items():
-        percentage = (value / total) * 100
+        percentage = float((value / total) * 100)
         spent_per_category.update({key : percentage})
     return spent_per_category
 

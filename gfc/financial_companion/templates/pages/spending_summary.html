@@ -1,0 +1,25 @@
+{% extends "page.html" %}
+
+{% block title %}Spending Summary{% endblock %}
+
+{% block content %}
+<body>
+    <div class="row justify-content-center gy-4">
+        <h1 class="col-12">Spending Summary</h1>
+
+        <div class="col-12 col-md-4">
+            **Target Progress**
+        </div>
+        <div class="col-12 col-md-8">
+            <div class="card bg-primary">
+                {% include 'partials/dashboard/graph.html'%}
+                <script>
+                    var dataset = {{ dataset|safe }}.map(num => parseFloat(num));
+                    var keyset = {{ keyset|safe }};
+                    setChart(dataset, keyset, '% of Spending', "", 'pie');
+                </script>
+            </div>
+        </div>
+    </div>
+</body>
+{%endblock%}

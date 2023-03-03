@@ -114,19 +114,18 @@ class Transaction(AbstractTransaction):
     
     @staticmethod
     def get_category_splits(transactions: list):
-        #print(len(transactions))
         spent_per_category= dict()
         no_of_categories = Category.objects.count()
         for x in transactions:
-            #print(str(x))
-            if ((len(spent_per_category) == 0) | (spent_per_category.get(x.category) == None)):
-                #print("AMOUNT :" + str(x.amount))
-                spent_per_category[x.category] = x.amount
+            if (x.category == None) :
+                if (spent_per_category.get("Other") == None):
+                    spent_per_category["Other"] = x.amount
+                else:
+                    spent_per_category.update({"Other" : spent_per_category.get("Other") + x.amount})
+            elif ((len(spent_per_category) == 0) | (spent_per_category.get(x.category.name) == None)):
+                spent_per_category[x.category.name] = x.amount
             else:
-                spent_per_category.update({x.category : spent_per_category.get(x.category) + x.amount })
-                #print(spent_per_category.get(x.category))
-        #print("spent per cat: ")
-        #print(str(spent_per_category))
+                spent_per_category.update({x.category.name : spent_per_category.get(x.category.name) + x.amount })
         return spent_per_category
 
     class Meta:
