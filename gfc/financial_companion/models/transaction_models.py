@@ -77,18 +77,6 @@ class Transaction(AbstractTransaction):
         blank=False,
         auto_now_add=True
     )
-
-    @staticmethod
-    def get_users_transactions(user):
-        user_accounts = PotAccount.objects.filter(user=user)
-        user_transactions = []
-        for account in user_accounts:
-            user_transactions = [
-                *user_transactions,
-                *account.get_account_transactions("sent")
-            ]
-        
-        return user_transactions
     
     @staticmethod
     def calculate_total(transactions: list):
@@ -99,8 +87,8 @@ class Transaction(AbstractTransaction):
 
 
     @staticmethod
-    def get_transactions_from_time_period(time_choice, user):
-        user_transactions = Transaction.get_users_transactions(user)
+    def get_transactions_from_time_period(time_choice, user, filter_type):
+        user_transactions = user.get_user_transactions(filter_type=filter_type)
         
         timespan_int = timespan_map[time_choice]
         start_of_timespan_period = datetime.datetime.today(

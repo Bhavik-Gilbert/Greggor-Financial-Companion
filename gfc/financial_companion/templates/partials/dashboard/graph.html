@@ -9,7 +9,8 @@
 <script>
 
   function setChart(chartDataset, chartLabels, y_axisLabel="", x_axisLabel="", chartType="line", y_beginsAtZero=false, x_beginsAtZero=false) {
-    const ctx = document.getElementById("chart");
+    var chartName = "{{chart_name}}";
+    const ctx = document.getElementById("chart"+ chartName);
 
     if (ctx.attributes.length > 1) { // if there is a chart in the canvas.
           Chart.getChart(ctx).destroy(); // clear the canvas
@@ -44,28 +45,28 @@
         }
       });
     }
-    else if (chartType == "pie") {
+    else if (chartType == "pie" || chartType == "doughnut") {
       // TODO: Create set pie chart method
 
       new Chart(ctx, {
-        type: 'pie',
+        type: chartType,
         data: {
           labels: chartLabels,
           datasets: [{
-            label: '% of Spending',
+            label: y_axisLabel,
             data: chartDataset,
             borderWidth: 1
           }]
         },
       });
     }
-  }
+}
 </script>
 
 <body>
   <div class="card text-bg-light">
     <div class="card-body py-1 px-0 mx-3">
-      <canvas id="chart"></canvas>
+      <canvas id="chart{{chart_name}}"></canvas>
     </div>
   </div>
 </body>
