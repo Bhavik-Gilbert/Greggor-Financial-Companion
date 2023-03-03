@@ -12,7 +12,7 @@ class HelperTestCase(BaseTestCase):
     """
 
     def _assert_valid_or_error(
-            self, assert_function: callable, expected_error_message: str, warning_message: str, kwargs: dict[Any, Any]):
+            self, assert_function: callable, expected_error_message: str, warning_message: str, assert_function_args: dict[Any, Any]):
         """
         Asserts assert function is valid, or expected errors raised
         USAGE:
@@ -25,7 +25,7 @@ class HelperTestCase(BaseTestCase):
         kwargs is unwrapped for assert_function, use as direct parameter rather than kwargs
         """
         try:
-            assert_function(**kwargs)
+            assert_function(**assert_function_args)
         except Exception as error:
             if settings.DEBUG:
                 warnings.warn(f"Warning: {warning_message}")
