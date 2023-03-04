@@ -123,7 +123,7 @@ MESSAGE_TAGS = {
 }
 
 # Session timeout information
-SESSION_EXPIRE_SECONDS =  3600  # 1 hour
+SESSION_EXPIRE_SECONDS = 3600  # 1 hour
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 
 # Internationalization
