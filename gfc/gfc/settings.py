@@ -51,6 +51,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -121,6 +122,9 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
+# Session timeout information
+SESSION_EXPIRE_SECONDS =  3600  # 1 hour
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
