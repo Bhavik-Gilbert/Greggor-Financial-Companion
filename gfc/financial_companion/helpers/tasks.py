@@ -37,7 +37,6 @@ def send_monthly_newsletter_email():
             html_message=html_content,
             fail_silently=False,
         )
-    print("EMAILS SENT")
 
 
 def add_interest_to_bank_accounts():
