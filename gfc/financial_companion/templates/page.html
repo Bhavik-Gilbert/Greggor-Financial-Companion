@@ -14,6 +14,19 @@
 </head>
 
 <body>
+  <script>
+    const style = window.getComputedStyle(document.documentElement);
+    const theme = {
+      primary: style.getPropertyValue('--bs-primary'),
+      secondary: style.getPropertyValue('--bs-secondary'),
+      success: style.getPropertyValue('--bs-success'),
+      info: style.getPropertyValue('--bs-info'),
+      warning: style.getPropertyValue('--bs-warning'),
+      danger: style.getPropertyValue('--bs-danger'),
+      light: style.getPropertyValue('--bs-light'),
+      dark: style.getPropertyValue('--bs-dark'),
+    };
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
   integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
   crossorigin="anonymous"></script>
