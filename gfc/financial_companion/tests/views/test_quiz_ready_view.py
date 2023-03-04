@@ -15,12 +15,7 @@ class QuizReadyViewTestCase(ViewTestCase):
         self.user: User = User.objects.get(username='@johndoe')
         self.page_contain_list: list[Any] = [
             "Start Quiz",
-            "Leave Quiz",
-            "Take this opportunity to improve knowledge with greggor",
-            "You have an unlimited amount of time for the quiz",
-            "Once you submit, you cannot choose to retake the same quiz again, though the same questions may appear on future quizzes",
-            "You can view your most recent and best scores on the main quiz page (previous page)",
-            "About"
+            "Leave Quiz"
         ]
 
     def test_valid_quiz_ready_url(self):
@@ -31,6 +26,7 @@ class QuizReadyViewTestCase(ViewTestCase):
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/quiz/quiz_ready.html')
+        self.assertTemplateUsed(response, 'partials/quiz/quiz_about_info.html')
         self._assert_response_contains(response, self.page_contain_list)
         self.assertTrue(len(response.context["quiz_set"].questions.all()) == 1)
 
