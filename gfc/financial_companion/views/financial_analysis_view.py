@@ -27,4 +27,4 @@ def spending_summary(request: HttpRequest) -> HttpResponse:
     form = TimespanOptionsForm()
     if percentages_list == []:
         percentages_list = None
-    return render(request, "pages/spending_summary.html", {'keyset': labels, 'dataset': percentages_list, 'form': form, 'money_in': total_received, 'money_out': total_spent})
+    return render(request, "pages/spending_summary.html", {'keyset': labels, 'dataset': percentages_list, 'form': form, 'money_in': total_received, 'money_out': total_spent, 'time': str(time).capitalize()})
