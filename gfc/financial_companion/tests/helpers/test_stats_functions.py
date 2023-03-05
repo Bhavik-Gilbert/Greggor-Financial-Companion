@@ -20,7 +20,7 @@ class StatisticsFunctionsTestCase(HelperTestCase):
 
     def test_valid_within_time_period(self):
         self._set_transactions_now(self.transactions)
-        self.assertEqual(len(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user)), 3)
+        self.assertEqual(len(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user)), 4)
 
     def test_valid_split_categories(self):
         self._set_transactions_now(self.transactions)

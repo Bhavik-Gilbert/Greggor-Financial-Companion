@@ -87,7 +87,7 @@ class Transaction(AbstractTransaction):
 
 
     @staticmethod
-    def get_transactions_from_time_period(time_choice, user, filter_type):
+    def get_transactions_from_time_period(time_choice, user, filter_type = str("all")):
         user_transactions = user.get_user_transactions(filter_type=filter_type)
         
         timespan_int = timespan_map[time_choice]

@@ -249,7 +249,10 @@ urlpatterns = [
     path('add_transactions_via_bank_statement/',
          views.add_transactions_via_bank_statement,
          name='add_transactions_via_bank_statement'),
-    path('spending_summary/', views.spending_summary, name='spending_summary')
+    path('spending_summary/', views.spending_summary, name='spending_summary'),
+    path('view_recurring_transactions/', views.view_users_recurring_transactions, name='view_recurring_transactions'),
+    path('add_recurring_transaction/', views.add_recurring_transaction_view, name='add_recurring_transaction'),
+    path('view_individual_recurring_transaction/(?P<pk>\\d+)/$', views.individual_recurring_transaction_view, name='view_individual_transaction')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

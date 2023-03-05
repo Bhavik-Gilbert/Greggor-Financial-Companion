@@ -23,3 +23,6 @@ from .create_target_view import create_category_target_view, edit_category_targe
 from .join_user_group import join_user_group_view
 from .view_savings_accounts import view_savings_accounts
 from .financial_analysis_view import spending_summary
+from .view_recurring_transactions import view_users_recurring_transactions
+from .individual_recurring_transaction import individual_recurring_transaction_view
+from .add_recurring_transaction import add_recurring_transaction_view
