@@ -56,36 +56,33 @@ class User(AbstractUser):
         )
         return max(user_scores, key=lambda quiz_score: quiz_score.get_score())
 
+
     def get_all_targets(self):
         user = self
+        userTargets = fcmodels.UserTarget.objects.filter(user=user)
+        userAccountTargets = self.get_all_account_targets()
+        userCategoryTargets = self.get_all_category_targets()
 
-        all_targets = []
+        return [*userTargets, *userAccountTargets, *userCategoryTargets]
 
-        all_user_targets = fcmodels.UserTarget.objects.filter(user=user)
 
-        all_accounts = fcmodels.PotAccount.objects.filter(user=user.id)
-        all_account_targets = []
-        for account in all_accounts:
-            all_account_targets = [
-                *all_account_targets,
-                *fcmodels.AccountTarget.objects.filter(account=account)
-            ]
+    def get_all_account_targets(self, accounts = None):
+        user = self
+        if not accounts:
+            accounts = fcmodels.PotAccount.objects.filter(user=user)
+        userAccountTargets = fcmodels.AccountTarget.objects.filter(account__in=accounts)
 
-        all_categories = fcmodels.Category.objects.filter(user=user)
-        all_category_targets = []
-        for category in all_categories:
-            all_category_targets = [
-                *all_category_targets,
-                *fcmodels.CategoryTarget.objects.filter(category=category)
-            ]
+        return userAccountTargets
 
-        all_targets = [
-            *all_targets,
-            *all_user_targets,
-            *all_account_targets,
-            *all_category_targets]
+    
+    def get_all_category_targets(self, categories = None):
+        user = self
+        if not categories:
+            categories = fcmodels.Category.objects.filter(user=user)
+        userCategoryTargets = fcmodels.CategoryTarget.objects.filter(category__in=categories)
 
-        return all_targets
+        return userCategoryTargets
+
 
     def get_number_of_completed_targets(user):
         total = 0

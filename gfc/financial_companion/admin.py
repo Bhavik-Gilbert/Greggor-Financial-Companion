@@ -69,26 +69,26 @@ class Transaction(admin.ModelAdmin):
 @admin.register(CategoryTarget)
 class CategoryTarget(admin.ModelAdmin):
     list_display = [
-        'transaction_type', 'timespan', 'amount', 'currency', 'category_id'
+        'id', 'transaction_type', 'timespan', 'amount', 'currency', 'category_id'
     ]
 
 
 @admin.register(UserTarget)
 class UserTarget(admin.ModelAdmin):
     list_display = [
-        'transaction_type', 'timespan', 'amount', 'currency', 'user'
+        'id', 'transaction_type', 'timespan', 'amount', 'currency', 'user'
     ]
 
 
 @admin.register(AccountTarget)
 class AccountTarget(admin.ModelAdmin):
     list_display = [
-        'transaction_type', 'timespan', 'amount', 'currency', 'account_id'
+        'id', 'transaction_type', 'timespan', 'amount', 'currency', 'account_id'
     ]
 
 
 @admin.register(UserGroup)
 class UserGroup(admin.ModelAdmin):
     list_display = [
-        'name', 'description', 'owner_email', 'invite_code', 'get_members'
+        'id', 'name', 'description', 'owner_email', 'invite_code', 'get_members'
     ]
