@@ -37,6 +37,7 @@ class QuizViewTestCase(ViewTestCase):
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/quiz/quiz.html')
+        self.assertTemplateUsed(response, 'partials/quiz/quiz_about_info.html')
         self._assert_response_contains(response, self.page_contain_list)
         self.assertTrue(len(response.context["quiz_scores"]) <= 10)
         self.assertTrue(
