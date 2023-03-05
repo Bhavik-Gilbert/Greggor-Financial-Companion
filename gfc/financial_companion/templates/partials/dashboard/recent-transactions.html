@@ -10,7 +10,7 @@
       <div class="accordion-item">
         <h2 class="accordion-header" id="heading{{ transaction.title }}">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ transaction.title }}" aria-expanded="true" aria-controls="collapse{{ transaction.title}}">
-            {{transaction.title.capitalize}}
+            {{transaction.title.title}}
           </button>
         </h2>
         <div id="collapse{{ transaction.title}}" class="accordion-collapse collapse" aria-labelledby="heading{{ transaction.title }}" data-bs-parent="#accordionExample">
