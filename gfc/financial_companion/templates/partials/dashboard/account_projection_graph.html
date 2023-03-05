@@ -15,7 +15,7 @@
             }
         }
         
-        function calculate_dataset(accountsInfo, projectionTimescale_inMonths, mainCurrencySymbol = "{{main_currency}}", conversions_dict = JSON.parse("{{conversion_to_main_currency_JSON|escapejs}}")) {
+        function calculate_dataset(accountsInfo, projectionTimescale_inMonths, selectedCurrency = "{{main_currency}}", conversions_dict = JSON.parse("{{conversion_to_main_currency_JSON|escapejs}}")) {
             lineColours = [theme.primary, theme.secondary, theme.success, theme.warning, theme.danger, theme.dark]
             $(document).ready(() => {
                 var timeBands = {{timescales_strings|safe}};
@@ -23,17 +23,16 @@
                 accountsDataset = [];
                 for (account in accountsInfo) {
                     accountsInfo[account].balances.length = projectionTimescale_inMonths;
-                    accountsDataset.push(getDatasetForAccount(accountsInfo[account], mainCurrencySymbol, timeBands, lineColours[account % lineColours.length], conversions_dict));
+                    accountsDataset.push(getDatasetForAccount(accountsInfo[account], selectedCurrency, timeBands, lineColours[account % lineColours.length], conversions_dict));
                 }
                 
-                setChart(accountsDataset, timeBands, "Balance ("+mainCurrencySymbol+")", "Months", "line");
+                setChart(accountsDataset, timeBands, "Balance ("+selectedCurrency+")", "Months", "line");
             });
         }
             
-        function getDatasetForAccount(account, mainCurrencySymbol, timeBands, lineColour, conversions_dict) {
-            
-            if (account.currency != mainCurrencySymbol) {
-                const conversion = conversions_dict[account.currency];
+        function getDatasetForAccount(account, selectedCurrency, timeBands, lineColour, conversions_dict) {
+            const conversion = getConversionForAccount(account, selectedCurrency, conversions_dict)
+            if (conversion != 1) {
                 account.balances = account.balances.map(balance => balance * conversion);
             }
 
@@ -44,6 +43,20 @@
                 borderColor: lineColour,
                 borderWidth: 4
             });
+        }
+        
+        function getConversionForAccount(account, selectedCurrency, conversions_dict) {
+            var conversion = 1;
+            if (account.currency != selectedCurrency) {
+              if (selectedCurrency == '{{main_currency}}') {
+                conversion = conversions_dict[account.currency];
+              }
+              else {
+                conversion = conversions_dict[selectedCurrency];
+                conversion = 1/conversion;
+              }
+            }
+            return conversion
         }
     </script>
 </head>

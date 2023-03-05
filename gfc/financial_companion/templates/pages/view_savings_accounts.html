@@ -46,16 +46,7 @@
           if (account_ids.includes(Number(acc))) {
             const account = accountsInfo[acc]
             selectedAccountsInfo.push(account);
-            var conversion = 1;
-            if (account.currency != selectedCurrency) {
-              if (selectedCurrency == '{{main_currency}}') {
-                conversion = conversions_dict[account.currency];
-              }
-              else {
-                conversion = conversions_dict[selectedCurrency];
-                conversion = 1/conversion;
-              }
-            }
+            conversion = getConversionForAccount(account, selectedCurrency, conversions_dict);
             setFigures_Income_Balance(account.balances, projectionTimescale_inMonths, conversion, selectedCurrency);
           }
         }
