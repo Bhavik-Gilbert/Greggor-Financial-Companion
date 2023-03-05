@@ -47,6 +47,7 @@ def remove_user_from_user_group_view(request: HttpRequest, group_pk: int, user_p
         return redirect('individual_group',
                             pk=current_user_group.id)
     
+    
 
     
 

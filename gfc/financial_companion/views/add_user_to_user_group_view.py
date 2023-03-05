@@ -55,6 +55,5 @@ def add_user_to_user_group_view(request: HttpRequest, group_pk: int) -> HttpResp
             return redirect('individual_group',
                                 pk=current_user_group.id)
     else:
-        return redirect('individual_group',
-                                    pk=current_user_group.id)
+        return redirect("all_groups_redirect")
             

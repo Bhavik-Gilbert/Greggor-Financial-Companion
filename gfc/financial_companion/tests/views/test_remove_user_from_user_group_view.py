@@ -3,7 +3,7 @@ from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.models import User, UserGroup
 
-class DeleteUserGroupViewTestCase(ViewTestCase):
+class RemoveUserFromUserGroupViewTestCase(ViewTestCase):
     """Tests of the remove user from user group view."""
 
     def setUp(self):
