@@ -1,12 +1,13 @@
 from django import forms
 from financial_companion.models import Transaction, Account, Category, PotAccount
-
+from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 
 class AddTransactionForm(forms.ModelForm):
     """Form to add a new transaction"""
 
     def __init__(self, user, *args, **kwargs):
         super(AddTransactionForm, self).__init__(*args, **kwargs)
+        self.fields['category'].queryset = Category.objects.filter(user=user.id)
         self.fields['category'].label_from_instance = self.label_from_instance
         self.fields['sender_account'].label_from_instance = self.label_from_instance
         self.fields['receiver_account'].label_from_instance = self.label_from_instance

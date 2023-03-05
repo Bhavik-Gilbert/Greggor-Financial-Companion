@@ -12,17 +12,13 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
     """View to record a transaction made"""
 
     user = request.user
-    categories = Category.objects.filter(user=user.id)
-
     if request.method == 'POST':
         form = AddTransactionForm(user, request.POST, request.FILES)
-        form.fields['category'].queryset = categories
         if form.is_valid():
             form.save()
             return redirect('dashboard')
     else:
         form = AddTransactionForm(user)
-        form.fields['category'].queryset = categories
     return render(request, "pages/add_transaction.html",
                   {'form': form, 'edit': False})
 
@@ -35,16 +31,13 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         return redirect('dashboard')
     else:
         user = request.user
-        categories = Category.objects.filter(user=user.id)
         if request.method == 'POST':
             form = AddTransactionForm(
                 user, request.POST, request.FILES, instance=transaction)
-            form.fields['category'].queryset = categories
             if form.is_valid():
                 form.save(instance=transaction)
                 return redirect('dashboard')
         form = AddTransactionForm(user, instance=transaction)
-        form.fields['category'].queryset = categories
         return render(request, "pages/add_transaction.html",
                       {'form': form, 'edit': True, 'pk': pk})
 
