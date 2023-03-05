@@ -36,7 +36,7 @@
             </div>
 
             <div class="card-footer text-muted">
-              If you have any questions regarding the group please contanct the owner at: <strong>{{group.owner_email}}</strong>
+              If you have any questions regarding the group please contact the owner at: <strong>{{group.owner_email}}</strong>
             </div>
 
           </div>
@@ -67,7 +67,7 @@
                   <form action='{% url 'add_user_to_user_group' group_pk=group.id %}' method="post" class="input-group  d-flex justify-content-center">
                     {% csrf_token %}
                     {{ add_user_form }}
-                    <input type="submit" value="Submit" class="btn btn-primary">
+                    <input type="submit" value="Add Member" class="btn btn-primary">
                   </form>
                 </div>
               </div>

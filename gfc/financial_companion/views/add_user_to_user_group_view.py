@@ -10,18 +10,17 @@ from ..models import UserGroup, User
 def add_user_to_user_group_view(request: HttpRequest, group_pk: int) -> HttpResponse:
     if request.method == 'POST':
         form = AddUserToUserGroupForm(request.POST)
+        try:
+            current_user_group: UserGroup = UserGroup.objects.get(
+                id=group_pk)
+        except Exception:
+            messages.add_message(
+                request,
+                messages.WARNING,
+                "Failed to identify user group")
+            return redirect("all_groups_redirect")
         if form.is_valid():
             user_email = form.cleaned_data.get('user_email')
-            try:
-                current_user_group: UserGroup = UserGroup.objects.get(
-                    id=group_pk)
-            except Exception:
-                messages.add_message(
-                    request,
-                    messages.WARNING,
-                    "Failed to identify user group")
-                return redirect("all_groups_redirect")
-    
             try:
                 user: User = User.objects.get(
                     email=user_email)
@@ -48,6 +47,13 @@ def add_user_to_user_group_view(request: HttpRequest, group_pk: int) -> HttpResp
                     "This user is currently a member of this group")
                 return redirect('individual_group',
                                     pk=current_user_group.id)
+        else:
+            messages.add_message(
+                    request,
+                    messages.WARNING,
+                    "Please enter a valid email address")
+            return redirect('individual_group',
+                                pk=current_user_group.id)
     else:
         return redirect('individual_group',
                                     pk=current_user_group.id)
