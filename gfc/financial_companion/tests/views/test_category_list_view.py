@@ -66,7 +66,8 @@ class CategoryListViewCase(ViewTestCase):
         messages_list = list(response.context['messages'])
         self.assertTrue('Targets exceeded: ' in str(messages_list[0]))
         self.assertEqual(len(messages_list), 1)
-        self.assertContains(response, "Food") # "Food" is found in warning messages
+        # "Food" is found in warning messages
+        self.assertContains(response, "Food")
         self.assertNotContains(response, "Eating out expenses")
         self.assertNotContains(response, "Travel")
         self.assertNotContains(response, "Going to and from uni")

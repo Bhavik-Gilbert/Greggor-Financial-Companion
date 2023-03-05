@@ -40,20 +40,20 @@ class AbstractTarget(Model):
             return True
         else:
             return False
-    
+
     def is_nearly_complete(self):
         completeness = get_completeness(self)
         if completeness >= 75 and completeness < 100:
             return True
         else:
             return False
-    
+
     def getModelName(self, plural=False):
         if plural:
             return "targets"
         else:
             return "target"
-    
+
     def __str__(self):
         return self.getModelName()
 
@@ -65,17 +65,15 @@ class CategoryTarget(AbstractTarget):
 
     class Meta:
         unique_together = ["transaction_type", "timespan", "category"]
-    
-    
+
     def getModelName(self, plural=False):
         if plural:
             return "categories"
         else:
             return "category"
-    
+
     def __str__(self):
         return self.category.name
-
 
 
 class UserTarget(AbstractTarget):
@@ -85,13 +83,13 @@ class UserTarget(AbstractTarget):
 
     class Meta:
         unique_together = ["transaction_type", "timespan", "user"]
-    
+
     def getModelName(self, plural=False):
         if plural:
             return "users"
         else:
             return "user"
-    
+
     def __str__(self):
         return "personal target"
 
@@ -109,6 +107,6 @@ class AccountTarget(AbstractTarget):
             return "accounts"
         else:
             return "accounts"
-    
+
     def __str__(self):
         return self.account.name

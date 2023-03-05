@@ -17,7 +17,7 @@ def category_list_view(request: HttpRequest, search_name: str) -> HttpResponse:
         else:
             return redirect("categories_list",
                             search_name=(request.POST["search"]))
-    
+
     categories: Category = None
 
     if (search_name == "all"):
@@ -26,9 +26,10 @@ def category_list_view(request: HttpRequest, search_name: str) -> HttpResponse:
         categories = Category.objects.filter(
             user=request.user).filter(
             name__icontains=search_name)
-    
+
     targetsForMessages = request.user.get_all_category_targets()
-    request = get_warning_messages_for_targets(request, False, targetsForMessages)
+    request = get_warning_messages_for_targets(
+        request, False, targetsForMessages)
 
     return render(request, "pages/category_list.html",
                   {"categories": categories})

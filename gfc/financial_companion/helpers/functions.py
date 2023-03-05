@@ -178,6 +178,7 @@ def get_data_for_account_projection(user):
         'main_currency': mainCurrency
     }
 
+
 def get_completed_targets(targets):
     filteredTargets = []
     for target in targets:
@@ -222,13 +223,15 @@ def get_sorted_members_based_on_completed_targets(members):
         pos += 1
     return member_completed_pos_list
 
-def get_warning_messages_for_targets(request, showNumbersForMultiples = True, targets = None):
+
+def get_warning_messages_for_targets(
+        request, showNumbersForMultiples=True, targets=None):
     if not targets:
         targets = request.user.get_all_targets()
     completedTargets = get_completed_targets(targets)
     nearlyCompletedTargets = get_nearly_completed_targets(targets)
 
-    sortedTargetsDict = {'completed':{}, 'nearlyExceeded':{}, 'exceeded':{}}
+    sortedTargetsDict = {'completed': {}, 'nearlyExceeded': {}, 'exceeded': {}}
     for target in targets:
         dictionaryToAdd = None
         if target.transaction_type == 'income' and target in completedTargets:
@@ -238,56 +241,64 @@ def get_warning_messages_for_targets(request, showNumbersForMultiples = True, ta
         elif target.transaction_type == 'expense' and target in completedTargets:
             dictionaryToAdd = sortedTargetsDict['exceeded']
 
-        if dictionaryToAdd != None:
+        if dictionaryToAdd is not None:
             key = target.getModelName(True)
-            
+
             if key:
                 if key in dictionaryToAdd.keys():
                     listToAppend = dictionaryToAdd[key].copy()
                 else:
                     listToAppend = []
                 listToAppend.append(target)
-                dictionaryToAdd.update({key:listToAppend})
-        
+                dictionaryToAdd.update({key: listToAppend})
+
     for completionType, targetTypes in sortedTargetsDict.items():
         displayList = []
         if completionType:
             for targetType, targets in targetTypes.items():
-                displayString = ''   
+                displayString = ''
                 if len(targets) == 1:
-                    displayString = (str(targets[0]) + " (" + targets[0].getModelName() + ")").title()
+                    displayString = (
+                        str(targets[0]) + " (" + targets[0].getModelName() + ")").title()
                 else:
                     displayString = targetType.title() + " ("
                     if showNumbersForMultiples:
-                        displayString +=  str(len(targets))
+                        displayString += str(len(targets))
                     else:
                         displayString += convert_list_to_string(list(targets))
                     displayString += ")"
                 targetTypes[targetType] = displayString
             sortedTargetsDict[completionType] = targetTypes
-                
+
     if sortedTargetsDict['completed']:
         messages.add_message(
             request,
             messages.SUCCESS,
-            'Targets completed: ' + convert_list_to_string(list(sortedTargetsDict['completed'].values()))
+            'Targets completed: ' +
+            convert_list_to_string(
+                list(sortedTargetsDict['completed'].values()))
         )
 
     if sortedTargetsDict['nearlyExceeded']:
         messages.add_message(
             request,
             messages.WARNING,
-            'Targets nearly exceeded: ' + convert_list_to_string(list(sortedTargetsDict['nearlyExceeded'].values()))
+            'Targets nearly exceeded: ' +
+            convert_list_to_string(
+                list(sortedTargetsDict['nearlyExceeded'].values()))
         )
 
     if sortedTargetsDict['exceeded']:
         messages.add_message(
             request,
             messages.ERROR,
-            'Targets exceeded: ' + convert_list_to_string(list(sortedTargetsDict['exceeded'].values()))
+            'Targets exceeded: ' +
+            convert_list_to_string(
+                list(sortedTargetsDict['exceeded'].values()))
         )
-    
+
     return request
+
 
 def convert_list_to_string(list_in):
     output = ""
@@ -295,9 +306,9 @@ def convert_list_to_string(list_in):
     if list_length >= 1:
         output += str(list_in[0])
     if list_length >= 2:
-        for element in list_in[1:list_length-1]:
+        for element in list_in[1:list_length - 1]:
             output += ", " + str(element)
         if list_length > 2:
             output += ","
-        output += " and " + str(list_in[list_length-1])
+        output += " and " + str(list_in[list_length - 1])
     return output

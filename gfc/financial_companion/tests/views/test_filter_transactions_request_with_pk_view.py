@@ -114,6 +114,5 @@ class FilterTransactionsViewTestCase(ViewTestCase):
         self.assertEqual(len(messages_list), 1)
         self.assertTrue('Targets exceeded: ' in str(messages_list[0]))
 
-
     def test_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)
