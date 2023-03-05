@@ -218,7 +218,7 @@ def get_sorted_members_based_on_completed_targets(members):
         pos += 1
     return member_completed_pos_list
 
-def get_warning_messages_for_targets(request, showNumbersForMulitples = True, targets = None):
+def get_warning_messages_for_targets(request, showNumbersForMultiples = True, targets = None):
     if not targets:
         targets = request.user.get_all_targets()
     completedTargets = get_completed_targets(targets)
@@ -234,7 +234,6 @@ def get_warning_messages_for_targets(request, showNumbersForMulitples = True, ta
         elif target.transaction_type == 'expense' and target in completedTargets:
             dictionaryToAdd = sortedTargetsDict['exceeded']
 
-
         if dictionaryToAdd != None:
             key = target.getModelName(True)
             
@@ -245,8 +244,6 @@ def get_warning_messages_for_targets(request, showNumbersForMulitples = True, ta
                     listToAppend = []
                 listToAppend.append(target)
                 dictionaryToAdd.update({key:listToAppend})
-
-                #.getModelNameForTarget()
         
     for completionType, targetTypes in sortedTargetsDict.items():
         displayList = []
@@ -257,7 +254,7 @@ def get_warning_messages_for_targets(request, showNumbersForMulitples = True, ta
                     displayString = (str(targets[0]) + " (" + targets[0].getModelName() + ")").title()
                 else:
                     displayString = targetType.title() + " ("
-                    if showNumbersForMulitples:
+                    if showNumbersForMultiples:
                         displayString +=  str(len(targets))
                     else:
                         displayString += convert_list_to_string(list(targets))
