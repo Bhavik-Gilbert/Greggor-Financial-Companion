@@ -30,13 +30,13 @@
         const projectionTimescale_inMonths = document.getElementById('projectionTimescaleDropdown').value;
         const currencyChosen = document.getElementById('currencyDropdown').value;
 
-        mainCurrencySymbol = "{{main_currency}}";
+        selectedCurrency= "{{main_currency}}";
 
         if (currencyChosen != "DEFAULT") {
-          mainCurrencySymbol = currencyChosen;
+          selectedCurrency = currencyChosen;
         }
         else if (account_ids.length == 1) {
-          mainCurrencySymbol = accountsInfo[account_ids[0]].currency;
+          selectedCurrency = accountsInfo[account_ids[0]].currency;
         }
 
         clearFigures_Income_Balance();
@@ -47,17 +47,19 @@
             const account = accountsInfo[acc]
             selectedAccountsInfo.push(account);
             var conversion = 1;
-            if (account.currency != mainCurrencySymbol) {
-              conversion = conversions_dict[mainCurrencySymbol];
-              if (account.currency == '{{main_currency}}') {
-                conversion = 1/conversion
-                conversions_dict[account.currency] = conversion;
+            if (account.currency != selectedCurrency) {
+              if (selectedCurrency == '{{main_currency}}') {
+                conversion = conversions_dict[account.currency];
+              }
+              else {
+                conversion = conversions_dict[selectedCurrency];
+                conversion = 1/conversion;
               }
             }
-            setFigures_Income_Balance(account.balances, projectionTimescale_inMonths, conversion, mainCurrencySymbol);
+            setFigures_Income_Balance(account.balances, projectionTimescale_inMonths, conversion, selectedCurrency);
           }
         }
-        calculate_dataset(selectedAccountsInfo, projectionTimescale_inMonths, mainCurrencySymbol, conversions_dict);
+        calculate_dataset(selectedAccountsInfo, projectionTimescale_inMonths, selectedCurrency, conversions_dict);
       }
 
       function clearFigures_Income_Balance() {
@@ -65,7 +67,7 @@
         document.getElementById('projected_total_num').innerText = 0.00;
       }
 
-      function setFigures_Income_Balance(balances, timescale, conversion, mainCurrencySymbol) {
+      function setFigures_Income_Balance(balances, timescale, conversion, selectedCurrency) {
         timescale -= 1;
         const projected_income_num_text = document.getElementById('projected_income_num');
         const projected_total_num_text = document.getElementById('projected_total_num');
@@ -78,8 +80,8 @@
         projected_income_num += parseFloat(conversion) * (parseFloat(balances[timescale]) - parseFloat(balances[0]));
         projected_total_num += parseFloat(conversion) * parseFloat(balances[timescale]);
 
-        projected_income_currency_text.innerText = mainCurrencySymbol;
-        projected_total_currency_text.innerText = mainCurrencySymbol;
+        projected_income_currency_text.innerText = selectedCurrency;
+        projected_total_currency_text.innerText = selectedCurrency;
         projected_income_num_text.innerText = projected_income_num.toFixed(2);
         projected_total_num_text.innerText = projected_total_num.toFixed(2);
       }
@@ -92,7 +94,6 @@
     {% if bank_accounts %}
       <div class = "row justify-content-start align-items-end g-2">
         <div class = "col-3 align-bottom">
-          <!--- The two dropdown lists to allow the user to select the station and the day of the week --->
           <label>Account:</label>
           <select class = "form-select form-select" name = "accountDropdown" id = "accountDropdown" autocomplete="off">
             {% for id, name in bank_accounts.items %}
@@ -118,18 +119,6 @@
             {% endfor %}
           </select>
         </div>
-        <!--
-        <div class = "col-2 align-bottom">
-          <label>Standing Order:</label>
-            <input type="number" onchange="roundToDecimalPlaces(this,2)" value="0" step="50" class="form-control" name="standingOrderInput" id="standingOrderInput" autocomplete="off">
-          </input>
-        </div>
-        <div class = "col-1 align-bottom">
-          <label>Frequency (months):</label>
-            <input type="number" onchange="roundToDecimalPlaces(this,0)" value="0" step="12" class="form-control" name="frequencyInput" id="frequencyInput" autocomplete="off">
-          </input>
-        </div>
-        -->
         <div class = "col-sm-1 mb-0">
           <br>
           <button type="submit" class="btn btn-primary" onclick="getUserChoices()">Apply</button>
@@ -138,7 +127,6 @@
 
       <div class="row g-4 mt-2">
         <div class = "col-9">
-          <!--- The bar chart showing the crowding percentage in the selected station over the course of the selected day --->
           <div class="card text-bg-primary">
             <div class="card-body px-0 mx-3">
               <h4 class="card-title mb-3" id="projectionChartTitle">Projection</h5>
