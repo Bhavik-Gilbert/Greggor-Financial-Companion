@@ -20,6 +20,13 @@ def remove_user_from_user_group_view(request: HttpRequest, group_pk: int, user_p
             "Failed to identify user group")
         return redirect("all_groups_redirect")
     
+    if(request.user.email != current_user_group.owner_email):
+        messages.add_message(
+            request,
+            messages.WARNING,
+            "You are not the owner of that group")
+        return redirect("all_groups_redirect")
+    
     try:
         user: User = User.objects.get(
             id=user_pk)

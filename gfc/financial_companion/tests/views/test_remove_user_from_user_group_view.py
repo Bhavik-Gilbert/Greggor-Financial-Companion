@@ -60,3 +60,13 @@ class RemoveUserFromUserGroupViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, 'pages/individual_group.html')
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 1)
+
+    def test_unsuccessful_user_removal_due_to_request_user_not_the_owner_of_user_group(self):
+        self._login(self.user_two)
+        before_count = self.user_group.members.count()
+        response = self.client.get(self.url, follow=True)
+        after_count = self.user_group.members.count()
+        self.assertEqual(after_count, before_count)
+        self.assertTemplateUsed(response, 'pages/all_groups.html')
+        messages_list = list(response.context['messages'])
+        self.assertEqual(len(messages_list), 1)
