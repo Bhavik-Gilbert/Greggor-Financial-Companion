@@ -3,12 +3,11 @@
     <div class="card">
         <div class="card-body">
         <h5 class="card-title">Name: {{ group.name }}</h5>
-        <p class="card-text">Owner's email: {{ group.owner_email }}</p>
-        <p class="card-text">Description: {{ group.description }}</p>
+        <p class="card-text"><Strong>Owner's email: </Strong> {{ group.owner_email }}</p>
+        <p class="card-text"><Strong>Description: </Strong> {{ group.description }}</p>
         </div>
         <div class="card-footer text-muted justify-content-center">
-            <a href="{% url 'individual_group' pk=group.id %}" class="btn btn-primary justify-content-center">View</a>
-            <a class="btn btn-danger justify-content-center">Delete</a>
+            <a href="{% url 'individual_group_redirect' pk=group.id %}" class="btn btn-primary justify-content-center">View</a>
         </div>
     </div>
 </div>

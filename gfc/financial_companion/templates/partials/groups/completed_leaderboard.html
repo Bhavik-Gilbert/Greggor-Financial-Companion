@@ -1,0 +1,31 @@
+<div class="row">
+  <div class="col-12">
+    <table class="table table-bordered table-striped" style="width:100%" style="text-align:center" >
+      <thead class = "table-primary">
+        <tr>
+          <th scope="col" style="text-align:center">Position</th>
+          <th scope="col" style="text-align:center">Name</th>
+          <th scope="col" style="text-align:center">Username</th>
+          <th scope="col" style="text-align:center">Completed Targets</th>
+        </tr>
+      </thead>
+      {% for tuple in members %}
+        {% if tuple.2 == "1st" %}
+          <tr class="text-center bg-gold">
+        {% elif tuple.2 == "2nd" %}
+          <tr class="text-center bg-silver">
+        {% elif tuple.2 == "3rd" %}
+          <tr class="text-center bg-bronze">
+        {% else %}
+          <tr class="text-center">
+        {% endif %}
+          <td>{{ tuple.2 }}</td>
+          <td>{{ tuple.0.full_name }} </td>
+          <td>{{ tuple.0.username }} </td>
+          <td>{{ tuple.1 }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    {%include 'partials/pagination.html'  with page_obj=members %}
+  </div>
+</div>

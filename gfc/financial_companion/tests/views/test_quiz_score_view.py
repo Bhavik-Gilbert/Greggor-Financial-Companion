@@ -1,6 +1,6 @@
 from .test_view_base import ViewTestCase
 from django.http import HttpResponse
-from financial_companion.models import User, QuizQuestion, QuizSet, QuizScore
+from financial_companion.models import User, QuizScore
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from typing import Any

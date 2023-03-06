@@ -2,7 +2,7 @@ from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 
 from .test_view_base import ViewTestCase
-from financial_companion.forms import CreateUserGroupForm
+from financial_companion.forms import UserGroupForm
 from financial_companion.models import User, UserGroup
 
 
@@ -26,10 +26,10 @@ class CreateUserGroupViewTestCase(ViewTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/create_user_group.html')
         form = response.context['form']
-        self.assertTrue(isinstance(form, CreateUserGroupForm))
+        self.assertTrue(isinstance(form, UserGroupForm))
         self.assertFalse(form.is_bound)
 
-    def test_unsuccessful_create_category_form_submission(self):
+    def test_unsuccessful_create_user_group_form_submission(self):
         self._login(self.user)
         response = self.client.get(self.url)
         self.form_input['name'] = ''
@@ -40,9 +40,9 @@ class CreateUserGroupViewTestCase(ViewTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/create_user_group.html')
         form = response.context['form']
-        self.assertTrue(isinstance(form, CreateUserGroupForm))
+        self.assertTrue(isinstance(form, UserGroupForm))
 
-    def test_successful_category_form_submission(self):
+    def test_successful_create_user_group_form_submission(self):
         self._login(self.user)
         before_count = UserGroup.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)

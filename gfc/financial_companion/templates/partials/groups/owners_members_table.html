@@ -18,7 +18,8 @@
             {% if member.email == owners_email %}
               <strong>(owner)</strong>
             {% else %}
-              <a style="float:center" href="#" class="btn btn-danger justify-content-center" onclick="showAlert('member')">Remove Member</a>
+              <a style="float:center" href="{% url 'remove_user_from_user_group' group_pk=group.id user_pk=member.id %}" class="btn btn-danger justify-content-center" onclick="return confirm('Are you sure you want to remove this member from this group?')">Remove Member</a>
+              <a style="float:center" href="{% url 'make_owner_of_user_group' group_pk=group.id user_pk=member.id %}" class="btn btn-danger justify-content-center" onclick="return confirm('Are you sure you want to make this user the owner of the user group?')">Transfer Ownership</a>
             {% endif %}
           </td>
         </tr>

@@ -5,7 +5,7 @@ from financial_companion.helpers import random_filename
 
 
 def change_filename(instance, filename):
-    return os.path.join('user_profile', random_filename(filename))
+    return os.path.join('group_profile', random_filename(filename))
 
 
 class UserGroup(models.Model):
@@ -40,3 +40,7 @@ class UserGroup(models.Model):
     def get_members(self):
         members_of_group = self.members.all()
         return ",".join([str(p) for p in members_of_group])
+
+    def make_owner(self, user):
+        self.owner_email = user.email
+        self.save()

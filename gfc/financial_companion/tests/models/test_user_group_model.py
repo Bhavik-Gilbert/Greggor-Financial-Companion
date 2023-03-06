@@ -12,6 +12,7 @@ class UserGroupModelTestCase(ModelTestCase):
         self.test_model = UserGroup.objects.get(invite_code='ABCDEFGH')
         self.second_group = UserGroup.objects.get(invite_code='IJKLMNOP')
         self.first_user = User.objects.get(username='@johndoe')
+        self.second_user = User.objects.get(username='@janedoe')
 
     def test_valid_user_group(self):
         self._assert_model_is_valid()
@@ -109,3 +110,9 @@ class UserGroupModelTestCase(ModelTestCase):
     def test_group_picture_can_be_empty(self):
         self.test_model.group_picture = ''
         self._assert_model_is_valid()
+
+    def test_another_user_can_be_made_owner(self):
+        self.assertEqual(self.test_model.owner_email, self.first_user.email)
+        self.test_model.make_owner(self.second_user)
+        self.assertNotEqual(self.test_model.owner_email, self.first_user.email)
+        self.assertEqual(self.test_model.owner_email, self.second_user.email)
