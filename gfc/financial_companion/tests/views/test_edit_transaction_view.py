@@ -64,7 +64,7 @@ class EditTransactionViewTestCase(ViewTestCase):
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = Transaction.objects.count()
         self.assertEqual(after_count, before_count)
-        response_url = reverse('individual_transaction',kwargs={'pk' : 2} )
+        response_url = reverse('individual_transaction', kwargs={'pk': 2})
         self.assertRedirects(
             response,
             response_url,
@@ -86,7 +86,9 @@ class EditTransactionViewTestCase(ViewTestCase):
         self._login(self.user)
         invalid_url = reverse('edit_transaction', kwargs={'pk': 100000})
         response = self.client.get(invalid_url, follow=True)
-        response_url = reverse('view_transactions', kwargs={'filter_type':"all"})
+        response_url = reverse(
+            'view_transactions', kwargs={
+                'filter_type': "all"})
         self.assertRedirects(
             response,
             response_url,

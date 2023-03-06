@@ -53,7 +53,9 @@ class AddTransactionViewTestCase(ViewTestCase):
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = Transaction.objects.count()
         self.assertEqual(after_count, before_count + 1)
-        response_url = reverse('view_transactions', kwargs={'filter_type': "all"})
+        response_url = reverse(
+            'view_transactions', kwargs={
+                'filter_type': "all"})
         self.assertRedirects(
             response,
             response_url,

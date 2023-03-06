@@ -18,12 +18,12 @@ def send_monthly_newsletter_email():
     users = User.objects.all()
 
     for user in users:
-        targets =  get_number_of_completed_targets(user.get_all_targets())
+        targets = get_number_of_completed_targets(user.get_all_targets())
         context = {
             "user": user,
-            "month": calendar.month_name[(datetime.now(tz=None).month)-1],
+            "month": calendar.month_name[(datetime.now(tz=None).month) - 1],
             "transactions": user.get_user_transactions()[:10],
-            "targets":targets
+            "targets": targets
 
         }
         html_content = render_to_string(

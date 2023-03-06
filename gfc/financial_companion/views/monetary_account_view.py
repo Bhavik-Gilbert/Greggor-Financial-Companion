@@ -63,7 +63,7 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
         if form.is_valid():
             form.save(instance=this_monetary_account)
             return redirect(
-            "individual_account",pk= pk,filter_type= "all")
+                "individual_account", pk=pk, filter_type="all")
     else:
         form: forms.ModelForm = MonetaryAccountForm(
             form_type=account_type, user=user, instance=this_monetary_account)

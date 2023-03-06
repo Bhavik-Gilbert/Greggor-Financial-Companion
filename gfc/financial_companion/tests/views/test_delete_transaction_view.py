@@ -21,7 +21,9 @@ class DeleteTransactionViewTestCase(ViewTestCase):
         response = self.client.get(self.url)
         after_count = Transaction.objects.count()
         self.assertEqual(before_count - 1, after_count)
-        response_url = reverse('view_transactions', kwargs={'filter_type': "all"})
+        response_url = reverse(
+            'view_transactions', kwargs={
+                'filter_type': "all"})
         self.assertRedirects(
             response,
             response_url,

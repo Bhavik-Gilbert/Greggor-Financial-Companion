@@ -21,9 +21,9 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             form.save()
             messages.add_message(
-            request,
-            messages.SUCCESS,
-            "Your transaction has been successfully added!")
+                request,
+                messages.SUCCESS,
+                "Your transaction has been successfully added!")
             return redirect('view_transactions', filter_type="all")
     else:
         form = AddTransactionForm(user)
@@ -52,10 +52,10 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
             if form.is_valid():
                 form.save(instance=transaction)
                 messages.add_message(
-            request,
-            messages.SUCCESS,
-            "Your transaction has been successfully updated!")
-                return redirect('individual_transaction', pk= pk)
+                    request,
+                    messages.SUCCESS,
+                    "Your transaction has been successfully updated!")
+                return redirect('individual_transaction', pk=pk)
         form = AddTransactionForm(user, instance=transaction)
         form.fields['category'].queryset = categories
         return render(request, "pages/add_transaction.html",

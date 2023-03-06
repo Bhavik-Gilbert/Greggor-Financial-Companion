@@ -51,7 +51,9 @@ class CreateCategoryViewTestCase(ViewTestCase):
         after_count = Category.objects.count()
         self.assertEqual(after_count, before_count + 1)
         self.assertTemplateUsed(response, 'pages/category_list.html')
-        response_url: str = reverse("categories_list",  kwargs={'search_name': "all"})
+        response_url: str = reverse(
+            "categories_list", kwargs={
+                'search_name': "all"})
         self.assertRedirects(
             response,
             response_url,
