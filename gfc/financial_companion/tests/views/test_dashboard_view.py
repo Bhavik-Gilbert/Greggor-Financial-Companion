@@ -1,5 +1,6 @@
 from .test_view_base import ViewTestCase
 from financial_companion.models import User, Account, PotAccount, Transaction, AbstractTransaction
+from django.contrib.messages import get_messages
 from django.urls import reverse
 
 
@@ -41,17 +42,22 @@ class DashboardViewTestCase(ViewTestCase):
         self.assertContains(response, self.account.name.capitalize())
         self.assertContains(response, self.account.description.capitalize())
         self.assertContains(response, self.account.balance)
-        self.assertContains(response, self.recent[0].title.capitalize())
-        self.assertContains(
-            response, self.recent[0].category.name.capitalize())
-        self.assertContains(response, self.recent[0].amount)
-        self.assertContains(
-            response,
-            self.recent[0].sender_account.name.capitalize())
-        self.assertContains(
-            response,
-            self.recent[0].receiver_account.name.capitalize())
+        for transaction in self.recent:
+            self.assertContains(response, transaction.title.title())
+            self.assertContains(
+                response, transaction.category.name.capitalize())
+            self.assertContains(response, transaction.amount)
+            self.assertContains(
+                response,
+                transaction.sender_account.name.capitalize())
+            self.assertContains(
+                response,
+                transaction.receiver_account.name.capitalize())
         self.assertTemplateUsed(
             response,
             'partials/dashboard/account_projection_graph.html'
         )
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertLessEqual(len(messages), 3)
+        self.assertTrue('Targets exceeded: ' in str(messages[0]))

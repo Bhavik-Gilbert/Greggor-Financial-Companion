@@ -1,17 +1,18 @@
-import inflect
-import financial_companion.models as fcmodels
 from json import dumps
 from currency_symbols import CurrencySymbols
 from currency_converter import CurrencyConverter
 from kzt_exchangerates import Rates as KZTRates
 from .enums import CurrencyType
-import random
-import string
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-import calendar
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib import messages
+import financial_companion.models as fcmodels
+import calendar
+import inflect
+import random
+import string
 
 
 def get_currency_symbol(currency_code: str):
@@ -33,19 +34,26 @@ def convert_currency(amount: float, current_currency_code: str,
     if current_currency_code == target_currency_code or current_currency_code not in CurrencyType or target_currency_code not in CurrencyType:
         return amount
 
-    if current_currency_code == CurrencyType.KZT or target_currency_code == CurrencyType.KZT:
-        kzt_rates = KZTRates()
-        if current_currency_code == CurrencyType.KZT:
-            return amount * kzt_rates.get_exchange_rate(target_currency_code)
-        else:
-            return amount * \
-                kzt_rates.get_exchange_rate(
-                    current_currency_code, from_kzt=True)
+    try:
+        if current_currency_code == CurrencyType.KZT or target_currency_code == CurrencyType.KZT:
+            kzt_rates = KZTRates()
+            if current_currency_code == CurrencyType.KZT:
+                return amount * \
+                    kzt_rates.get_exchange_rate(target_currency_code)
+            else:
+                return amount * \
+                    kzt_rates.get_exchange_rate(
+                        current_currency_code, from_kzt=True)
+    except Exception:
+        raise Exception("KZT Rates converter not working")
 
-    c: CurrencyConverter = CurrencyConverter(
-        fallback_on_missing_rate=True,
-        fallback_on_wrong_date=True)
-    return c.convert(amount, current_currency_code, target_currency_code)
+    try:
+        c: CurrencyConverter = CurrencyConverter(
+            fallback_on_missing_rate=True,
+            fallback_on_wrong_date=True)
+        return c.convert(amount, current_currency_code, target_currency_code)
+    except Exception:
+        raise Exception("Converter not working")
 
 
 def random_filename(filename):
@@ -89,15 +97,12 @@ def get_random_invite_code(length):
 
 
 def get_conversions_for_accounts(bank_accounts, mainCurrency="GBP"):
-    otherCurrencies = []
-    conversions: Dict[str, float] = {}
+    conversions: dict[str, float] = {}
     conversions.update({str(mainCurrency): 1.0})
-    i = 0
-    while (i < len(bank_accounts)):
-        currency = bank_accounts[i].currency
+    for bank_account in bank_accounts:
+        currency = bank_account.currency
         conversions.update(
             {str(currency): convert_currency(1, currency, mainCurrency)})
-        i += 1
     if (len(conversions.keys()) == 1 and not ("GBP" in conversions)):
         conversions.update({"GBP": convert_currency(1, "GBP", mainCurrency)})
 
@@ -182,12 +187,28 @@ def get_data_for_account_projection(user):
     }
 
 
-def get_number_of_completed_targets(targets):
-    total = 0
+def get_completed_targets(targets):
+    filteredTargets = []
     for target in targets:
         if target.is_complete():
-            total += 1
-    return total
+            filteredTargets.append(target)
+    return filteredTargets
+
+
+def get_number_of_completed_targets(targets):
+    return len(get_completed_targets(targets))
+
+
+def get_nearly_completed_targets(targets):
+    filteredTargets = []
+    for target in targets:
+        if target.is_nearly_complete():
+            filteredTargets.append(target)
+    return filteredTargets
+
+
+def get_number_of_nearly_completed_targets(targets):
+    return len(get_nearly_completed_targets(targets))
 
 
 def get_sorted_members_based_on_completed_targets(members):
@@ -199,13 +220,103 @@ def get_sorted_members_based_on_completed_targets(members):
     member_completed_list = sorted(
         member_completed_list,
         key=lambda x: x[1],
-        reverse=True)
-
+        reverse=True
+    )
     pos = 1
     p = inflect.engine()  # used to convert a number into a position
     member_completed_pos_list = []
-    for tuple in member_completed_list:
+    for member_completed in member_completed_list:
         member_completed_pos_list = [
-            *member_completed_pos_list, (*tuple, p.ordinal(pos))]
+            *member_completed_pos_list, (*member_completed, p.ordinal(pos))]
         pos += 1
     return member_completed_pos_list
+
+
+def get_warning_messages_for_targets(
+        request, showNumbersForMultiples=True, targets=None):
+    if not targets:
+        targets = request.user.get_all_targets()
+    completedTargets = get_completed_targets(targets)
+    nearlyCompletedTargets = get_nearly_completed_targets(targets)
+
+    sortedTargetsDict = {'completed': {}, 'nearlyExceeded': {}, 'exceeded': {}}
+    for target in targets:
+        dictionaryToAdd = None
+        if target.transaction_type == 'income' and target in completedTargets:
+            dictionaryToAdd = sortedTargetsDict['completed']
+        elif target.transaction_type == 'expense' and target in nearlyCompletedTargets:
+            dictionaryToAdd = sortedTargetsDict['nearlyExceeded']
+        elif target.transaction_type == 'expense' and target in completedTargets:
+            dictionaryToAdd = sortedTargetsDict['exceeded']
+
+        if dictionaryToAdd is not None:
+            key = target.getModelName(True)
+
+            if key:
+                if key in dictionaryToAdd.keys():
+                    listToAppend = dictionaryToAdd[key].copy()
+                else:
+                    listToAppend = []
+                listToAppend.append(target)
+                dictionaryToAdd.update({key: listToAppend})
+
+    for completionType, targetTypes in sortedTargetsDict.items():
+        displayList = []
+        if completionType:
+            for targetType, targets in targetTypes.items():
+                displayString = ''
+                if len(targets) == 1:
+                    displayString = (
+                        str(targets[0]) + " (" + targets[0].getModelName() + ")").title()
+                else:
+                    displayString = targetType.title() + " ("
+                    if showNumbersForMultiples:
+                        displayString += str(len(targets))
+                    else:
+                        displayString += convert_list_to_string(list(targets))
+                    displayString += ")"
+                targetTypes[targetType] = displayString
+            sortedTargetsDict[completionType] = targetTypes
+
+    if sortedTargetsDict['completed']:
+        messages.add_message(
+            request,
+            messages.SUCCESS,
+            'Targets completed: ' +
+            convert_list_to_string(
+                list(sortedTargetsDict['completed'].values()))
+        )
+
+    if sortedTargetsDict['nearlyExceeded']:
+        messages.add_message(
+            request,
+            messages.WARNING,
+            'Targets nearly exceeded: ' +
+            convert_list_to_string(
+                list(sortedTargetsDict['nearlyExceeded'].values()))
+        )
+
+    if sortedTargetsDict['exceeded']:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            'Targets exceeded: ' +
+            convert_list_to_string(
+                list(sortedTargetsDict['exceeded'].values()))
+        )
+
+    return request
+
+
+def convert_list_to_string(list_in):
+    output = ""
+    list_length = len(list_in)
+    if list_length >= 1:
+        output += str(list_in[0])
+    if list_length >= 2:
+        for element in list_in[1:list_length - 1]:
+            output += ", " + str(element)
+        if list_length > 2:
+            output += ","
+        output += " and " + str(list_in[list_length - 1])
+    return output
