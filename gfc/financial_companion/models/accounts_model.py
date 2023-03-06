@@ -90,6 +90,15 @@ class PotAccount(Account):
 
     def get_type(self):
         return f"{MonetaryAccountType.POT}"
+    
+    def get_currency(self):
+        return self.currency
+    
+    def get_balance(self):
+        return self.balance
+    
+    def update_balance(ammount):
+        balance = ammount
 
 
 def only_int(value):

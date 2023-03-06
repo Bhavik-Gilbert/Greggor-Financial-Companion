@@ -23,6 +23,9 @@ staticfiles
 *.py[cod]
 *$py.class
 
+# other
+OCRtest/
+
 # C extensions
 *.so
 
