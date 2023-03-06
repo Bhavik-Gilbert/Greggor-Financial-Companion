@@ -30,7 +30,7 @@ def add_user_to_user_group_view(request: HttpRequest, group_pk: int) -> HttpResp
                     messages.WARNING,
                     "Failed to identify user")
                 return redirect('individual_group',
-                                    pk=current_user_group.id)
+                                    pk=current_user_group.id, leaderboard="False")
             
             if(not current_user_group.members.contains(user)):
                 current_user_group.add_member(user)
@@ -39,21 +39,21 @@ def add_user_to_user_group_view(request: HttpRequest, group_pk: int) -> HttpResp
                     messages.SUCCESS,
                     "Successfully added user to user group")
                 return redirect('individual_group',
-                                    pk=current_user_group.id)
+                                    pk=current_user_group.id, leaderboard="False")
             else:
                 messages.add_message(
                     request,
                     messages.WARNING,
                     "This user is currently a member of this group")
                 return redirect('individual_group',
-                                    pk=current_user_group.id)
+                                    pk=current_user_group.id, leaderboard="False")
         else:
             messages.add_message(
                     request,
                     messages.WARNING,
                     "Please enter a valid email address")
             return redirect('individual_group',
-                                pk=current_user_group.id)
+                                pk=current_user_group.id, leaderboard="False")
     else:
         return redirect("all_groups_redirect")
             

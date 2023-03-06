@@ -34,7 +34,7 @@ def make_owner_of_user_group_view(request: HttpRequest, group_pk: int, user_pk: 
             messages.WARNING,
             "Failed to identify user")
         return redirect('individual_group',
-                            pk=current_user_group.id)
+                            pk=current_user_group.id, leaderboard="False")
     
     if(current_user_group.members.contains(user)):
         current_user_group.make_owner(user)
@@ -43,11 +43,11 @@ def make_owner_of_user_group_view(request: HttpRequest, group_pk: int, user_pk: 
             messages.SUCCESS,
             "Successfully made user owner of user group")
         return redirect('individual_group',
-                            pk=current_user_group.id)
+                            pk=current_user_group.id, leaderboard="False")
     else:
         messages.add_message(
             request,
             messages.WARNING,
             "This user is not currently a member of this group")
         return redirect('individual_group',
-                            pk=current_user_group.id)
+                            pk=current_user_group.id, leaderboard="False")
