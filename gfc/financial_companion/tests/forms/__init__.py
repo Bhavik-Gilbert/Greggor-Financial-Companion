@@ -9,3 +9,5 @@ from .test_join_user_group_form import JoinUserGroupFormTestCase
 from .test_add_transactions_via_bank_statement_form import AddTransactionsViaBankStatementFormTestCase
 from .test_add_transaction_form import AddTransactionFormTestCase
 from .test_add_user_to_user_group_form import AddUserToUserGroupFormTestCase
+from .test_regular_account_form import RegularAccountFormTestCase
+
