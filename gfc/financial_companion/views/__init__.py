@@ -25,4 +25,4 @@ from .view_savings_accounts import view_savings_accounts
 from .financial_analysis_view import spending_summary
 from .view_recurring_transactions import view_users_recurring_transactions
 from .individual_recurring_transaction import individual_recurring_transaction_view
-from .add_recurring_transaction import add_recurring_transaction_view
+from .add_recurring_transaction import add_recurring_transaction_view, edit_recurring_transaction_view, delete_recurring_transaction_view
