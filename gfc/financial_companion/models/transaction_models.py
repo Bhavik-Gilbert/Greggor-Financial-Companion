@@ -13,7 +13,8 @@ from .accounts_model import Account, PotAccount
 from .category_model import Category
 from ..helpers import CurrencyType, Timespan, random_filename
 import os
-
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
 def change_filename(instance, filename):
     return os.path.join('transactions', random_filename(filename))
@@ -112,7 +113,11 @@ class Transaction(AbstractTransaction):
     def save(self, *args, **kwargs):
         self._update_account_balances()
         super().save(*args, **kwargs)
-
+        
+@receiver(pre_delete, sender=Transaction, dispatch_uid='delete_transaction_signal')
+def delete_transaction(sender, instance, **kwargs):
+    instance.amount = 0
+    instance._update_account_balances()
 
 
 class RecurringTransaction(AbstractTransaction):
