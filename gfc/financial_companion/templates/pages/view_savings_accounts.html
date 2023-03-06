@@ -7,77 +7,13 @@
 
 <!-- Content -->
 {% block content %}
-<h1>Savings Accounts</h1>
-<head>
+  <h1>Savings Accounts</h1>
+  <head>
     <meta charset = "utf-8">
     <meta name = "viewport" content = "width=device-width, initial-scale=1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-  
-    <script>
-      function roundToDecimalPlaces(element, dp) {
-        element.value = parseFloat(element.value).toFixed(dp);
-        if (dp == 0) {
-          element.value = parseInt(element.value);
-        }
-      }
-
-      function getUserChoices() {
-        // Retrieves the user selection for the account and the projection timescale (in months)
-        account_ids = JSON.parse(document.getElementById('accountDropdown').value);
-        const accountsInfo = JSON.parse("{{bank_account_infos|escapejs}}");
-        const conversions_dict = JSON.parse("{{conversion_to_main_currency_JSON|escapejs}}");
-        const projectionTimescale_inMonths = document.getElementById('projectionTimescaleDropdown').value;
-        const currencyChosen = document.getElementById('currencyDropdown').value;
-
-        selectedCurrency= "{{main_currency}}";
-
-        if (currencyChosen != "DEFAULT") {
-          selectedCurrency = currencyChosen;
-        }
-        else if (account_ids.length == 1) {
-          selectedCurrency = accountsInfo[account_ids[0]].currency;
-        }
-
-        clearFigures_Income_Balance();
-
-        var selectedAccountsInfo = [];
-        for (acc in accountsInfo) {
-          if (account_ids.includes(Number(acc))) {
-            const account = accountsInfo[acc]
-            selectedAccountsInfo.push(account);
-            conversion = getConversionForAccount(account, selectedCurrency, conversions_dict);
-            setFigures_Income_Balance(account.balances, projectionTimescale_inMonths, conversion, selectedCurrency);
-          }
-        }
-        calculate_dataset(selectedAccountsInfo, projectionTimescale_inMonths, selectedCurrency, conversions_dict);
-      }
-
-      function clearFigures_Income_Balance() {
-        document.getElementById('projected_income_num').innerText = 0.00;
-        document.getElementById('projected_total_num').innerText = 0.00;
-      }
-
-      function setFigures_Income_Balance(balances, timescale, conversion, selectedCurrency) {
-        timescale -= 1;
-        const projected_income_num_text = document.getElementById('projected_income_num');
-        const projected_total_num_text = document.getElementById('projected_total_num');
-        const projected_income_currency_text = document.getElementById('projected_income_currency');
-        const projected_total_currency_text = document.getElementById('projected_total_currency');
-
-        let projected_income_num = parseFloat(projected_income_num_text.innerText);
-        let projected_total_num = parseFloat(projected_total_num_text.innerText);
-
-        projected_income_num += parseFloat(conversion) * (parseFloat(balances[timescale]) - parseFloat(balances[0]));
-        projected_total_num += parseFloat(conversion) * parseFloat(balances[timescale]);
-
-        projected_income_currency_text.innerText = selectedCurrency;
-        projected_total_currency_text.innerText = selectedCurrency;
-        projected_income_num_text.innerText = projected_income_num.toFixed(2);
-        projected_total_num_text.innerText = projected_total_num.toFixed(2);
-      }
-    </script>
-  
+    <script src="{% static 'javascript/savings_accounts.js' %}"></script>
   </head>
   
   <body onload="getUserChoices()">

@@ -1,65 +1,7 @@
 <head>
-    <meta charset = "utf-8">
-    <meta name = "viewport" content = "width=device-width, initial-scale=1">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-        
-    <script>
-        function load_initial_graph() {
-            try {
-                getUserChoices();
-            }
-            catch(err) {
-                const accountsInfo = JSON.parse("{{bank_account_infos|escapejs}}");
-                calculate_dataset(accountsInfo, 12)
-            }
-        }
-        
-        function calculate_dataset(accountsInfo, projectionTimescale_inMonths, selectedCurrency = "{{main_currency}}", conversions_dict = JSON.parse("{{conversion_to_main_currency_JSON|escapejs}}")) {
-            lineColours = [theme.primary, theme.secondary, theme.success, theme.warning, theme.danger, theme.dark]
-            $(document).ready(() => {
-                var timeBands = {{timescales_strings|safe}};
-                timeBands.length = projectionTimescale_inMonths;
-                accountsDataset = [];
-                for (account in accountsInfo) {
-                    accountsInfo[account].balances.length = projectionTimescale_inMonths;
-                    accountsDataset.push(getDatasetForAccount(accountsInfo[account], selectedCurrency, timeBands, lineColours[account % lineColours.length], conversions_dict));
-                }
-                
-                setChart(accountsDataset, timeBands, "Balance ("+selectedCurrency+")", "Months", "line");
-            });
-        }
-            
-        function getDatasetForAccount(account, selectedCurrency, timeBands, lineColour, conversions_dict) {
-            const conversion = getConversionForAccount(account, selectedCurrency, conversions_dict)
-            if (conversion != 1) {
-                account.balances = account.balances.map(balance => balance * conversion);
-            }
-
-            return ({
-                label: account.name,
-                data: account.balances,
-                backgroundColor: lineColour,
-                borderColor: lineColour,
-                borderWidth: 4
-            });
-        }
-        
-        function getConversionForAccount(account, selectedCurrency, conversions_dict) {
-            var conversion = 1;
-            if (account.currency != selectedCurrency) {
-              if (selectedCurrency == '{{main_currency}}') {
-                conversion = conversions_dict[account.currency];
-              }
-              else {
-                conversion = conversions_dict[selectedCurrency];
-                conversion = 1/conversion;
-              }
-            }
-            return conversion
-        }
-    </script>
+    <script src="{% static 'javascript/account_projection_graph.js' %}"></script>
 </head>
-<body onload="load_initial_graph()">
+
+<body onload="loadInitialGraph()">
     {% include "partials/dashboard/graph.html" %}
 </body>
