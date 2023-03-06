@@ -38,7 +38,15 @@ def individual_group_view(request: HttpRequest, pk: int,
                     request.GET.get('page', 1), sorted_members_list)
 
         return render(request, "pages/individual_group.html",
-                      {"group": group, "members": pagenated_members_list, "is_owner": is_owner, "owners_email": owners_email, "count": count, "add_user_form": form, "leaderboard": leaderboard == "True"})
+                    {
+                        "group": group, 
+                        "members": pagenated_members_list, 
+                        "is_owner": is_owner, 
+                        "owners_email": owners_email, 
+                        "count": count, 
+                        "add_user_form": form, 
+                        "leaderboard": leaderboard == "True"
+                    })
 
 
 @login_required
