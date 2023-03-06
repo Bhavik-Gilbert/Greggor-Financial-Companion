@@ -1,7 +1,7 @@
-"""Unit tests of the bank account form."""
+"""Unit tests of the regular account form."""
 from .test_form_base import FormTestCase
 from financial_companion.forms import RegularAccountForm, MonetaryAccountForm
-from financial_companion.helpers import CurrencyType, AccountType
+from financial_companion.helpers import AccountType
 from financial_companion.models import User
 from decimal import Decimal
 
@@ -12,7 +12,7 @@ class RegularAccountFormTestCase(FormTestCase):
     def setUp(self):
         self.form_input = {
             "name": "Test regular",
-            "description": "This is a test bank",
+            "description": "This is a test regular",
         }
 
     def test_get_correct_monetary_account_form_regular_account_form(self):
@@ -48,4 +48,3 @@ class RegularAccountFormTestCase(FormTestCase):
         self.form_input["description"]: str = ""
         form: RegularAccountForm = RegularAccountForm(data=self.form_input)
         self.assertTrue(form.is_valid())
-

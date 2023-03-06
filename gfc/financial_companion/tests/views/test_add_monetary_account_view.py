@@ -83,7 +83,9 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
         regular_account_count_after: int = Account.objects.count()
         pot_account_count_after: int = PotAccount.objects.count()
         bank_account_count_after: int = BankAccount.objects.count()
-        self.assertEqual(regular_account_count_before + 1, regular_account_count_after)
+        self.assertEqual(
+            regular_account_count_before + 1,
+            regular_account_count_after)
         self.assertEqual(pot_account_count_before, pot_account_count_after)
         self.assertEqual(bank_account_count_before, bank_account_count_after)
 
@@ -143,7 +145,7 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
         self.assertEqual(
             bank_account_count_before + 1,
             bank_account_count_after)
-        
+
     def test_invalid_regular_account_form_input(self):
         self._login(self.user)
         regualr_account_count_before: int = Account.objects.count()
@@ -162,7 +164,9 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
         regualr_account_count_after: int = Account.objects.count()
         pot_account_count_after: int = PotAccount.objects.count()
         bank_account_count_after: int = BankAccount.objects.count()
-        self.assertEqual(regualr_account_count_before, regualr_account_count_after)
+        self.assertEqual(
+            regualr_account_count_before,
+            regualr_account_count_after)
         self.assertEqual(pot_account_count_before, pot_account_count_after)
         self.assertEqual(bank_account_count_before, bank_account_count_after)
 
