@@ -14,14 +14,16 @@ def MonetaryAccountForm(*args, **kwargs) -> forms.ModelForm:
     elif form_type == AccountType.POT:
         return PotAccountForm(*args, **kwargs)
     else:
-        return AccountForm(*args, **kwargs)
+        return RegularAccountForm(*args, **kwargs)
 
 
-class AccountForm(forms.ModelForm):
+class RegularAccountForm(forms.ModelForm):
     """form to create accounts"""
 
     def __init__(self, *args, **kwargs) -> None:
-        super(AccountForm, self).__init__(*args, **kwargs)
+        self.user: int = kwargs.get("user")
+        kwargs.pop("user", None)
+        super(RegularAccountForm, self).__init__(*args, **kwargs)
 
     class Meta:
         model: Account = Account
@@ -29,21 +31,21 @@ class AccountForm(forms.ModelForm):
         widgets: dict[str, Any] = {"description": forms.Textarea()}
 
     def save(self, instance: Account = None) -> Account:
-        super.save(commit=False)
+        super().save(commit=False)
 
         if instance is None:
-            account: Account = Account.objects.create(
+            regularAccount: Account = Account.objects.create(
                 name=self.cleaned_data.get("name"),
                 description=self.cleaned_data.get("description")
             )
 
         else:
-            monetary_account = instance
-            monetary_account.name: str = self.cleaned_data.get("name")
-            monetary_account.description: str = self.cleaned_data.get(
+            regularAccount = instance
+            regularAccount.name: str = self.cleaned_data.get("name")
+            regularAccount.description: str = self.cleaned_data.get(
                 "description")
 
-        return monetary_account
+        return regularAccount
 
 
 class PotAccountForm(forms.ModelForm):

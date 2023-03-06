@@ -49,6 +49,9 @@ class Account(Model):
 
     def __str__(self):
         return str(self.name)
+    
+    def get_type(self):
+        return f"{AccountType.REGULAR}"
 
     @staticmethod
     def create_basic_account(account_name: str):

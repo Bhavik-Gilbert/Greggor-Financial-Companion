@@ -13,7 +13,7 @@ def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
     """View to add monetary account"""
 
     user: User = request.user
-    account_type: AccountType = AccountType.POT
+    account_type: AccountType = AccountType.REGULAR
     form: forms.ModelForm = MonetaryAccountForm(
         form_type=account_type, user=user)
 
