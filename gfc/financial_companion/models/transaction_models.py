@@ -15,6 +15,7 @@ from ..helpers import CurrencyType, Timespan, random_filename
 import os
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
+from decimal import Decimal
 
 def change_filename(instance, filename):
     return os.path.join('transactions', random_filename(filename))
@@ -89,14 +90,14 @@ class Transaction(AbstractTransaction):
             database_transaction = Transaction.objects.get(id=self.id)
 
             if database_transaction.sender_account.id == self.sender_account.id:
-                send_amount = database_transaction.amount - self.amount
+                send_amount = database_transaction.amount - Decimal( self.amount)
             else:
                 database_sender_account = Account.objects.get_subclass(id=database_transaction.sender_account.id)
                 if isinstance(database_sender_account, PotAccount):
                     database_sender_account.update_balance(database_transaction.amount, database_transaction.currency)
                 
             if database_transaction.receiver_account.id == self.receiver_account.id:
-                receive_amount = self.amount - database_transaction.amount
+                receive_amount = Decimal(self.amount) - database_transaction.amount
             else:
                 database_receiver_account = Account.objects.get_subclass(id=database_transaction.receiver_account.id)
                 if isinstance(database_receiver_account, PotAccount):
