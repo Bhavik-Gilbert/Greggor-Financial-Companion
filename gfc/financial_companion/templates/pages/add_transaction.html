@@ -14,10 +14,8 @@
       <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
       <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
       <script>
-        $(document).ready(function() {
-          $('#id_sender_account').select2();
-          $('#id_receiver_account').select2();
-        });
+        autocomplete('#id_sender_account');
+        autocomplete('#id_receiver_account');
       </script>
     </head>
     {% if edit %}
@@ -26,7 +24,7 @@
       <form action='{% url 'add_transaction'%}' method="post" enctype='multipart/form-data'>
     {% endif %}
       {% csrf_token %}
-        
+
     <div class="row mb-4 gx-2">
       <div class="col-md-auto">
         <a class="btn btn-primary" href="{% url 'create_category' %}">Add New Category</a>
