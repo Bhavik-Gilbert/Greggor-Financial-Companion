@@ -1,6 +1,6 @@
 from django import forms
 from financial_companion.models import PotAccount, BankAccount, User, Account
-from financial_companion.helpers import MonetaryAccountType
+from financial_companion.helpers import AccountType
 from decimal import Decimal
 from typing import Any
 
@@ -9,10 +9,43 @@ def MonetaryAccountForm(*args, **kwargs) -> forms.ModelForm:
     """Form to create monetary account"""
     form_type: int = kwargs.get("form_type")
     kwargs.pop("form_type", None)
-    if form_type == MonetaryAccountType.BANK:
+    if form_type == AccountType.BANK:
         return BankAccountForm(*args, **kwargs)
-    else:
+    elif form_type == AccountType.POT:
         return PotAccountForm(*args, **kwargs)
+    else:
+        return RegularAccountForm(*args, **kwargs)
+
+
+class RegularAccountForm(forms.ModelForm):
+    """form to create accounts"""
+
+    def __init__(self, *args, **kwargs) -> None:
+        self.user: int = kwargs.get("user")
+        kwargs.pop("user", None)
+        super(RegularAccountForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model: Account = Account
+        fields: list[str] = ["name", "description"]
+        widgets: dict[str, Any] = {"description": forms.Textarea()}
+
+    def save(self, instance: Account = None) -> Account:
+        super().save(commit=False)
+
+        if instance is None:
+            regularAccount: Account = Account.objects.create(
+                name=self.cleaned_data.get("name"),
+                description=self.cleaned_data.get("description")
+            )
+
+        else:
+            regularAccount = instance
+            regularAccount.name: str = self.cleaned_data.get("name")
+            regularAccount.description: str = self.cleaned_data.get(
+                "description")
+
+        return regularAccount
 
 
 class PotAccountForm(forms.ModelForm):
