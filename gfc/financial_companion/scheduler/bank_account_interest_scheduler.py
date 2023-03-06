@@ -17,4 +17,5 @@ def create_bank_account_interest_scheduler():
         minutes=1,
         repeats=-1,
         schedule_type=Schedule.MONTHLY,
-        next_run=date_object)
+        next_run=date_object
+    )

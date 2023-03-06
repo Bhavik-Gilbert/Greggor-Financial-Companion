@@ -238,6 +238,11 @@ urlpatterns = [
     ),
     re_path(
         'individual_group/(?P<pk>\\d+)/$',
+        views.individual_group_redirect,
+        name="individual_group_redirect"
+    ),
+    re_path(
+        'individual_group/(?P<pk>\\d+)/(?P<leaderboard>\\w+)/$',
         views.individual_group_view,
         name="individual_group"
     ),
