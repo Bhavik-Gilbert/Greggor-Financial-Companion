@@ -8,13 +8,8 @@ from financial_companion.helpers import paginate
 
 
 @login_required
-def view_users_recurring_transactions(request: HttpRequest,
-                            filter_type= str('all')) -> HttpResponse:
+def view_users_recurring_transactions(request: HttpRequest) -> HttpResponse:
     user: User = request.user
-
-    if not (filter_type in TransactionType.get_send_list()
-            or filter_type in TransactionType.get_received_list()):
-        return redirect('dashboard')
 
     transactions: list[RecurringTransaction] = user.get_user_recurring_transactions()
 

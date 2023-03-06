@@ -1,15 +1,15 @@
 from django import forms
 from django.core.validators import FileExtensionValidator
 from financial_companion.models import Transaction, Account, Category, PotAccount, RecurringTransaction
-from financial_companion.helpers import ParseStatementPDF, CurrencyType
 from datetime import datetime
 from django.utils.timezone import make_aware
 from typing import Any
 from decimal import Decimal
+from django.forms.widgets import DateTimeInput
 
 
 class AddRecurringTransactionForm(forms.ModelForm):
-    """Form to add a new transaction"""
+    """Form to add a new recurring transaction"""
 
     def __init__(self, user, *args, **kwargs):
         super(AddRecurringTransactionForm, self).__init__(*args, **kwargs)
@@ -35,6 +35,10 @@ class AddRecurringTransactionForm(forms.ModelForm):
             'interval',
             'start_date',
             'end_date']
+        widgets = {
+            'start_date': DateTimeInput(attrs={ 'type': 'datetime-local', 'min':  datetime.now().strftime("%Y-%m-%dT%H:%M") }),
+            'end_date': DateTimeInput(attrs={ 'type': 'datetime-local', 'min':  datetime.now().strftime("%Y-%m-%dT%H:%M") }),
+        }
 
     def save(self, instance: RecurringTransaction = None) -> RecurringTransaction:
         """Create a new transaction."""
@@ -54,7 +58,7 @@ class AddRecurringTransactionForm(forms.ModelForm):
                 end_date = self.cleaned_data.get('end_date')
             )
         else:
-            transaction: Transaction = instance
+            transaction: RecurringTransaction = instance
             transaction.title = self.cleaned_data.get('title')
             transaction.description = self.cleaned_data.get('description')
             transaction.image = self.cleaned_data.get('image')
@@ -95,3 +99,8 @@ class AddRecurringTransactionForm(forms.ModelForm):
             self.add_error(
                 'end_date',
                 'End date cannot precede start date.')
+        if start_date < datetime.today().strftime('%Y-%m-%d'):
+            self.add_error(
+                'start_date',
+                'Start date cannot be in the past.'
+            )

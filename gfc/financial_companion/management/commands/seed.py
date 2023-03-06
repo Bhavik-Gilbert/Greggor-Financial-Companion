@@ -4,7 +4,7 @@ from financial_companion.models import (
     User, UserGroup,
     Account, PotAccount, BankAccount,
     CategoryTarget, UserTarget, AccountTarget,
-    Transaction,  # RecurringTransactions,
+    Transaction, RecurringTransaction,
     Category,
     QuizQuestion
 )
@@ -13,9 +13,10 @@ from django.db.models import Q
 from django.conf import settings
 import os
 import datetime
+from datetime import timedelta
 from random import randint, random
 import random
-from financial_companion.helpers import TransactionType, CurrencyType, MonetaryAccountType, Timespan, get_random_invite_code
+from financial_companion.helpers import TransactionType, CurrencyType, MonetaryAccountType, Timespan, get_random_invite_code, generate_random_end_date
 from financial_companion.scheduler import create_monthly_newsletter_scheduler
 
 
@@ -30,6 +31,7 @@ class Command(BaseCommand):
     MAX_NUMBER_OF_BASIC_ACCOUNTS = 5
     OBJECT_HAS_TARGET_PROBABILITY = 0.6
     MAX_NUMBER_OF_GROUPS = 5
+    MAX_NUMBER_OF_RECURRING_TRANSACTIONS = 4
 
     def __init__(self):
         super().__init__()
@@ -129,6 +131,7 @@ class Command(BaseCommand):
             )
             self.create_target_for_account(potAccount)
             self.create_transactions_for_account(potAccount, categories)
+            self.create_recurring_transactions_for_account(potAccount, categories)
         for i in range(0, randomNumOfBankAccount):
             bankAccount = BankAccount.objects.create(
                 name=self.faker.word(),
@@ -145,6 +148,7 @@ class Command(BaseCommand):
             )
             self.create_target_for_account(bankAccount)
             self.create_transactions_for_account(bankAccount, categories)
+            self.create_recurring_transactions_for_account(potAccount, categories)
 
     def create_transactions_for_account(self, account, categories):
         randomNumOfTransactions = randint(0, self.MAX_TRANSACTIONS_PER_ACCOUNT)
@@ -238,3 +242,50 @@ class Command(BaseCommand):
             group.members.set(User.objects.all())
 
         print("USERGROUPS SEEDED")
+
+    def create_recurring_transactions_for_account(self, account, categories):
+        randomNumOfRecTransactions = randint(0, self.MAX_NUMBER_OF_RECURRING_TRANSACTIONS)
+        oppositePartyOfTransaction = random.choice(
+            Account.objects.filter(~Q(id=account.id)))
+        randomNoOfTransactions = randint(0, 10)
+
+        if (randint(0, 1) == 0):
+            sender_account = oppositePartyOfTransaction
+            receiver_account = account
+        else:
+            sender_account = account
+            receiver_account = oppositePartyOfTransaction
+
+        for i in range(0, randomNumOfRecTransactions):
+            recTransaction = RecurringTransaction.objects.create(
+                title=self.faker.word(),
+                description=self.faker.text(),
+                category=random.choice(categories),
+                amount=float(randint(0, 1000000)) / 100,
+                currency=self.choose_random_enum(CurrencyType),
+                sender_account=sender_account,
+                receiver_account=receiver_account,
+                start_date= datetime.date.today(),
+                end_date = generate_random_end_date(),
+                interval = self.choose_random_enum(Timespan)             
+            )
+            for j in range(0, randomNoOfTransactions):
+                transaction = Transaction.objects.create(
+                    title=recTransaction.title,
+                    description=recTransaction.description,
+                    category=recTransaction.category,
+                    amount=recTransaction.amount,
+                    currency=recTransaction.currency,
+                    sender_account=sender_account,
+                    receiver_account=receiver_account
+                )
+                transaction.save()
+                recTransaction.add_transaction(transaction)
+        print("RECURRING TRANSACTIONS SEEDED")
+
+            
+            
+
+        
+        
+        

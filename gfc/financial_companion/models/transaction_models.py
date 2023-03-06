@@ -124,7 +124,6 @@ class RecurringTransaction(AbstractTransaction):
 
     start_date: DateField = DateField(
         blank=False,
-        auto_now_add=True,
     )
 
     interval: CharField = CharField(
@@ -144,3 +143,4 @@ class RecurringTransaction(AbstractTransaction):
     def add_transaction(self, transaction: Transaction):
         """Add transaction to transaction in recurring transaction"""
         self.transactions.add(transaction)
+        self.save()
