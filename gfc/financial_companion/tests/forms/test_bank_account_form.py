@@ -1,7 +1,7 @@
 """Unit tests of the bank account form."""
 from .test_form_base import FormTestCase
 from financial_companion.forms import BankAccountForm, MonetaryAccountForm
-from financial_companion.helpers import CurrencyType, MonetaryAccountType
+from financial_companion.helpers import CurrencyType, AccountType
 from financial_companion.models import User
 from decimal import Decimal
 
@@ -25,13 +25,13 @@ class BankAccountFormTestCase(FormTestCase):
     def test_get_correct_monetary_account_form_bank_account_form(self):
         user: User = User.objects.all()[0]
         form: BankAccountForm = MonetaryAccountForm(
-            form_type=MonetaryAccountType.BANK, user=user)
+            form_type=AccountType.BANK, user=user)
         self.assertIsInstance(form, BankAccountForm)
 
     def test_get_incorrect_monetary_account_form_bank_account_form(self):
         user: User = User.objects.all()[0]
         form: BankAccountForm = MonetaryAccountForm(
-            form_type=MonetaryAccountType.POT, user=user)
+            form_type=AccountType.POT, user=user)
         self.assertNotIsInstance(form, BankAccountForm)
 
     def test_valid_form_contains_required_fields(self):

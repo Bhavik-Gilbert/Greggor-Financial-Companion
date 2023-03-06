@@ -23,7 +23,7 @@ staticfiles
 *.py[cod]
 *$py.class
 
-# other
+# other 
 OCRtest/
 
 # C extensions

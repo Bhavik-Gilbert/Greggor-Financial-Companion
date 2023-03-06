@@ -26,10 +26,10 @@ class IndividualTransactionViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/individual_transaction.html")
         transaction: Transaction = response.context["transaction"]
         self.assertTrue(isinstance(transaction, Transaction))
-        self.assertContains(response, self.transaction.title.capitalize())
+        self.assertContains(response, self.transaction.title.title())
         self.assertContains(response, self.transaction.description)
         self.assertContains(
-            response, self.transaction.category.name.capitalize())
+            response, self.transaction.category.name.title())
         self.assertContains(response, self.transaction.amount)
         self.assertContains(response, self.transaction.currency.upper())
         self.assertContains(
