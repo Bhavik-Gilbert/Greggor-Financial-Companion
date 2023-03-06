@@ -93,7 +93,7 @@ class PotAccount(Account):
 
     def get_type(self):
         return f"{AccountType.POT}"
-    
+
     def update_balance(self, amount, currency):
         amount = convert_currency(amount, currency, self.currency)
         self.balance += Decimal(amount)

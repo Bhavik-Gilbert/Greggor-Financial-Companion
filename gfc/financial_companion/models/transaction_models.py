@@ -17,6 +17,7 @@ from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from decimal import Decimal
 
+
 def change_filename(instance, filename):
     return os.path.join('transactions', random_filename(filename))
 
@@ -82,7 +83,8 @@ class Transaction(AbstractTransaction):
         ordering = ['-time_of_transaction']
 
     def _update_account_balances(self):
-        check_object_exists = Transaction.objects.filter(id=self.id).count() > 0
+        check_object_exists = Transaction.objects.filter(
+            id=self.id).count() > 0
         send_amount = -self.amount
         receive_amount = self.amount
 
@@ -90,21 +92,29 @@ class Transaction(AbstractTransaction):
             database_transaction = Transaction.objects.get(id=self.id)
 
             if database_transaction.sender_account.id == self.sender_account.id:
-                send_amount = database_transaction.amount - Decimal( self.amount)
+                send_amount = database_transaction.amount - \
+                    Decimal(self.amount)
             else:
-                database_sender_account = Account.objects.get_subclass(id=database_transaction.sender_account.id)
+                database_sender_account = Account.objects.get_subclass(
+                    id=database_transaction.sender_account.id)
                 if isinstance(database_sender_account, PotAccount):
-                    database_sender_account.update_balance(database_transaction.amount, database_transaction.currency)
-                
+                    database_sender_account.update_balance(
+                        database_transaction.amount, database_transaction.currency)
+
             if database_transaction.receiver_account.id == self.receiver_account.id:
-                receive_amount = Decimal(self.amount) - database_transaction.amount
+                receive_amount = Decimal(
+                    self.amount) - database_transaction.amount
             else:
-                database_receiver_account = Account.objects.get_subclass(id=database_transaction.receiver_account.id)
+                database_receiver_account = Account.objects.get_subclass(
+                    id=database_transaction.receiver_account.id)
                 if isinstance(database_receiver_account, PotAccount):
-                    database_receiver_account.update_balance(-database_transaction.amount, database_transaction.currency)
-        
-        sender_account = Account.objects.get_subclass(id=self.sender_account.id)
-        receiver_account = Account.objects.get_subclass(id=self.receiver_account.id)
+                    database_receiver_account.update_balance(
+                        -database_transaction.amount, database_transaction.currency)
+
+        sender_account = Account.objects.get_subclass(
+            id=self.sender_account.id)
+        receiver_account = Account.objects.get_subclass(
+            id=self.receiver_account.id)
 
         if isinstance(sender_account, PotAccount):
             sender_account.update_balance(send_amount, self.currency)
@@ -114,8 +124,10 @@ class Transaction(AbstractTransaction):
     def save(self, *args, **kwargs):
         self._update_account_balances()
         super().save(*args, **kwargs)
-        
-@receiver(pre_delete, sender=Transaction, dispatch_uid='delete_transaction_signal')
+
+
+@receiver(pre_delete, sender=Transaction,
+          dispatch_uid='delete_transaction_signal')
 def delete_transaction(sender, instance, **kwargs):
     instance.amount = 0
     instance._update_account_balances()

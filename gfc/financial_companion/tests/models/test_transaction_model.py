@@ -4,7 +4,7 @@ from django.utils import timezone
 from decimal import Decimal
 
 from ...helpers import CurrencyType
-from ...models import AbstractTransaction, Transaction
+from ...models import AbstractTransaction, Transaction, User, Account, PotAccount
 
 
 class TransactionModelTestCase(ModelTestCase):
@@ -13,6 +13,9 @@ class TransactionModelTestCase(ModelTestCase):
     def setUp(self) -> None:
         super().setUp()
         self.test_model: Transaction = Transaction.objects.get(id=2)
+        self.user: User = User.objects.get(id=1)
+        self.sender_account: PotAccount = PotAccount.objects.get(id=5)
+        self.receiver_account: PotAccount = PotAccount.objects.get(id=6)
 
     def test_valid_transaction(self):
         self._assert_model_is_valid()
@@ -24,3 +27,6 @@ class TransactionModelTestCase(ModelTestCase):
     def test_time_of_transaction_auto_adds_time_if_blank(self):
         self.test_model.time_of_transaction = ""
         self._assert_model_is_valid()
+
+    # def test_sender_account_is_valid(self):
+    #     self.
