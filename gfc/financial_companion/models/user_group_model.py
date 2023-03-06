@@ -40,7 +40,7 @@ class UserGroup(models.Model):
     def get_members(self):
         members_of_group = self.members.all()
         return ",".join([str(p) for p in members_of_group])
-    
+
     def make_owner(self, user):
         self.owner_email = user.email
         self.save()

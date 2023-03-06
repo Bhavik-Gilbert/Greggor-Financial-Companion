@@ -4,6 +4,7 @@ from .test_view_base import ViewTestCase
 from financial_companion.models import User, UserGroup
 from financial_companion.forms import AddUserToUserGroupForm
 
+
 class AddUserToUserGroupViewTestCase(ViewTestCase):
     """Tests for add user to user group view."""
 
@@ -67,7 +68,8 @@ class AddUserToUserGroupViewTestCase(ViewTestCase):
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 1)
 
-    def test_unsuccessful_add_user_to_user_group_due_to_user_already_being_in_the_group(self):
+    def test_unsuccessful_add_user_to_user_group_due_to_user_already_being_in_the_group(
+            self):
         self._login(self.user)
         self.user_group.add_member(self.user_two)
         self.assertTrue(self.user_group.members.contains(self.user_two))
