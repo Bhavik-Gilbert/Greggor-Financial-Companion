@@ -13,14 +13,14 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.group = UserGroup.objects.get(id=3)
         self.url: str = reverse(
             "individual_group", kwargs={
-                "pk": self.group.id})
+                "pk": self.group.id, "leaderboard": "False"})
 
     def test_valid_individual_group_url(self):
         self.assertEqual(
             self.url,
-            f"/individual_group/{self.group.id}/")
+            f"/individual_group/{self.group.id}/False/")
 
-    def test_valid_get_view_individual_group(self):
+    def test_valid_get_view_individual_group_with_members(self):
         self._login(self.owner)
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
@@ -32,12 +32,34 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.assertContains(response, self.group.description)
         self.assertContains(response, self.group.members_count())
         self.assertContains(response, self.group.owner_email)
+        self.assertContains(response, "Members:")
+        self.assertNotContains(response, "Leaderboard:")
+
+    def test_valid_get_view_individual_group_with_leaderboard(self):
+        self._login(self.owner)
+        url: str = reverse(
+            "individual_group", kwargs={
+                "pk": self.group.id, "leaderboard": "True"})
+        response: HttpResponse = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "pages/individual_group.html")
+        group: Group = response.context["group"]
+        self.assertTrue(isinstance(group, UserGroup))
+        self.assertContains(response, self.group.name.capitalize())
+        self.assertContains(response, self.group.invite_code)
+        self.assertContains(response, self.group.description)
+        self.assertContains(response, self.group.members_count())
+        self.assertContains(response, self.group.owner_email)
+        self.assertContains(response, "Leaderboard:")
+        self.assertContains(response, "1st")
+        self.assertContains(response, "2nd")
+        self.assertNotContains(response, "Members:")
 
     def test_invalid_group_does_not_exist(self):
         self._login(self.owner)
         url: str = reverse(
             "individual_group", kwargs={
-                "pk": self.group.id + 99999999})
+                "pk": self.group.id + 99999999, "leaderboard": "False"})
         response: HttpResponse = self.client.get(url, follow=True)
         response_url: str = reverse("dashboard")
         self.assertRedirects(

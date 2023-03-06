@@ -1,7 +1,6 @@
 from .test_abstract_model_base import AbstractModelTestCase
 from django.db.models.base import ModelBase
 from decimal import Decimal
-
 from ...helpers import Timespan, TransactionType, CurrencyType
 from ...models import AbstractTarget
 
@@ -90,3 +89,7 @@ class AbstractTargetModelTestCase(AbstractModelTestCase):
     def test_invalid_currency_cannot_be_empty(self) -> None:
         self.test_model.currency: str = ""
         self._assert_model_is_invalid()
+
+    def test_valid_target_is_complete(self) -> None:
+        complete = self.test_model.is_complete()
+        self.assertEqual(complete, False)

@@ -19,4 +19,6 @@ tabula-py==2.6.0
 pandas==1.4.3
 python-dateutil==2.8.2
 django-cleanup==7.0.0
+inflect==6.0.2
 numpy==1.23.1
+django-session-timeout==0.1.0

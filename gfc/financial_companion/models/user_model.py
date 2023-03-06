@@ -55,3 +55,37 @@ class User(AbstractUser):
             user=self
         )
         return max(user_scores, key=lambda quiz_score: quiz_score.get_score())
+
+    def get_all_targets(self):
+        user = self
+        userTargets = fcmodels.UserTarget.objects.filter(user=user)
+        userAccountTargets = self.get_all_account_targets()
+        userCategoryTargets = self.get_all_category_targets()
+
+        return [*userTargets, *userAccountTargets, *userCategoryTargets]
+
+    def get_all_account_targets(self, accounts=None):
+        user = self
+        if not accounts:
+            accounts = fcmodels.PotAccount.objects.filter(user=user)
+        userAccountTargets = fcmodels.AccountTarget.objects.filter(
+            account__in=accounts)
+
+        return userAccountTargets
+
+    def get_all_category_targets(self, categories=None):
+        user = self
+        if not categories:
+            categories = fcmodels.Category.objects.filter(user=user)
+        userCategoryTargets = fcmodels.CategoryTarget.objects.filter(
+            category__in=categories)
+
+        return userCategoryTargets
+
+    def get_number_of_completed_targets(user):
+        total = 0
+        targets = self.get_all_targets()
+        for target in targets:
+            if target.is_complete:
+                total += 1
+        return total
