@@ -312,3 +312,25 @@ def convert_list_to_string(list_in):
             output += ","
         output += " and " + str(list_in[list_length - 1])
     return output
+
+def reduce_balance(account, amount, currency):
+    if(account.hasattr(account, "balance")):
+        current_balance = account.get_balance()
+        account_currency = account.get_currency()
+
+        if(currency != account_currency):
+            amount = convert_currency(amount, currency, account_currency)
+        
+        updated_balance = current_balance - amount
+        account.update_balance(updated_balance)
+
+def increase_balance(account, amount, currency):
+    if(account.hasattr(account, "balance")):
+        current_balance = account.get_balance()
+        account_currency = account.get_currency()
+
+        if(currency != account_currency):
+            amount = convert_currency(amount, currency, account_currency)
+        
+        updated_balance = current_balance + amount
+        account.update_balance(updated_balance)
