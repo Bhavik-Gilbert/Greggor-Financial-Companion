@@ -9,7 +9,7 @@ from django.db.models import (
     ForeignKey,
     CASCADE, SET_NULL
 )
-from .accounts_model import Account
+from .accounts_model import Account, PotAccount
 from .category_model import Category
 from ..helpers import CurrencyType, Timespan, random_filename
 import os
@@ -78,6 +78,40 @@ class Transaction(AbstractTransaction):
 
     class Meta:
         ordering = ['-time_of_transaction']
+
+    def save(self, *args, **kwargs):
+        check_object_exists = Transaction.objects.filter(id=self.id).count() > 0
+        send_amount = -self.amount
+        receive_amount = self.amount
+
+        if check_object_exists:
+            database_transaction = Transaction.objects.get(id=self.id)
+
+            if database_transaction.sender_account == self.sender_account:
+                send_amount = database_transaction.amount - self.amount
+            else:
+                database_sender_account = Account.objects.get_subclass(id=database_transaction.sender_account.id)
+                if isinstance(database_sender_account, PotAccount):
+                    database_sender_account.update_balance(database_transaction.amount, database_transaction.currency)
+                
+            if database_transaction.receiver_account == self.receiver_account:
+                receive_amount = self.amount - database_transaction.amount
+            else:
+                database_receiver_account = Account.objects.get_subclass(id=database_transaction.receiver_account.id)
+                if isinstance(database_receiver_account, PotAccount):
+                    database_receiver_account.update_balance(-database_transaction.amount, database_transaction.currency)
+        
+        
+        sender_account = Account.objects.get_subclass(id=self.sender_account.id)
+        receiver_account = Account.objects.get_subclass(id=self.receiver_account.id)
+
+        if isinstance(sender_account, PotAccount):
+            sender_account.update_balance(send_amount, self.currency)
+        if isinstance(receiver_account, PotAccount):
+            receiver_account.update_balance(receive_amount, self.currency)
+
+        super().save(*args, **kwargs)
+
 
 
 class RecurringTransaction(AbstractTransaction):

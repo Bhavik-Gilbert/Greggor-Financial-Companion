@@ -9,10 +9,10 @@ from encrypted_fields.fields import EncryptedCharField
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
 from model_utils.managers import InheritanceManager
-
+from decimal import Decimal
 from financial_companion.models import User
 import financial_companion.models as fcmodels
-from ..helpers import CurrencyType, AccountType, TransactionType
+from ..helpers import CurrencyType, AccountType, TransactionType, convert_currency
 
 
 class Account(Model):
@@ -93,15 +93,11 @@ class PotAccount(Account):
 
     def get_type(self):
         return f"{AccountType.POT}"
-
-    def get_currency(self):
-        return self.currency
     
-    def get_balance(self):
-        return self.balance
-    
-    def update_balance(ammount):
-        balance = ammount
+    def update_balance(self, amount, currency):
+        amount = convert_currency(amount, currency, self.currency)
+        self.balance += Decimal(amount)
+        self.save()
 
 
 def only_int(value):
