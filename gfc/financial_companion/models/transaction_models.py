@@ -61,6 +61,7 @@ class AbstractTransaction(Model):
         Account,
         on_delete=CASCADE,
         related_name="sender_account%(app_label)s_%(class)s_related")
+    
     receiver_account = ForeignKey(
         Account,
         on_delete=CASCADE,

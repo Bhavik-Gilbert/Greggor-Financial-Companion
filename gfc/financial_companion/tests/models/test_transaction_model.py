@@ -4,7 +4,7 @@ from django.utils import timezone
 from decimal import Decimal
 
 from ...helpers import CurrencyType
-from ...models import AbstractTransaction, Transaction, User, Account, PotAccount
+from ...models import AbstractTransaction, Transaction, User, PotAccount
 
 
 class TransactionModelTestCase(ModelTestCase):
@@ -28,5 +28,31 @@ class TransactionModelTestCase(ModelTestCase):
         self.test_model.time_of_transaction = ""
         self._assert_model_is_valid()
 
-    # def test_sender_account_is_valid(self):
-    #     self.
+    def test_sender_account_balance_decreases(self):
+        self.sender_balance_before_transaction = self.sender_account.balance
+        transaction_model: Transaction = Transaction.objects.create(
+            title= "New laptop",
+            description= "Bought new laptop",
+            amount = round(Decimal(2099.99),2),
+            currency = CurrencyType.GBP,
+            sender_account = self.sender_account,
+            receiver_account = self.receiver_account
+        )
+        self.sender_account.refresh_from_db()
+        self.sender_balance_after_transaction = self.sender_account.balance
+        self.assertEqual(Decimal(self.sender_balance_before_transaction - transaction_model.amount), self.sender_balance_after_transaction)
+
+    def test_receiver_account_balance_increases(self):
+        self.receiver_balance_before_transaction = self.receiver_account.balance
+        transaction_model2: Transaction = Transaction.objects.create(
+            title= "New case",
+            description= "Bought new case",
+            amount = round(Decimal(2099.99),2),
+            currency = CurrencyType.GBP,
+            sender_account = self.sender_account,
+            receiver_account = self.receiver_account
+        )
+        self.receiver_account.refresh_from_db()
+        self.receiver_balance_after_transaction = self.receiver_account.balance
+        self.assertEqual(Decimal(self.receiver_balance_before_transaction + transaction_model2.amount), self.receiver_balance_after_transaction)
+    
