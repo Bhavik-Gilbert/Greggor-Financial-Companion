@@ -16,10 +16,24 @@
               </form>
         </div>
         <strong>Currently Selected: Last {{time}}</strong>
-        {% if dataset != None %}
-            <div class="col-12 col-md-4">
-                **Target Progress**
-            </div>
+        <div class="col-12 col-md-4">
+            {%include 'partials/target_bar.html' with targets=category_targets %}
+        </div>
+            {# <div class="col-12 col-md-4"> #}
+                {# <div class="card bg-primary"> #}
+                    {# <p><strong>Target Progress</strong></p> #}
+                    {# {% include 'partials/dashboard/graph.html' with chart_name='target_progress' %} #}
+                    {# <script> #}
+                          {# var targets = {{ targets|safe }} #}
+                         {# // var target_completeness = {{target_completeness|safe}}.map(num => parseFloat(num)); #}
+                         {# // const ds = [{ #}
+                           {# // data: target_completeness #}
+                         {# // }] #}
+                         {# // setChart(ds, targets, 'Amount', "Income vs Outcome", 'bar') #}
+                     {# </script> #}
+                {# </div> #}
+            {# </div> #}
+          {% if dataset != None %}
             <div class="col-12 col-md-8">
                 <div class="card bg-primary">
                     <p><strong>Your Spending:</strong></p>
@@ -38,7 +52,7 @@
                     <script>
                          var money_in = {{ money_in|safe }};
                     var money_out = {{money_out|safe}};
-                    
+
                     setChart([money_in, money_out], ['Money In', 'Money Out'], 'Amount', "Income vs Outcome", 'doughnut')
                     </script>
                 </div>

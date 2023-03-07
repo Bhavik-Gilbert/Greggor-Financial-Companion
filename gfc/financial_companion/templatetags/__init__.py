@@ -1,4 +1,4 @@
-from .get_logo import get_greggor
+from .get_logo import get_greggor, get_greggor_type_from_completeness
 from .targets import get_completeness
 from .maths import divide, sig_figs
 from .data_structures import list
