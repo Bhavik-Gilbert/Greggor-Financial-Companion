@@ -25,9 +25,9 @@
   {% else %}
     {% include "partials/dashboard/no_content.html" with content_type_plural="accounts" %}
   {% endif %}
-{% endblock %}}
+{% endblock %}
 
-{% block content_type_plural %}Accounts{% endblock %}}
+{% block content_type_plural %}Accounts{% endblock %}
 
 {% block card_URL %}{% url 'view_accounts' %}{% endblock %}
 

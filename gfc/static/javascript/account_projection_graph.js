@@ -1,29 +1,29 @@
-function loadInitialGraph() {
+function loadInitialGraph(bankAccountsInfo, timeBands, conversions, mainCurrency) {
     try {
-        getUserChoices();
+        getUserChoices(bankAccountsInfo, timeBands, conversions, mainCurrency);
     }
     catch(err) {
-        const accountsInfo = JSON.parse("{{bank_account_infos|escapejs}}");
-        calculateDataset(accountsInfo, 12)
+        calculateDataset(bankAccountsInfo, 12, timeBands, mainCurrency);
     }
 }
 
-function calculateDataset(accountsInfo, projectionTimescaleInMonths, selectedCurrency = "{{main_currency}}", conversionsDict = JSON.parse("{{conversion_to_main_currency_JSON|escapejs}}")) {
+
+function calculateDataset(accountsInfo, projectionTimescaleInMonths, timeBands, mainCurrency, selectedCurrency = "", conversionsDict = {}) {
     lineColours = [theme.primary, theme.secondary, theme.success, theme.warning, theme.danger, theme.dark]
     $(document).ready(() => {
-        var timeBands = {{timescales_strings|safe}};
         timeBands.length = projectionTimescaleInMonths;
         accountsDataset = [];
         for (account in accountsInfo) {
             accountsInfo[account].balances.length = projectionTimescaleInMonths;
-            accountsDataset.push(getDatasetForAccount(accountsInfo[account], selectedCurrency, timeBands, lineColours[account % lineColours.length], conversionsDict));
+            accountsDataset.push(getDatasetForAccount(accountsInfo[account], selectedCurrency, timeBands, lineColours[account % lineColours.length], conversionsDict, mainCurrency));
         }
         setChart(accountsDataset, timeBands, "Balance ("+selectedCurrency+")", "Months", "line");
     });
 }
     
-function getDatasetForAccount(account, selectedCurrency, timeBands, lineColour, conversionsDict) {
-    const conversion = getConversionForAccount(account, selectedCurrency, conversionsDict)
+
+function getDatasetForAccount(account, selectedCurrency, timeBands, lineColour, conversionsDict, mainCurrency) {
+    const conversion = getConversionForAccount(account, selectedCurrency, mainCurrency, conversionsDict)
     if (conversion != 1) {
         account.balances = account.balances.map(balance => balance * conversion);
     }
@@ -37,10 +37,11 @@ function getDatasetForAccount(account, selectedCurrency, timeBands, lineColour, 
     });
 }
 
-function getConversionForAccount(account, selectedCurrency, conversionsDict) {
+
+function getConversionForAccount(account, selectedCurrency, mainCurrency, conversionsDict) {
     var conversion = 1;
     if (account.currency != selectedCurrency) {
-      if (selectedCurrency == '{{main_currency}}') {
+      if (selectedCurrency == mainCurrency) {
         conversion = conversionsDict[account.currency];
       }
       else {
@@ -49,4 +50,69 @@ function getConversionForAccount(account, selectedCurrency, conversionsDict) {
       }
     }
     return conversion
+}
+
+
+function roundToDecimalPlaces(element, dp) {
+    element.value = parseFloat(element.value).toFixed(dp);
+    if (dp == 0) {
+      element.value = parseInt(element.value);
+    }
+}
+
+
+function getUserChoices(accountsInfo, timeBands, conversionsDict, mainCurrency) {
+    // Retrieves the user selection for the account and the projection timescale (in months)
+    accountIDs = JSON.parse(document.getElementById('accountDropdown').value);
+    const projectionTimescaleInMonths = document.getElementById('projectionTimescaleDropdown').value;
+    const currencyChosen = document.getElementById('currencyDropdown').value;
+
+    selectedCurrency = mainCurrency
+
+    if (currencyChosen != "DEFAULT") {
+        selectedCurrency = currencyChosen;
+    }
+    else if (accountIDs.length == 1) {
+        selectedCurrency = accountsInfo[accountIDs[0]].currency;
+    }
+
+    clearFiguresIncomeBalance();
+
+    var selectedAccountsInfo = [];
+    for (acc in accountsInfo) {
+        if (accountIDs.includes(Number(acc))) {
+            const account = accountsInfo[acc]
+            selectedAccountsInfo.push(account);
+            conversion = getConversionForAccount(account, selectedCurrency, mainCurrency, conversionsDict);
+            setFiguresIncomeBalance(account.balances, projectionTimescaleInMonths, conversion, selectedCurrency);
+        }
+    }
+
+    calculateDataset(selectedAccountsInfo, projectionTimescaleInMonths, timeBands, mainCurrency, selectedCurrency, conversionsDict);
+}
+
+
+function clearFiguresIncomeBalance() {
+    document.getElementById('projectedIncomeNum').innerText = 0.00;
+    document.getElementById('projectedTotalNum').innerText = 0.00;
+}
+
+
+function setFiguresIncomeBalance(balances, timescale, conversion, selectedCurrency) {
+    timescale -= 1;
+    const projectedIncomeNumText = document.getElementById('projectedIncomeNum');
+    const projectedTotalNumText = document.getElementById('projectedTotalNum');
+    const projectedIncomeCurrencyText = document.getElementById('projectedIncomeCurrency');
+    const projectedTotalCurrencyText = document.getElementById('projectedTotalCurrency');
+
+    let projectedIncomeNum = parseFloat(projectedIncomeNumText.innerText);
+    let projectedTotalNum = parseFloat(projectedTotalNumText.innerText);
+
+    projectedIncomeNum += parseFloat(conversion) * (parseFloat(balances[timescale]) - parseFloat(balances[0]));
+    projectedTotalNum += parseFloat(conversion) * parseFloat(balances[timescale]);
+
+    projectedIncomeCurrencyText.innerText = selectedCurrency;
+    projectedTotalCurrencyText.innerText = selectedCurrency;
+    projectedIncomeNumText.innerText = projectedIncomeNum.toFixed(2);
+    projectedTotalNumText.innerText = projectedTotalNum.toFixed(2);
 }
