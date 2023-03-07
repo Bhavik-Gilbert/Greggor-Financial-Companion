@@ -114,5 +114,63 @@
             "iban": "GB1234567890123456789012345678901",
             "interest_rate": 3.00
         }
+    },
+    {
+        "model": "financial_companion.Account",
+        "pk": 7,
+        "fields": {
+            "name": "mno",
+            "description": "this is a test bank account to test change sender account in transactions"
+        }
+    },
+
+    {
+        "model": "financial_companion.PotAccount",
+        "pk": 7,
+        "fields": {
+            "user": "1",
+            "balance": 200000,
+            "currency": "GBP"
+        }
+    },
+    {
+        "model": "financial_companion.BankAccount",
+        "pk": 7,
+        "fields": {
+            "bank_name": "Bank of Misha",
+            "account_number": "78901287",
+            "sort_code": "556677",
+            "iban": "GB1234567890123456789012345678541",
+            "interest_rate": 3.00
+        }
+    },
+    {
+        "model": "financial_companion.Account",
+        "pk": 8,
+        "fields": {
+            "name": "mno",
+            "description": "this is a test bank account to test change receiver account in transactions"
+        }
+    },
+
+    {
+        "model": "financial_companion.PotAccount",
+        "pk": 8,
+        "fields": {
+            "user": "1",
+            "balance": 300000,
+            "currency": "GBP"
+        }
+    },
+    {
+        "model": "financial_companion.BankAccount",
+        "pk": 8,
+        "fields": {
+            "bank_name": "Bank of Misha",
+            "account_number": "78907812",
+            "sort_code": "889900",
+            "iban": "GB1234567890123456989012345678541",
+            "interest_rate": 3.00
+        }
     }
 ]
