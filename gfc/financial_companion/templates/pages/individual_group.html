@@ -25,10 +25,13 @@
       <div class="container">
         <div class="row">
           <div class="card">
-            <img class="card-img-top" src="" alt="">
-
             <div class="card-body">
               <p class="card-text">
+                {%if group.group_picture.url != None %}
+                  <img src="{{ group.group_picture.url }}" alt="Profile picture of {{ group.name }}" class="border border-primary rounded center " width="150" height="150">
+                {% else %}
+                  <p class="card-text"><Strong>Group Picture:</Strong> Your group picture has not been uploaded yet</p>
+                {% endif %}
                 <p><Strong>Join code: </Strong> {{group.invite_code}}</p>
                 <p><Strong>Description: </Strong> {{group.description}}</p>
                 <p><Strong>Number of members: </Strong> {{count}}</p>
