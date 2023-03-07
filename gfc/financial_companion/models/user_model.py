@@ -59,43 +59,43 @@ class User(AbstractUser):
 
     def get_all_targets(self):
         user = self
-        userTargets = fcmodels.UserTarget.objects.filter(user=user)
-        userAccountTargets = self.get_all_account_targets()
-        userCategoryTargets = self.get_all_category_targets()
+        user_targets = fcmodels.UserTarget.objects.filter(user=user)
+        user_account_targets = self.get_all_account_targets()
+        user_category_targets = self.get_all_category_targets()
 
-        return [*userTargets, *userAccountTargets, *userCategoryTargets]
+        return [*user_targets, *user_account_targets, *user_category_targets]
 
     def get_all_account_targets(self, accounts=None):
         user = self
         if not accounts:
             accounts = fcmodels.PotAccount.objects.filter(user=user)
-        userAccountTargets = fcmodels.AccountTarget.objects.filter(
+        user_account_targets = fcmodels.AccountTarget.objects.filter(
             account__in=accounts)
 
-        return userAccountTargets
+        return user_account_targets
 
     def get_all_category_targets(self, categories=None):
         user = self
         if not categories:
             categories = fcmodels.Category.objects.filter(user=user)
-        userCategoryTargets = fcmodels.CategoryTarget.objects.filter(
+        user_category_targets = fcmodels.CategoryTarget.objects.filter(
             category__in=categories)
 
-        return userCategoryTargets
+        return user_category_targets
 
     def get_completed_targets(self, targets):
-        filteredTargets = []
+        filtered_targets = []
         for target in targets:
             if target.is_complete():
-                filteredTargets.append(target)
-        return filteredTargets
+                filtered_targets.append(target)
+        return filtered_targets
 
     def get_nearly_completed_targets(self, targets):
-        filteredTargets = []
+        filtered_targets = []
         for target in targets:
             if target.is_nearly_complete():
-                filteredTargets.append(target)
-        return filteredTargets
+                filtered_targets.append(target)
+        return filtered_targets
 
     def get_number_of_nearly_completed_targets(self):
         return self.get_number_of_nearly_completed_spending_targets() + self.get_number_of_nearly_completed_saving_targets()
