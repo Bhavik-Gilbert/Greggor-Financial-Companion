@@ -72,8 +72,34 @@ class TransactionModelTestCase(ModelTestCase):
         self.sender_account.refresh_from_db()
         self.new_transaction_amount = self.transaction_model.amount
         self.sender_balance_after_transaction = self.sender_account.balance
-        self.transaction_ammount_diff = round(Decimal(self.old_transaction_amount - self.new_transaction_amount),2)
+        self.transaction_amount_diff = round(Decimal(self.old_transaction_amount - self.new_transaction_amount),2)
         self.assertEqual(Decimal(self.sender_balance_before_transaction + self.transaction_amount_diff), self.sender_balance_after_transaction)
+
+    def test_receiver_account_balance_increases_on_edit_transaction(self):
+        self.transaction_model.save()
+        self.receiver_account.refresh_from_db()
+        self.receiver_balance_before_transaction = self.receiver_account.balance
+        self.old_transaction_amount = self.transaction_model.amount
+        self.transaction_model.amount = round(Decimal(1800.00),2)
+        self.transaction_model.save()
+        self.receiver_account.refresh_from_db()
+        self.new_transaction_amount = self.transaction_model.amount
+        self.receiver_balance_after_transaction = self.receiver_account.balance
+        self.transaction_amount_diff = round(Decimal(self.old_transaction_amount - self.new_transaction_amount),2)
+        self.assertEqual(Decimal(self.receiver_balance_before_transaction - self.transaction_amount_diff), self.receiver_balance_after_transaction)
+
+    def test_receiver_account_balance_decreases_on_edit_transaction(self):
+        self.transaction_model.save()
+        self.receiver_account.refresh_from_db()
+        self.receiver_balance_before_transaction = self.receiver_account.balance
+        self.old_transaction_amount = self.transaction_model.amount
+        self.transaction_model.amount = round(Decimal(2800.00),2)
+        self.transaction_model.save()
+        self.receiver_account.refresh_from_db()
+        self.new_transaction_amount = self.transaction_model.amount
+        self.receiver_balance_after_transaction = self.receiver_account.balance
+        self.transaction_amount_diff = round(Decimal(self.old_transaction_amount - self.new_transaction_amount),2)
+        self.assertEqual(Decimal(self.receiver_balance_before_transaction - self.transaction_amount_diff), self.receiver_balance_after_transaction)
     
 
     
