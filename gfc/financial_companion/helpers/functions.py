@@ -179,30 +179,11 @@ def get_data_for_account_projection(user):
     }
 
 
-def get_completed_targets(targets):
-    filteredTargets = []
-    for target in targets:
-        if target.is_complete():
-            filteredTargets.append(target)
-    return filteredTargets
-
-def get_nearly_completed_targets(targets):
-    filteredTargets = []
-    for target in targets:
-        if target.is_nearly_complete():
-            filteredTargets.append(target)
-    return filteredTargets
-
-
-def get_number_of_nearly_completed_targets(targets):
-    return len(get_nearly_completed_targets(targets))
-
-
 def get_sorted_members_based_on_completed_targets(members):
     member_completed_list = []
     for member in members:
-        completed = member.get_number_of_completed_targets()
-        member_completed_list = [*member_completed_list, (member, completed)]
+        score = member.get_leaderboard_score()
+        member_completed_list = [*member_completed_list, (member, score)]
     member_completed_list = sorted(
         member_completed_list,
         key=lambda x: x[1],
@@ -222,8 +203,8 @@ def get_warning_messages_for_targets(
         request, showNumbersForMultiples=True, targets=None):
     if not targets:
         targets = request.user.get_all_targets()
-    completedTargets = get_completed_targets(targets)
-    nearlyCompletedTargets = get_nearly_completed_targets(targets)
+    completedTargets = request.user.get_completed_targets(targets)
+    nearlyCompletedTargets = request.user.get_nearly_completed_targets(targets)
 
     sortedTargetsDict = {'completed': {}, 'nearlyExceeded': {}, 'exceeded': {}}
     for target in targets:

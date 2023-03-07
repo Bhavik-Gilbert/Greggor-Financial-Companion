@@ -4,6 +4,7 @@ from django.core.validators import RegexValidator
 import os
 from financial_companion.helpers import random_filename
 import financial_companion.models as fcmodels
+from ..helpers import TransactionType
 
 
 def change_filename(instance, filename):
@@ -82,10 +83,59 @@ class User(AbstractUser):
 
         return userCategoryTargets
 
-    def get_number_of_completed_targets(self):
+    def get_completed_targets(self, targets):
+        filteredTargets = []
+        for target in targets:
+            if target.is_complete():
+                filteredTargets.append(target)
+        return filteredTargets
+
+    def get_nearly_completed_targets(self, targets):
+        filteredTargets = []
+        for target in targets:
+            if target.is_nearly_complete():
+                filteredTargets.append(target)
+        return filteredTargets
+
+    def get_number_of_nearly_completed_targets(self):
+        return self.get_number_of_nearly_completed_spending_targets() + self.get_number_of_nearly_completed_saving_targets()
+
+    def get_number_of_nearly_completed_spending_targets(self):
         total = 0
         targets = self.get_all_targets()
         for target in targets:
-            if target.is_complete():
+            if target.is_nearly_complete() and target.transaction_type == TransactionType.INCOME:
+                total += 0.5
+        return total
+
+    def get_number_of_nearly_completed_saving_targets(self):
+        total = 0
+        targets = self.get_all_targets()
+        for target in targets:
+            if target.is_nearly_complete() and target.transaction_type == TransactionType.EXPENSE:
+                total += 0.5
+        return total
+
+    def get_number_of_completed_targets(self):
+        return self.get_number_of_completed_spending_targets() + self.get_number_of_completed_saving_targets()
+
+    def get_number_of_completed_spending_targets(self):
+        total = 0
+        targets = self.get_all_targets()
+        for target in targets:
+            if target.is_complete() and target.transaction_type == TransactionType.INCOME:
                 total += 1
         return total
+
+    def get_number_of_completed_saving_targets(self):
+        total = 0
+        targets = self.get_all_targets()
+        for target in targets:
+            if target.is_complete() and target.transaction_type == TransactionType.EXPENSE:
+                total += 1
+        return total
+
+    def get_leaderboard_score(self):
+        score = 0
+        score += -(self.get_number_of_completed_spending_targets()) + self.get_number_of_completed_saving_targets() + self.get_number_of_nearly_completed_saving_targets() + -(self.get_number_of_completed_spending_targets())
+        return score
