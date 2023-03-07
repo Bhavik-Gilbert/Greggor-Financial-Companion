@@ -82,10 +82,10 @@ class User(AbstractUser):
 
         return userCategoryTargets
 
-    def get_number_of_completed_targets(user):
+    def get_number_of_completed_targets(self):
         total = 0
         targets = self.get_all_targets()
         for target in targets:
-            if target.is_complete:
+            if target.is_complete():
                 total += 1
         return total

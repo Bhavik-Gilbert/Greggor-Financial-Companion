@@ -186,11 +186,6 @@ def get_completed_targets(targets):
             filteredTargets.append(target)
     return filteredTargets
 
-
-def get_number_of_completed_targets(targets):
-    return len(get_completed_targets(targets))
-
-
 def get_nearly_completed_targets(targets):
     filteredTargets = []
     for target in targets:
@@ -206,8 +201,7 @@ def get_number_of_nearly_completed_targets(targets):
 def get_sorted_members_based_on_completed_targets(members):
     member_completed_list = []
     for member in members:
-        targets = member.get_all_targets()
-        completed = get_number_of_completed_targets(targets)
+        completed = member.get_number_of_completed_targets()
         member_completed_list = [*member_completed_list, (member, completed)]
     member_completed_list = sorted(
         member_completed_list,

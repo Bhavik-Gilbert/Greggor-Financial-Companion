@@ -1,7 +1,8 @@
 from .test_model_base import ModelTestCase
 from django.db.models.base import ModelBase
 from financial_companion.models.user_model import User
-
+from freezegun import freeze_time
+import datetime
 
 class UserModelTestCase(ModelTestCase):
     """Test file for user model class"""
@@ -10,8 +11,9 @@ class UserModelTestCase(ModelTestCase):
         super().setUp()
         self.test_model = User.objects.get(username='@johndoe')
         self.second_user = User.objects.get(username='@janedoe')
+        self.total_completed_targets = 6  # 6/7 will be complete at the first time check
 
-    def test_valid_target(self):
+    def test_valid_user(self):
         self._assert_model_is_valid()
 
     def test_username_cant_be_blank(self):
@@ -115,3 +117,43 @@ class UserModelTestCase(ModelTestCase):
 
     def test_get_all_category_targets(self):
         self.assertTrue(self.test_model.get_all_category_targets() != [])
+
+    @freeze_time("2023-01-01 13:00:00")
+    def test_get_number_of_completed_targets_within_day(self):
+        completed = self.test_model.get_number_of_completed_targets()
+        self.assertTrue(completed == self.total_completed_targets)
+
+    @freeze_time("2023-01-03 13:00:00")
+    def test_get_number_of_completed_targets_after_day(self):
+        completed = self.test_model.get_number_of_completed_targets()
+        self.assertTrue(completed <= self.total_completed_targets)
+
+    @freeze_time("2023-01-06 13:00:00")
+    def test_get_number_of_completed_targets_within_week(self):
+        completed = self.test_model.get_number_of_completed_targets()
+        self.assertTrue(completed <= self.total_completed_targets)
+
+    @freeze_time("2023-01-11 13:00:00")
+    def test_get_number_of_completed_targets_after_week(self):
+        completed = self.test_model.get_number_of_completed_targets()
+        self.assertTrue(completed <= self.total_completed_targets)
+
+    @freeze_time("2023-01-22 13:00:00")
+    def test_get_number_of_completed_targets_within_month(self):
+        completed = self.test_model.get_number_of_completed_targets()
+        self.assertTrue(completed <= self.total_completed_targets)
+
+    @freeze_time("2023-02-03 13:00:00")
+    def test_get_number_of_completed_targets_after_month(self):
+        completed = self.test_model.get_number_of_completed_targets()
+        self.assertTrue(completed <= self.total_completed_targets)
+
+    @freeze_time("2023-07-09 13:00:00")
+    def test_get_number_of_completed_targets_within_year(self):
+        completed = self.test_model.get_number_of_completed_targets()
+        self.assertTrue(completed <= self.total_completed_targets)
+
+    @freeze_time("2024-08-26 13:00:00")
+    def test_get_number_of_completed_targets_after_year(self):
+        completed = self.test_model.get_number_of_completed_targets()
+        self.assertTrue(completed <= self.total_completed_targets)
