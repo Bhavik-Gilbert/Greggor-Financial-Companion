@@ -10,6 +10,7 @@ from .category_model import Category
 from .user_model import User
 from .accounts_model import PotAccount
 from ..helpers import Timespan, TransactionType, CurrencyType
+from financial_companion.templatetags import get_completeness
 
 
 class AbstractTarget(Model):
@@ -34,6 +35,28 @@ class AbstractTarget(Model):
     class Meta:
         abstract = True
 
+    def is_complete(self):
+        if get_completeness(self) >= 100:
+            return True
+        else:
+            return False
+
+    def is_nearly_complete(self):
+        completeness = get_completeness(self)
+        if completeness >= 75 and completeness < 100:
+            return True
+        else:
+            return False
+
+    def getModelName(self, plural=False):
+        if plural:
+            return "targets"
+        else:
+            return "target"
+
+    def __str__(self):
+        return self.getModelName()
+
 
 class CategoryTarget(AbstractTarget):
     """Model for target spending and saving on categories"""
@@ -42,6 +65,15 @@ class CategoryTarget(AbstractTarget):
 
     class Meta:
         unique_together = ["transaction_type", "timespan", "category"]
+
+    def getModelName(self, plural=False):
+        if plural:
+            return "categories"
+        else:
+            return "category"
+
+    def __str__(self):
+        return self.category.name
 
 
 class UserTarget(AbstractTarget):
@@ -52,6 +84,15 @@ class UserTarget(AbstractTarget):
     class Meta:
         unique_together = ["transaction_type", "timespan", "user"]
 
+    def getModelName(self, plural=False):
+        if plural:
+            return "users"
+        else:
+            return "user"
+
+    def __str__(self):
+        return "personal target"
+
 
 class AccountTarget(AbstractTarget):
     """Model for target spending and saving of users"""
@@ -60,3 +101,12 @@ class AccountTarget(AbstractTarget):
 
     class Meta:
         unique_together = ["transaction_type", "timespan", "account"]
+
+    def getModelName(self, plural=False):
+        if plural:
+            return "accounts"
+        else:
+            return "accounts"
+
+    def __str__(self):
+        return self.account.name

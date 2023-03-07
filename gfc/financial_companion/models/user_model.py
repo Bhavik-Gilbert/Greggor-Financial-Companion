@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.core.validators import RegexValidator
 import os
-from financial_companion.helpers import random_filename, TransactionType
+from financial_companion.helpers import random_filename
 import financial_companion.models as fcmodels
 
 
@@ -46,4 +46,46 @@ class User(AbstractUser):
                 *transactions,
                 *account.get_account_transactions(filter_type)]
 
-        return transactions
+        return sorted(
+            transactions, key=lambda transaction: transaction.time_of_transaction, reverse=True)
+
+    def get_user_highest_quiz_score(self):
+        """Return users highest quiz score"""
+        user_scores: list[fcmodels.QuizScore] = fcmodels.QuizScore.objects.filter(
+            user=self
+        )
+        return max(user_scores, key=lambda quiz_score: quiz_score.get_score())
+
+    def get_all_targets(self):
+        user = self
+        userTargets = fcmodels.UserTarget.objects.filter(user=user)
+        userAccountTargets = self.get_all_account_targets()
+        userCategoryTargets = self.get_all_category_targets()
+
+        return [*userTargets, *userAccountTargets, *userCategoryTargets]
+
+    def get_all_account_targets(self, accounts=None):
+        user = self
+        if not accounts:
+            accounts = fcmodels.PotAccount.objects.filter(user=user)
+        userAccountTargets = fcmodels.AccountTarget.objects.filter(
+            account__in=accounts)
+
+        return userAccountTargets
+
+    def get_all_category_targets(self, categories=None):
+        user = self
+        if not categories:
+            categories = fcmodels.Category.objects.filter(user=user)
+        userCategoryTargets = fcmodels.CategoryTarget.objects.filter(
+            category__in=categories)
+
+        return userCategoryTargets
+
+    def get_number_of_completed_targets(user):
+        total = 0
+        targets = self.get_all_targets()
+        for target in targets:
+            if target.is_complete:
+                total += 1
+        return total

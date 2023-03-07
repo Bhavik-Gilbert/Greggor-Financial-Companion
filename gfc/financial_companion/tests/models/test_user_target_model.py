@@ -1,6 +1,8 @@
 from .test_model_base import ModelTestCase
 from django.db.backends.sqlite3.base import IntegrityError
 from ...models import UserTarget
+from freezegun import freeze_time
+import datetime
 
 
 class UserTargetModelTestCase(ModelTestCase):
@@ -41,3 +43,11 @@ class UserTargetModelTestCase(ModelTestCase):
             self.second_model.save()
             self._assert_model_is_invalid()
         self.assertEqual(IntegrityError, type(raised.exception))
+
+    @freeze_time("2023-01-01 13:00:00")
+    def test_valid_target_is_complete_when_complete(self):
+        self.assertEqual(self.test_model.is_complete(), True)
+
+    @freeze_time("2025-01-01 13:00:00")
+    def test_valid_target_is_complete_when_not_complete(self):
+        self.assertEqual(self.test_model.is_complete(), False)

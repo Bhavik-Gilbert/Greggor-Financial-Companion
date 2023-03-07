@@ -4,7 +4,10 @@ from financial_companion.models import (
     Account, PotAccount, BankAccount,
     CategoryTarget, UserTarget, AccountTarget,
     AbstractTransaction, Transaction,  # RecurringTransactions,
-    Category
+    Category,
+    QuizQuestion,
+    QuizSet,
+    UserGroup
 )
 
 """ Unseeder CLass to clear all objects from Database"""
@@ -17,10 +20,12 @@ class Command(BaseCommand):
         targets = []
         categories = []
         transactions = []
+        groups = []
         for user in users:
             potAndBankAccounts.extend(PotAccount.objects.filter(user=user))
             targets.extend(UserTarget.objects.filter(user=user))
             categories.extend(Category.objects.filter(user=user))
+            groups.extend(UserGroup.objects.filter(owner_email=user.email))
 
         for account in potAndBankAccounts:
             transactions.extend(
@@ -40,5 +45,11 @@ class Command(BaseCommand):
 
         for account in potAndBankAccounts:
             account.delete()
+
+        QuizSet.objects.filter(seeded=True).delete()
+        QuizQuestion.objects.filter(seeded=True).delete()
+
+        for group in groups:
+            group.delete()
 
         users.delete()

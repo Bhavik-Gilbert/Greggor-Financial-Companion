@@ -7,7 +7,7 @@ from financial_companion.models import User, Category
 
 
 class EditCategoryViewTestCase(ViewTestCase):
-    """Tests of the create category view."""
+    """Tests of the edit category view."""
 
     def setUp(self):
         self.url = reverse('edit_category', kwargs={"pk": 1})
@@ -31,7 +31,7 @@ class EditCategoryViewTestCase(ViewTestCase):
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)
 
-    def test_unsuccesful_edit_category_form_submission(self):
+    def test_unsuccessful_edit_category_form_submission(self):
         self._login(self.user)
         response = self.client.get(self.url)
         self.form_input['name'] = ''
@@ -44,7 +44,7 @@ class EditCategoryViewTestCase(ViewTestCase):
         form = response.context['form']
         self.assertTrue(isinstance(form, CategoryForm))
 
-    def test_succesful_category_form_submission(self):
+    def test_successful_edit_category_form_submission(self):
         self._login(self.user)
         before_count = Category.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)

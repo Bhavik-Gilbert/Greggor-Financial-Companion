@@ -1,18 +1,21 @@
 from django.core.management.base import BaseCommand, CommandError
 from faker import Faker
 from financial_companion.models import (
-    User,
+    User, UserGroup,
     Account, PotAccount, BankAccount,
     CategoryTarget, UserTarget, AccountTarget,
     Transaction,  # RecurringTransactions,
-    Category
+    Category,
+    QuizQuestion
 )
 from django.db.utils import IntegrityError
 from django.db.models import Q
+from django.conf import settings
+import os
 import datetime
 from random import randint, random
 import random
-from financial_companion.helpers import TransactionType, CurrencyType, MonetaryAccountType, Timespan
+from financial_companion.helpers import TransactionType, CurrencyType, MonetaryAccountType, Timespan, get_random_invite_code
 from financial_companion.scheduler import create_monthly_newsletter_scheduler
 
 
@@ -26,6 +29,7 @@ class Command(BaseCommand):
     MAX_NUMBER_OF_CATEGORIES = 10
     MAX_NUMBER_OF_BASIC_ACCOUNTS = 5
     OBJECT_HAS_TARGET_PROBABILITY = 0.6
+    MAX_NUMBER_OF_GROUPS = 5
 
     def __init__(self):
         super().__init__()
@@ -34,7 +38,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.create_basic_accounts()
         self.create_users()
+        self.create_quiz_questions()
         create_monthly_newsletter_scheduler()
+        self.create_user_groups()
         print("SEEDING COMPLETE")
 
     def create_basic_accounts(self):
@@ -110,7 +116,7 @@ class Command(BaseCommand):
             end='\r')
 
     def create_accounts_for_user(self, user, categories):
-        randomNumOfPotAccounts = randint(0, self.MAX_ACCOUNTS_PER_USER)
+        randomNumOfPotAccounts = randint(1, self.MAX_ACCOUNTS_PER_USER)
         randomNumOfBankAccount = randint(
             0, self.MAX_ACCOUNTS_PER_USER - randomNumOfPotAccounts)
         for i in range(0, randomNumOfPotAccounts):
@@ -181,3 +187,54 @@ class Command(BaseCommand):
                 currency=self.choose_random_enum(CurrencyType),
                 account=account
             )
+
+    def create_quiz_questions(self):
+        question_path: str = os.path.join(
+            settings.TEXT_DATA_DIRS["financial_companion"],
+            f"seeder{os.sep}questions.txt")
+
+        with open(question_path) as question_file:
+            question_data_list: list[str] = question_file.readlines()
+            for line_index in range(0, len(question_data_list), 7):
+                question = question_data_list[line_index].strip()
+                potential_answer_1: str = question_data_list[line_index + 1].strip(
+                )
+                potential_answer_2: str = question_data_list[line_index + 2].strip(
+                )
+                potential_answer_3: str = question_data_list[line_index + 3].strip(
+                )
+                potential_answer_4: str = question_data_list[line_index + 4].strip(
+                )
+                correct_answer: int = int(question_data_list[line_index + 5])
+
+                if len(QuizQuestion.objects.filter(question=question)) == 0:
+                    QuizQuestion.objects.create(
+                        question=question,
+                        potential_answer_1=potential_answer_1,
+                        potential_answer_2=potential_answer_2,
+                        potential_answer_3=potential_answer_3,
+                        potential_answer_4=potential_answer_4,
+                        correct_answer=correct_answer,
+                        seeded=True
+                    )
+
+                print(
+                    f'Seeding Question {QuizQuestion.objects.count()}',
+                    end='\r')
+        print("QUESTIONS SEEDED")
+
+    def create_user_groups(self):
+        randomNumOfGroups = randint(0, self.MAX_NUMBER_OF_GROUPS)
+        owner = User.objects.get(username='@johndoe')
+        for i in range(0, randomNumOfGroups):
+            UserGroup.objects.create(
+                name=self.faker.word(),
+                description=self.faker.text(),
+                invite_code=get_random_invite_code(8),
+                owner_email=owner.email
+            )
+        all_groups = UserGroup.objects.all()
+        for group in all_groups:
+            group.members.set(User.objects.all())
+
+        print("USERGROUPS SEEDED")

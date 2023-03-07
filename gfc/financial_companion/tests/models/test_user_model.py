@@ -101,3 +101,17 @@ class UserModelTestCase(ModelTestCase):
     def test_profile_picture_can_be_empty(self):
         self.test_model.profile_picture = ''
         self._assert_model_is_valid()
+
+    def test_get_user_highest_quiz_score(self):
+        self.assertEqual(
+            self.test_model.get_user_highest_quiz_score().get_score(), 80
+        )
+
+    def test_get_all_targets(self):
+        self.assertTrue(self.test_model.get_all_targets() != [])
+
+    def test_get_all_account_targets(self):
+        self.assertTrue(self.test_model.get_all_account_targets() != [])
+
+    def test_get_all_category_targets(self):
+        self.assertTrue(self.test_model.get_all_category_targets() != [])

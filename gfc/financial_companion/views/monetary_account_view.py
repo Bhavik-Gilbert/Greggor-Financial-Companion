@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django import forms
 from django.contrib import messages
-from ..helpers import MonetaryAccountType
+from ..helpers import AccountType
 from ..forms import MonetaryAccountForm
 from ..models import PotAccount, User
 
@@ -13,13 +13,13 @@ def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
     """View to add monetary account"""
 
     user: User = request.user
-    account_type: MonetaryAccountType = MonetaryAccountType.POT
+    account_type: AccountType = AccountType.REGULAR
     form: forms.ModelForm = MonetaryAccountForm(
         form_type=account_type, user=user)
 
     if request.method == "POST":
         if "account_type" in request.POST:
-            # # set form to account type
+            # set form to account type
             account_type = request.POST["account_type"]
             form = MonetaryAccountForm(form_type=account_type, user=user)
         elif "submit_type" in request.POST:
@@ -30,11 +30,10 @@ def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
             if form.is_valid():
                 form.save()
                 return redirect("dashboard")
-
     return render(request, "pages/monetary_accounts_form.html", {
         "form_toggle": True,
         "account_type": account_type,
-        "monetary_account_types": MonetaryAccountType,
+        "monetary_account_types": AccountType,
         "form": form
     })
 
@@ -51,7 +50,7 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
         return redirect("dashboard")
 
     user: User = request.user
-    account_type: MonetaryAccountType = str(this_monetary_account)
+    account_type: AccountType = this_monetary_account.get_type()
 
     # determine account type
 
@@ -67,11 +66,10 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
     else:
         form: forms.ModelForm = MonetaryAccountForm(
             form_type=account_type, user=user, instance=this_monetary_account)
-
     return render(request, "pages/monetary_accounts_form.html", {
         "form_toggle": False,
         "account_type": account_type,
-        "monetary_account_types": MonetaryAccountType,
+        "monetary_account_types": AccountType,
         "form": form
     })
 

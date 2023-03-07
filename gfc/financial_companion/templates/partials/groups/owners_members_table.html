@@ -1,0 +1,30 @@
+<div class="row">
+  <div class="col-12">
+    <table class="table table-bordered table-striped" style="width:100%" style="text-align:center" >
+      <thead class = "table-primary">
+        <tr>
+          <th scope="col" style="text-align:center">User ID</th>
+          <th scope="col" style="text-align:center">Name</th>
+          <th scope="col" style="text-align:center">Username</th>
+          <th scope="col" style="text-align:center">Action</th>
+        </tr>
+      </thead>
+      {% for member in members %}
+        <tr style="text-align:center">
+          <td>{{ member.id }}</td>
+          <td>{{ member.full_name }}</td>
+          <td>{{ member.username }}</td>
+          <td>
+            {% if member.email == owners_email %}
+              <strong>(owner)</strong>
+            {% else %}
+              <a style="float:center" href="{% url 'remove_user_from_user_group' group_pk=group.id user_pk=member.id %}" class="btn btn-danger justify-content-center" onclick="return confirm('Are you sure you want to remove this member from this group?')">Remove Member</a>
+              <a style="float:center" href="{% url 'make_owner_of_user_group' group_pk=group.id user_pk=member.id %}" class="btn btn-danger justify-content-center" onclick="return confirm('Are you sure you want to make this user the owner of the user group?')">Transfer Ownership</a>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </table>
+    {%include 'partials/pagination.html'  with page_obj=members %}
+  </div>
+</div>

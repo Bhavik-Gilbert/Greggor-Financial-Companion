@@ -6,7 +6,8 @@ from .models import (
     Category,
     Account, PotAccount, BankAccount,
     Transaction,
-    CategoryTarget, AccountTarget, UserTarget
+    CategoryTarget, AccountTarget, UserTarget,
+    UserGroup
 )
 
 # Register your models here.
@@ -17,7 +18,7 @@ class User(admin.ModelAdmin):
     """Configuration of the admin interface for users."""
 
     list_display = [
-        'username', 'first_name', 'last_name', 'email', 'is_staff', 'profile_picture'
+        'id', 'username', 'first_name', 'last_name', 'email', 'is_staff', 'profile_picture'
     ]
 
 
@@ -68,19 +69,26 @@ class Transaction(admin.ModelAdmin):
 @admin.register(CategoryTarget)
 class CategoryTarget(admin.ModelAdmin):
     list_display = [
-        'transaction_type', 'timespan', 'amount', 'currency', 'category_id'
+        'id', 'transaction_type', 'timespan', 'amount', 'currency', 'category_id'
     ]
 
 
 @admin.register(UserTarget)
 class UserTarget(admin.ModelAdmin):
     list_display = [
-        'transaction_type', 'timespan', 'amount', 'currency', 'user'
+        'id', 'transaction_type', 'timespan', 'amount', 'currency', 'user'
     ]
 
 
 @admin.register(AccountTarget)
 class AccountTarget(admin.ModelAdmin):
     list_display = [
-        'transaction_type', 'timespan', 'amount', 'currency', 'account_id'
+        'id', 'transaction_type', 'timespan', 'amount', 'currency', 'account_id'
+    ]
+
+
+@admin.register(UserGroup)
+class UserGroup(admin.ModelAdmin):
+    list_display = [
+        'id', 'name', 'description', 'owner_email', 'invite_code', 'get_members'
     ]

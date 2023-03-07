@@ -2,7 +2,7 @@
 from .test_form_base import FormTestCase
 from typing import Any
 from financial_companion.forms import PotAccountForm, MonetaryAccountForm
-from financial_companion.helpers import CurrencyType, MonetaryAccountType
+from financial_companion.helpers import CurrencyType, AccountType
 from financial_companion.models import User
 from decimal import Decimal
 
@@ -31,13 +31,13 @@ class PotAccountFormTestCase(FormTestCase):
     def test_get_correct_monetary_account_form_pot_account_form(self):
         user: User = User.objects.all()[0]
         form: PotAccountForm = MonetaryAccountForm(
-            form_type=MonetaryAccountType.POT, user=user)
+            form_type=AccountType.POT, user=user)
         self.assertIsInstance(form, PotAccountForm)
 
     def test_get_incorrect_monetary_account_form_pot_account_form(self):
         user: User = User.objects.all()[0]
         form: PotAccountForm = MonetaryAccountForm(
-            form_type=MonetaryAccountType.BANK, user=user)
+            form_type=AccountType.BANK, user=user)
         self.assertNotIsInstance(form, PotAccountForm)
 
     def test_valid_form_accepts_valid_input(self):

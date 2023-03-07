@@ -10,18 +10,21 @@
       <div class="accordion-item">
         <h2 class="accordion-header" id="heading{{ transaction.title }}">
           <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ transaction.title }}" aria-expanded="true" aria-controls="collapse{{ transaction.title}}">
-            {{transaction.title.capitalize}}
+            {{transaction.title.title}}
           </button>
         </h2>
         <div id="collapse{{ transaction.title}}" class="accordion-collapse collapse" aria-labelledby="heading{{ transaction.title }}" data-bs-parent="#accordionExample">
           <div class="accordion-body">
-            <p><strong>Description: </strong>{{transaction.description.capitalize}}</p>
-            <p><strong>Category: </strong>{{transaction.category.name.capitalize}}</p>
+            <p><strong>Description: </strong>{{transaction.description.title}}</p>
+            <p><strong>Category: </strong>{{transaction.category.name.title}}</p>
             <p><strong>Amount: </strong>{{transaction.amount}} {{transaction.currency.upper.upper}}</p>
-            <p><strong>Sender Account: </strong>{{transaction.sender_account.name.capitalize}}</p>
-            <p><strong>Receiver Account: </strong>{{transaction.receiver_account.name.capitalize}}</p>
+            <p><strong>Sender Account: </strong>{{transaction.sender_account.name.title}}</p>
+            <p><strong>Receiver Account: </strong>{{transaction.receiver_account.name.title}}</p>
             <p><strong>Time of Transaction: </strong>{{transaction.time_of_transaction}}</p>
-          </div>
+            <a class="btn btn-primary" href="{% url 'edit_transaction' transaction.id %}">Edit</a>
+          &nbsp
+            <a class="btn btn-primary" href="{% url 'delete_transaction' transaction.id %}">Delete</a>
+        </div>
         </div>
       </div>
     {% endfor %}
@@ -34,4 +37,3 @@
 {% block card_URL %}{% url 'view_transactions_redirect' %}{% endblock %}
 
 {% block action_title %}View All Transactions{% endblock %}
-

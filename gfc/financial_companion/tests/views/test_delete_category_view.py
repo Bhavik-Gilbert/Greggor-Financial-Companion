@@ -7,7 +7,7 @@ from financial_companion.models import User, Category
 
 
 class DeleteCategoryViewTestCase(ViewTestCase):
-    """Tests of the create category view."""
+    """Tests of the delete category view."""
 
     def setUp(self):
         self.url = reverse('delete_category', kwargs={"pk": 1})
@@ -16,7 +16,7 @@ class DeleteCategoryViewTestCase(ViewTestCase):
     def test_delete_category_url(self):
         self.assertEqual(self.url, '/delete_category/1')
 
-    def test_succesful_deletion(self):
+    def test_successful_deletion(self):
         self._login(self.user)
         before_count = Category.objects.count()
         response = self.client.get(self.url, follow=True)
@@ -26,7 +26,7 @@ class DeleteCategoryViewTestCase(ViewTestCase):
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 1)
 
-    def test_user_tries_to_edit_someone_elses_category(self):
+    def test_user_tries_to_delete_someone_elses_category(self):
         self._login(self.user)
         self.url = reverse('delete_category', kwargs={"pk": 3})
         response_url: str = reverse("dashboard")

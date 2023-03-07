@@ -4,16 +4,33 @@ $body-color: #0D2237;
 
 $min-contrast-ratio: 2;
 
+$gold: #daa520;
+$silver: #c0c0c0;
+$bronze: #b8860b;
+
+$custom-colors: (
+    "gold": $gold,
+    "silver": $silver,
+    "bronze": $bronze,
+);
+
+$custom-theme-colors : (
+    "gold": $gold,
+    "silver": $silver,
+    "bronze": $bronze,
+);
+
 @import "bootstrap/scss/_functions";
 @import "bootstrap/scss/_variables";
+@import "bootstrap/scss/_mixins";
 
 $colors: (
-    "blue": #2d7bd8,
+    "blue": #217ceb,
     "orange": #FF842B,
 );
 
 $theme-colors : (
-    "primary": #217ceb,
+    "primary": $blue,
     "secondary": $orange-400,
     "success": $teal-300,
     "info": $orange,
@@ -24,6 +41,9 @@ $theme-colors : (
     "background-color": #0D2237,
 );
 
+$colors: map-merge($colors, $custom-colors);
+$theme-colors: map-merge($theme-colors, $custom-theme-colors);
+
 .btn {
     transition: all .5s ease-in-out !important;
 }
@@ -33,7 +53,7 @@ $theme-colors : (
 
 .btn.btn-xs {
     padding: .25rem .45rem;
-    font-size: .7rem;
+    font-size: .5rem;
     line-height: 1.4;
     border-radius: .2rem;
 }
