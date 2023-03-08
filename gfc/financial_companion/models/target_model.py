@@ -6,10 +6,12 @@ from django.db.models import (
     CASCADE
 )
 
+from django.core.validators import MinValueValidator
 from .category_model import Category
 from .user_model import User
 from .accounts_model import PotAccount
 from ..helpers import Timespan, TransactionType, CurrencyType
+from decimal import Decimal
 from financial_companion.templatetags import get_completeness
 
 
@@ -25,7 +27,7 @@ class AbstractTarget(Model):
     )
 
     amount: DecimalField = DecimalField(
-        decimal_places=2, max_digits=15
+        decimal_places=2, max_digits=15, validators=[MinValueValidator(Decimal('0.01'))]
     )
 
     currency: CharField = CharField(
