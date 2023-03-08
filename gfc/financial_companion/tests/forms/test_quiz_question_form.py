@@ -23,10 +23,14 @@ class QuizQuestionFormTestCase(FormTestCase):
             *[str(question.id) for question in self.quiz_set.questions.all()]
         )
         for field in form.fields:
-            self.assertTrue(isinstance(form.fields[field].widget, forms.RadioSelect))
+            self.assertTrue(
+                isinstance(
+                    form.fields[field].widget,
+                    forms.RadioSelect))
 
     def test_valid_form_accepts_valid_input(self):
-        form: QuizQuestionForm = QuizQuestionForm(self.user, self.quiz_set, data=self.form_input)
+        form: QuizQuestionForm = QuizQuestionForm(
+            self.user, self.quiz_set, data=self.form_input)
         self.assertTrue(form.is_valid())
 
     def test_invalid_form_rejects_blank_input(self):
@@ -35,21 +39,24 @@ class QuizQuestionFormTestCase(FormTestCase):
                 continue
             form_input: dict[str, Any] = self.form_input.copy()
             form_input.pop(field, None)
-            form: QuizQuestionForm = QuizQuestionForm(self.user, self.quiz_set, data=form_input)
+            form: QuizQuestionForm = QuizQuestionForm(
+                self.user, self.quiz_set, data=form_input)
             self.assertFalse(form.is_valid())
-    
+
     def test_valid_save_quiz_score_created_with_correct_input(self):
-        form: QuizQuestionForm = QuizQuestionForm(self.user, self.quiz_set, data=self.form_input)
+        form: QuizQuestionForm = QuizQuestionForm(
+            self.user, self.quiz_set, data=self.form_input)
         quiz_score_before: int = QuizScore.objects.count()
         quiz_set: QuizScore = form.save()
         quiz_score_after: int = QuizScore.objects.count()
         self.assertEqual(quiz_score_before + 1, quiz_score_after)
         self.assertTrue(isinstance(quiz_set, QuizScore))
-    
+
     def test_invalid_save_quiz_score_not_created_with_incorrect_input(self):
         form_input: dict[str, Any] = self.form_input
         form_input.pop(str(self.quiz_set.questions.all().first().id))
-        form: QuizQuestionForm = QuizQuestionForm(self.user, self.quiz_set, data=form_input)
+        form: QuizQuestionForm = QuizQuestionForm(
+            self.user, self.quiz_set, data=form_input)
         quiz_score_before: int = QuizScore.objects.count()
         quiz_set: QuizScore = form.save()
         quiz_score_after: int = QuizScore.objects.count()

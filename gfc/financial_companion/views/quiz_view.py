@@ -89,7 +89,8 @@ def quiz_question_view(request: HttpRequest, pk: int) -> HttpResponse:
     form: QuizQuestionForm = QuizQuestionForm(user, quiz_set)
     if request.method == "POST":
         if "quiz_submit" in request.POST:
-            form: QuizQuestionForm = QuizQuestionForm(user, quiz_set, request.POST)
+            form: QuizQuestionForm = QuizQuestionForm(
+                user, quiz_set, request.POST)
 
             if form.is_valid():
                 quiz_score: QuizScore = form.save()

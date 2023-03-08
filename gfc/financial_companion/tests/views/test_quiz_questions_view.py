@@ -98,7 +98,6 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         form_input: dict[str, Any] = {"quiz_submit": ""}
         self._assert_invalid_question_form_input(form_input)
 
-
     def test_invalid_post_quiz_questions_submit_without_any_answers(self):
         # Set empty submission
         form_input: dict[str, Any] = {"quiz_submit": ""}
