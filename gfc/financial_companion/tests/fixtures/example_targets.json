@@ -98,5 +98,15 @@
             "amount": "100",
             "account": 4
         }
+    },
+    {
+        "model": "financial_companion.accounttarget",
+        "pk": 4,
+        "fields": {
+            "transaction_type": "income",
+            "timespan": "day",
+            "amount": "100",
+            "account": 8
+        }
     }
 ]

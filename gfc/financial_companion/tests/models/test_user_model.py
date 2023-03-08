@@ -4,6 +4,8 @@ from financial_companion.models.user_model import User
 from freezegun import freeze_time
 import datetime
 
+from financial_companion.templatetags import get_completeness
+
 class UserModelTestCase(ModelTestCase):
     """Test file for user model class"""
 
@@ -12,6 +14,7 @@ class UserModelTestCase(ModelTestCase):
         self.test_model = User.objects.get(username='@johndoe')
         self.second_user = User.objects.get(username='@janedoe')
         self.third_user = User.objects.get(username='@michaelkolling')
+        self.fourth_user = User.objects.get(username='@michaelhigham')
         self.total_completed_targets = 6  # 6/7 will be complete at the first time check
 
     def test_valid_user(self):
@@ -113,23 +116,59 @@ class UserModelTestCase(ModelTestCase):
     def test_get_all_targets_when_user_has_targets(self):
         self.assertTrue(self.test_model.get_all_targets() != [])
 
+    def test_get_all_targets_when_user_has_no_targets(self):
+        self.assertTrue(self.third_user.get_all_targets() == [])
+
     def test_get_all_account_when_user_has_targets(self):
         self.assertTrue(self.test_model.get_all_account_targets() != [])
+
+    def test_get_all_account_when_user_has_no_targets(self):
+        self.assertTrue(self.third_user.get_all_account_targets() == [])
 
     def test_get_all_category_when_user_has_targets(self):
         self.assertTrue(self.test_model.get_all_category_targets() != [])
 
-    def test_get_all_targets_when_user_has_no_targets(self):
-        print(self.third_user.get_all_targets())
-        self.assertTrue(self.third_user.get_all_targets() == [])
-
-    def test_get_all_account_when_user_has_no_targets(self):
-        print(self.third_user.get_all_account_targets())
-        self.assertTrue(self.third_user.get_all_account_targets() == [])
-
-    def test_get_all_category_when_user_has_tno_targets(self):
-        print(self.third_user.get_all_category_targets())
+    def test_get_all_category_when_user_has_no_targets(self):
         self.assertTrue(self.third_user.get_all_category_targets() == [])
+
+    @freeze_time("2023-01-01 13:00:00")
+    def test_get_all_completed_targets_when_user_has_targets(self):
+        targets = self.test_model.get_all_targets()
+        self.assertTrue(self.test_model.get_completed_targets(targets) != [])
+
+    @freeze_time("2023-01-01 13:00:00")
+    def test_get_all_completed_targets_when_user_has_no_targets(self):
+        targets = self.third_user.get_all_targets()
+        self.assertTrue(self.third_user.get_completed_targets(targets) == [])
+
+
+    @freeze_time("2023-01-01 13:00:00")
+    def test_get_all_nearly_completed_targets_when_user_has_targets_within_day(self):
+        targets = self.fourth_user.get_all_targets()
+        print(get_completeness(targets[0]))
+        print("T",targets[0].account.get_account_transactions())
+        print("N",self.fourth_user.get_nearly_completed_targets(targets))
+        self.assertTrue(len(self.fourth_user.get_nearly_completed_targets(targets)) == 1)
+
+    @freeze_time("2023-01-05 13:00:00")
+    def test_get_all_nearly_completed_targets_when_user_has_targets_within_week(self):
+        targets = self.fourth_user.get_all_targets()
+        print(get_completeness(targets[0]))
+        print("T",targets)
+        print("N",self.fourth_user.get_nearly_completed_targets(targets))
+        self.assertTrue(len(self.fourth_user.get_nearly_completed_targets(targets)) == 1)
+    #
+    # @freeze_time("2023-01-11 13:00:00")
+    # def test_get_all_nearly_completed_targets_when_user_has_targets_after_week(self):
+    #     targets = self.fourth_user.get_all_targets()
+    #     print("T",targets)
+    #     print("N",self.fourth_user.get_nearly_completed_targets(targets))
+    #     self.assertTrue(len(self.fourth_user.get_nearly_completed_targets(targets)) == 0)
+
+    @freeze_time("2023-01-01 13:00:00")
+    def test_get_all_nearly_completed_targets_when_user_has_no_targets(self):
+        targets = self.third_user.get_all_targets()
+        self.assertTrue(self.third_user.get_nearly_completed_targets(targets) == [])
 
     @freeze_time("2023-01-01 13:00:00")
     def test_get_number_of_completed_targets_within_day(self):

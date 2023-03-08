@@ -104,6 +104,7 @@
             "currency": "GBP"
         }
     },
+
     {
         "model": "financial_companion.BankAccount",
         "pk": 6,
@@ -113,6 +114,44 @@
             "sort_code": "223344",
             "iban": "GB1234567890123456789012345678901",
             "interest_rate": 3.00
+        }
+    },
+
+    {
+        "model": "financial_companion.Account",
+        "pk": 7,
+        "fields": {
+            "name": "mno",
+            "description": "this is a test bank account with interest"
+        }
+    },
+
+    {
+        "model": "financial_companion.PotAccount",
+        "pk": 7,
+        "fields": {
+            "user": "3",
+            "balance": 20000,
+            "currency": "GBP"
+        }
+    },
+
+    {
+        "model": "financial_companion.Account",
+        "pk": 8,
+        "fields": {
+            "name": "pqr",
+            "description": "this is a test bank account"
+        }
+    },
+
+    {
+        "model": "financial_companion.PotAccount",
+        "pk": 8,
+        "fields": {
+            "user": "4",
+            "balance": 1000,
+            "currency": "GBP"
         }
     }
 ]
