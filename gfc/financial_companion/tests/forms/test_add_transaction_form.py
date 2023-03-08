@@ -112,22 +112,22 @@ class AddTransactionFormTestCase(FormTestCase):
         self.assertTrue(isinstance(transaction.receiver_account, Account))
         self.assertEqual(transaction.receiver_account.id, 3)
 
-        def test_form_rejects_the_same_sender_and_receiver_accounts(self):
-            self.form_input['receiver_account'] = 1
-            form = AddTransactionForm(self.user, data=self.form_input)
-            self.assertFalse(form.is_valid())
-            self.assertEquals(
-                response.context['messages'],
-                "The sender and receiver accounts cannot be the same.")
+    def test_form_rejects_the_same_sender_and_receiver_accounts(self):
+        self.form_input['receiver_account'] = 1
+        form = AddTransactionForm(self.user, data=self.form_input)
+        self.assertFalse(form.is_valid())
+        self.assertEquals(
+            response.context['messages'],
+            "The sender and receiver accounts cannot be the same.")
 
-        def test_form_rejects_neither_the_sender_or_receiver_accounts_belonging_to_the_user(
-                self):
-            self.form_input['receiver_account'] = 2
-            form = AddTransactionForm(self.user, data=self.form_input)
-            self.assertFalse(form.is_valid())
-            self.assertEquals(
-                response.context['messages'][0],
-                "Neither the sender or reciever are one of your accounts")
-            self.assertEquals(
-                response.context['messages'][1],
-                "Neither the sender or reciever are one of your accounts")
+    def test_form_rejects_neither_the_sender_or_receiver_accounts_belonging_to_the_user(
+            self):
+        self.form_input['receiver_account'] = 2
+        form = AddTransactionForm(self.user, data=self.form_input)
+        self.assertFalse(form.is_valid())
+        self.assertEquals(
+            response.context['messages'][0],
+            "Neither the sender or reciever are one of your accounts")
+        self.assertEquals(
+            response.context['messages'][1],
+            "Neither the sender or reciever are one of your accounts")
