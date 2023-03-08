@@ -203,6 +203,37 @@ class UserModelTestCase(ModelTestCase):
 
 
     @freeze_time("2023-01-01 13:00:00")
+    def test_get_number_of_nearly_completed_spending_targets_when_user_has_targets(self):
+        self.assertEqual(self.test_model.get_number_of_completed_spending_targets(), 3)
+
+    @freeze_time("2023-01-11 13:00:00")
+    def test_get_number_of_nearly_completed_spending_targets_when_user_has_no_targets(self):
+        self.assertEqual(self.third_user.get_number_of_completed_spending_targets(), 0)
+
+
+    @freeze_time("2023-01-01 13:00:00")
+    def test_get_number_of_nearly_completed_saving_targets_when_user_has_targets(self):
+        self.assertEqual(self.test_model.get_number_of_completed_saving_targets(), 3)
+
+    @freeze_time("2023-01-11 13:00:00")
+    def test_get_number_of_nearly_completed_saving_targets_when_user_has_no_targets(self):
+        self.assertEqual(self.third_user.get_number_of_completed_saving_targets(), 0)
+
+
+    @freeze_time("2023-01-01 13:00:00")
+    def test_get_number_of_nearly_completed_saving_targets_when_user_has_targets_within_day_lower(self):
+        self.assertEqual(self.fourth_user.get_number_of_nearly_completed_saving_targets(), 1)
+
+    @freeze_time("2023-01-05 13:00:00")
+    def test_get_number_of_nearly_completed_saving_targets_when_user_has_targets_within_day_upper(self):
+        self.assertEqual(self.fourth_user.get_number_of_nearly_completed_saving_targets(), 1)
+
+    @freeze_time("2023-01-11 13:00:00")
+    def test_get_number_of_nearly_completed_saving_targets_when_user_has_targets_after_week(self):
+        self.assertEqual(self.fourth_user.get_number_of_nearly_completed_saving_targets(), 0)
+
+
+    @freeze_time("2023-01-01 13:00:00")
     def test_get_number_of_completed_targets_within_day(self):
         completed = self.test_model.get_number_of_completed_targets()
         self.assertTrue(completed == self.total_completed_targets)
@@ -242,15 +273,10 @@ class UserModelTestCase(ModelTestCase):
         completed = self.test_model.get_number_of_completed_targets()
         self.assertTrue(completed <= self.total_completed_targets)
 
+
     @freeze_time("2023-01-01 13:00:00")
     def test_get_leaderboard_score_within_day(self):
         score = self.test_model.get_leaderboard_score()
-        # print(score)
-        # print(self.test_model.get_number_of_completed_spending_targets())
-        # print(self.test_model.get_number_of_completed_saving_targets())
-        # print(self.test_model.get_number_of_nearly_completed_saving_targets())
-        # print(self.test_model.get_number_of_nearly_completed_spending_targets())
-        # print(self.test_model.get_number_of_completed_targets())
         self.assertTrue(score == 1.5)
 
     @freeze_time("2023-01-03 13:00:00")
