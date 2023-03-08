@@ -72,7 +72,7 @@ class User(AbstractUser):
         user_account_targets = fcmodels.AccountTarget.objects.filter(
             account__in=accounts)
 
-        return user_account_targets
+        return list(user_account_targets)
 
     def get_all_category_targets(self, categories=None):
         user = self
@@ -81,7 +81,7 @@ class User(AbstractUser):
         user_category_targets = fcmodels.CategoryTarget.objects.filter(
             category__in=categories)
 
-        return user_category_targets
+        return list(user_category_targets)
 
     def get_completed_targets(self, targets):
         filtered_targets = []

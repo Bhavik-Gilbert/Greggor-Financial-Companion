@@ -40,5 +40,19 @@
             "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
             "is_active": true
           }
+    },
+
+    {
+        "model": "financial_companion.user",
+        "pk": 4,
+        "fields": {
+            "first_name": "Michael",
+            "last_name": "Higham",
+            "username": "@michaelhigham",
+            "email": "michaelhigham@example.org",
+            "bio": "Michael Higham RedLion Financial Tracker",
+            "password": "pbkdf2_sha256$260000$4BNvFuAWoTT1XVU8D6hCay$KqDCG+bHl8TwYcvA60SGhOMluAheVOnF1PMz0wClilc=",
+            "is_active": true
+          }
     }
 ]

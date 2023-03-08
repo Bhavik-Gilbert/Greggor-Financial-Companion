@@ -11,6 +11,7 @@ class UserModelTestCase(ModelTestCase):
         super().setUp()
         self.test_model = User.objects.get(username='@johndoe')
         self.second_user = User.objects.get(username='@janedoe')
+        self.third_user = User.objects.get(username='@michaelkolling')
         self.total_completed_targets = 6  # 6/7 will be complete at the first time check
 
     def test_valid_user(self):
@@ -109,14 +110,26 @@ class UserModelTestCase(ModelTestCase):
             self.test_model.get_user_highest_quiz_score().get_score(), 80
         )
 
-    def test_get_all_targets(self):
+    def test_get_all_targets_when_user_has_targets(self):
         self.assertTrue(self.test_model.get_all_targets() != [])
 
-    def test_get_all_account_targets(self):
+    def test_get_all_account_when_user_has_targets(self):
         self.assertTrue(self.test_model.get_all_account_targets() != [])
 
-    def test_get_all_category_targets(self):
+    def test_get_all_category_when_user_has_targets(self):
         self.assertTrue(self.test_model.get_all_category_targets() != [])
+
+    def test_get_all_targets_when_user_has_no_targets(self):
+        print(self.third_user.get_all_targets())
+        self.assertTrue(self.third_user.get_all_targets() == [])
+
+    def test_get_all_account_when_user_has_no_targets(self):
+        print(self.third_user.get_all_account_targets())
+        self.assertTrue(self.third_user.get_all_account_targets() == [])
+
+    def test_get_all_category_when_user_has_tno_targets(self):
+        print(self.third_user.get_all_category_targets())
+        self.assertTrue(self.third_user.get_all_category_targets() == [])
 
     @freeze_time("2023-01-01 13:00:00")
     def test_get_number_of_completed_targets_within_day(self):
