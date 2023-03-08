@@ -6,6 +6,7 @@ from financial_companion.forms import TargetForm
 from financial_companion.models import CategoryTarget, User, Category
 from decimal import Decimal
 
+
 class CreateTargetFormTestCase(FormTestCase):
     """Test of the create target form"""
 
@@ -37,7 +38,7 @@ class CreateTargetFormTestCase(FormTestCase):
             'amount',
             'currency'
         )
-    
+
     def test_amount_can_be_more_than_zero(self):
         self.form_input['amount'] = Decimal('0.01')
         form = TargetForm(
@@ -101,7 +102,7 @@ class CreateTargetFormTestCase(FormTestCase):
             form_type=CategoryTarget,
             foreign_key=self.test_category)
         self.assertFalse(form.is_valid())
-    
+
     def test_amount_can_not_be_zero_or_less(self):
         self.form_input['amount'] = Decimal('0.00')
         form = TargetForm(

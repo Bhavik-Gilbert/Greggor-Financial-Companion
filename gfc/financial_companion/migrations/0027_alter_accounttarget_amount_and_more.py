@@ -15,16 +15,25 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='accounttarget',
             name='amount',
-            field=models.DecimalField(decimal_places=2, max_digits=15, validators=[django.core.validators.MinValueValidator(Decimal('0.01'))]),
+            field=models.DecimalField(
+                decimal_places=2, max_digits=15, validators=[
+                    django.core.validators.MinValueValidator(
+                        Decimal('0.01'))]),
         ),
         migrations.AlterField(
             model_name='categorytarget',
             name='amount',
-            field=models.DecimalField(decimal_places=2, max_digits=15, validators=[django.core.validators.MinValueValidator(Decimal('0.01'))]),
+            field=models.DecimalField(
+                decimal_places=2, max_digits=15, validators=[
+                    django.core.validators.MinValueValidator(
+                        Decimal('0.01'))]),
         ),
         migrations.AlterField(
             model_name='usertarget',
             name='amount',
-            field=models.DecimalField(decimal_places=2, max_digits=15, validators=[django.core.validators.MinValueValidator(Decimal('0.01'))]),
+            field=models.DecimalField(
+                decimal_places=2, max_digits=15, validators=[
+                    django.core.validators.MinValueValidator(
+                        Decimal('0.01'))]),
         ),
     ]

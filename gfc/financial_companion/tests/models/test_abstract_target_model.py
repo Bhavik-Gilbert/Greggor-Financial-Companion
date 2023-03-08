@@ -41,7 +41,7 @@ class AbstractTargetModelTestCase(AbstractModelTestCase):
             self) -> None:
         self.test_model.amount: Decimal = Decimal('0.00')
         self._assert_model_is_invalid()
-        
+
     def test_invalid_amount_more_than_2_decimal_places(self) -> None:
         self.test_model.amount: float = Decimal('99.999')
         self._assert_model_is_invalid()

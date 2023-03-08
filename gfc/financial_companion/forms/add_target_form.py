@@ -43,7 +43,7 @@ class TargetForm(forms.Form):
         if self.cleaned_data.get('amount') is not None:
             if self.cleaned_data.get('amount') <= Decimal('0.00'):
                 self.add_error('amount', ValidationError(
-                        "Amount cannot be a value under 0.01")
+                    "Amount cannot be a value under 0.01")
                 )
 
         if self.instance is None:
