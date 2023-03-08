@@ -281,7 +281,6 @@ class Command(BaseCommand):
                 )
                 transaction.save()
                 recTransaction.add_transaction(transaction)
-        print("RECURRING TRANSACTIONS SEEDED")
 
             
             

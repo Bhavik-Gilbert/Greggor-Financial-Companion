@@ -260,7 +260,7 @@ urlpatterns = [
         'delete_recurring_transaction/<int:pk>',
         views.delete_recurring_transaction_view,
         name='delete_recurring_transaction'),
-    re_path('individual_recurring_transaction/(?P<pk>\\d+)/$', views.individual_recurring_transaction_view, name='individual_transaction')
+    re_path('individual_recurring_transaction/(?P<pk>\\d+)/$', views.individual_recurring_transaction_view, name='individual_recurring_transaction')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

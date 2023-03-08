@@ -18,3 +18,16 @@ def view_users_recurring_transactions(request: HttpRequest) -> HttpResponse:
     return render(request, "pages/view_recurring_transactions.html",
                   {'transactions': list_of_transactions})
 
+@login_required
+def filter_recurring_transaction_request(request, redirect_name: str):
+    if 'inactive' in request.POST:
+        return redirect(reverse(redirect_name, kwargs={'filter_type': "inactive"}))
+    elif 'active' in request.POST:
+        return redirect(reverse(redirect_name, kwargs={
+                        'filter_type': "active"}))
+    elif 'all' in request.POST:
+        return redirect(reverse(redirect_name, kwargs={'filter_type': "all"}))
+    else:
+        return redirect('dashboard')
+
+

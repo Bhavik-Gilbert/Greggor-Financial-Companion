@@ -212,6 +212,6 @@ def get_sorted_members_based_on_completed_targets(members):
 
 def generate_random_end_date() -> datetime:
     start_date = datetime.now()
-    end_date = start_date + timedelta(days=10)
+    end_date = start_date + timedelta(days=1000)
     random_date = start_date + (end_date - start_date) * random.random()
     return random_date

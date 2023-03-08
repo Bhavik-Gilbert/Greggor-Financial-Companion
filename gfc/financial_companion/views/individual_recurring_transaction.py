@@ -8,11 +8,11 @@ from ..models import RecurringTransaction
 
 @login_required
 def individual_recurring_transaction_view(request: HttpRequest, pk: int) -> HttpResponse:
-    """View to see information on individual transactions"""
+    """View to see information on individual recurring transactions"""
     try:
         transaction: RecurringTransaction = RecurringTransaction.objects.get(id=pk)
     except RecurringTransaction.DoesNotExist:
         return redirect("dashboard")
     else:
         return render(request, "pages/individual_recurring_transaction.html",
-                      {"transaction": transaction})
+                      {"transaction": transaction, "transactionslist": list(transaction.transactions.all())})

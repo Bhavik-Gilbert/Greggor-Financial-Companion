@@ -33,7 +33,7 @@
               <td>{{ transaction.title }} </td>
               <td>{{ transaction.interval }}</td>
               <td>{{ transaction.amount }} </td>
-              <td> <a href="{% url 'individual_transaction' pk=transaction.id%}" class="btn btn-primary justify-content-center">View Info</a</td>
+              <td> <a href="{% url 'individual_recurring_transaction' pk=transaction.id%}" class="btn btn-primary justify-content-center">View Info</a</td>
 
             </tr>
           </form>

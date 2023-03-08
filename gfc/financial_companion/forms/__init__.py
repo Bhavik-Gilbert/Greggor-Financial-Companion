@@ -10,3 +10,4 @@ from .add_target_form import TargetForm
 from .join_user_group_form import JoinUserGroupForm
 from .timespan_dropdown_form import TimespanOptionsForm
 from .add_recurring_transaction_form import AddRecurringTransactionForm
+from .edit_recurring_transaction_form import EditRecurringTransactionForm

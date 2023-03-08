@@ -1,7 +1,7 @@
 {% extends "page.html" %}
 
 <!-- Title -->
-{% block title %}Add Transaction{% endblock %}
+{% block title %}Add Recurring Transaction{% endblock %}
 
 <!-- Content -->
 {% block content %}
@@ -9,7 +9,7 @@
     {% if edit %}
       <form action='{% url 'edit_transaction' pk %}' method="post" enctype='multipart/form-data'>
     {% else %}
-      <form action='{% url 'add_transaction'%}' method="post" enctype='multipart/form-data'>
+      <form action='{% url 'add_transaction' %}' method="post" enctype='multipart/form-data'>
     {% endif %}
       {% csrf_token %}
 
