@@ -164,16 +164,29 @@ class UserModelTestCase(ModelTestCase):
 
 
     @freeze_time("2023-01-01 13:00:00")
-    def test_get_number_of_nearly_completed_spending_targets_targets_when_user_has_targets_within_day_lower(self):
+    def test_get_number_of_nearly_completed_spending_targets__when_user_has_targets_within_day_lower(self):
         self.assertEqual(self.fourth_user.get_number_of_nearly_completed_spending_targets(), 1)
 
     @freeze_time("2023-01-05 13:00:00")
-    def test_get_number_of_nearly_completed_spending_targets_targets_when_user_has_targets_within_day_upper(self):
+    def test_get_number_of_nearly_completed_spending_targets_when_user_has_targets_within_day_upper(self):
         self.assertEqual(self.fourth_user.get_number_of_nearly_completed_spending_targets(), 1)
 
     @freeze_time("2023-01-11 13:00:00")
-    def test_get_number_of_nearly_completed_spending_targets_targets_when_user_has_targets_after_week(self):
+    def test_get_number_of_nearly_completed_spending_targets__when_user_has_targets_after_week(self):
         self.assertEqual(self.fourth_user.get_number_of_nearly_completed_spending_targets(), 0)
+
+
+    @freeze_time("2023-01-01 13:00:00")
+    def test_get_number_of_nearly_completed_saving_targets_when_user_has_targets_within_day_lower(self):
+        self.assertEqual(self.fourth_user.get_number_of_nearly_completed_saving_targets(), 1)
+
+    @freeze_time("2023-01-05 13:00:00")
+    def test_get_number_of_nearly_completed_saving_targets_when_user_has_targets_within_day_upper(self):
+        self.assertEqual(self.fourth_user.get_number_of_nearly_completed_saving_targets(), 1)
+
+    @freeze_time("2023-01-11 13:00:00")
+    def test_get_number_of_nearly_completed_saving_targets_when_user_has_targets_after_week(self):
+        self.assertEqual(self.fourth_user.get_number_of_nearly_completed_saving_targets(), 0)
 
 
     @freeze_time("2023-01-01 13:00:00")
