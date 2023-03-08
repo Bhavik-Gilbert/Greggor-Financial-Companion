@@ -34,18 +34,19 @@ class RegularAccountForm(forms.ModelForm):
         super().save(commit=False)
 
         if instance is None:
-            regularAccount: Account = Account.objects.create(
+            regular_account: Account = Account.objects.create(
                 name=self.cleaned_data.get("name"),
                 description=self.cleaned_data.get("description")
             )
 
         else:
-            regularAccount = instance
-            regularAccount.name: str = self.cleaned_data.get("name")
-            regularAccount.description: str = self.cleaned_data.get(
+            regular_account = instance
+            regular_account.name: str = self.cleaned_data.get("name")
+            regular_account.description: str = self.cleaned_data.get(
                 "description")
+            regular_account.save()
 
-        return regularAccount
+        return regular_account
 
 
 class PotAccountForm(forms.ModelForm):
