@@ -1,5 +1,6 @@
 from .test_view_base import ViewTestCase
 from django.http import HttpResponse
+from financial_companion.forms import QuizQuestionForm
 from financial_companion.models import User, QuizQuestion, QuizSet, QuizScore
 from django.urls import reverse
 from django.contrib.messages import get_messages
@@ -8,6 +9,26 @@ from typing import Any
 
 class QuizQuestionsViewTestCase(ViewTestCase):
     """Unit tests of the quiz questions view"""
+
+    def _assert_invalid_question_form_input(self, form_input: dict[str, Any]):
+        self._login(self.user)
+        quiz_score_before: int = QuizScore.objects.count()
+        response: HttpResponse = self.client.post(
+            self.url, form_input, follow=True)
+        quiz_score_after: int = QuizScore.objects.count()
+        self.assertEqual(quiz_score_before, quiz_score_after)
+        self._assert_question_form_displays(response)
+        self.assertTrue(len(response.context["form"].errors) > 0)
+
+    def _assert_question_form_displays(self, response: HttpResponse):
+        self.assertTemplateUsed(response, 'pages/quiz/quiz_questions.html')
+        self._assert_response_contains(response, self.page_contain_list)
+        for question in self.quiz_set.questions.all():
+            self._assert_response_contains(
+                response,
+                question.get_potential_answers() + list(question.question)
+            )
+        self.assertTrue(isinstance(response.context["form"], QuizQuestionForm))
 
     def setUp(self):
         self.user: User = User.objects.get(username='@johndoe')
@@ -29,14 +50,7 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'pages/quiz/quiz_questions.html')
-        self._assert_response_contains(response, self.page_contain_list)
-        for question in self.quiz_set.questions.all():
-            self._assert_response_contains(
-                response,
-                question.get_potential_answers() + list(question.question)
-            )
-        self.assertEqual(response.context["quiz_set"], self.quiz_set)
+        self._assert_question_form_displays(response)
 
     def test_invalid_redirects_if_quiz_set_of_pk_does_not_exist(self):
         self._login(self.user)
@@ -76,66 +90,24 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         self.assertEqual(quiz_score.correct_questions, 1)
         self.assertEqual(quiz_score.total_questions, 1)
 
-    def test_invalid_post_quiz_questions_submit_withtout_some_answers(self):
+    def test_invalid_post_quiz_questions_submit_without_some_answers(self):
         # Add another question to question set
         self.quiz_set.questions.add(QuizQuestion.objects.get(id=2))
 
         # Set form input for first question
         form_input: dict[str, Any] = {"quiz_submit": ""}
-        questions: list[QuizQuestion] = self.quiz_set.questions.all()
-        form_input[str(questions[0].id)] = questions[0].potential_answer_1
+        self._assert_invalid_question_form_input(form_input)
 
-        self._login(self.user)
-        quiz_score_before: int = QuizScore.objects.count()
-        quiz_score_id: int = QuizScore.objects.count() + 1
-        response_url: str = reverse("quiz_score", kwargs={"pk": quiz_score_id})
-        response: HttpResponse = self.client.post(
-            self.url, form_input, follow=True)
-        self.assertRedirects(
-            response,
-            response_url,
-            status_code=302,
-            target_status_code=200)
-        quiz_score_after: int = QuizScore.objects.count()
-        self.assertEqual(quiz_score_before + 1, quiz_score_after)
-
-        quiz_score: QuizScore = QuizScore.objects.get(id=quiz_score_id)
-        self.assertEqual(quiz_score.correct_questions, 1)
-        self.assertEqual(quiz_score.total_questions, 1)
-
-    def test_invalid_post_quiz_questions_submit_withtout_any_answers(self):
+    def test_invalid_post_quiz_questions_submit_without_any_answers(self):
         # Set empty submission
         form_input: dict[str, Any] = {"quiz_submit": ""}
+        self._assert_invalid_question_form_input(form_input)
 
-        self._login(self.user)
-        quiz_score_before: int = QuizScore.objects.count()
-        response_url: str = reverse("quiz")
-        response: HttpResponse = self.client.post(
-            self.url, form_input, follow=True)
-        self.assertRedirects(
-            response,
-            response_url,
-            status_code=302,
-            target_status_code=200)
-        quiz_score_after: int = QuizScore.objects.count()
-        self.assertEqual(quiz_score_before, quiz_score_after)
-
-        messages_list: list[Any] = list(get_messages(response.wsgi_request))
-        self.assertTrue(any(
-            message.message == 'No questions found in submission' for message in messages_list))
-
-    def test_invalid_post_quiz_questions_wihtout_submit_answer(self):
+    def test_invalid_post_quiz_questions_without_submit_answer(self):
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'pages/quiz/quiz_questions.html')
-        self._assert_response_contains(response, self.page_contain_list)
-        for question in self.quiz_set.questions.all():
-            self._assert_response_contains(
-                response,
-                question.get_potential_answers() + list(question.question)
-            )
-        self.assertEqual(response.context["quiz_set"], self.quiz_set)
+        self._assert_question_form_displays(response)
 
     def test_invalid_pk_must_be_int_try_str(self):
         url: str = f"{self.base_url}hi/"
