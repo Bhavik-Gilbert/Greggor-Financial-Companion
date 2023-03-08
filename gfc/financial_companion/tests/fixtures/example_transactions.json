@@ -107,5 +107,69 @@
             "receiver_account" : 5,
             "time_of_transaction" : "2023-01-01T12:00:00+00:00"
         }
+    },
+
+    {
+        "model": "financial_companion.Transaction",
+        "pk": 9,
+        "fields": {
+            "title": "test for nearly completed targets",
+            "description": "sold old phone",
+            "image": "transactions/23.jpg",
+            "category" : 1,
+            "amount" : 75.00,
+            "currency" : "USD",
+            "sender_account" : 7,
+            "receiver_account" : 8,
+            "time_of_transaction" : "2023-01-01T12:00:00+00:00"
+        }
+    },
+
+    {
+        "model": "financial_companion.Transaction",
+        "pk": 10,
+        "fields": {
+            "title": "old phone",
+            "description": "test for nearly completed targets",
+            "image": "transactions/23.jpg",
+            "category" : 1,
+            "amount" : 99.00,
+            "currency" : "USD",
+            "sender_account" : 7,
+            "receiver_account" : 8,
+            "time_of_transaction" : "2023-01-05T12:00:00+00:00"
+        }
+    },
+
+    {
+        "model": "financial_companion.Transaction",
+        "pk": 11,
+        "fields": {
+            "title": "test for nearly completed targets",
+            "description": "sold old phone",
+            "image": "transactions/23.jpg",
+            "category" : 1,
+            "amount" : 75.00,
+            "currency" : "USD",
+            "sender_account" : 8,
+            "receiver_account" : 7,
+            "time_of_transaction" : "2023-01-01T12:00:00+00:00"
+        }
+    },
+
+    {
+        "model": "financial_companion.Transaction",
+        "pk": 12,
+        "fields": {
+            "title": "old phone",
+            "description": "test for nearly completed targets",
+            "image": "transactions/23.jpg",
+            "category" : 1,
+            "amount" : 99.00,
+            "currency" : "USD",
+            "sender_account" : 8,
+            "receiver_account" : 7,
+            "time_of_transaction" : "2023-01-05T12:00:00+00:00"
+        }
     }
 ]
