@@ -86,7 +86,7 @@ class CategoryListViewCase(ViewTestCase):
     
     def test_view_redirects_when_search_button_pressed_for_invalid_search_name(self):
         self.form_data = {
-            'search': True
+            'search': ""
         }
         self._login(self.user)
         self.url = reverse('categories_list', kwargs={'search_name': None})
