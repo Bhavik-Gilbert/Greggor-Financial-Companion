@@ -1,8 +1,9 @@
 from django import forms
-from financial_companion.models import CategoryTarget, Category, AbstractTarget
+from financial_companion.models import AbstractTarget
 from ..helpers import Timespan, TransactionType, CurrencyType
 from django.core.exceptions import ValidationError
 import re
+from decimal import Decimal
 
 
 class TargetForm(forms.Form):
@@ -38,6 +39,12 @@ class TargetForm(forms.Form):
             **filter_type_dict,
             transaction_type=self.cleaned_data.get('transaction_type')
         )
+
+        if self.cleaned_data.get('amount') is not None:
+            if self.cleaned_data.get('amount') <= Decimal('0.00'):
+                self.add_error('amount', ValidationError(
+                        "Amount cannot be a value under 0.01")
+                )
 
         if self.instance is None:
             if len(check_unique_together) > 0:
