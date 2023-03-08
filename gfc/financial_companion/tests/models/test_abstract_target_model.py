@@ -27,10 +27,21 @@ class AbstractTargetModelTestCase(AbstractModelTestCase):
         self.test_model.amount: float = 99
         self._assert_model_is_valid()
 
+    def test_valid_accepts_amount_more_than_zero(
+            self) -> None:
+        self.test_model.amount: Decimal = Decimal('0.01')
+        self.test_model.save()
+        self._assert_model_is_valid()
+
     def test_valid_amount_2_decimal_places(self) -> None:
         self.test_model.amount: float = Decimal('99.99')
         self._assert_model_is_valid()
 
+    def test_invalid_rejects_amount_less_than_equal_to_zero(
+            self) -> None:
+        self.test_model.amount: Decimal = Decimal('0.00')
+        self._assert_model_is_invalid()
+        
     def test_invalid_amount_more_than_2_decimal_places(self) -> None:
         self.test_model.amount: float = Decimal('99.999')
         self._assert_model_is_invalid()
