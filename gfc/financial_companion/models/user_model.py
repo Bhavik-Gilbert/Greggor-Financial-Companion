@@ -105,7 +105,7 @@ class User(AbstractUser):
         targets = self.get_all_targets()
         for target in targets:
             if target.is_nearly_complete() and target.transaction_type == TransactionType.INCOME:
-                total += 0.5
+                total += 1
         return total
 
     def get_number_of_nearly_completed_saving_targets(self):
@@ -113,7 +113,7 @@ class User(AbstractUser):
         targets = self.get_all_targets()
         for target in targets:
             if target.is_nearly_complete() and target.transaction_type == TransactionType.EXPENSE:
-                total += 0.5
+                total += 1
         return total
 
     def get_number_of_completed_targets(self):
@@ -137,5 +137,5 @@ class User(AbstractUser):
 
     def get_leaderboard_score(self):
         score = 0
-        score += -(self.get_number_of_completed_spending_targets()) + self.get_number_of_completed_saving_targets() + self.get_number_of_nearly_completed_saving_targets() + -(self.get_number_of_completed_spending_targets())
+        score += -(0.5 * self.get_number_of_completed_spending_targets()) + self.get_number_of_completed_saving_targets() + self.get_number_of_nearly_completed_saving_targets() + -(0.5 * self.get_number_of_completed_spending_targets())
         return score
