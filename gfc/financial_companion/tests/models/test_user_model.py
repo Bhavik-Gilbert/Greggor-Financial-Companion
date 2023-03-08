@@ -245,12 +245,12 @@ class UserModelTestCase(ModelTestCase):
     @freeze_time("2023-01-01 13:00:00")
     def test_get_leaderboard_score_within_day(self):
         score = self.test_model.get_leaderboard_score()
-        print(score)
-        print(self.test_model.get_number_of_completed_spending_targets())
-        print(self.test_model.get_number_of_completed_saving_targets())
-        print(self.test_model.get_number_of_nearly_completed_saving_targets())
-        print(self.test_model.get_number_of_nearly_completed_spending_targets())
-        print(self.test_model.get_number_of_completed_targets())
+        # print(score)
+        # print(self.test_model.get_number_of_completed_spending_targets())
+        # print(self.test_model.get_number_of_completed_saving_targets())
+        # print(self.test_model.get_number_of_nearly_completed_saving_targets())
+        # print(self.test_model.get_number_of_nearly_completed_spending_targets())
+        # print(self.test_model.get_number_of_completed_targets())
         self.assertTrue(score == 1.5)
 
     @freeze_time("2023-01-03 13:00:00")
@@ -261,29 +261,29 @@ class UserModelTestCase(ModelTestCase):
     @freeze_time("2023-01-06 13:00:00")
     def test_get_number_of_completed_targets_within_week(self):
         score = self.test_model.get_leaderboard_score()
-        self.assertTrue(score <= self.total_completed_targets)
+        self.assertTrue(score == 3)
 
     @freeze_time("2023-01-11 13:00:00")
     def test_get_leaderboard_score_after_week(self):
         score = self.test_model.get_leaderboard_score()
-        self.assertTrue(score <= self.total_completed_targets)
+        self.assertTrue(score == 2)
 
     @freeze_time("2023-01-22 13:00:00")
     def test_get_leaderboard_score_within_month(self):
         score = self.test_model.get_leaderboard_score()
-        self.assertTrue(score <= self.total_completed_targets)
+        self.assertTrue(score == 2)
 
     @freeze_time("2023-02-03 13:00:00")
     def test_get_leaderboard_score_after_month(self):
         score = self.test_model.get_leaderboard_score()
-        self.assertTrue(score <= self.total_completed_targets)
+        self.assertTrue(score == 1)
 
     @freeze_time("2023-07-09 13:00:00")
     def test_get_leaderboard_score_within_year(self):
         score = self.test_model.get_leaderboard_score()
-        self.assertTrue(score <= self.total_completed_targets)
+        self.assertTrue(score == 1)
 
     @freeze_time("2024-08-26 13:00:00")
     def test_get_leaderboard_score_after_year(self):
         score = self.test_model.get_leaderboard_score()
-        self.assertTrue(score <= self.total_completed_targets)
+        self.assertTrue(score == 0)
