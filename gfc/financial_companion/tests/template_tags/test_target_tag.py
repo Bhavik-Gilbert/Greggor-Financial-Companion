@@ -33,7 +33,8 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
     def _filter_transactions(self, start, transactions):
         filtered_transactions = []
         for transaction in transactions:
-            if transaction.time_of_transaction.date() >= start and transaction.time_of_transaction.date() <= datetime.date.today():
+            if transaction.time_of_transaction.date(
+            ) >= start and transaction.time_of_transaction.date() <= datetime.date.today():
                 filtered_transactions = [*filtered_transactions, transaction]
         return filtered_transactions
 

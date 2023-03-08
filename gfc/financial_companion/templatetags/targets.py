@@ -22,7 +22,8 @@ def get_completeness(current):
 
     filtered_transactions = []
     for transaction in transactions:
-        if transaction.time_of_transaction.date() >= start_of_timespan_period and transaction.time_of_transaction.date() <= datetime.date.today():
+        if transaction.time_of_transaction.date(
+        ) >= start_of_timespan_period and transaction.time_of_transaction.date() <= datetime.date.today():
             filtered_transactions = [*filtered_transactions, transaction]
 
     total = 0.0
@@ -40,6 +41,7 @@ def get_completeness(current):
 
 def get_category_transactions(current):
     return current.category.get_category_transactions()
+
 
 def get_account_transactions(current):
     account = current.account
