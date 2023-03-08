@@ -14,19 +14,12 @@ def create_target(request, Target, current_item):
     form = TargetForm(request.POST, foreign_key=current_item, form_type=Target)
     if request.method == "POST":
         if form.is_valid():
-            try:
-                form.save()
-            except Exception as e:
-                messages.add_message(
-                    request,
-                    messages.WARNING,
-                    f'This target can not be created as a target with the same timespan, transaction type and {title_first_word.lower()} exists')
-                return render(request, "pages/create_targets.html",
-                              {'form': TargetForm(foreign_key=current_item, form_type=Target), "form_toggle": True, 'title': title})
-
-            else:
-
-                return None
+            form.save()
+            messages.add_message(
+        request,
+        messages.SUCCESS,
+        "Target created successfully!")
+            return None
     else:
         form = TargetForm(foreign_key=current_item, form_type=Target)
     return render(request, "pages/create_targets.html",
@@ -97,16 +90,8 @@ def edit_target(request, Target, current_item, foreign_key):
             instance=current_item,
             form_type=Target)
         if form.is_valid():
-            try:
+    
                 form.save()
-            except Exception as e:
-                messages.add_message(
-                    request,
-                    messages.WARNING,
-                    f'This target can not be created as a target with the same timespan, transaction type and {title_first_word.lower()} exists')
-                return render(request, "pages/create_targets.html",
-                              {'form': TargetForm(foreign_key=foreign_key, instance=current_item, form_type=Target), "form_toggle": False, 'title': title})
-            else:
                 return None
     else:
 
