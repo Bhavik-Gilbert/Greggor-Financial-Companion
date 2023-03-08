@@ -1,6 +1,6 @@
 from .test_template_tag_base import TemplateTagTestCase
 from financial_companion.models import Transaction, CategoryTarget, AccountTarget, UserTarget
-from financial_companion.helpers import timespan_map
+from financial_companion.helpers import timespan_map, TransactionType
 from financial_companion.templatetags import get_completeness
 import os
 from freezegun import freeze_time
@@ -15,7 +15,11 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
         if isinstance(target, CategoryTarget):
             transactions = target.category.get_category_transactions()
         elif isinstance(target, AccountTarget):
-            transactions = target.account.get_account_transactions()
+            account = target.account
+            if target.transaction_type == TransactionType.INCOME:
+                transactions = account.get_account_transactions("sent")
+            else:
+                transactions = account.get_account_transactions("received")
         elif isinstance(target, UserTarget):
             transactions = target.user.get_user_transactions()
         return transactions
@@ -53,7 +57,11 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
                 self.category_target))
 
     def test_get_transaction_for_account_target(self):
-        transactions = self.account_target.account.get_account_transactions()
+        account = self.account_target.account
+        if self.account_target.transaction_type == TransactionType.INCOME:
+            transactions = account.get_account_transactions("sent")
+        else:
+            transactions = account.get_account_transactions("received")
         self.assertEqual(
             transactions,
             self._get_all_transactions(

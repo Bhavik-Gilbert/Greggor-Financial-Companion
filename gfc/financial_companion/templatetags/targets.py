@@ -1,6 +1,6 @@
 from django import template
 import financial_companion.models as fcmodels
-from financial_companion.helpers import timespan_map
+from financial_companion.helpers import timespan_map, TransactionType
 import datetime
 register = template.Library()
 
@@ -23,8 +23,6 @@ def get_completeness(current):
     filtered_transactions = []
     for transaction in transactions:
         if transaction.time_of_transaction.date() >= start_of_timespan_period and transaction.time_of_transaction.date() <= datetime.date.today():
-            # print(transaction.time_of_transaction.date())
-            # print(start_of_timespan_period)
             filtered_transactions = [*filtered_transactions, transaction]
 
     total = 0.0
@@ -43,9 +41,12 @@ def get_completeness(current):
 def get_category_transactions(current):
     return current.category.get_category_transactions()
 
-
 def get_account_transactions(current):
-    return current.account.get_account_transactions()
+    account = current.account
+    if current.transaction_type == TransactionType.INCOME:
+        return account.get_account_transactions("sent")
+    else:
+        return account.get_account_transactions("received")
 
 
 def get_user_transactions(current):

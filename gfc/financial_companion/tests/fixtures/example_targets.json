@@ -101,9 +101,19 @@
     },
     {
         "model": "financial_companion.accounttarget",
-        "pk": 4,
+        "pk": 3,
         "fields": {
             "transaction_type": "income",
+            "timespan": "day",
+            "amount": "100",
+            "account": 8
+        }
+    },
+    {
+        "model": "financial_companion.accounttarget",
+        "pk": 4,
+        "fields": {
+            "transaction_type": "expense",
             "timespan": "day",
             "amount": "100",
             "account": 8

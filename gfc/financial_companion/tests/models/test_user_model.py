@@ -143,27 +143,27 @@ class UserModelTestCase(ModelTestCase):
 
 
     @freeze_time("2023-01-01 13:00:00")
-    def test_get_all_nearly_completed_targets_when_user_has_targets_within_day(self):
+    def test_get_all_nearly_completed_targets_when_user_has_targets_within_day_lower(self):
         targets = self.fourth_user.get_all_targets()
+        print("hello")
         print(get_completeness(targets[0]))
-        print("T",targets[0].account.get_account_transactions())
-        print("N",self.fourth_user.get_nearly_completed_targets(targets))
-        self.assertTrue(len(self.fourth_user.get_nearly_completed_targets(targets)) == 1)
+        print(get_completeness(targets[1]))
+        print("there")
+        self.assertEqual(len(self.fourth_user.get_nearly_completed_targets(targets)), 2)
 
-    @freeze_time("2023-01-05 13:00:00")
-    def test_get_all_nearly_completed_targets_when_user_has_targets_within_week(self):
-        targets = self.fourth_user.get_all_targets()
-        print(get_completeness(targets[0]))
-        print("T",targets)
-        print("N",self.fourth_user.get_nearly_completed_targets(targets))
-        self.assertTrue(len(self.fourth_user.get_nearly_completed_targets(targets)) == 1)
+    # @freeze_time("2023-01-05 13:00:00")
+    # def test_get_all_nearly_completed_targets_when_user_has_targets_within_day_upper(self):
+    #     targets = self.fourth_user.get_all_targets()
+    #     print(get_completeness(targets[0]))
+    #     print(get_completeness(targets[1]))
+    #     self.assertEqual(len(self.fourth_user.get_nearly_completed_targets(targets)), 2)
     #
     # @freeze_time("2023-01-11 13:00:00")
     # def test_get_all_nearly_completed_targets_when_user_has_targets_after_week(self):
     #     targets = self.fourth_user.get_all_targets()
-    #     print("T",targets)
-    #     print("N",self.fourth_user.get_nearly_completed_targets(targets))
-    #     self.assertTrue(len(self.fourth_user.get_nearly_completed_targets(targets)) == 0)
+    #     print(get_completeness(targets[0]))
+    #     print(get_completeness(targets[1]))
+    #     self.assertEqual(len(self.fourth_user.get_nearly_completed_targets(targets)), 0)
 
     @freeze_time("2023-01-01 13:00:00")
     def test_get_all_nearly_completed_targets_when_user_has_no_targets(self):

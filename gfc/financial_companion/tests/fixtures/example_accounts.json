@@ -122,7 +122,7 @@
         "pk": 7,
         "fields": {
             "name": "mno",
-            "description": "this is a test bank account with interest"
+            "description": "this is a test bank account"
         }
     },
 
