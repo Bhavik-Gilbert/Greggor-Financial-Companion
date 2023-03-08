@@ -1,7 +1,6 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from ..models import Category
-from ..helpers import get_warning_messages_for_targets
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
@@ -18,18 +17,12 @@ def category_list_view(request: HttpRequest, search_name: str) -> HttpResponse:
             return redirect("categories_list",
                             search_name=(request.POST["search"]))
 
-    categories: Category = None
-
     if (search_name == "all"):
-        categories = Category.objects.filter(user=request.user)
+        categories: Category = Category.objects.filter(user=request.user)
     else:
-        categories = Category.objects.filter(
+        categories: Category = Category.objects.filter(
             user=request.user).filter(
             name__icontains=search_name)
-
-    targetsForMessages = request.user.get_all_category_targets()
-    request = get_warning_messages_for_targets(
-        request, False, targetsForMessages)
 
     return render(request, "pages/category_list.html",
                   {"categories": categories})
