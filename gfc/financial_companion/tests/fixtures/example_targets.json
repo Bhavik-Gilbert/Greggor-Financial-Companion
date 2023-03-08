@@ -118,5 +118,15 @@
             "amount": "100",
             "account": 8
         }
+    },
+    {
+        "model": "financial_companion.accounttarget",
+        "pk": 5,
+        "fields": {
+            "transaction_type": "expense",
+            "timespan": "week",
+            "amount": "0",
+            "account": 3
+        }
     }
 ]

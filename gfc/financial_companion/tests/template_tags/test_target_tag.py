@@ -41,11 +41,17 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
         total = 0.0
         for transaction in transactions:
             total += float(transaction.amount)
-        completeness = (total / float(target.amount)) * 100
-        return round(completeness, 2)
+
+        amount = target.amount
+        if amount == 0:
+            return round(0, 2)
+        else:
+            completeness = (total / float(target.amount)) * 100
+            return round(completeness, 2)
 
     def setUp(self):
         self.account_target: AccountTarget = AccountTarget.objects.get(id=1)
+        self.account_target_2: AccountTarget = AccountTarget.objects.get(id=5)
         self.category_target: CategoryTarget = CategoryTarget.objects.get(id=1)
         self.user_target: UserTarget = UserTarget.objects.get(id=1)
 
@@ -167,6 +173,17 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
         completeness = self._calculate_completeness(target, filtered)
         completeness_from_tag = get_completeness(target)
         self.assertEqual(completeness, completeness_from_tag)
+
+    @freeze_time("2023-01-01 12:00:00")
+    def test_get_completeness_for_account_target_with_zero_amount(self):
+        target = self.account_target_2
+        transactions = self._get_all_transactions(target)
+        start = self._get_start_of_time_period(target)
+        filtered = self._filter_transactions(start, transactions)
+        completeness = self._calculate_completeness(target, filtered)
+        completeness_from_tag = get_completeness(target)
+        self.assertEqual(completeness, 0)
+        self.assertEqual(completeness_from_tag, 0)
 
     @freeze_time("2023-01-01 12:00:00")
     def test_get_completeness_for_user_target(self):
