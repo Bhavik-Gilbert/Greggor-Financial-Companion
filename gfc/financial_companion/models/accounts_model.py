@@ -27,6 +27,8 @@ class Account(Model):
         blank=True
     )
 
+    user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
+
     objects = InheritanceManager()
 
     def get_account_transactions(self, filter_type: str = "all") -> list:
@@ -54,14 +56,15 @@ class Account(Model):
         return f"{AccountType.REGULAR}"
 
     @staticmethod
-    def create_basic_account(account_name: str):
+    def create_basic_account(account_name: str, user: User):
         """Creates and returns an account object with only a name"""
         return Account.objects.create(
-            name=account_name
+            name=account_name,
+            user=user
         )
 
     @staticmethod
-    def get_or_create_account(account_name: str, user: User = None):
+    def get_or_create_account(account_name: str, user: User):
         """Returns account if it exists or creates a new one"""
         try:
             accounts_list: list[Account] = Account.objects.filter(
@@ -75,7 +78,7 @@ class Account(Model):
                     break
 
             if get_account is None:
-                get_account = Account.create_basic_account(account_name)
+                get_account = Account.create_basic_account(account_name, user)
 
             return get_account
         except Exception:
@@ -83,7 +86,6 @@ class Account(Model):
 
 
 class PotAccount(Account):
-    user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
     balance: DecimalField = DecimalField(max_digits=15, decimal_places=2)
     currency: CharField = CharField(
         choices=CurrencyType.choices,

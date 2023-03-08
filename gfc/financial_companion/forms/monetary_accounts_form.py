@@ -36,14 +36,16 @@ class RegularAccountForm(forms.ModelForm):
         if instance is None:
             regular_account: Account = Account.objects.create(
                 name=self.cleaned_data.get("name"),
-                description=self.cleaned_data.get("description")
+                description=self.cleaned_data.get("description"),
+                user=self.user
             )
 
         else:
             regular_account = instance
             regular_account.name: str = self.cleaned_data.get("name")
             regular_account.description: str = self.cleaned_data.get(
-                "description")
+                "description"),
+            regular_account.user: User = self.user
             regular_account.save()
 
         return regular_account
