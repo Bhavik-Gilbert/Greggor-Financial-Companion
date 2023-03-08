@@ -137,5 +137,5 @@ class User(AbstractUser):
 
     def get_leaderboard_score(self):
         score = 0
-        score += -(0.5 * self.get_number_of_completed_spending_targets()) + self.get_number_of_completed_saving_targets() + self.get_number_of_nearly_completed_saving_targets() + -(0.5 * self.get_number_of_completed_spending_targets())
+        score += -(0.5 * self.get_number_of_completed_spending_targets()) + self.get_number_of_completed_saving_targets() + self.get_number_of_nearly_completed_saving_targets() + -(0.5 * self.get_number_of_nearly_completed_spending_targets())
         return score
