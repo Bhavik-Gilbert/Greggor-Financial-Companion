@@ -4,7 +4,7 @@ from django.utils import timezone
 from decimal import Decimal
 
 from ...helpers import CurrencyType
-from ...models import AbstractTransaction, Transaction, User, PotAccount
+from ...models import Transaction, User, PotAccount
 
 
 class TransactionModelTestCase(ModelTestCase):

@@ -9,6 +9,8 @@ from django.db.models import (
     ForeignKey,
     CASCADE, SET_NULL
 )
+
+from django.core.validators import MinValueValidator
 from .accounts_model import Account, PotAccount
 from .category_model import Category
 from ..helpers import CurrencyType, Timespan, random_filename
@@ -49,6 +51,7 @@ class AbstractTransaction(Model):
         blank=False,
         decimal_places=2,
         max_digits=15,
+        validators=[MinValueValidator(Decimal('0.01'))]
     )
 
     currency: CharField = CharField(

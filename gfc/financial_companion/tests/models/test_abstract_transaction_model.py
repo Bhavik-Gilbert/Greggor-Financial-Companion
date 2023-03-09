@@ -3,7 +3,7 @@ from django.db.models.base import ModelBase
 from decimal import Decimal
 
 from ...helpers import CurrencyType
-from ...models import AbstractTransaction, Transaction
+from ...models import AbstractTransaction
 
 
 class AbstractTransactionModelTestCase(AbstractModelTestCase):
@@ -91,4 +91,12 @@ class AbstractTransactionModelTestCase(AbstractModelTestCase):
 
     def test_invalid_currency_type_may_not_be_blank(self):
         self.test_model.currency = ""
+        self._assert_model_is_invalid()
+    
+    def test_amount_is_valid_for_values_greater_than_0_01(self):
+        self.test_model.amount = Decimal("0.01")
+        self._assert_model_is_valid()
+
+    def test_amount_is_invalid_for_values_less_than_0_01(self):
+        self.test_model.amount = Decimal("0.00")
         self._assert_model_is_invalid()
