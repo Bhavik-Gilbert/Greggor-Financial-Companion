@@ -15,8 +15,8 @@ def divide(a, b):
 @register.filter
 def sig_figs(number, sig_fig):
     if (sig_fig > 0):
-        round_to_sig_figs = float(('%.'+str(sig_fig)+'g') % number)
+        round_to_sig_figs = float(('%.' + str(sig_fig) + 'g') % number)
         return round_to_sig_figs
-    
+
     else:
         return number
