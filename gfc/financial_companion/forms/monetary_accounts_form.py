@@ -44,7 +44,7 @@ class RegularAccountForm(forms.ModelForm):
             regular_account = instance
             regular_account.name: str = self.cleaned_data.get("name")
             regular_account.description: str = self.cleaned_data.get(
-                "description"),
+                "description")
             regular_account.user: User = self.user
             regular_account.save()
 
