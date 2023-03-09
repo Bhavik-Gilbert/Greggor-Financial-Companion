@@ -1,7 +1,6 @@
 from json import dumps
 from currency_symbols import CurrencySymbols
 from currency_converter import CurrencyConverter
-from kzt_exchangerates import Rates as KZTRates
 from .enums import CurrencyType
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -33,19 +32,6 @@ def convert_currency(amount: float, current_currency_code: str,
 
     if current_currency_code == target_currency_code or current_currency_code not in CurrencyType or target_currency_code not in CurrencyType:
         return amount
-
-    try:
-        if current_currency_code == CurrencyType.KZT or target_currency_code == CurrencyType.KZT:
-            kzt_rates = KZTRates()
-            if current_currency_code == CurrencyType.KZT:
-                return amount * \
-                    kzt_rates.get_exchange_rate(target_currency_code)
-            else:
-                return amount * \
-                    kzt_rates.get_exchange_rate(
-                        current_currency_code, from_kzt=True)
-    except Exception:
-        raise Exception("KZT Rates converter not working")
 
     try:
         c: CurrencyConverter = CurrencyConverter(

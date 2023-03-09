@@ -38,7 +38,6 @@ class CurrencyType(models.TextChoices):
     RUB: str = "RUB"
     NZD: str = "NZD"
     CHF: str = "CHF"
-    KZT: str = "KZT"
 
 
 class AccountType(models.TextChoices):
