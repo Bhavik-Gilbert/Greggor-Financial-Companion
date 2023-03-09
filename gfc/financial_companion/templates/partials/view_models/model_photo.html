@@ -1,0 +1,9 @@
+{% if picture %}
+    <div class="col-md-3 col-sm-12">
+        <div class="container text-center limit">
+            <a href="{{ picture.url }}" class="btn btn-sm p-0"><img src="{{ picture.url }}" alt="Profile picture for {{ name }}" class="border border-primary rounded center"></a> 
+        </div>
+    </div>
+{% else %}
+
+{% endif %}

@@ -90,5 +90,5 @@ class AccountTarget(admin.ModelAdmin):
 @admin.register(UserGroup)
 class UserGroup(admin.ModelAdmin):
     list_display = [
-        'id', 'name', 'description', 'owner_email', 'invite_code', 'get_members'
+        'id', 'name', 'description', 'owner_email', 'invite_code', 'get_members', 'group_picture'
     ]

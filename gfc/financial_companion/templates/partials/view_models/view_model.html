@@ -1,0 +1,48 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}{% block object_name %}{% endblock %} - {% block model_name %}{% endblock %}{% endblock %}
+
+<!-- Content -->
+{% block content %}
+<div class="card pt-3 pb-2 px-4 bg-primary mb-3 mx-auto">
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <h1 class="text-white">{% block page_header_model %}{% endblock %}: {% block page_header_name %}{% endblock %}</h1>
+        </div>
+        {% block edit_delete_buttons %}{% endblock %}
+      </div>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="container">
+      <div class="row g-3 mb-4 p-0 align-content-center">
+        <div class="col">
+          <div class="card">
+            <div class="card-body p-0">
+                <div class="card-header pt-3">
+                    <h4>{% block card_title %}{% endblock %}</h4>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% block table_content %}{% endblock %}
+                </ul>
+            </div>
+            <div class="card-footer text-muted">
+                {% block table_footer %}{% endblock %}
+            </div>
+          </div>
+        </div>
+        {% block additional_items %}{% endblock %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container mx-auto mt-4">
+  {% block further_content %}{% endblock %}
+</div>
+<div class="container d-flex justify-content-center my-3">
+  <a class="btn btn-lg btn-outline-primary" href="{% block view_model_objects_URL %}{% endblock %}">{% block view_model_objects_text %}{% endblock %}</a>
+</div>
+{% endblock %}

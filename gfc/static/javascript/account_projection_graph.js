@@ -1,14 +1,24 @@
 function loadInitialGraph(bankAccountsInfo, timeBands, conversions, mainCurrency) {
+    console.log(bankAccountsInfo);
+    try {
+        bankAccountsInfo = JSON.parse(bankAccountsInfo);
+    }
+    catch(SyntaxError) {
+        print(err)
+    }
+    console.log(bankAccountsInfo);
+    
     try {
         getUserChoices(bankAccountsInfo, timeBands, conversions, mainCurrency);
     }
     catch(err) {
-        calculateDataset(bankAccountsInfo, 12, timeBands, mainCurrency);
+        calculateDataset(bankAccountsInfo, 12, timeBands, mainCurrency, "", conversions);
     }
 }
 
 
 function calculateDataset(accountsInfo, projectionTimescaleInMonths, timeBands, mainCurrency, selectedCurrency = "", conversionsDict = {}) {
+
     lineColours = [theme.primary, theme.secondary, theme.success, theme.warning, theme.danger, theme.dark]
     $(document).ready(() => {
         timeBands.length = projectionTimescaleInMonths;
@@ -17,16 +27,20 @@ function calculateDataset(accountsInfo, projectionTimescaleInMonths, timeBands, 
             accountsInfo[account].balances.length = projectionTimescaleInMonths;
             accountsDataset.push(getDatasetForAccount(accountsInfo[account], selectedCurrency, timeBands, lineColours[account % lineColours.length], conversionsDict, mainCurrency));
         }
+        console.log([accountsDataset, timeBands, selectedCurrency])
         setChart(accountsDataset, timeBands, "Balance ("+selectedCurrency+")", "Months", "line");
     });
 }
     
 
 function getDatasetForAccount(account, selectedCurrency, timeBands, lineColour, conversionsDict, mainCurrency) {
+    console.log("--------")
+    console.log([account, selectedCurrency, timeBands, lineColour, conversionsDict, mainCurrency])
     const conversion = getConversionForAccount(account, selectedCurrency, mainCurrency, conversionsDict)
     if (conversion != 1) {
         account.balances = account.balances.map(balance => balance * conversion);
     }
+    console.log([account, selectedCurrency, timeBands, lineColour, conversionsDict, mainCurrency])
 
     return ({
         label: account.name,

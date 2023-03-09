@@ -9,7 +9,7 @@
 
 .btn.btn-xs {
   padding: 0.25rem 0.45rem;
-  font-size: 0.5rem;
+  font-size: 0.75rem;
   line-height: 1.4;
   border-radius: 0.2rem;
 }
@@ -31,6 +31,13 @@
   .container {
     margin: 0 18%;
   }
+}
+
+.limit img {
+  background: url(path-to-image) 50% 50%;
+  height: 100%;
+  max-width: 230px;
+  max-height: 230px;
 }
 
 /*!
