@@ -11,7 +11,7 @@ def divide(a, b):
 
 @register.filter
 def sig_figs(number, sig_fig):
-    round_to_sig_figs = '%s' % float(('%.' + str(sig_fig-1) + 'e') % number)
+    round_to_sig_figs = '%s' % float(('%.' + str(sig_fig - 1) + 'e') % number)
 
     if (decimal.Decimal(round_to_sig_figs).as_tuple().exponent < -(sig_fig - 1)):
         round_to_sig_figs = round(float(round_to_sig_figs), int(sig_fig - 1))
