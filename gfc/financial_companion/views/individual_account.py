@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse
 from django.conf import settings
-from ..models import Transaction, User, PotAccount, AccountTarget
+from ..models import Transaction, User, PotAccount, AccountTarget, Account
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from financial_companion.helpers import TransactionType
 from financial_companion.helpers import paginate
@@ -16,8 +16,8 @@ def individual_account_view(
     user: User = request.user
 
     try:
-        account: PotAccount = PotAccount.objects.get_subclass(id=pk, user=user)
-    except PotAccount.DoesNotExist:
+        account: Account = Account.objects.get_subclass(id=pk, user=user)
+    except Account.DoesNotExist:
         return redirect("dashboard")
 
     account_targets: AccountTarget = AccountTarget.objects.filter(

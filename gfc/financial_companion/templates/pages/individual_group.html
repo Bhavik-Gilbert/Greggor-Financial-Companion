@@ -25,18 +25,21 @@
       <div class="container">
         <div class="row">
           <div class="card">
-            <img class="card-img-top" src="" alt="">
-
             <div class="card-body">
               <p class="card-text">
-                <p>Join code: {{group.invite_code}}</p>
-                <p>Description: {{group.description}}</p>
-                <p>Number of members: {{count}}</p>
+                {%if group.group_picture.url != None %}
+                  <img src="{{ group.group_picture.url }}" alt="Profile picture of {{ group.name }}" class="border border-primary rounded center " width="150" height="150">
+                {% else %}
+                  <p class="card-text"><Strong>Group Picture:</Strong> Your group picture has not been uploaded yet</p>
+                {% endif %}
+                <p><Strong>Join code: </Strong> {{group.invite_code}}</p>
+                <p><Strong>Description: </Strong> {{group.description}}</p>
+                <p><Strong>Number of members: </Strong> {{count}}</p>
               </p>
             </div>
 
             <div class="card-footer text-muted">
-              If you have any questions regarding the group please contanct the owner at: <strong>{{group.owner_email}}</strong>
+              If you have any questions regarding the group please contact the owner at: <strong>{{group.owner_email}}</strong>
             </div>
 
           </div>
@@ -71,18 +74,19 @@
                   </div>
                 </div>
               </div>
+            </div>
               <div class="row">
                 <div class="col-12">
                   <div class="card-text">
                     <p>
                       This leaderboard ranks you based on the number of targets that you have completed.
-                      Looking forard to see who will be taking the number spot. Good luck to you all.
+                      Looking forward to see who will be taking the number spot. Good luck to you all.
                     </p>
                   </div>
                 </div>
               </div>
             </div>
-            {%include 'partials/groups/completed_leaderboard.html' with members=members comlpeted=comlpeted %}
+            {%include 'partials/groups/completed_leaderboard.html' with members=members completed=completed %}
           {% else %}
             {% if is_owner %}
               <div class="col-12">
@@ -93,7 +97,11 @@
                     </div>
                   </div>
                   <div class="col-12 col-md-4 mb-3 d-flex justify-content-start justify-content-md-end">
-                    <a href="#" class="btn btn-primary">Add member</a>
+                    <form action='{% url 'add_user_to_user_group' group_pk=group.id %}' method="post" class="input-group  d-flex justify-content-center">
+                      {% csrf_token %}
+                      {{ add_user_form }}
+                      <input type="submit" value="Add Member" class="btn btn-primary">
+                    </form>
                   </div>
                 </div>
               </div>

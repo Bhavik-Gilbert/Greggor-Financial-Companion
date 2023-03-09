@@ -4,7 +4,8 @@
         "pk": 1,
         "fields": {
             "name": "abc",
-            "description": "this is a test account"
+            "description": "this is a test account",
+            "user": "1"
         }
     },
 
@@ -13,7 +14,8 @@
         "pk": 2,
         "fields": {
             "name": "def",
-            "description": "this is a test account"
+            "description": "this is a test account",
+            "user": "1"
         }
     },
 
@@ -22,7 +24,8 @@
         "pk": 3,
         "fields": {
             "name": "ghi",
-            "description": "this is a test account"
+            "description": "this is a test account",
+            "user": "1"
         }
     },
 
@@ -30,7 +33,6 @@
         "model": "financial_companion.PotAccount",
         "pk": 3,
         "fields": {
-            "user": "1",
             "balance": 1000.00,
             "currency": "GBP"
         }
@@ -41,7 +43,8 @@
         "pk": 4,
         "fields": {
             "name": "cash",
-            "description": "this is another test account"
+            "description": "this is another test account",
+            "user": "2"
         }
      },
 
@@ -49,7 +52,6 @@
         "model": "financial_companion.PotAccount",
         "pk": 4,
         "fields": {
-            "user": "2",
             "balance": 200.00,
             "currency": "GBP"
         }
@@ -60,7 +62,8 @@
         "pk": 5,
         "fields": {
             "name": "jkl",
-            "description": "this is a test account"
+            "description": "this is a test account",
+            "user": "1"
         }
     },
 
@@ -68,7 +71,6 @@
         "model": "financial_companion.PotAccount",
         "pk": 5,
         "fields": {
-            "user": "1",
             "balance": 1000.00,
             "currency": "GBP"
         }
@@ -91,7 +93,8 @@
         "pk": 6,
         "fields": {
             "name": "jkl",
-            "description": "this is a test bank account with interest"
+            "description": "this is a test bank account with interest",
+            "user": "1"
         }
     },
 
@@ -99,11 +102,11 @@
         "model": "financial_companion.PotAccount",
         "pk": 6,
         "fields": {
-            "user": "1",
             "balance": 20000,
             "currency": "GBP"
         }
     },
+
     {
         "model": "financial_companion.BankAccount",
         "pk": 6,
@@ -115,12 +118,14 @@
             "interest_rate": 3.00
         }
     },
+
     {
         "model": "financial_companion.Account",
         "pk": 7,
         "fields": {
             "name": "mno",
-            "description": "this is a test bank account to test change sender account in transactions"
+            "description": "this is a test bank account",
+            "user": "3"
         }
     },
 
@@ -128,28 +133,18 @@
         "model": "financial_companion.PotAccount",
         "pk": 7,
         "fields": {
-            "user": "1",
-            "balance": 200000,
+            "balance": 20000,
             "currency": "GBP"
         }
     },
-    {
-        "model": "financial_companion.BankAccount",
-        "pk": 7,
-        "fields": {
-            "bank_name": "Bank of Misha",
-            "account_number": "78901287",
-            "sort_code": "556677",
-            "iban": "GB1234567890123456789012345678541",
-            "interest_rate": 3.00
-        }
-    },
+
     {
         "model": "financial_companion.Account",
         "pk": 8,
         "fields": {
-            "name": "mno",
-            "description": "this is a test bank account to test change receiver account in transactions"
+            "name": "pqr",
+            "description": "this is a test bank account",
+            "user": "4"
         }
     },
 
@@ -157,20 +152,8 @@
         "model": "financial_companion.PotAccount",
         "pk": 8,
         "fields": {
-            "user": "1",
-            "balance": 300000,
+            "balance": 1000,
             "currency": "GBP"
-        }
-    },
-    {
-        "model": "financial_companion.BankAccount",
-        "pk": 8,
-        "fields": {
-            "bank_name": "Bank of Misha",
-            "account_number": "78907812",
-            "sort_code": "889900",
-            "iban": "GB1234567890123456989012345678541",
-            "interest_rate": 3.00
         }
     }
 ]
