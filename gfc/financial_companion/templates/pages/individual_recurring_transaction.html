@@ -26,16 +26,15 @@
   
                 <div class="card-body">
                   <div class="card-header">
-                    <h4>Transaction Info:</h4>
+                    <h4>Info:</h4>
                   </div>
                   <ul class="list-group list-group-flush">
                     <li class="list-group-item"><p><strong>Description: </strong>{{transaction.description}}</p></li>
                     <li class="list-group-item"><p><strong>Category: </strong>{{transaction.category.name.capitalize}}</p></li>
-                    <li class="list-group-item"><p><strong>Amount: </strong>{{transaction.amount}}</p></li>
-                    <li class="list-group-item"><p><strong>Currency: </strong>{{transaction.currency.upper}}</p></li>
+                    <li class="list-group-item"><p><strong>Amount: </strong>{{transaction.amount}} {{transaction.currency.upper}}</p></li>
                     <li class="list-group-item"><p><strong>Sender Account: </strong>{{transaction.sender_account.name.capitalize}}</p></li>
                     <li class="list-group-item"><p><strong>Reciver Account: </strong>{{transaction.receiver_account.name.capitalize}}</p></li>
-                    <li class="list-group-item"><p><strong>Repeats every: </strong>{{transaction.interval}}</p></li>
+                    <li class="list-group-item"><p><strong>Repeats every: </strong>{{transaction.interval.capitalize}}</p></li>
                     <li class="list-group-item"><p><strong>Start Date: </strong>{{transaction.start_date}}</p></li>
                     <li class="list-group-item"><p><strong>End Date: </strong>{{transaction.end_date}}</p></li>
                   
@@ -49,6 +48,7 @@
     </div>
     <div class="row">
       <div class="container">
+        <h3 class="text-white">Associated Transactions:</h3>
         <div class="col-md-4">
           {%include 'partials/recurring_transaction_transactions_list.html'  with transactions=transactionslist %}
         </div>
