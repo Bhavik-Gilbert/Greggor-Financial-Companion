@@ -6,15 +6,14 @@
 <!-- Content -->
 {% block content %}
     <h1>User Group Form</h1>
-    <form method="post">
-        {% csrf_token %}
-        {% include 'partials/form.html' with form=form %}
-      <button type="submit" name="submit_type" value="Submit" class="btn btn-primary">
-        {% if form_toggle %}
-            Create User Group
-        {% else %}
-            Edit User Group
-        {% endif %}
-    </button>
+    {% if form_toggle %}
+        <form action='{% url 'create_user_group' %}' method="post" enctype='multipart/form-data'>
+    {% else %}
+        <form action='{% url 'edit_user_group' pk %}' method="post" enctype='multipart/form-data'>
+    {% endif %}
+
+    {% csrf_token %}
+    {% include 'partials/form.html' with form=form %}
+    <input type="submit" value="Submit" class="btn btn-primary">
     </form>
 {% endblock %}

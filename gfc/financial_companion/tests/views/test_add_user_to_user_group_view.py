@@ -55,6 +55,19 @@ class AddUserToUserGroupViewTestCase(ViewTestCase):
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 1)
 
+    def test_unsuccessful_add_user_to_user_group_due_to_invalid_user(self):
+        self._login(self.user)
+        self.assertFalse(self.user_group.members.contains(self.user_two))
+        self.form_input['user_email'] = "invaliduser@example.org"
+        before_count = self.user_group.members_count()
+        response = self.client.post(self.url, self.form_input, follow=True)
+        after_count = self.user_group.members_count()
+        self.assertEqual(after_count, before_count)
+        self.assertFalse(self.user_group.members.contains(self.user_two))
+        self.assertTemplateUsed(response, 'pages/individual_group.html')
+        messages_list = list(response.context['messages'])
+        self.assertEqual(len(messages_list), 1)
+
     def test_unsuccessful_add_user_to_user_group_due_to_incorrect_email(self):
         self._login(self.user)
         self.assertFalse(self.user_group.members.contains(self.user_two))
