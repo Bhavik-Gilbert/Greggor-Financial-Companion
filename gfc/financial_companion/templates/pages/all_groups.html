@@ -7,8 +7,14 @@
 {% block content %}
   <div>
 
-    <div align="center" class="w-50 container-fluid">
+    <div align="center" class="w-75 container-fluid">
       <h1>Groups</h1>
+      <h6>This is where you are able to create groups. Here you can create and manage these Groups.
+      You are able to compete against other members of the group in order to find who is the best
+      at sticking to their targets. Good luck and have fun!!</h6>
+    </div>
+
+    <div align="center" class="w-50 container-fluid">
       <a class="btn btn-primary" href="{% url 'create_user_group'%}">Add New</a>
       {% if groups %}
         <a class="btn btn-primary" href="{% url 'all_groups' search_name='all'%}">View All</a>

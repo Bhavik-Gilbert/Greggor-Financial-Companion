@@ -40,12 +40,12 @@ class IndividualAccountViewTestCase(ViewTestCase):
 
     def test_invalid_account_does_not_belong_to_user(self):
         self._login(self.user)
-        account: PotAccount = PotAccount.objects.get_subclass(
+        accounts: PotAccount = PotAccount.objects.filter(
             ~Q(user=self.user))
         url: str = reverse(
             "individual_account",
             kwargs={
-                "pk": account.id,
+                "pk": accounts[0].id,
                 "filter_type": "all"})
         response: HttpResponse = self.client.get(url, follow=True)
         response_url: str = reverse("dashboard")
