@@ -68,7 +68,7 @@ class IndividualCategoryViewTestCase(ViewTestCase):
         category_targets: Category = response.context["category_targets"]
         for target in category_targets:
             self.assertTrue(isinstance(target, CategoryTarget))
-            self.assertContains(response, target.transaction_type.capitalize())
+            self.assertContains(response, target.target_type.capitalize())
             self.assertContains(response, target.timespan.capitalize())
             self.assertContains(response, get_completeness(target))
             self.assertContains(response, target.currency.upper())

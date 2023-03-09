@@ -54,7 +54,7 @@ class Command(BaseCommand):
             if (float(randint(0, 100)) / 100 <
                     self.OBJECT_HAS_TARGET_PROBABILITY):
                 CategoryTarget.objects.create(
-                    transaction_type=self.choose_random_enum(TransactionType),
+                    target_type=self.choose_random_enum(TransactionType),
                     timespan=self.choose_random_enum(Timespan),
                     amount=float(randint(0, 1000000)) / 100,
                     currency=self.choose_random_enum(CurrencyType),
@@ -92,7 +92,7 @@ class Command(BaseCommand):
                 if (float(randint(0, 100)) / 100 <
                         self.OBJECT_HAS_TARGET_PROBABILITY):
                     UserTarget.objects.create(
-                        transaction_type=self.choose_random_enum(
+                        target_type=self.choose_random_enum(
                             TransactionType),
                         timespan=self.choose_random_enum(Timespan),
                         amount=float(randint(0, 1000000)) / 100,
@@ -184,7 +184,7 @@ class Command(BaseCommand):
     def create_target_for_account(self, account):
         if (float(randint(0, 100)) / 100 < self.OBJECT_HAS_TARGET_PROBABILITY):
             AccountTarget.objects.create(
-                transaction_type=self.choose_random_enum(TransactionType),
+                target_type=self.choose_random_enum(TransactionType),
                 timespan=self.choose_random_enum(Timespan),
                 amount=float(randint(0, 1000000)) / 100,
                 currency=self.choose_random_enum(CurrencyType),
