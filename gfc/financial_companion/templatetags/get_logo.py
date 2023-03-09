@@ -28,7 +28,7 @@ def get_greggor(greggor_type: str = ""):
     # TODO: Add other greggor types
     return f"{base_path}{GreggorTypes.NORMAL}.png"
 
-@register.filter()
+@register.filter
 def get_greggor_type_from_completeness(completeness):
     if completeness >= 100:
         return "party"

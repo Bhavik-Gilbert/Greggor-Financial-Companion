@@ -3,7 +3,7 @@
 <div class="row g-2">
   {% for target in targets %}
     {% with completeness=target|get_completeness %}
-      {% with type_of_greggor=completeness|get_greggor_type_from_completeness %}
+      {# {% with type_of_greggor=completeness|get_greggor_type_from_completeness %} #}
       <div class="row-12 row-md-12">
         <div class="col-12 col-md-12">
           <div class="card">
@@ -11,14 +11,14 @@
               <div class="row">
                 <div class="col-12 col-md-12">
                   <span style="float:right;">
-                    {# {%if completeness >= 100 %}
+                    {%if completeness >= 100 %}
                       {% include 'partials/greggor_logo.html' with height=50 greggor_type="party"%}
                     {% elif completeness < 50 %}
                       {% include 'partials/greggor_logo.html' with height=50 greggor_type="sad"%}
                     {% else %}
                       {% include 'partials/greggor_logo.html' with height=50 %}
-                    {% endif %} #}
-                    {% include 'partials/greggor_logo.html' with height=50 greggor_type=type_of_greggor%}
+                    {% endif %}
+                    {# {% include 'partials/greggor_logo.html' with height=50 greggor_type=type_of_greggor%} #}
                   </span>
                   <p style="text-align:left;">
                     <h4 class="card-title">{{target.transaction_type.capitalize}}</h4>
@@ -39,7 +39,7 @@
           </div>
         </div>
       </div>
-      {% endwith %}
+      {# {% endwith %} #}
     {% endwith %}
   {% endfor %}
 </div>
