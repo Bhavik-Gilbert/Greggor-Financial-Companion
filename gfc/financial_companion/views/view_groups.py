@@ -39,6 +39,7 @@ def all_groups_view(request: HttpRequest, search_name: str) -> HttpResponse:
         return render(request, "pages/all_groups.html",
                       {"groups": filter_groups, "form": form})
 
+
     return render(request, "pages/all_groups.html",
                   {"groups": user_groups, "form": form})
 
