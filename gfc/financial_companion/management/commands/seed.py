@@ -108,15 +108,16 @@ class Command(BaseCommand):
             end='\r')
 
     def create_accounts_for_user(self, user, categories):
-        randomNumOfBasicAccounts = randint(1, self.MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER)
+        randomNumOfBasicAccounts = randint(
+            1, self.MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER)
         randomNumOfPotAccounts = randint(1, self.MAX_ACCOUNTS_PER_USER)
         randomNumOfBankAccount = randint(
             0, self.MAX_ACCOUNTS_PER_USER - randomNumOfPotAccounts)
-        
+
         for i in range(0, randomNumOfBasicAccounts):
             regular_account = Account.objects.create(
                 name=self.faker.word(),
-                description = self.faker.text(),
+                description=self.faker.text(),
                 user=user
             )
 
