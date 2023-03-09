@@ -92,7 +92,6 @@ class ConvertCurrencyHelperFunctionTestCase(HelperTestCase):
         self._assert_valid_change_or_error_convert_currency(
             before_amount, current_currency_code, target_currency_code)
 
-
     def test_valid_amount_same_if_same_current_and_target_currency_codes(self):
         current_currency_code: str = CurrencyType.GBP
         target_currency_code: str = CurrencyType.GBP
