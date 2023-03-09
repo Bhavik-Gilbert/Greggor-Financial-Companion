@@ -1,4 +1,5 @@
 {% extends "page.html" %}
+{% load static %}
 
 <!-- Title -->
 {% block title %}Add Transaction{% endblock %}
@@ -7,6 +8,7 @@
 {% block content %}
     <h1>Add Transaction</h1>
     <head>
+      <script src="{% static 'javascript/autocomplete.js' %}"></script>
       <script
       src="https://code.jquery.com/jquery-3.6.3.min.js"
       integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
