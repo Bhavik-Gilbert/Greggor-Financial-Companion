@@ -105,7 +105,7 @@ class User(AbstractUser):
         total = 0
         targets = self.get_all_targets()
         for target in targets:
-            if target.is_nearly_complete() and target.transaction_type == TransactionType.INCOME:
+            if target.is_nearly_complete() and target.target_type == TransactionType.INCOME:
                 total += 1
         return total
 
@@ -113,7 +113,7 @@ class User(AbstractUser):
         total = 0
         targets = self.get_all_targets()
         for target in targets:
-            if target.is_nearly_complete() and target.transaction_type == TransactionType.EXPENSE:
+            if target.is_nearly_complete() and target.target_type == TransactionType.EXPENSE:
                 total += 1
         return total
 
@@ -125,7 +125,7 @@ class User(AbstractUser):
         total = 0
         targets = self.get_all_targets()
         for target in targets:
-            if target.is_complete() and target.transaction_type == TransactionType.INCOME:
+            if target.is_complete() and target.target_type == TransactionType.INCOME:
                 total += 1
         return total
 
@@ -133,7 +133,7 @@ class User(AbstractUser):
         total = 0
         targets = self.get_all_targets()
         for target in targets:
-            if target.is_complete() and target.transaction_type == TransactionType.EXPENSE:
+            if target.is_complete() and target.target_type == TransactionType.EXPENSE:
                 total += 1
         return total
 

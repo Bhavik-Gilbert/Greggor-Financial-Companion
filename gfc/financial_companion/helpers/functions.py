@@ -209,11 +209,11 @@ def get_warning_messages_for_targets(
     sortedTargetsDict = {'completed': {}, 'nearlyExceeded': {}, 'exceeded': {}}
     for target in targets:
         dictionaryToAdd = None
-        if target.transaction_type == 'income' and target in completedTargets:
+        if target.target_type == 'income' and target in completedTargets:
             dictionaryToAdd = sortedTargetsDict['completed']
-        elif target.transaction_type == 'expense' and target in nearlyCompletedTargets:
+        elif target.target_type == 'expense' and target in nearlyCompletedTargets:
             dictionaryToAdd = sortedTargetsDict['nearlyExceeded']
-        elif target.transaction_type == 'expense' and target in completedTargets:
+        elif target.target_type == 'expense' and target in completedTargets:
             dictionaryToAdd = sortedTargetsDict['exceeded']
 
         if dictionaryToAdd is not None:

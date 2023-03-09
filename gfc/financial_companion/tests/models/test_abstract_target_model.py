@@ -67,17 +67,17 @@ class AbstractTargetModelTestCase(AbstractModelTestCase):
         self.test_model.timespan: str = ""
         self._assert_model_is_invalid()
 
-    def test_valid_transaction_type_enum_options(self) -> None:
-        for transaction_type in TransactionType:
-            self.test_model.transaction_type: str = transaction_type
+    def test_valid_target_type_enum_options(self) -> None:
+        for target_type in TransactionType:
+            self.test_model.target_type: str = target_type
             self._assert_model_is_valid()
 
-    def test_invalid_transaction_type_must_be_in_enum(self) -> None:
-        self.test_model.transaction_type: str = "incorrect"
+    def test_invalid_target_type_must_be_in_enum(self) -> None:
+        self.test_model.target_type: str = "incorrect"
         self._assert_model_is_invalid()
 
-    def test_invalid_transaction_type_cannot_be_empty(self) -> None:
-        self.test_model.transaction_type: str = ""
+    def test_invalid_target_type_cannot_be_empty(self) -> None:
+        self.test_model.target_type: str = ""
         self._assert_model_is_invalid()
 
     def test_valid_currency_enum_options(self) -> None:
@@ -87,7 +87,7 @@ class AbstractTargetModelTestCase(AbstractModelTestCase):
 
     def test_valid_default_currency_is_gbp(self) -> None:
         no_currency_input_model: ModelBase = self.model.objects.create(
-            transaction_type=TransactionType.INCOME,
+            target_type=TransactionType.INCOME,
             timespan=Timespan.WEEK,
             amount=99,
         )
