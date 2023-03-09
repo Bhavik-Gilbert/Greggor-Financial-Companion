@@ -3,6 +3,7 @@ from ..helpers import GreggorTypes
 import os
 import holidays
 import datetime
+from .targets import get_overall_completeness
 
 register = template.Library()
 
@@ -34,3 +35,11 @@ def get_greggor_type_from_completeness(completeness):
         return "party"
     elif completeness < 50:
         return "sad"
+    else:
+        return "normal"
+
+@register.filter
+def get_greggor_for_overall_completeness(targets):
+    overall_completeness = get_overall_completeness(targets)
+    greggor_type = get_greggor_type_from_completeness(overall_completeness)
+    return get_greggor(greggor_type)

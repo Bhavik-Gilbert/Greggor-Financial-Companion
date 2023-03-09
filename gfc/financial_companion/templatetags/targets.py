@@ -48,3 +48,11 @@ def get_account_transactions(current):
 
 def get_user_transactions(current):
     return current.user.get_user_transactions()
+
+def get_overall_completeness(targets):
+    overall_completeness = 0
+    count = 0
+    for target in targets:
+        overall_completeness += get_completeness(target)
+        count += 1
+    return overall_completeness/count
