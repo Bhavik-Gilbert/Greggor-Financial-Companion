@@ -53,8 +53,9 @@
           {%include 'partials/recurring_transaction_transactions_list.html'  with transactions=transactionslist %}
         </div>
       </div>
-    
+      {% include 'partials/pagination.html'  with page_obj=transactionslist %}
     </div>
   </div>
+
 </div>
 {%endblock%}
