@@ -103,7 +103,7 @@
         "model": "financial_companion.accounttarget",
         "pk": 3,
         "fields": {
-            "transaction_type": "income",
+            "target_type": "income",
             "timespan": "day",
             "amount": "100",
             "account": 8
@@ -113,7 +113,7 @@
         "model": "financial_companion.accounttarget",
         "pk": 4,
         "fields": {
-            "transaction_type": "expense",
+            "target_type": "expense",
             "timespan": "day",
             "amount": "100",
             "account": 8
@@ -123,7 +123,7 @@
         "model": "financial_companion.accounttarget",
         "pk": 5,
         "fields": {
-            "transaction_type": "expense",
+            "target_type": "expense",
             "timespan": "week",
             "amount": "0",
             "account": 3

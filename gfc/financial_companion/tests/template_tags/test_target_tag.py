@@ -16,7 +16,7 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
             transactions = target.category.get_category_transactions()
         elif isinstance(target, AccountTarget):
             account = target.account
-            if target.transaction_type == TransactionType.INCOME:
+            if target.target_type == TransactionType.INCOME:
                 transactions = account.get_account_transactions("sent")
             else:
                 transactions = account.get_account_transactions("received")
@@ -65,7 +65,7 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
 
     def test_get_transaction_for_account_target(self):
         account = self.account_target.account
-        if self.account_target.transaction_type == TransactionType.INCOME:
+        if self.account_target.target_type == TransactionType.INCOME:
             transactions = account.get_account_transactions("sent")
         else:
             transactions = account.get_account_transactions("received")
