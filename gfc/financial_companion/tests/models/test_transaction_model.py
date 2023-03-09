@@ -84,5 +84,17 @@ class TransactionModelTestCase(ModelTestCase):
     def test_receiver_account_balance_decreases_on_edit_transaction(self):
         self._assert_balance_changes_on_transaction_update(self.receiver_account, round(Decimal(2800.00),2))
     
-
-    
+    def test_account_balances_change_on_delete_transaction(self):
+        self.transaction_model.save()
+        self.sender_account.refresh_from_db()
+        self.receiver_account.refresh_from_db()
+        sender_account_balance_before_delete = self.transaction_model.sender_account.balance
+        receiver_account_balance_before_delete = self.transaction_model.receiver_account.balance
+        transaction_ammount = self.transaction_model.amount
+        self.transaction_model.delete()
+        self.sender_account.refresh_from_db()
+        self.receiver_account.refresh_from_db()
+        sender_account_balance_after_delete = self.sender_account.balance
+        receiver_account_balance_after_delete = self.receiver_account.balance
+        self.assertEqual(sender_account_balance_after_delete, sender_account_balance_before_delete + transaction_ammount)
+        self.assertEqual(receiver_account_balance_after_delete, receiver_account_balance_before_delete - transaction_ammount)
