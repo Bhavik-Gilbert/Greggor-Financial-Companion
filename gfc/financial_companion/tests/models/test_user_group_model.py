@@ -123,6 +123,6 @@ class UserGroupModelTestCase(ModelTestCase):
         self.assertTrue(str(self.first_user) in members)
     
     def test_change_filename(self):
-        self.user = UserGroup.objects.get(id = 1)
-        self.assertFalse(change_filename(self.user,"test").find("group_profile"),  -1)
+        self.user_group = UserGroup.objects.get(id = 1)
+        self.assertFalse(change_filename(self.user_group,"test").find("group_profile"),  -1)
 

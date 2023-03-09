@@ -24,3 +24,8 @@ class TransactionModelTestCase(ModelTestCase):
     def test_time_of_transaction_auto_adds_time_if_blank(self):
         self.test_model.time_of_transaction = ""
         self._assert_model_is_valid()
+    
+    def test_change_filename(self):
+        self.transaction = Transaction.objects.get(id = 1)
+        self.assertFalse(change_filename(self.transaction,"test").find("transactions"),  -1)
+
