@@ -1,22 +1,17 @@
 {% extends "page.html" %}
 
 <!-- Title -->
-{% block title %}Start Quiz{% endblock %}
+{% block title %}Quiz Questions{% endblock %}
 
 <!-- Content -->
 {% block content %}
   <div class="row gy-5 justify-content-center text-center">
   <h1 class="col-12">Quiz</h1>
-
-  <form method="POST" class="col-12 row gy-3">
-      {% csrf_token %}
-      
-      {% for quiz_question in quiz_set.questions.all %}
-        {%include 'partials/quiz/quiz_question_card.html' with question=question %}
-      {% endfor %}
-
-      <button type="submit" name="quiz_submit" class="btn btn-primary col-12">Submit Quiz</button>
-      <a href="{% url 'quiz' %}" class="btn btn-danger col-12">Leave Quiz</a>
+  <form method="post" class="col-12 row gy-3">
+        {% csrf_token %}
+        {% include 'partials/quiz/quiz_question_card.html' with form=form %}
+        <button type="submit" name="quiz_submit" class="btn btn-primary col-12">Submit Quiz</button>
+        <a href="{% url 'quiz' %}" class="btn btn-danger col-12">Leave Quiz</a>
   </form>
 </div>
 {% endblock %}

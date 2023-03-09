@@ -4,6 +4,7 @@ from django.db import IntegrityError
 from .test_form_base import FormTestCase
 from financial_companion.forms import TargetForm
 from financial_companion.models import CategoryTarget, User, Category
+from decimal import Decimal
 
 
 class CreateTargetFormTestCase(FormTestCase):
@@ -37,6 +38,14 @@ class CreateTargetFormTestCase(FormTestCase):
             'amount',
             'currency'
         )
+
+    def test_amount_can_be_more_than_zero(self):
+        self.form_input['amount'] = Decimal('0.01')
+        form = TargetForm(
+            data=self.form_input,
+            form_type=CategoryTarget,
+            foreign_key=self.test_category)
+        self.assertTrue(form.is_valid())
 
     def test_transaction_type_can_not_be_blank(self):
         self.form_input['transaction_type'] = None
@@ -88,6 +97,14 @@ class CreateTargetFormTestCase(FormTestCase):
 
     def test_amount_can_not_be_blank(self):
         self.form_input['amount'] = None
+        form = TargetForm(
+            data=self.form_input,
+            form_type=CategoryTarget,
+            foreign_key=self.test_category)
+        self.assertFalse(form.is_valid())
+
+    def test_amount_can_not_be_zero_or_less(self):
+        self.form_input['amount'] = Decimal('0.00')
         form = TargetForm(
             data=self.form_input,
             form_type=CategoryTarget,

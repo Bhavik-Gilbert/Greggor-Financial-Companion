@@ -116,3 +116,8 @@ class UserGroupModelTestCase(ModelTestCase):
         self.test_model.make_owner(self.second_user)
         self.assertNotEqual(self.test_model.owner_email, self.first_user.email)
         self.assertEqual(self.test_model.owner_email, self.second_user.email)
+
+    def test_get_members(self):
+        self.test_model.add_member(self.first_user)
+        members = self.test_model.get_members()
+        self.assertTrue(str(self.first_user) in members)
