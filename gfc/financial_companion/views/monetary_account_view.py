@@ -44,11 +44,9 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
 
     # check is id valid
     try:
-        print("id is valid")
         this_account: Account = Account.objects.get_subclass(
             id=pk, user=request.user.id)
     except Exception:
-        print("id is not valid")
         return redirect("dashboard")
 
     this_bank_account_list: list[BankAccount] = BankAccount.objects.filter(
