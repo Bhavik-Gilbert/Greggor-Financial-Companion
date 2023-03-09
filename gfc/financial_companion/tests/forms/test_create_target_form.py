@@ -14,7 +14,7 @@ class CreateTargetFormTestCase(FormTestCase):
         self.test_user = User.objects.get(username='@johndoe')
         self.test_category = Category.objects.get(id=1)
         self.form_input = {
-            'transaction_type': 'income',
+            'target_type': 'income',
             'timespan': 'month',
             'amount': 200.00,
             'currency': 'USD'
@@ -33,7 +33,7 @@ class CreateTargetFormTestCase(FormTestCase):
             foreign_key=self.test_category)
         self._assert_form_has_necessary_fields(
             form,
-            'transaction_type',
+            'target_type',
             'timespan',
             'amount',
             'currency'
@@ -47,16 +47,16 @@ class CreateTargetFormTestCase(FormTestCase):
             foreign_key=self.test_category)
         self.assertTrue(form.is_valid())
 
-    def test_transaction_type_can_not_be_blank(self):
-        self.form_input['transaction_type'] = None
+    def test_target_type_can_not_be_blank(self):
+        self.form_input['target_type'] = None
         form = TargetForm(
             data=self.form_input,
             form_type=CategoryTarget,
             foreign_key=self.test_category)
         self.assertFalse(form.is_valid())
 
-    def test_transaction_type_can_not_be_invalid_option(self):
-        self.form_input['transaction_type'] = 'Invalid'
+    def test_target_type_can_not_be_invalid_option(self):
+        self.form_input['target_type'] = 'Invalid'
         form = TargetForm(
             data=self.form_input,
             form_type=CategoryTarget,
@@ -121,7 +121,7 @@ class CreateTargetFormTestCase(FormTestCase):
         after_count = CategoryTarget.objects.count()
         self.assertEqual(after_count, before_count + 1)
         self.assertEqual(category_target.timespan, 'month')
-        self.assertEqual(category_target.transaction_type, 'income')
+        self.assertEqual(category_target.target_type, 'income')
         self.assertEqual(category_target.currency, 'USD')
         self.assertEqual(category_target.amount, 200)
 
@@ -136,13 +136,13 @@ class CreateTargetFormTestCase(FormTestCase):
         current_category_target = form.save()
         after_count = CategoryTarget.objects.count()
         self.assertEqual(current_category_target.timespan, 'month')
-        self.assertEqual(current_category_target.transaction_type, 'income')
+        self.assertEqual(current_category_target.target_type, 'income')
 
     def test_form_thorws_error_when_updating_invalid_data(self):
         category_target = CategoryTarget.objects.get(id=1)
         self.other_category_target = CategoryTarget.objects.get(id=2)
         self.form_input = {
-            'transaction_type': self.other_category_target.transaction_type,
+            'target_type': self.other_category_target.target_type,
             'timespan': self.other_category_target.timespan,
             'amount': 200,
             'currency': 'USD'
@@ -158,7 +158,7 @@ class CreateTargetFormTestCase(FormTestCase):
     def test_target_must_be_unique_for_a_category(self):
         self.test_category_target = CategoryTarget.objects.get(id=1)
         self.form_input = {
-            'transaction_type': self.test_category_target.transaction_type,
+            'target_type': self.test_category_target.target_type,
             'timespan': self.test_category_target.timespan,
             'amount': 200,
             'currency': 'USD'

@@ -18,7 +18,7 @@ from financial_companion.templatetags import get_completeness
 class AbstractTarget(Model):
     """Abstract model for target spending and saving"""
 
-    transaction_type: CharField = CharField(
+    target_type: CharField = CharField(
         choices=TransactionType.choices, max_length=7
     )
 
@@ -66,7 +66,7 @@ class CategoryTarget(AbstractTarget):
     category: ForeignKey = ForeignKey(Category, on_delete=CASCADE)
 
     class Meta:
-        unique_together = ["transaction_type", "timespan", "category"]
+        unique_together = ["target_type", "timespan", "category"]
 
     def getModelName(self, plural=False):
         if plural:
@@ -84,7 +84,7 @@ class UserTarget(AbstractTarget):
     user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
 
     class Meta:
-        unique_together = ["transaction_type", "timespan", "user"]
+        unique_together = ["target_type", "timespan", "user"]
 
     def getModelName(self, plural=False):
         if plural:
@@ -102,7 +102,7 @@ class AccountTarget(AbstractTarget):
     account: ForeignKey = ForeignKey(PotAccount, on_delete=CASCADE)
 
     class Meta:
-        unique_together = ["transaction_type", "timespan", "account"]
+        unique_together = ["target_type", "timespan", "account"]
 
     def getModelName(self, plural=False):
         if plural:
