@@ -46,14 +46,14 @@
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="container">
-        <h3 class="text-white">Associated Transactions:</h3>
-        <div class="col-md-4">
-          {%include 'partials/recurring_transaction_transactions_list.html'  with transactions=transactionslist %}
+
+    <h3 class="text-white">Associated Transactions:</h3>
+    <div class="row gy-3 gx-3">
+        {%include 'partials/recurring_transaction_transactions_list.html'  with transactions=transactionslist %}
+
+        <div class="col-12 text-white">
+          {% include 'partials/pagination.html'  with page_obj=transactionslist %}
         </div>
-      </div>
-      {% include 'partials/pagination.html'  with page_obj=transactionslist %}
     </div>
   </div>
 

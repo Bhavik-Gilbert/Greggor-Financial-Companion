@@ -20,9 +20,9 @@ class RecurringTransactionTestCase(ModelTestCase):
         self.test_model.start_date = "2023-01-31"
         self._assert_model_is_valid()
 
-    def test_start_date_auto_adds_if_blank(self):
+    def test_start_date_cannot_be_blank(self):
         self.test_model.start_date = ""
-        self._assert_model_is_valid()
+        self._assert_model_is_invalid()
 
     def test_end_date_cannot_be_blank(self):
         self.test_model.end_date = ""

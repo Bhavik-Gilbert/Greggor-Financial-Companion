@@ -1,11 +1,10 @@
 from django import forms
-from django.core.validators import FileExtensionValidator
 from financial_companion.models import PotAccount, RecurringTransaction
 from datetime import datetime
 from django.utils.timezone import make_aware
 from typing import Any
 from decimal import Decimal
-from django.forms.widgets import DateTimeInput
+from django.forms.widgets import DateInput
 
 
 class AddRecurringTransactionForm(forms.ModelForm):
@@ -36,15 +35,15 @@ class AddRecurringTransactionForm(forms.ModelForm):
             'start_date',
             'end_date']
         widgets = {
-            'start_date': DateTimeInput(attrs={ 'type': 'datetime-local', 'min':  datetime.now().strftime("%Y-%m-%dT%H:%M") }),
-            'end_date': DateTimeInput(attrs={ 'type': 'datetime-local', 'min':  datetime.now().strftime("%Y-%m-%dT%H:%M") }),
+            'start_date': DateInput(attrs={'type': 'date', 'placeholder': 'yyyy-mm-dd', 'class': 'form-control'}),
+            'end_date': DateInput(attrs={'type': 'date', 'placeholder': 'yyyy-mm-dd', 'class': 'form-control'}),
         }
 
     def save(self, instance: RecurringTransaction = None) -> RecurringTransaction:
         """Create a new transaction."""
         super().save(commit=False)
         if instance is None:
-            transaction = RecurringTransaction.objects.create(
+            recurring_transaction = RecurringTransaction.objects.create(
                 title=self.cleaned_data.get('title'),
                 description=self.cleaned_data.get('description'),
                 image=self.cleaned_data.get('image'),
@@ -58,19 +57,19 @@ class AddRecurringTransactionForm(forms.ModelForm):
                 end_date = self.cleaned_data.get('end_date')
             )
         else:
-            transaction: RecurringTransaction = instance
-            transaction.title = self.cleaned_data.get('title')
-            transaction.description = self.cleaned_data.get('description')
-            transaction.image = self.cleaned_data.get('image')
-            transaction.category = self.cleaned_data.get('category')
-            transaction.amount = self.cleaned_data.get('amount')
-            transaction.currency = self.cleaned_data.get('currency')
-            transaction.sender_account = self.cleaned_data.get(
+            recurring_transaction: RecurringTransaction = instance
+            recurring_transaction.title = self.cleaned_data.get('title')
+            recurring_transaction.description = self.cleaned_data.get('description')
+            recurring_transaction.image = self.cleaned_data.get('image')
+            recurring_transaction.category = self.cleaned_data.get('category')
+            recurring_transaction.amount = self.cleaned_data.get('amount')
+            recurring_transaction.currency = self.cleaned_data.get('currency')
+            recurring_transaction.sender_account = self.cleaned_data.get(
                 'sender_account')
-            transaction.receiver_account = self.cleaned_data.get(
+            recurring_transaction.receiver_account = self.cleaned_data.get(
                 'receiver_account')
-            transaction.save()
-        return transaction
+            recurring_transaction.save()
+        return recurring_transaction
 
     def clean(self):
         """Clean the data and generate messages for any errors."""

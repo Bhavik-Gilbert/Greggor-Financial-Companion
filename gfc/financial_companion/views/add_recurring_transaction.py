@@ -42,7 +42,7 @@ def edit_recurring_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         user = request.user
         categories = Category.objects.filter(user=user.id)
         if request.method == 'POST':
-            form = EditRecurringTransactionForm(
+            form = AddRecurringTransactionForm(
                 user, request.POST, request.FILES, instance=transaction)
             form.fields['category'].queryset = categories
             if form.is_valid():
@@ -52,7 +52,7 @@ def edit_recurring_transaction_view(request: HttpRequest, pk) -> HttpResponse:
                 messages.WARNING,
                 "The recurring transaction has been updated")
                 return redirect('view_recurring_transactions')
-        form = EditRecurringTransactionForm(user, instance=transaction)
+        form = AddRecurringTransactionForm(user, instance=transaction)
         form.fields['category'].queryset = categories
         return render(request, "pages/add_recurring_transaction.html",
                       {'form': form, 'edit': True, 'pk': pk})

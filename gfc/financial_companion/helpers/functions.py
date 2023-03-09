@@ -9,9 +9,8 @@ import random
 import string
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-import calendar
-from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.conf import settings
 
 
 def get_currency_symbol(currency_code: str):
@@ -68,9 +67,9 @@ def calculate_percentages(spent_per_category : dict(), total):
     return spent_per_category
 
 
-def paginate(page, list_input):
+def paginate(page, list_input, number_per_page=settings.NUMBER_OF_ITEMS_PER_PAGE):
     list_of_items = []
-    paginator = Paginator(list_input, settings.NUMBER_OF_TRANSACTIONS)
+    paginator = Paginator(list_input, number_per_page)
     try:
         list_of_items = paginator.page(page)
     except PageNotAnInteger:

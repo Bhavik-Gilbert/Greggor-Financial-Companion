@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse
 from django.conf import settings
-from ..models import User, UserGroup
-from ..helpers import paginate, get_number_of_completed_targets, get_sorted_members_based_on_completed_targets
+from ..models import UserGroup
+from ..helpers import paginate, get_sorted_members_based_on_completed_targets
 
 
 @login_required
