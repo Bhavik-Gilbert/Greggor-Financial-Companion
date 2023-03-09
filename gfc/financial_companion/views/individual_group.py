@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.conf import settings
 from ..models import User, UserGroup
 from ..forms import AddUserToUserGroupForm
-from ..helpers import paginate, get_number_of_completed_targets, get_sorted_members_based_on_completed_targets
+from ..helpers import paginate, get_sorted_members_based_on_completed_targets
 
 
 @login_required
