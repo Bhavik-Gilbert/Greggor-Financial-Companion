@@ -5,7 +5,7 @@ from django import forms
 from django.contrib import messages
 from ..helpers import AccountType
 from ..forms import MonetaryAccountForm
-from ..models import PotAccount, User
+from ..models import PotAccount, User, Account, BankAccount
 
 
 @login_required
@@ -44,13 +44,16 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
 
     # check is id valid
     try:
-        this_monetary_account: PotAccount = PotAccount.objects.get_subclass(
-            id=pk, user=request.user.id)
+        this_account: Account = Account.objects.get_subclass(id=pk, user=request.user.id)
     except Exception:
         return redirect("dashboard")
-
+    
+    this_bank_account_list: list[BankAccount] = BankAccount.objects.filter(id=pk, user=request.user.id)
+    if len(this_bank_account_list) == 1:
+        this_account = this_bank_account_list[0]
+    
     user: User = request.user
-    account_type: AccountType = this_monetary_account.get_type()
+    account_type: AccountType = this_account.get_type()
 
     # determine account type
 
@@ -59,13 +62,13 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
             request.POST,
             form_type=account_type,
             user=user,
-            instance=this_monetary_account)
+            instance=this_account)
         if form.is_valid():
-            form.save(instance=this_monetary_account)
+            form.save(instance=this_account)
             return redirect("dashboard")
     else:
         form: forms.ModelForm = MonetaryAccountForm(
-            form_type=account_type, user=user, instance=this_monetary_account)
+            form_type=account_type, user=user, instance=this_account)
     return render(request, "pages/monetary_accounts_form.html", {
         "form_toggle": False,
         "account_type": account_type,

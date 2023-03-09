@@ -12,7 +12,7 @@
       <a class="btn btn-primary mb-3" href="{% url 'add_monetary_account' %}">Add New</a>
     </div>
 
-    {% if bank_accounts or pot_accounts %}
+    {% if accounts or bank_accounts or pot_accounts %}
       {% if bank_accounts %}
         <h3 class="col-12">Bank Accounts</h3>
         {% for account in bank_accounts %}
@@ -28,6 +28,18 @@
       {% if pot_accounts %}
         <h3 class="col-12">Pot Accounts</h3>
         {% for account in pot_accounts %}
+          {% include 'partials/card_account.html' with account=account%}
+        {% endfor %}
+      {% endif %}
+
+      {% if bank_accounts and pot_accounts %}
+        <div class="col-12"></div>
+        <hr class="hr col-12"/>
+      {% endif %}
+
+      {% if accounts %}
+        <h3 class="col-12">Regular Accounts</h3>
+        {% for account in accounts %}
           {% include 'partials/card_account.html' with account=account%}
         {% endfor %}
       {% endif %}
