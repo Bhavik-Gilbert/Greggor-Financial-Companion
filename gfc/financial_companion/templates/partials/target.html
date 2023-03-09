@@ -8,7 +8,7 @@
               <div class="card-header py-1">
                 <div class="row align-content-center p-0">
                   <div class="col">
-                    <h5 class="pt-2">{{target.transaction_type.title}}</h5>
+                    <h5 class="pt-2">{{target.target_type.title}}</h5>
                   </div>
                   {% url edit_url pk=target.id as edit_target %}
                   {% url delete_url pk=target.id as delete_target %}
