@@ -203,13 +203,13 @@ class ParseStatementPDF:
         return transactions
 
     def get_sender_receiver(
-            self, parsed_transaction: dict[str, Any], account) -> tuple:
+            self, parsed_transaction: dict[str, Any], account, user) -> tuple:
         """
         Gets the other account from parsed transaction via name
         Returns pair (receiver_account, sender_account)
         """
         other_account: fcmodels.Account = fcmodels.Account.get_or_create_account(
-            parsed_transaction["description"][0])
+            parsed_transaction["description"][0], user)
         if parsed_transaction["transaction_type"] == TransactionType.INCOME:
             return account, other_account
         elif parsed_transaction["transaction_type"] == TransactionType.EXPENSE:
