@@ -2,7 +2,7 @@ from .test_model_base import ModelTestCase
 from django.db.models.base import ModelBase
 from django.utils import timezone
 from decimal import Decimal
-
+from financial_companion.models.transaction_models import  change_filename
 from ...helpers import CurrencyType
 from ...models import AbstractTransaction, Transaction
 
@@ -26,6 +26,6 @@ class TransactionModelTestCase(ModelTestCase):
         self._assert_model_is_valid()
     
     def test_change_filename(self):
-        self.transaction = Transaction.objects.get(id = 1)
+        self.transaction = Transaction.objects.get(id = 2)
         self.assertFalse(change_filename(self.transaction,"test").find("transactions"),  -1)
 

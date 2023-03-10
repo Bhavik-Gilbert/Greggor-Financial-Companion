@@ -63,7 +63,7 @@
         "model": "financial_companion.categorytarget",
         "pk": 7,
         "fields": {
-            "transaction_type": "income",
+            "target_type": "income",
             "timespan": "year",
             "amount": "0",
             "category": 1
