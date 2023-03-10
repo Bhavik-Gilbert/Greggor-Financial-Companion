@@ -34,6 +34,10 @@
 {% block view_model_objects_text %}View All Groups{% endblock %}
 
 {% block further_content %}
+  <div class="text-center mb-3">
+    <a href="{% url 'individual_group' pk=group.id leaderboard=True %}" class="btn btn-primary mx-2">View Leaderboard</a>
+    <a href="{% url 'individual_group_redirect' pk=group.id %}" class="btn btn-primary mx-2">View Members</a>
+  </div>
   <div class="row">
     <div class="container">
       <div class="row">
