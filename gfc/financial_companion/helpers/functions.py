@@ -110,7 +110,7 @@ def get_projections_balances(accounts, max_timescale_in_months: int = max(
                 ((1 + (interest_rate / 365))**get_number_of_days_in_prev_month(i))
             if tempBalanceTotal >= 0:
                 currentBalance = tempBalanceTotal
-            balances.append(currentBalance)
+            balances.append((currentBalance))
             i += 1
         accountData.update({"balances": balances})
         accountDictionary.update({account.id: accountData})
@@ -154,9 +154,11 @@ def get_data_for_account_projection(user):
     timescale_dict = get_projection_timescale_options()
     timescales_strings = get_short_month_names_for_timescale()
 
+    accountsDictionary = get_projections_balances(accounts)
+
     return {
         'bank_accounts': {acc.id: acc.name for acc in accounts},
-        'bank_account_infos': dumps(get_projections_balances(accounts)),
+        'bank_account_infos': dumps(accountsDictionary),
         'timescale_dict': timescale_dict,
         'timescales_strings': timescales_strings,
         'conversion_to_main_currency_JSON': dumps(conversions),

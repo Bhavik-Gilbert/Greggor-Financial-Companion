@@ -27,7 +27,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/individual_group.html")
         group: Group = response.context["group"]
         self.assertTrue(isinstance(group, UserGroup))
-        self.assertContains(response, self.group.name.capitalize())
+        self.assertContains(response, self.group.name)
         self.assertContains(response, self.group.invite_code)
         self.assertContains(response, self.group.description)
         self.assertContains(response, self.group.members_count())
@@ -45,7 +45,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/individual_group.html")
         group: Group = response.context["group"]
         self.assertTrue(isinstance(group, UserGroup))
-        self.assertContains(response, self.group.name.capitalize())
+        self.assertContains(response, self.group.name)
         self.assertContains(response, self.group.invite_code)
         self.assertContains(response, self.group.description)
         self.assertContains(response, self.group.members_count())
@@ -76,7 +76,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/individual_group.html")
         group: Group = response.context["group"]
         self.assertTrue(isinstance(group, UserGroup))
-        self.assertContains(response, self.group.name.capitalize())
+        self.assertContains(response, self.group.name)
         self.assertContains(response, self.group.invite_code)
         self.assertContains(response, self.group.description)
         self.assertContains(response, self.group.members_count())
@@ -99,7 +99,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/individual_group.html")
         group: Group = response.context["group"]
         self.assertTrue(isinstance(group, UserGroup))
-        self.assertContains(response, self.group.name.capitalize())
+        self.assertContains(response, self.group.name)
         self.assertContains(response, self.group.invite_code)
         self.assertContains(response, self.group.description)
         self.assertContains(response, self.group.members_count())
