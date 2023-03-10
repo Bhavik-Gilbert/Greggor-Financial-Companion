@@ -21,7 +21,7 @@ def send_monthly_newsletter_email():
         context = {
             "user": user,
             "month": calendar.month_name[(datetime.now(tz=None).month) - 1],
-            "transactions": list(filter(lambda transaction:transaction.time_of_transaction.month == datetime.now(tz=None).month - 1, user.get_user_transactions()))[:10],
+            "transactions": list(filter(lambda transaction: transaction.time_of_transaction.month == datetime.now(tz=None).month - 1, user.get_user_transactions()))[:10],
             "targets": targets
 
         }
