@@ -3,7 +3,7 @@
         "model": "financial_companion.categorytarget",
         "pk": 1,
         "fields": {
-            "transaction_type": "income",
+            "target_type": "income",
             "timespan": "day",
             "amount": "100",
             "category": 1
@@ -13,7 +13,7 @@
         "model": "financial_companion.categorytarget",
         "pk": 3,
         "fields": {
-            "transaction_type": "expense",
+            "target_type": "expense",
             "timespan": "week",
             "amount": "1",
             "category": 1
@@ -23,7 +23,7 @@
         "model": "financial_companion.categorytarget",
         "pk": 4,
         "fields": {
-            "transaction_type": "expense",
+            "target_type": "expense",
             "timespan": "month",
             "amount": "12",
             "category": 1
@@ -33,7 +33,7 @@
         "model": "financial_companion.categorytarget",
         "pk": 5,
         "fields": {
-            "transaction_type": "expense",
+            "target_type": "expense",
             "timespan": "year",
             "amount": "123",
             "category": 1
@@ -43,7 +43,7 @@
         "model": "financial_companion.categorytarget",
         "pk": 6,
         "fields": {
-            "transaction_type": "expense",
+            "target_type": "expense",
             "timespan": "year",
             "amount": "123",
             "category": 3
@@ -53,7 +53,7 @@
         "model": "financial_companion.categorytarget",
         "pk": 2,
         "fields": {
-            "transaction_type": "expense",
+            "target_type": "expense",
             "timespan": "week",
             "amount": "100",
             "category": 2
@@ -73,7 +73,7 @@
         "model": "financial_companion.usertarget",
         "pk": 1,
         "fields": {
-            "transaction_type": "income",
+            "target_type": "income",
             "timespan": "day",
             "amount": "100",
             "user": 1
@@ -83,7 +83,7 @@
         "model": "financial_companion.usertarget",
         "pk": 2,
         "fields": {
-            "transaction_type": "expense",
+            "target_type": "expense",
             "timespan": "week",
             "amount": "100",
             "user": 2
@@ -93,7 +93,7 @@
         "model": "financial_companion.accounttarget",
         "pk": 1,
         "fields": {
-            "transaction_type": "income",
+            "target_type": "income",
             "timespan": "day",
             "amount": "100",
             "account": 3
@@ -103,7 +103,7 @@
         "model": "financial_companion.accounttarget",
         "pk": 2,
         "fields": {
-            "transaction_type": "expense",
+            "target_type": "expense",
             "timespan": "week",
             "amount": "100",
             "account": 4
@@ -113,7 +113,7 @@
         "model": "financial_companion.accounttarget",
         "pk": 3,
         "fields": {
-            "transaction_type": "income",
+            "target_type": "income",
             "timespan": "day",
             "amount": "100",
             "account": 8
@@ -123,7 +123,7 @@
         "model": "financial_companion.accounttarget",
         "pk": 4,
         "fields": {
-            "transaction_type": "expense",
+            "target_type": "expense",
             "timespan": "day",
             "amount": "100",
             "account": 8
@@ -133,7 +133,7 @@
         "model": "financial_companion.accounttarget",
         "pk": 5,
         "fields": {
-            "transaction_type": "expense",
+            "target_type": "expense",
             "timespan": "week",
             "amount": "0",
             "account": 3

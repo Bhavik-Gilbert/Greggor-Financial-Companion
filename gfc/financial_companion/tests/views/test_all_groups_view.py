@@ -47,7 +47,7 @@ class AllGroupsViewCase(ViewTestCase):
         self.assertEqual(len(messages_list), 0)
         self.assertContains(response, "Saving Club")
         self.assertContains(response, "Save with us")
-        self.assertContains(response, "SavingsRUs")
+        self.assertContains(response, "SavingsRUs".title())
         self.assertContains(response, "Fun savers")
 
     def test_post_when_incorrect_category_name_is_applied(self):

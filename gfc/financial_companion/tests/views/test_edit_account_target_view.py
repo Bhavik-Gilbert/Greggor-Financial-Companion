@@ -12,7 +12,7 @@ class EditAccountTargetViewTestCase(ViewTestCase):
         self.url = reverse('edit_account_target', kwargs={'pk': 1})
         self.test_user = User.objects.get(username='@johndoe')
         self.form_input = {
-            'transaction_type': 'income',
+            'target_type': 'income',
             'timespan': 'month',
             'amount': 200.00,
             'currency': 'USD'
@@ -59,7 +59,7 @@ class EditAccountTargetViewTestCase(ViewTestCase):
 
     def test_invalid_account_target_form_submission(self):
         self._login(self.test_user)
-        self.form_input['transaction_type'] = ''
+        self.form_input['target_type'] = ''
         before_count = AccountTarget.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = AccountTarget.objects.count()

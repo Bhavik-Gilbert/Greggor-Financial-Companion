@@ -14,7 +14,7 @@ class CreateCategoryTargetViewTestCase(ViewTestCase):
         self.test_category = Category.objects.get(id=1)
         self.test_category_target = CategoryTarget.objects.get(id=1)
         self.form_input = {
-            'transaction_type': 'income',
+            'target_type': 'income',
             'timespan': 'month',
             'amount': 200.00,
             'currency': 'USD'
@@ -72,7 +72,7 @@ class CreateCategoryTargetViewTestCase(ViewTestCase):
 
     def test_invalid_category_target_form_submission(self):
         self._login(self.test_user)
-        self.form_input['transaction_type'] = ''
+        self.form_input['target_type'] = ''
         before_count = CategoryTarget.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = CategoryTarget.objects.count()
@@ -82,7 +82,7 @@ class CreateCategoryTargetViewTestCase(ViewTestCase):
     def test_unsuccessful_category_target_form_due_to_failing_unique_constraints(
             self):
         self.form_input = {
-            'transaction_type': self.test_category_target.transaction_type,
+            'target_type': self.test_category_target.target_type,
             'timespan': self.test_category_target.timespan,
             'amount': 200.00,
             'currency': 'USD'

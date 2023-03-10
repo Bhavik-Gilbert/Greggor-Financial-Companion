@@ -1,7 +1,6 @@
 from json import dumps
 from currency_symbols import CurrencySymbols
 from currency_converter import CurrencyConverter
-from kzt_exchangerates import Rates as KZTRates
 from .enums import CurrencyType
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
@@ -33,19 +32,6 @@ def convert_currency(amount: float, current_currency_code: str,
 
     if current_currency_code == target_currency_code or current_currency_code not in CurrencyType or target_currency_code not in CurrencyType:
         return amount
-
-    try:
-        if current_currency_code == CurrencyType.KZT or target_currency_code == CurrencyType.KZT:
-            kzt_rates = KZTRates()
-            if current_currency_code == CurrencyType.KZT:
-                return amount * \
-                    kzt_rates.get_exchange_rate(target_currency_code)
-            else:
-                return amount * \
-                    kzt_rates.get_exchange_rate(
-                        current_currency_code, from_kzt=True)
-    except Exception:
-        raise Exception("KZT Rates converter not working")
 
     try:
         c: CurrencyConverter = CurrencyConverter(
@@ -124,7 +110,7 @@ def get_projections_balances(accounts, max_timescale_in_months: int = max(
                 ((1 + (interest_rate / 365))**get_number_of_days_in_prev_month(i))
             if tempBalanceTotal >= 0:
                 currentBalance = tempBalanceTotal
-            balances.append(currentBalance)
+            balances.append((currentBalance))
             i += 1
         accountData.update({"balances": balances})
         accountDictionary.update({account.id: accountData})
@@ -168,9 +154,11 @@ def get_data_for_account_projection(user):
     timescale_dict = get_projection_timescale_options()
     timescales_strings = get_short_month_names_for_timescale()
 
+    accountsDictionary = get_projections_balances(accounts)
+
     return {
         'bank_accounts': {acc.id: acc.name for acc in accounts},
-        'bank_account_infos': dumps(get_projections_balances(accounts)),
+        'bank_account_infos': dumps(accountsDictionary),
         'timescale_dict': timescale_dict,
         'timescales_strings': timescales_strings,
         'conversion_to_main_currency_JSON': dumps(conversions),
@@ -209,11 +197,11 @@ def get_warning_messages_for_targets(
     sortedTargetsDict = {'completed': {}, 'nearlyExceeded': {}, 'exceeded': {}}
     for target in targets:
         dictionaryToAdd = None
-        if target.transaction_type == 'income' and target in completedTargets:
+        if target.target_type == 'income' and target in completedTargets:
             dictionaryToAdd = sortedTargetsDict['completed']
-        elif target.transaction_type == 'expense' and target in nearlyCompletedTargets:
+        elif target.target_type == 'expense' and target in nearlyCompletedTargets:
             dictionaryToAdd = sortedTargetsDict['nearlyExceeded']
-        elif target.transaction_type == 'expense' and target in completedTargets:
+        elif target.target_type == 'expense' and target in completedTargets:
             dictionaryToAdd = sortedTargetsDict['exceeded']
 
         if dictionaryToAdd is not None:

@@ -4,7 +4,7 @@ $body-color: #0D2237;
 
 $min-contrast-ratio: 2;
 
-$gold: #daa520;
+$gold: #e4ad23;
 $silver: #c0c0c0;
 $bronze: #b8860b;
 
@@ -53,7 +53,7 @@ $theme-colors: map-merge($theme-colors, $custom-theme-colors);
 
 .btn.btn-xs {
     padding: .25rem .45rem;
-    font-size: .5rem;
+    font-size: .75rem;
     line-height: 1.4;
     border-radius: .2rem;
 }
@@ -73,5 +73,13 @@ $theme-colors: map-merge($theme-colors, $custom-theme-colors);
       margin: 0 18%;
     }
   }
+
+.limit img {
+  background: url( path-to-image ) 50% 50%;
+  height: 100%;
+  max-width: 230px;
+  max-height: 230px;
+}
+  
 
 @import "bootstrap/scss/bootstrap"

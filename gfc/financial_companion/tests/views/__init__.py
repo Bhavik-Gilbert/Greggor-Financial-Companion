@@ -47,3 +47,4 @@ from .test_join_user_group_view import JoinUserGroupViewTestCase
 from .test_remove_user_from_user_group_view import RemoveUserFromUserGroupViewTestCase
 from .test_add_user_to_user_group_view import AddUserToUserGroupViewTestCase
 from .test_make_owner_of_user_group_view import MakeUserOwnerOfGroupViewTestCase
+from .test_all_groups_view import AllGroupsViewCase

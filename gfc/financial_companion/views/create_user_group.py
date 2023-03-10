@@ -63,7 +63,10 @@ def edit_user_group_view(request: HttpRequest, pk: int) -> HttpResponse:
         return redirect("all_groups_redirect")
 
     if request.method == "POST":
-        form = UserGroupForm(request.POST, request.FILES, instance=current_user_group)
+        form = UserGroupForm(
+            request.POST,
+            request.FILES,
+            instance=current_user_group)
         if form.is_valid():
             form.save(current_user=request.user, instance=current_user_group)
             messages.add_message(

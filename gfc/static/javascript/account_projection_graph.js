@@ -3,7 +3,7 @@ function loadInitialGraph(bankAccountsInfo, timeBands, conversions, mainCurrency
         getUserChoices(bankAccountsInfo, timeBands, conversions, mainCurrency);
     }
     catch(err) {
-        calculateDataset(bankAccountsInfo, 12, timeBands, mainCurrency);
+        calculateDataset(bankAccountsInfo, 12, timeBands, mainCurrency, mainCurrency, conversions);
     }
 }
 
@@ -23,9 +23,11 @@ function calculateDataset(accountsInfo, projectionTimescaleInMonths, timeBands, 
     
 
 function getDatasetForAccount(account, selectedCurrency, timeBands, lineColour, conversionsDict, mainCurrency) {
-    const conversion = getConversionForAccount(account, selectedCurrency, mainCurrency, conversionsDict)
+
+    const conversion = getConversionForAccount(account, selectedCurrency, mainCurrency, conversionsDict);
+
     if (conversion != 1) {
-        account.balances = account.balances.map(balance => balance * conversion);
+        account.balances = account.balances.map(balance => parseFloat(parseFloat(balance) * parseFloat(conversion)));
     }
 
     return ({
@@ -42,10 +44,10 @@ function getConversionForAccount(account, selectedCurrency, mainCurrency, conver
     var conversion = 1;
     if (account.currency != selectedCurrency) {
       if (selectedCurrency == mainCurrency) {
-        conversion = conversionsDict[account.currency];
+        conversion = parseFloat(conversionsDict[account.currency]);
       }
       else {
-        conversion = conversionsDict[selectedCurrency];
+        conversion = parseFloat(conversionsDict[selectedCurrency]);
         conversion = 1/conversion;
       }
     }
