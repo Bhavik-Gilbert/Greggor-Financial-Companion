@@ -1,73 +1,51 @@
-{% extends "page.html" %}
+{% extends "partials/view_models/view_model.html" %}
 
-<!-- Title -->
-{% block title %}Account{% endblock %}
+{% block object_name %}{{account.name}}{% endblock %}
+{% block model_name %}Account{% endblock %}
 
-<!-- Content -->
-{% block content %}
+{% block page_header_model %}Account{% endblock %}
+{% block page_header_name %}{{account.name}}{% endblock %}
 
+{% block card_title %}Account Information:{% endblock %}
 
+{% block edit_delete_buttons %}
+    {% url 'create_account_target' pk=account.id as add_target %}
+    {% url 'edit_monetary_account' pk=account.id as edit_account %}
+    {% url 'delete_monetary_account' pk=account.id as delete_account %}
+    {% include "partials/view_models/edit_and_delete_models_buttons.html" with add_target_URL=add_target edit_URL=edit_account delete_URL=delete_account model_name="account"%}
+{% endblock %}
 
-<div class="card py-3 px-4 bg-primary">
-    <div class="row gy-3">
-        <div class="col-12">
-            <div class="row">
-                <div class="col-12 col-md-8">
-                    <h1 class="text-white">Account Name: {{account.name.capitalize}}</h1>
-                </div>
-                <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-end">
-                    <a href="{% url 'create_account_target' pk=account.id %}" class="btn btn-light px-3 mx-2 py-1 mb-md-4">Add Target</a>
-                    <a href="{% url 'edit_monetary_account' pk=account.id %}" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit</a>
-                    <a href="{% url 'delete_monetary_account' pk=account.id %}" class="btn btn-danger px-3 mx-2 py-1 mb-md-4" onclick="return confirm('Are you sure you want to delete this account?')">Delete</a>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 mb-4">
-                        <div class="card">
-                            <img class="card-img-top" src="" alt="">
+{% block confirmation_model_name %}account{% endblock %}
 
-                            <div class="card-body">
+{% block table_content %}
+    {% if account.description %}
+        <li class="list-group-item"><strong>Description: </strong> {{account.description}}</li>
+    {% endif %}
+        <li class="list-group-item"><strong>Balance: </strong> {{account.currency.upper}} {{account.balance}}</li>
+    {% if account.bank_name %}
+        <li class="list-group-item"><strong>Bank Name: </strong> {{account.bank_name}}</li>
+    {% endif %}
+    {% if account.sort_code %}
+        <li class="list-group-item"><strong>Sort Code: </strong> {{account.sort_code}}</li>
+    {% endif %}
+    {% if account.account_number %}
+        <li class="list-group-item"><strong>Account Number: </strong> {{account.account_number}}</li>
+    {% endif %}    
+    {% if account.iban %}
+        <li class="list-group-item"><strong>IBAN: </strong> {{account.iban}}</li>
+    {% endif %}
+    {% if account.interest_rate %}
+        <li class="list-group-item"><strong>Interest Rate: </strong> {{account.interest_rate}}</li>
+    {% endif %}
+{% endblock %}
 
-                                <p class="card-text">
-                                    <p class="">Description: {{account.description}}</p>
-                                    <p class="">Balance: {{account.currency.upper}} {{account.balance}}</p>
-                                    &nbsp;
-                                </p>
+{% block additional_items %}
+    {% include 'partials/target.html' with targets=account_targets edit_url='edit_account_target' delete_url='delete_account_target' %}
+{% endblock %}
 
-                            </div>
-                        </div>
-                    </div>
-                    {% if account.bank_name %}
-                    <div class="col-lg-6 mb-4">
-                        <div class="card">
-                            <img class="card-img-top" src="" alt="">
+{% block view_model_objects_URL %}{% url 'view_accounts' %}{% endblock %}
+{% block view_model_objects_text %}View All Accounts{% endblock %}
 
-                            <div class="card-body">
-
-                                <p class="card-text">
-                                    <p class="">Bank Name: {{account.bank_name.capitalize}}</p>
-                                    <p class="">Sort Code: {{account.sort_code}}</p>
-                                    <p class="">Account Number: {{account.account_number}}</p>
-                                    <p class="">IBAN: {{account.iban}}</p>
-                                    <p class="">Interest Rate: {{account.interest_rate}}&#37;</p>
-                                </p>
-
-                            </div>
-                        </div>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <div class="col-12">
-            {%include 'partials/target.html' with targets=account_targets edit_url='edit_account_target' delete_url='delete_account_target' %}
-        </div>
-    </div>
-</div>
-&nbsp;
-
-{%include 'partials/transaction_table.html'  with transactions=transactions redirect_name="individual_account" pk=account.id %}
+{% block further_content %}
+    {% include 'partials/transaction_table.html'  with transactions=transactions redirect_name="individual_account" pk=account.id %}
 {% endblock %}

@@ -5,6 +5,7 @@ from django.contrib import messages
 import random
 from ..models import QuizQuestion, QuizScore, QuizSet, User
 from ..helpers import paginate, ScoreListOrderType
+from ..forms import QuizQuestionForm
 
 
 @login_required
@@ -85,37 +86,18 @@ def quiz_question_view(request: HttpRequest, pk: int) -> HttpResponse:
             "The quiz specified does not exit")
         return redirect("quiz")
 
+    form: QuizQuestionForm = QuizQuestionForm(user, quiz_set)
     if request.method == "POST":
         if "quiz_submit" in request.POST:
-            total_questions: int = quiz_set.questions.count()
-            correct_answers: int = 0
-            for quiz_question in quiz_set.questions.all():
-                try:
-                    response_answer: str = request.POST[str(quiz_question.id)]
-                    if quiz_question.is_answer(response_answer):
-                        correct_answers += 1
-                except Exception:
-                    total_questions -= 1
+            form: QuizQuestionForm = QuizQuestionForm(
+                user, quiz_set, request.POST)
 
-            if total_questions == 0:
-                messages.add_message(
-                    request,
-                    messages.ERROR,
-                    "No questions found in submission"
-                )
-                return redirect("quiz")
-
-            quiz_score: QuizScore = QuizScore.objects.create(
-                user=user,
-                total_questions=total_questions,
-                correct_questions=correct_answers,
-                quiz_set=quiz_set
-            )
-
-            return redirect("quiz_score", pk=quiz_score.id)
+            if form.is_valid():
+                quiz_score: QuizScore = form.save()
+                return redirect("quiz_score", pk=quiz_score.id)
 
     return render(request, "pages/quiz/quiz_questions.html", {
-        "quiz_set": quiz_set
+        "form": form
     })
 
 

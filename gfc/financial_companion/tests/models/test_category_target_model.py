@@ -22,24 +22,24 @@ class CategoryTargetModelTestCase(ModelTestCase):
         self.second_model.save()
         self._assert_model_is_valid()
 
-    def test_valid_duplicate_category_duplicate_transaction_type(self) -> None:
+    def test_valid_duplicate_category_duplicate_target_type(self) -> None:
         self.second_model.category: int = self.test_model.category
-        self.second_model.transaction_type: str = self.test_model.transaction_type
+        self.second_model.target_type: str = self.test_model.target_type
         self.second_model.save()
         self._assert_model_is_valid()
 
-    def test_valid_duplicate_timespan_duplicate_transaction_type(self) -> None:
+    def test_valid_duplicate_timespan_duplicate_target_type(self) -> None:
         self.second_model.timespan: str = self.test_model.timespan
-        self.second_model.transaction_type: str = self.test_model.transaction_type
+        self.second_model.target_type: str = self.test_model.target_type
         self.second_model.save()
         self._assert_model_is_valid()
 
-    def test_invalid_duplicate_category_duplicate_transaction_type_duplicate_timespan(
+    def test_invalid_duplicate_category_duplicate_target_type_duplicate_timespan(
             self) -> None:
         with self.assertRaises(Exception) as raised:
             self.second_model.category: int = self.test_model.category
             self.second_model.timespan: str = self.test_model.timespan
-            self.second_model.transaction_type: str = self.test_model.transaction_type
+            self.second_model.target_type: str = self.test_model.target_type
             self.second_model.save()
             self._assert_model_is_invalid()
         self.assertEqual(IntegrityError, type(raised.exception))

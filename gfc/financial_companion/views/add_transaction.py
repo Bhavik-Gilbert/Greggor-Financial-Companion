@@ -13,11 +13,8 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
     """View to record a transaction made"""
 
     user = request.user
-    categories = Category.objects.filter(user=user.id)
-
     if request.method == 'POST':
         form = AddTransactionForm(user, request.POST, request.FILES)
-        form.fields['category'].queryset = categories
         if form.is_valid():
             form.save()
             messages.add_message(
@@ -27,7 +24,6 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
             return redirect('view_transactions', filter_type="all")
     else:
         form = AddTransactionForm(user)
-        form.fields['category'].queryset = categories
     return render(request, "pages/add_transaction.html",
                   {'form': form, 'edit': False})
 
@@ -44,11 +40,9 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         return redirect('view_transactions', filter_type="all")
     else:
         user = request.user
-        categories = Category.objects.filter(user=user.id)
         if request.method == 'POST':
             form = AddTransactionForm(
                 user, request.POST, request.FILES, instance=transaction)
-            form.fields['category'].queryset = categories
             if form.is_valid():
                 form.save(instance=transaction)
                 messages.add_message(
@@ -57,7 +51,6 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
                     "Your transaction has been successfully updated!")
                 return redirect('individual_transaction', pk=pk)
         form = AddTransactionForm(user, instance=transaction)
-        form.fields['category'].queryset = categories
         return render(request, "pages/add_transaction.html",
                       {'form': form, 'edit': True, 'pk': pk})
 

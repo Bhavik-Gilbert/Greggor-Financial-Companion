@@ -38,7 +38,7 @@ class SignUpViewTestCase(ViewTestCase):
         response = self.client.get(self.url, follow=True)
         self._assert_require_logout(self.url)
 
-    def test_unsuccesful_sign_up(self):
+    def test_unsuccessful_sign_up(self):
         self.form_input['username'] = 'BAD_USERNAME'
         before_count = User.objects.count()
         response = self.client.post(self.url, self.form_input)
@@ -51,7 +51,7 @@ class SignUpViewTestCase(ViewTestCase):
         self.assertTrue(form.is_bound)
         self.assertFalse(self._is_logged_in())
 
-    def test_succesful_sign_up(self):
+    def test_successful_sign_up(self):
         before_count = User.objects.count()
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = User.objects.count()
