@@ -1,8 +1,7 @@
 from .test_model_base import ModelTestCase
 from django.db.models.base import ModelBase
 
-
-from ...models import Account
+from ...models import Account, Transaction
 
 
 class AccountModelTestCase(ModelTestCase):
@@ -10,7 +9,7 @@ class AccountModelTestCase(ModelTestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.test_model: ModelBase = Account.objects.get(id=1)
+        self.test_model: Account = Account.objects.get(id=1)
 
     def test_valid_target(self):
         self._assert_model_is_valid()
@@ -42,3 +41,23 @@ class AccountModelTestCase(ModelTestCase):
     def test_description_is_not_longer_than_500(self):
         self.test_model.description: str = "a" * 501
         self._assert_model_is_invalid()
+
+    def test_get_account_transactions_not_allow_accounts(self):
+        transactions: list[Transaction] = self.test_model.get_account_transactions("all", False)
+        self.assertEqual(len(transactions), 0)
+    
+    def test_get_account_transactions_allow_accounts(self):
+        transactions: list[Transaction] = self.test_model.get_account_transactions("all", True)
+        self.assertEqual(len(transactions), 3)
+    
+    def test_get_account_transactions_all_filter(self):
+        transactions: list[Transaction] = self.test_model.get_account_transactions("all", True)
+        self.assertEqual(len(transactions), 3)
+    
+    def test_get_account_transactions_received_filter(self):
+        transactions: list[Transaction] = self.test_model.get_account_transactions("received", True)
+        self.assertEqual(len(transactions), 2)
+    
+    def test_get_account_transactions_sent_filter(self):
+        transactions: list[Transaction] = self.test_model.get_account_transactions("sent", True)
+        self.assertEqual(len(transactions), 1)
