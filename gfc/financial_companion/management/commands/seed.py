@@ -144,7 +144,7 @@ class Command(BaseCommand):
                 str(randint(1000000, 9999999)),
                 sort_code=str(randint(0, 9)) + "" + str(randint(10000, 99999)),
                 iban=self.faker.name()[0] * 33,
-                interest_rate=float(randint(-1000, 1000)) / 100
+                interest_rate=float(randint(-50, 1000)) / 100
             )
             self.create_target_for_account(bankAccount)
             self.create_transactions_for_account(bankAccount, categories)
