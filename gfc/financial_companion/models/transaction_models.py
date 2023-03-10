@@ -11,6 +11,7 @@ from django.db.models import (
 )
 
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 from .accounts_model import Account, PotAccount
 from .category_model import Category
 from ..helpers import CurrencyType, Timespan, random_filename
@@ -18,6 +19,7 @@ import os
 from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from decimal import Decimal
+from django.db.models import Q
 
 
 def change_filename(instance, filename):
@@ -69,6 +71,13 @@ class AbstractTransaction(Model):
         Account,
         on_delete=CASCADE,
         related_name="reciever%(app_label)s_%(class)s_related")
+    
+    def clean(self):
+        super().clean()
+        
+        check_accounts = PotAccount.objects.filter(Q(id=self.sender_account.id) | Q(id=self.receiver_account.id)).count() > 0
+        if not check_accounts:
+            raise ValidationError("Both sender and receiver accounts cannot be non monetary accounts")
 
     class Meta:
         abstract = True
