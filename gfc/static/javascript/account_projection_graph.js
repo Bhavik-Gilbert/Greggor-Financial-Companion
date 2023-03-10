@@ -1,24 +1,14 @@
-function loadInitialGraph(bankAccountsInfo, timeBands, conversions, mainCurrency) {
-    console.log(bankAccountsInfo);
-    try {
-        bankAccountsInfo = JSON.parse(bankAccountsInfo);
-    }
-    catch(SyntaxError) {
-        print(err)
-    }
-    console.log(bankAccountsInfo);
-    
+function loadInitialGraph(bankAccountsInfo, timeBands, conversions, mainCurrency, balancesInfos=null) {
     try {
         getUserChoices(bankAccountsInfo, timeBands, conversions, mainCurrency);
     }
     catch(err) {
-        calculateDataset(bankAccountsInfo, 12, timeBands, mainCurrency, "", conversions);
+        calculateDataset(bankAccountsInfo, 12, timeBands, mainCurrency, mainCurrency, conversions);
     }
 }
 
 
 function calculateDataset(accountsInfo, projectionTimescaleInMonths, timeBands, mainCurrency, selectedCurrency = "", conversionsDict = {}) {
-
     lineColours = [theme.primary, theme.secondary, theme.success, theme.warning, theme.danger, theme.dark]
     $(document).ready(() => {
         timeBands.length = projectionTimescaleInMonths;
@@ -27,20 +17,18 @@ function calculateDataset(accountsInfo, projectionTimescaleInMonths, timeBands, 
             accountsInfo[account].balances.length = projectionTimescaleInMonths;
             accountsDataset.push(getDatasetForAccount(accountsInfo[account], selectedCurrency, timeBands, lineColours[account % lineColours.length], conversionsDict, mainCurrency));
         }
-        console.log([accountsDataset, timeBands, selectedCurrency])
         setChart(accountsDataset, timeBands, "Balance ("+selectedCurrency+")", "Months", "line");
     });
 }
     
 
 function getDatasetForAccount(account, selectedCurrency, timeBands, lineColour, conversionsDict, mainCurrency) {
-    console.log("--------")
-    console.log([account, selectedCurrency, timeBands, lineColour, conversionsDict, mainCurrency])
-    const conversion = getConversionForAccount(account, selectedCurrency, mainCurrency, conversionsDict)
+
+    const conversion = getConversionForAccount(account, selectedCurrency, mainCurrency, conversionsDict);
+
     if (conversion != 1) {
-        account.balances = account.balances.map(balance => balance * conversion);
+        account.balances = account.balances.map(balance => parseFloat(parseFloat(balance) * parseFloat(conversion)));
     }
-    console.log([account, selectedCurrency, timeBands, lineColour, conversionsDict, mainCurrency])
 
     return ({
         label: account.name,
@@ -56,10 +44,10 @@ function getConversionForAccount(account, selectedCurrency, mainCurrency, conver
     var conversion = 1;
     if (account.currency != selectedCurrency) {
       if (selectedCurrency == mainCurrency) {
-        conversion = conversionsDict[account.currency];
+        conversion = parseFloat(conversionsDict[account.currency]);
       }
       else {
-        conversion = conversionsDict[selectedCurrency];
+        conversion = parseFloat(conversionsDict[selectedCurrency]);
         conversion = 1/conversion;
       }
     }
