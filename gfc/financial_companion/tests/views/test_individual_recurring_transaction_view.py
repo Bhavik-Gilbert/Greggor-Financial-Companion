@@ -40,14 +40,6 @@ class IndividualRecurringTransactionViewTestCase(ViewTestCase):
         self.assertContains(
             response,
             self.transaction.receiver_account.name.capitalize())
-        # self.assertContains(
-        #     response,
-        #     self.transaction.start_date
-        # )
-        # self.assertContains(
-        #     response,
-        #     str(self.transaction.end_date)
-        # )
         self.assertContains(
             response,
             self.transaction.interval.capitalize()
@@ -69,3 +61,17 @@ class IndividualRecurringTransactionViewTestCase(ViewTestCase):
 
     def test_invalid_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)
+
+    def test_invalid_transaction_does_not_have_account_belonging_to_user(self):
+        self._login(self.user)
+        url: str = reverse(
+            "individual_recurring_transaction", kwargs={
+                "pk": 4})
+        response: HttpResponse = self.client.get(url, follow=True)
+        response_url: str = reverse("dashboard")
+        self.assertRedirects(
+            response,
+            response_url,
+            status_code=302,
+            target_status_code=200)
+        self.assertTemplateUsed(response, "pages/dashboard.html")

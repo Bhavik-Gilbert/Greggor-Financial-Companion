@@ -50,7 +50,7 @@ class EditTransactionViewTestCase(ViewTestCase):
             response, 'pages/add_recurring_transaction.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, AddRecurringTransactionForm))
-        # self.assertTrue(form.is_bound)
+        self.assertFalse(form.is_bound)
         transaction = RecurringTransaction.objects.get(id=2)
         transaction.refresh_from_db()
         self.assertEqual(

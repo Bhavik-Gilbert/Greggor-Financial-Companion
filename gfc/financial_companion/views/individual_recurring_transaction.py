@@ -13,9 +13,9 @@ def individual_recurring_transaction_view(
         transaction: RecurringTransaction = RecurringTransaction.objects.get(
             id=pk)
         user = request.user
-        # TODO: Add once changes to account are added
-        # if(transaction.receiver_account.user != user and transaction.sender_account.user != user):
-        #     return redirect("dashboard")
+        if (transaction.receiver_account.user !=
+                user and transaction.sender_account.user != user):
+            return redirect("dashboard")
     except RecurringTransaction.DoesNotExist:
         return redirect("dashboard")
     else:
