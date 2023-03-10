@@ -42,7 +42,7 @@ class TransactionModelTestCase(ModelTestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.test_model: Transaction = Transaction.objects.get(id=2)
+        self.test_model: Transaction = Transaction.objects.get(id=4)
         self.user: User = User.objects.get(id=1)
         self.sender_account: PotAccount = PotAccount.objects.get(id=5)
         self.receiver_account: PotAccount = PotAccount.objects.get(id=6)

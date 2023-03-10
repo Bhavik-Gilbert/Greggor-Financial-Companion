@@ -11,7 +11,7 @@ class RecurringTransactionTestCase(ModelTestCase):
     def setUp(self) -> None:
         super().setUp()
         self.test_model: RecurringTransaction = RecurringTransaction.objects.get(
-            id=1)
+            id=2)
 
     def test_valid_recurring_transaction(self):
         self._assert_model_is_valid()
