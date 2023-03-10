@@ -1,7 +1,6 @@
 from django.db import models
 from financial_companion.models import User
 import financial_companion.models as fcmodels
-from ..helpers import TransactionType
 
 
 class Category(models.Model):

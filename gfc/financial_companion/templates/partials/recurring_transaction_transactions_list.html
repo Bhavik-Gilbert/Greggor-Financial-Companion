@@ -1,0 +1,17 @@
+{% for transaction in transactions %}
+    <div class="col-12 col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">{{ transaction.id }}</h5>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ transaction.time_of_transaction }}</p>
+                <p class="card-text">{{ transaction.amount }} {{transaction.currency }}</p>
+            </div>
+            <div class="card-footer">
+                <a href="{% url 'individual_transaction' pk=transaction.id%}" class="btn btn-outline-primary">View</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+

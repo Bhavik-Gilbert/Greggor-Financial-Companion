@@ -50,6 +50,18 @@ class User(AbstractUser):
         return sorted(
             transactions, key=lambda transaction: transaction.time_of_transaction, reverse=True)
 
+    def get_user_recurring_transactions(self) -> list:
+        user_accounts: list[fcmodels.PotAccount] = fcmodels.PotAccount.objects.filter(
+            user=self)
+        transactions: list[fcmodels.RecurringTransaction] = []
+
+        for account in user_accounts:
+            transactions = [
+                *transactions,
+                *account.get_account_recurring_transactions()
+            ]
+        return transactions
+
     def get_user_highest_quiz_score(self):
         """Return users highest quiz score"""
         user_scores: list[fcmodels.QuizScore] = fcmodels.QuizScore.objects.filter(

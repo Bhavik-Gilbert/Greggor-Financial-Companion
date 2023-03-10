@@ -5,7 +5,7 @@ from .models import (
     User,
     Category,
     Account, PotAccount, BankAccount,
-    Transaction,
+    Transaction, RecurringTransaction,
     CategoryTarget, AccountTarget, UserTarget,
     UserGroup
 )
@@ -62,7 +62,7 @@ class BankAccount(admin.ModelAdmin):
 @admin.register(Transaction)
 class Transaction(admin.ModelAdmin):
     list_display = [
-        'id', 'title', 'amount', 'currency', 'sender_account', 'receiver_account', 'category', 'description'
+        'id', 'title', 'amount', 'currency', 'sender_account', 'receiver_account', 'category', 'description', 'time_of_transaction'
     ]
 
 
@@ -91,4 +91,12 @@ class AccountTarget(admin.ModelAdmin):
 class UserGroup(admin.ModelAdmin):
     list_display = [
         'id', 'name', 'description', 'owner_email', 'invite_code', 'get_members', 'group_picture'
+    ]
+
+
+@admin.register(RecurringTransaction)
+class RecurringTransaction(admin.ModelAdmin):
+    list_display = [
+        'id', 'title', 'amount', 'currency', 'sender_account', 'receiver_account', 'category', 'description',
+        'start_date', 'interval', 'end_date'
     ]
