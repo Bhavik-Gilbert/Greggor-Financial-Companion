@@ -73,13 +73,13 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
         }
         response: HttpResponse = self.client.post(
             self.url, form_input, follow=True)
-        response_url: str = reverse("dashboard")
+        response_url: str = reverse("view_accounts")
         self.assertRedirects(
             response,
             response_url,
             status_code=302,
             target_status_code=200)
-        self.assertTemplateUsed(response, "pages/dashboard.html")
+        self.assertTemplateUsed(response, "pages/view_accounts.html")
         regular_account_count_after: int = Account.objects.count()
         pot_account_count_after: int = PotAccount.objects.count()
         bank_account_count_after: int = BankAccount.objects.count()
