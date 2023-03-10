@@ -1,6 +1,6 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
-from financial_companion.forms import AddRecurringTransactionForm, EditRecurringTransactionForm
+from financial_companion.forms import AddRecurringTransactionForm
 from financial_companion.models import Transaction, PotAccount, BankAccount, Account, Category, User, RecurringTransaction
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist

@@ -1,8 +1,7 @@
 from .test_helper_base import HelperTestCase
 from financial_companion.helpers import functions
 from financial_companion.helpers.enums import Timespan 
-from financial_companion.models import Transaction, Category, User
-from decimal import Decimal
+from financial_companion.models import Transaction, User
 from datetime import datetime
 from ...models import Transaction
 
@@ -17,6 +16,11 @@ class StatisticsFunctionsTestCase(HelperTestCase):
         for transaction in transactions:
             transaction.time_of_transaction = datetime.now()
             transaction.save()
+    
+    def _set_categories_none(self, transactions):
+        for transaction in transactions:
+            transaction.category = None
+            transaction.save()
 
     def test_valid_within_time_period(self):
         self._set_transactions_now(self.transactions)
@@ -25,6 +29,12 @@ class StatisticsFunctionsTestCase(HelperTestCase):
     def test_valid_split_categories(self):
         self._set_transactions_now(self.transactions)
         self.assertEqual(len(Transaction.get_category_splits(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user))), 1)
+
+    # def test_valid_split_categories_with_category_none(self):
+    #     self.transactions.get(0).category = None
+    #    # self._set_categories_none(self.transactions)
+    #     self.assertEqual(len(Transaction.get_category_splits(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user))), 1)
+
 
     def test_valid_percentage_function(self):
         self._set_transactions_now(self.transactions)

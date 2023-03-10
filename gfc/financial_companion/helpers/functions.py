@@ -88,15 +88,12 @@ def get_random_invite_code(length):
 
 
 def get_conversions_for_accounts(bank_accounts, mainCurrency="GBP"):
-    otherCurrencies = []
-    conversions: Dict[str, float] = {}
+    conversions: dict[str, float] = {}
     conversions.update({str(mainCurrency): 1.0})
-    i = 0
-    while (i < len(bank_accounts)):
-        currency = bank_accounts[i].currency
+    for bank_account in bank_accounts:
+        currency = bank_account.currency
         conversions.update(
             {str(currency): convert_currency(1, currency, mainCurrency)})
-        i += 1
     if (len(conversions.keys()) == 1 and not ("GBP" in conversions)):
         conversions.update({"GBP": convert_currency(1, "GBP", mainCurrency)})
 
