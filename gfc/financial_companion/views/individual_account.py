@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.conf import settings
 from ..models import Transaction, User, PotAccount, AccountTarget, Account
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from financial_companion.helpers import TransactionType
+from financial_companion.helpers import FilterTransactionType
 from financial_companion.helpers import paginate
 
 
@@ -23,8 +23,8 @@ def individual_account_view(
     account_targets: AccountTarget = AccountTarget.objects.filter(
         account=account).filter()
 
-    if not (filter_type in TransactionType.get_send_list()
-            or filter_type in TransactionType.get_received_list()):
+    if not (filter_type in FilterTransactionType.get_send_list()
+            or filter_type in FilterTransactionType.get_received_list()):
         return redirect('dashboard')
 
     transactions: list[Transaction] = account.get_account_transactions(
@@ -38,4 +38,5 @@ def individual_account_view(
 
 @login_required
 def individual_account_redirect(request: HttpRequest, pk: int) -> HttpResponse:
-    return redirect('individual_account', pk=pk, filter_type="all")
+    return redirect('individual_account', pk=pk,
+                    filter_type=FilterTransactionType.ALL)
