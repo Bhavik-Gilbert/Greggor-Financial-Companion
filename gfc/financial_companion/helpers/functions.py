@@ -54,9 +54,18 @@ def random_filename(filename):
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
 
 
-def paginate(page, list_input):
+def calculate_percentages(spent_per_category: dict(), total):
+    no_of_categories = len(spent_per_category)
+    for key, value in spent_per_category.items():
+        percentage = float((value / total) * 100)
+        spent_per_category.update({key: percentage})
+    return spent_per_category
+
+
+def paginate(page, list_input,
+             number_per_page=settings.NUMBER_OF_ITEMS_PER_PAGE):
     list_of_items = []
-    paginator = Paginator(list_input, settings.NUMBER_OF_TRANSACTIONS)
+    paginator = Paginator(list_input, number_per_page)
     try:
         list_of_items = paginator.page(page)
     except PageNotAnInteger:
@@ -185,6 +194,13 @@ def get_sorted_members_based_on_completed_targets(members):
             *member_completed_pos_list, (*member_completed, p.ordinal(pos))]
         pos += 1
     return member_completed_pos_list
+
+
+def generate_random_end_date() -> datetime:
+    start_date = datetime.now()
+    end_date = start_date + timedelta(days=1000)
+    random_date = start_date + (end_date - start_date) * random.random()
+    return random_date
 
 
 def get_warning_messages_for_targets(

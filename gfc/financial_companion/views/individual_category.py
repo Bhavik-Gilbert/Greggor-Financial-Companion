@@ -1,8 +1,6 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
-from django.conf import settings
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from financial_companion.helpers import paginate
 from ..models import Category, Transaction, User, CategoryTarget, PotAccount
 from financial_companion.helpers import TransactionType
