@@ -1,10 +1,10 @@
 {% extends "partials/view_models/view_model.html" %}
 
-{% block object_name %}{{account.name.title}}{% endblock %}
+{% block object_name %}{{account.name}}{% endblock %}
 {% block model_name %}Account{% endblock %}
 
 {% block page_header_model %}Account{% endblock %}
-{% block page_header_name %}{{account.name.title}}{% endblock %}
+{% block page_header_name %}{{account.name}}{% endblock %}
 
 {% block card_title %}Account Information:{% endblock %}
 
@@ -23,7 +23,7 @@
     {% endif %}
         <li class="list-group-item"><strong>Balance: </strong> {{account.currency.upper}} {{account.balance}}</li>
     {% if account.bank_name %}
-        <li class="list-group-item"><strong>Bank Name: </strong> {{account.bank_name.title}}</li>
+        <li class="list-group-item"><strong>Bank Name: </strong> {{account.bank_name}}</li>
     {% endif %}
     {% if account.sort_code %}
         <li class="list-group-item"><strong>Sort Code: </strong> {{account.sort_code}}</li>

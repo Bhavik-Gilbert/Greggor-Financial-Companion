@@ -1,10 +1,10 @@
 {% extends "partials/view_models/view_model.html" %}
 
-{% block object_name %}{{group.name.title}}{% endblock %}
+{% block object_name %}{{group.name}}{% endblock %}
 {% block model_name %}Group{% endblock %}
 
 {% block page_header_model %}Group{% endblock %}
-{% block page_header_name %}{{group.name.title}}{% endblock %}
+{% block page_header_name %}{{group.name}}{% endblock %}
 
 {% block card_title %}Group Information:{% endblock %}
 
@@ -28,7 +28,7 @@
   If you have any questions regarding the group please contact the owner at: <strong>{{group.owner_email}}</strong>
 {% endblock %}
 
-{% block additional_items %}{% include "partials/view_models/model_photo.html" with picture=group.group_picture name=group.name.title%}{% endblock %}
+{% block additional_items %}{% include "partials/view_models/model_photo.html" with picture=group.group_picture name=group.name%}{% endblock %}
 
 {% block view_model_objects_URL %}{% url 'all_groups_redirect' %}{% endblock %}
 {% block view_model_objects_text %}View All Groups{% endblock %}

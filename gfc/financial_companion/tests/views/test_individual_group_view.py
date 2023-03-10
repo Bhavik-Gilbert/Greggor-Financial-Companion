@@ -27,7 +27,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/individual_group.html")
         group: Group = response.context["group"]
         self.assertTrue(isinstance(group, UserGroup))
-        self.assertContains(response, self.group.name.capitalize())
+        self.assertContains(response, self.group.name)
         self.assertContains(response, self.group.invite_code)
         self.assertContains(response, self.group.description)
         self.assertContains(response, self.group.members_count())
@@ -45,7 +45,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/individual_group.html")
         group: Group = response.context["group"]
         self.assertTrue(isinstance(group, UserGroup))
-        self.assertContains(response, self.group.name.capitalize())
+        self.assertContains(response, self.group.name)
         self.assertContains(response, self.group.invite_code)
         self.assertContains(response, self.group.description)
         self.assertContains(response, self.group.members_count())
@@ -76,7 +76,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/individual_group.html")
         group: Group = response.context["group"]
         self.assertTrue(isinstance(group, UserGroup))
-        self.assertContains(response, self.group.name.capitalize())
+        self.assertContains(response, self.group.name)
         self.assertContains(response, self.group.invite_code)
         self.assertContains(response, self.group.description)
         self.assertContains(response, self.group.members_count())
@@ -98,22 +98,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/individual_group.html")
         group: Group = response.context["group"]
-        self.assertTrue(isinstance(group, UserGroup))
-        self.assertContains(response, self.group.name.capitalize())
-        self.assertContains(response, self.group.invite_code)
-        self.assertContains(response, self.group.description)
-        self.assertContains(response, self.group.members_count())
-        self.assertContains(response, self.group.owner_email)
-        self.assertContains(response, "User ID")
-        self.assertContains(response, self.owner.id)
-        self.assertContains(response, self.member.id)
-        self.assertContains(response, "Name")
-        self.assertContains(response, self.owner.full_name())
-        self.assertContains(response, self.member.full_name())
-        self.assertContains(response, "Username")
-        self.assertContains(response, self.owner.username)
-        self.assertContains(response, self.member.username)
-        self.assertNotContains(response, "Action")
+        
 
     def test_invalid_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)

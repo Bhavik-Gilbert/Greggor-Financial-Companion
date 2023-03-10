@@ -1,10 +1,10 @@
 {% extends "partials/view_models/view_model.html" %}
 
-{% block object_name %}{{transaction.title.title}}{% endblock %}
+{% block object_name %}{{transaction.title}}{% endblock %}
 {% block model_name %}Transaction{% endblock %}
 
 {% block page_header_model %}Transaction{% endblock %}
-{% block page_header_name %}{{transaction.title.title}}{% endblock %}
+{% block page_header_name %}{{transaction.title}}{% endblock %}
 
 {% block card_title %}Transaction Information:{% endblock %}
 
@@ -21,15 +21,15 @@
     <li class="list-group-item"><strong>Description:  </strong>{{transaction.description}}</li>
   {% endif %}
   {% if transaction.category.name %}
-    <li class="list-group-item"><strong>Category:  </strong>{{transaction.category.name.title}}</li>
+    <li class="list-group-item"><strong>Category:  </strong>{{transaction.category.name}}</li>
   {% endif %}
   <li class="list-group-item"><strong>Amount:  </strong>{{transaction.currency.upper}} {{transaction.amount}}</li>
-  <li class="list-group-item"><strong>Sender Account:  </strong>{{transaction.sender_account.name.title}}</li>
-  <li class="list-group-item"><strong>Receiver Account:  </strong>{{transaction.receiver_account.name.title}}</li>
+  <li class="list-group-item"><strong>Sender Account:  </strong>{{transaction.sender_account.name}}</li>
+  <li class="list-group-item"><strong>Receiver Account:  </strong>{{transaction.receiver_account.name}}</li>
   <li class="list-group-item"><strong>Time of Transaction:  </strong>{{transaction.time_of_transaction}}</li>
 {% endblock %}
 
-{% block additional_items %}{% include "partials/view_models/model_photo.html" with picture=transaction.image name=transaction.title.title%}{% endblock %}
+{% block additional_items %}{% include "partials/view_models/model_photo.html" with picture=transaction.image name=transaction%}{% endblock %}
 
 {% block view_model_objects_URL %}{% url 'dashboard' %}{% endblock %}
 {% block view_model_objects_text %}View All Transactions{% endblock %}
