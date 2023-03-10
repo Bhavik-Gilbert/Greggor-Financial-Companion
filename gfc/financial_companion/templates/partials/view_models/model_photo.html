@@ -1,7 +1,7 @@
 {% if picture %}
     <div class="col-lg-4 col-md-6 col-sm-12 text-center mt-4">
         <div class="container limit">
-            <a href="{{ picture.url }}" class="btn btn-sm p-0"><img src="{{ picture.url }}" alt="Profile picture for {{ name }}" class="border border-primary rounded center"></a> 
+            <a href="{{ picture.url }}" class="btn btn-sm p-0" target="_blank" rel="noopener noreferrer"><img src="{{ picture.url }}" alt="Profile picture for {{ name }}" class="border border-primary rounded center"></a> 
         </div>
     </div>
 {% else %}
