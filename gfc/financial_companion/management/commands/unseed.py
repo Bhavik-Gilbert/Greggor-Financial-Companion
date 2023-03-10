@@ -16,20 +16,19 @@ from financial_companion.models import (
 class Command(BaseCommand):
     def handle(self, *args, **options):
         users = User.objects.filter(email__endswith='@gfc.org')
-
-        potAndBankAccounts = []
+        Accounts = []
         targets = []
         categories = []
         transactions = []
         groups = []
         recurringTransactions = []
         for user in users:
-            potAndBankAccounts.extend(PotAccount.objects.filter(user=user))
+            Accounts.extend(Account.objects.filter(user=user))
             targets.extend(UserTarget.objects.filter(user=user))
             categories.extend(Category.objects.filter(user=user))
             groups.extend(UserGroup.objects.filter(owner_email=user.email))
 
-        for account in potAndBankAccounts:
+        for account in Accounts:
             transactions.extend(
                 Transaction.objects.filter(
                     receiver_account=account))
@@ -52,7 +51,7 @@ class Command(BaseCommand):
         for transaction in transactions:
             transaction.delete()
 
-        for account in potAndBankAccounts:
+        for account in Accounts:
             account.delete()
 
         QuizSet.objects.filter(seeded=True).delete()

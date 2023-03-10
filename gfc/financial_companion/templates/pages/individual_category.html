@@ -1,35 +1,37 @@
-{% extends "page.html" %}
+{% extends "partials/view_models/view_model.html" %}
 
-<!-- Title -->
-{% block title %}Category{% endblock %}
+{% block object_name %}{{category.name}}{% endblock %}
+{% block model_name %}Category{% endblock %}
 
-<!-- Content -->
-{% block content %}
-<div class="card py-3 px-4 bg-primary">
-    <div class="row gy-3">
-        <div class="col-12">
-            <div class="row">
-                <div class="col-12 col-md-8">
-                    <h1 class="text-white">{{category.name.capitalize}}</h1>
-                </div>
-                <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-end">
-                    <a href="{% url 'edit_category' pk=category.id %}"><button type="button" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit</button></a>
-                    <a href="{% url 'delete_category' pk=category.id %}"><button type="button" class="btn btn-danger px-3 mx-2 py-1 mb-md-4" onclick="showAlert('category')">Delete</button></a>
-                </div>
-            </div>
-        </div>
-        <div class="col-12">
-            <h5 class="text-white">Description</h5>
-            <p class="text-white">{{category.description}}</p>
-        </div>
-        <div class="col-12">
-            {%include 'partials/target.html' with targets=category_targets edit_url='edit_category_target' delete_url='delete_category_target'  %}
-        </div>
-    </div>
-</div>
+{% block page_header_model %}Category{% endblock %}
+{% block page_header_name %}{{category.name}}{% endblock %}
 
-<br>
+{% block card_title %}Category Information:{% endblock %}
 
-{%include 'partials/transaction_table.html' with transactions=transactions redirect_name="individual_category" pk=category.id %}
-
+{% block edit_delete_buttons %}
+    {% url 'create_category_target' pk=category.id as add_target %}
+    {% url 'edit_category' pk=category.id as edit_category %}
+    {% url 'delete_category' pk=category.id as delete_category %}
+    {% include "partials/view_models/edit_and_delete_models_buttons.html" with add_target_URL=add_target edit_URL=edit_category delete_URL=delete_category model_name="category"%}
 {% endblock %}
+
+{% block confirmation_model_name %}category{% endblock %}
+
+{% block table_content %}
+    {% if category.description %}
+        <li class="list-group-item"><strong>Description: </strong> {{category.description}}</li>
+    {% endif %}
+{% endblock %}
+
+{% block additional_items %}
+    {% include 'partials/target.html' with targets=category_targets edit_url='edit_category_target' delete_url='delete_category_target' %}
+{% endblock %}
+
+{% block view_model_objects_URL %}{% url 'all_groups_redirect' %}{% endblock %}
+{% block view_model_objects_text %}Go To Dashboard{% endblock %}
+
+{% block further_content %}
+    {% include 'partials/transaction_table.html' with transactions=transactions redirect_name="individual_category" pk=category.id %}
+{% endblock %}
+
+

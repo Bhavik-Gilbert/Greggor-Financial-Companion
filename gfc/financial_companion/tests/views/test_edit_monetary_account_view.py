@@ -5,7 +5,7 @@ from typing import Any
 from .test_view_base import ViewTestCase
 from financial_companion.forms import PotAccountForm, BankAccountForm
 from financial_companion.models import User, PotAccount, BankAccount
-from financial_companion.helpers import MonetaryAccountType, CurrencyType
+from financial_companion.helpers import AccountType, CurrencyType
 from decimal import Decimal
 
 
@@ -43,10 +43,10 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
         self.assertTrue(isinstance(form, PotAccountForm))
         form_toggle: bool = response.context["form_toggle"]
         self.assertFalse(form_toggle)
-        account_type: MonetaryAccountType = response.context["account_type"]
-        self.assertEqual(account_type, MonetaryAccountType.POT)
-        monetary_account_types: MonetaryAccountType = response.context["monetary_account_types"]
-        self.assertEqual(monetary_account_types, MonetaryAccountType)
+        account_type: AccountType = response.context["account_type"]
+        self.assertEqual(account_type, AccountType.POT)
+        monetary_account_types: AccountType = response.context["monetary_account_types"]
+        self.assertEqual(monetary_account_types, AccountType)
         self.assertFalse(form.is_bound)
 
     def test_valid_get_bank_page(self):
@@ -58,10 +58,10 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
         self.assertTrue(isinstance(form, BankAccountForm))
         form_toggle: bool = response.context["form_toggle"]
         self.assertFalse(form_toggle)
-        account_type: MonetaryAccountType = response.context["account_type"]
-        self.assertEqual(account_type, MonetaryAccountType.BANK)
-        monetary_account_types: MonetaryAccountType = response.context["monetary_account_types"]
-        self.assertEqual(monetary_account_types, MonetaryAccountType)
+        account_type: AccountType = response.context["account_type"]
+        self.assertEqual(account_type, AccountType.BANK)
+        monetary_account_types: AccountType = response.context["monetary_account_types"]
+        self.assertEqual(monetary_account_types, AccountType)
         self.assertFalse(form.is_bound)
 
     def test_valid_pot_account_form_input(self):
@@ -73,7 +73,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             "description": "This is a test pot",
             "balance": Decimal("99.99"),
             "currency": CurrencyType.GBP,
-            "submit_type": MonetaryAccountType.POT
+            "submit_type": AccountType.POT
         }
         response: HttpResponse = self.client.post(
             self.pot_url, form_input, follow=True)
@@ -103,7 +103,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             "sort_code": "123456",
             "iban": "GB1234567890112345",
             "interest_rate": 0,
-            "submit_type": MonetaryAccountType.BANK
+            "submit_type": AccountType.BANK
         }
         response: HttpResponse = self.client.post(
             self.bank_url, form_input, follow=True)
@@ -127,7 +127,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             "name": "Test Pot",
             "description": "This is a test pot",
             "currency": CurrencyType.GBP,
-            "submit_type": MonetaryAccountType.POT
+            "submit_type": AccountType.POT
         }
         response: HttpResponse = self.client.post(
             self.pot_url, form_input, follow=True)
@@ -151,7 +151,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             "sort_code": "123456",
             "iban": "GB1234567890112345",
             "interest_rate": 0,
-            "submit_type": MonetaryAccountType.BANK
+            "submit_type": AccountType.BANK
         }
         response: HttpResponse = self.client.post(
             self.bank_url, form_input, follow=True)
@@ -189,7 +189,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             "name": "Test Pot",
             "description": "This is a test pot",
             "currency": CurrencyType.GBP,
-            "submit_type": MonetaryAccountType.POT
+            "submit_type": AccountType.POT
         }
         response: HttpResponse = self.client.post(
             self.pot_url, form_input, follow=True)
@@ -226,7 +226,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             "sort_code": "123456",
             "iban": "GB1234567890112345",
             "interest_rate": 0,
-            "submit_type": MonetaryAccountType.BANK
+            "submit_type": AccountType.BANK
         }
         response: HttpResponse = self.client.post(
             self.bank_url, form_input, follow=True)

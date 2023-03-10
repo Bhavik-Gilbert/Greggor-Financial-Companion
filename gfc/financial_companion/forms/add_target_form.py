@@ -1,8 +1,9 @@
 from django import forms
-from financial_companion.models import CategoryTarget, Category, AbstractTarget
+from financial_companion.models import AbstractTarget
 from ..helpers import Timespan, TransactionType, CurrencyType
 from django.core.exceptions import ValidationError
 import re
+from decimal import Decimal
 
 
 class TargetForm(forms.Form):
@@ -20,12 +21,12 @@ class TargetForm(forms.Form):
         super(TargetForm, self).__init__(*args, **kwargs)
 
         if (self.instance):
-            self.fields['transaction_type'].initial = self.instance.transaction_type
+            self.fields['target_type'].initial = self.instance.target_type
             self.fields['timespan'].initial = self.instance.timespan
             self.fields['amount'].initial = self.instance.amount
             self.fields['currency'].initial = self.instance.currency
 
-    transaction_type = forms.ChoiceField(choices=TransactionType.choices)
+    target_type = forms.ChoiceField(choices=TransactionType.choices)
     timespan = forms.ChoiceField(choices=Timespan.choices)
     amount = forms.DecimalField(decimal_places=2, max_digits=15)
     currency = forms.ChoiceField(choices=CurrencyType.choices)
@@ -36,8 +37,14 @@ class TargetForm(forms.Form):
         check_unique_together = self.form_type.objects.filter(
             timespan=self.cleaned_data.get('timespan'),
             **filter_type_dict,
-            transaction_type=self.cleaned_data.get('transaction_type')
+            target_type=self.cleaned_data.get('target_type')
         )
+
+        if self.cleaned_data.get('amount') is not None:
+            if self.cleaned_data.get('amount') <= Decimal('0.00'):
+                self.add_error('amount', ValidationError(
+                    "Amount cannot be a value under 0.01")
+                )
 
         if self.instance is None:
             if len(check_unique_together) > 0:
@@ -57,7 +64,7 @@ class TargetForm(forms.Form):
         else:
             target: AbstractTarget = self.instance
 
-        target.transaction_type = self.cleaned_data.get('transaction_type')
+        target.target_type = self.cleaned_data.get('target_type')
         target.timespan = self.cleaned_data.get('timespan')
         target.amount = self.cleaned_data.get('amount')
         target.currency = self.cleaned_data.get('currency')

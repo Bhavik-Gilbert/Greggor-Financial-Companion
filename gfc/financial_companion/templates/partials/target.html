@@ -1,34 +1,32 @@
 {% load targets %}
-
-<div class="row g-2">
+<div class="row g-2 justify-content-center">
   {% for target in targets %}
     {% with completeness=target|get_completeness %}
-    <div class="col-12 col-md-3">
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-12 col-md-8">
-              <h4 class="card-title">{{target.transaction_type.capitalize}}</h4>
-            </div>
-            <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-end">
-              <a href="{% url edit_url pk=target.id %}"><button type="button" class="btn btn-xs btn-success px-3 mr-2 py-1 mb-md-4">Edit</button></a>
-              <a href="{% url delete_url pk=target.id %}"><button type="button" class="btn btn-xs btn-danger px-3 mx-2 py-1 mb-md-4" onclick="return confirm('Are you sure you want to delete this target?')">Delete</button></a>
-            </div>
+      <div class="col-12 col-md-3">
+        <div class="card">
+          <div class="card-body p-0">
+              <div class="card-header py-1">
+                <div class="row align-content-center p-0">
+                  <div class="col">
+                    <h5 class="pt-2">{{target.target_type.title}}</h5>
+                  </div>
+                  {% url edit_url pk=target.id as edit_target %}
+                  {% url delete_url pk=target.id as delete_target %}
+                  {% include "partials/view_models/edit_and_delete_models_buttons.html" with size="xs" edit_URL=edit_target delete_URL=delete_target model_name="target"%}
+                </div>
+              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><strong>Timespan:</strong> {{target.timespan.title}}</li>
+                <li class="list-group-item">
+                  <div class="progress" role="progressbar" aria-label="Default striped example" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar {%if completeness >= 100%}{%if target.transaction_type == 'income'%}bg-success{% else %}bg-danger{% endif %}{% endif %} progress-bar-striped progress-bar-animated" style="width: {{completeness}}%">{{completeness}}%</div>
+                  </div>
+                </li>
+                <li class="list-group-item"><strong>Goal Amount:</strong> {{target.currency.upper}} {{target.amount}}</li>
+              </ul>
           </div>
-          <p class="card-text-end">Timespan: {{target.timespan.capitalize}}</p>
-          {% if completeness >= 100 %}
-          <div class="progress" role="progressbar" aria-label="Default striped example" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-            <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width: {{completeness}}%">{{completeness}}%</div>
-          </div>
-          {% else %}
-            <div class="progress" role="progressbar" aria-label="Default striped example" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-              <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: {{completeness}}%">{{completeness}}%</div>
-            </div>
-          {% endif %}
-          <p class="card-text-end">Goal Amount: {{target.currency.upper}} {{target.amount}}</p>
         </div>
       </div>
-    </div>
     {% endwith %}
   {% endfor %}
 </div>

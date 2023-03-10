@@ -147,6 +147,18 @@ urlpatterns = [
         views.join_user_group_view,
         name="join_user_group"),
     path(
+        'remove_user_from_user_group/<int:group_pk>/<int:user_pk>',
+        views.remove_user_from_user_group_view,
+        name="remove_user_from_user_group"),
+    path(
+        'make_owner_of_user_group/<int:group_pk>/<int:user_pk>',
+        views.make_owner_of_user_group_view,
+        name="make_owner_of_user_group"),
+    path(
+        'add_user_to_user_group/<int:group_pk>',
+        views.add_user_to_user_group_view,
+        name="add_user_to_user_group"),
+    path(
         'reset_password',
         PasswordResetView.as_view(
             template_name="pages/email/password_reset.html"),

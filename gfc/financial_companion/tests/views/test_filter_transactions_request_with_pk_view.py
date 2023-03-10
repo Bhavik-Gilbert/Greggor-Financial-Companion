@@ -111,7 +111,8 @@ class FilterTransactionsViewTestCase(ViewTestCase):
         response = self.client.post(response_url)
         self.assertTemplateUsed(response, "pages/dashboard.html")
         messages_list = list(response.context["messages"])
-        self.assertEqual(len(messages_list), 0)
+        self.assertEqual(len(messages_list), 1)
+        self.assertTrue('Targets exceeded: ' in str(messages_list[0]))
 
     def test_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)

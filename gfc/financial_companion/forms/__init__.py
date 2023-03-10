@@ -1,7 +1,7 @@
 from .user_sign_up_form import UserSignUpForm
 from .user_log_in_form import UserLogInForm
 from .add_transaction_form import AddTransactionForm, AddTransactionsViaBankStatementForm
-from .monetary_accounts_form import MonetaryAccountForm, PotAccountForm, BankAccountForm
+from .monetary_accounts_form import MonetaryAccountForm, PotAccountForm, BankAccountForm, RegularAccountForm
 from .create_category_form import CategoryForm
 from .user_edit_details_form import EditUserDetailsForm
 from .user_change_password_form import UserChangePasswordForm
@@ -10,3 +10,5 @@ from .add_target_form import TargetForm
 from .join_user_group_form import JoinUserGroupForm
 from .timespan_dropdown_form import TimespanOptionsForm
 from .add_recurring_transaction_form import AddRecurringTransactionForm
+from .add_user_to_user_group_form import AddUserToUserGroupForm
+from .quiz_form import QuizQuestionForm

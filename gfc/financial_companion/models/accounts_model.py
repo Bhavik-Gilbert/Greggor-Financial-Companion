@@ -12,7 +12,7 @@ from model_utils.managers import InheritanceManager
 
 from financial_companion.models import User
 import financial_companion.models as fcmodels
-from ..helpers import CurrencyType, MonetaryAccountType, TransactionType
+from ..helpers import CurrencyType, AccountType, TransactionType
 
 
 class Account(Model):
@@ -26,6 +26,8 @@ class Account(Model):
         max_length=500,
         blank=True
     )
+
+    user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
 
     objects = InheritanceManager()
 
@@ -61,15 +63,19 @@ class Account(Model):
     def __str__(self):
         return str(self.name)
 
+    def get_type(self):
+        return f"{AccountType.REGULAR}"
+
     @staticmethod
-    def create_basic_account(account_name: str):
+    def create_basic_account(account_name: str, user: User):
         """Creates and returns an account object with only a name"""
         return Account.objects.create(
-            name=account_name
+            name=account_name,
+            user=user
         )
 
     @staticmethod
-    def get_or_create_account(account_name: str, user: User = None):
+    def get_or_create_account(account_name: str, user: User):
         """Returns account if it exists or creates a new one"""
         try:
             accounts_list: list[Account] = Account.objects.filter(
@@ -83,7 +89,7 @@ class Account(Model):
                     break
 
             if get_account is None:
-                get_account = Account.create_basic_account(account_name)
+                get_account = Account.create_basic_account(account_name, user)
 
             return get_account
         except Exception:
@@ -91,7 +97,6 @@ class Account(Model):
 
 
 class PotAccount(Account):
-    user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
     balance: DecimalField = DecimalField(max_digits=15, decimal_places=2)
     currency: CharField = CharField(
         choices=CurrencyType.choices,
@@ -100,7 +105,7 @@ class PotAccount(Account):
     )
 
     def get_type(self):
-        return f"{MonetaryAccountType.POT}"
+        return f"{AccountType.POT}"
 
 
 def only_int(value):
@@ -146,4 +151,4 @@ class BankAccount(PotAccount):
     )
 
     def get_type(self):
-        return f"{MonetaryAccountType.BANK}"
+        return f"{AccountType.BANK}"

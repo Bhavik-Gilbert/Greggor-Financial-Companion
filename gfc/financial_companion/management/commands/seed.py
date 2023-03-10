@@ -16,7 +16,7 @@ import datetime
 from datetime import timedelta
 from random import randint, random
 import random
-from financial_companion.helpers import TransactionType, CurrencyType, MonetaryAccountType, Timespan, get_random_invite_code, generate_random_end_date
+from financial_companion.helpers import TransactionType, CurrencyType, Timespan, get_random_invite_code, generate_random_end_date
 from financial_companion.scheduler import create_monthly_newsletter_scheduler
 
 
@@ -28,7 +28,7 @@ class Command(BaseCommand):
     MAX_ACCOUNTS_PER_USER = 10
     MAX_TRANSACTIONS_PER_ACCOUNT = 50
     MAX_NUMBER_OF_CATEGORIES = 10
-    MAX_NUMBER_OF_BASIC_ACCOUNTS = 5
+    MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER = 5
     OBJECT_HAS_TARGET_PROBABILITY = 0.6
     MAX_NUMBER_OF_GROUPS = 5
     MAX_NUMBER_OF_RECURRING_TRANSACTIONS = 4
@@ -38,19 +38,11 @@ class Command(BaseCommand):
         self.faker = Faker("en_US")
 
     def handle(self, *args, **options):
-        self.create_basic_accounts()
         self.create_users()
         self.create_quiz_questions()
         create_monthly_newsletter_scheduler()
         self.create_user_groups()
         print("SEEDING COMPLETE")
-
-    def create_basic_accounts(self):
-        for i in range(0, self.MAX_NUMBER_OF_BASIC_ACCOUNTS):
-            Account.objects.create(
-                name=self.faker.word(),
-                description=self.faker.text()
-            )
 
     def create_categories(self, user):
         randomNumOfCategories = randint(3, self.MAX_NUMBER_OF_CATEGORIES)
@@ -64,7 +56,7 @@ class Command(BaseCommand):
             if (float(randint(0, 100)) / 100 <
                     self.OBJECT_HAS_TARGET_PROBABILITY):
                 CategoryTarget.objects.create(
-                    transaction_type=self.choose_random_enum(TransactionType),
+                    target_type=self.choose_random_enum(TransactionType),
                     timespan=self.choose_random_enum(Timespan),
                     amount=float(randint(0, 1000000)) / 100,
                     currency=self.choose_random_enum(CurrencyType),
@@ -102,7 +94,7 @@ class Command(BaseCommand):
                 if (float(randint(0, 100)) / 100 <
                         self.OBJECT_HAS_TARGET_PROBABILITY):
                     UserTarget.objects.create(
-                        transaction_type=self.choose_random_enum(
+                        target_type=self.choose_random_enum(
                             TransactionType),
                         timespan=self.choose_random_enum(Timespan),
                         amount=float(randint(0, 1000000)) / 100,
@@ -118,9 +110,19 @@ class Command(BaseCommand):
             end='\r')
 
     def create_accounts_for_user(self, user, categories):
+        randomNumOfBasicAccounts = randint(
+            1, self.MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER)
         randomNumOfPotAccounts = randint(1, self.MAX_ACCOUNTS_PER_USER)
         randomNumOfBankAccount = randint(
             0, self.MAX_ACCOUNTS_PER_USER - randomNumOfPotAccounts)
+
+        for i in range(0, randomNumOfBasicAccounts):
+            regular_account = Account.objects.create(
+                name=self.faker.word(),
+                description=self.faker.text(),
+                user=user
+            )
+
         for i in range(0, randomNumOfPotAccounts):
             potAccount = PotAccount.objects.create(
                 name=self.faker.word(),
@@ -132,6 +134,7 @@ class Command(BaseCommand):
             self.create_target_for_account(potAccount)
             self.create_transactions_for_account(potAccount, categories)
             self.create_recurring_transactions_for_account(potAccount, categories)
+        
         for i in range(0, randomNumOfBankAccount):
             bankAccount = BankAccount.objects.create(
                 name=self.faker.word(),
@@ -144,7 +147,7 @@ class Command(BaseCommand):
                 str(randint(1000000, 9999999)),
                 sort_code=str(randint(0, 9)) + "" + str(randint(10000, 99999)),
                 iban=self.faker.name()[0] * 33,
-                interest_rate=float(randint(-1000, 1000)) / 100
+                interest_rate=float(randint(-50, 1000)) / 100
             )
             self.create_target_for_account(bankAccount)
             self.create_transactions_for_account(bankAccount, categories)
@@ -185,7 +188,7 @@ class Command(BaseCommand):
     def create_target_for_account(self, account):
         if (float(randint(0, 100)) / 100 < self.OBJECT_HAS_TARGET_PROBABILITY):
             AccountTarget.objects.create(
-                transaction_type=self.choose_random_enum(TransactionType),
+                target_type=self.choose_random_enum(TransactionType),
                 timespan=self.choose_random_enum(Timespan),
                 amount=float(randint(0, 1000000)) / 100,
                 currency=self.choose_random_enum(CurrencyType),
