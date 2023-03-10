@@ -10,7 +10,6 @@ from django.conf import settings
 from datetime import date, timedelta
 import financial_companion.models as fc_models
 from financial_companion.helpers import get_number_of_days_in_prev_month
-# from ..helpers import get_number_of_completed_targets
 
 
 def send_monthly_newsletter_email():
@@ -22,7 +21,7 @@ def send_monthly_newsletter_email():
         context = {
             "user": user,
             "month": calendar.month_name[(datetime.now(tz=None).month) - 1],
-            "transactions": user.get_user_transactions()[:10],
+            "transactions": list(filter(lambda transaction:transaction.time_of_transaction.month == datetime.now(tz=None).month - 1, user.get_user_transactions()))[:10],
             "targets": targets
 
         }

@@ -5,6 +5,7 @@
     <p>This month you have met {{targets}} targets!</p>
 
     <!-- Table of all spending this month -->
+    {%if transactions%}
     <h3> Recent Transactions</h3>
     <table role="presentation" border="1" cellspacing="0" width="100%" >
         <thead class = "table-primary">
@@ -22,7 +23,9 @@
           </tr>
         {% endfor %}
       </table>
-
+      {%else%}
+      <p>You do not have any transactions for {{month}}!</p>
+      {%endif%}
     <!-- Link to the stats page. -->
     <h4>For a more detailed view of your spending, checkout out your personalised <a href="http://localhost:8000/admin/django_q/schedule/"> stats page!</a></h2>
     
