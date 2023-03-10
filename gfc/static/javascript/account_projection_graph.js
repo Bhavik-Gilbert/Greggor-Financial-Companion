@@ -1,4 +1,4 @@
-function loadInitialGraph(bankAccountsInfo, timeBands, conversions, mainCurrency, balancesInfos=null) {
+function loadInitialGraph(bankAccountsInfo, timeBands, conversions, mainCurrency) {
     try {
         getUserChoices(bankAccountsInfo, timeBands, conversions, mainCurrency);
     }

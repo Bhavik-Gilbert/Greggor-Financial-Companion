@@ -155,14 +155,10 @@ def get_data_for_account_projection(user):
     timescales_strings = get_short_month_names_for_timescale()
 
     accountsDictionary = get_projections_balances(accounts)
-    balancesDictionary = {}
-    for account, values in accountsDictionary.items():
-        balancesDictionary.update({account: values['balances']})
 
     return {
         'bank_accounts': {acc.id: acc.name for acc in accounts},
         'bank_account_infos': dumps(accountsDictionary),
-        'balances_infos': dumps(balancesDictionary),
         'timescale_dict': timescale_dict,
         'timescales_strings': timescales_strings,
         'conversion_to_main_currency_JSON': dumps(conversions),

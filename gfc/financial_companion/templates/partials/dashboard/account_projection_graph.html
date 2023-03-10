@@ -5,7 +5,6 @@
     <script src="{% static 'javascript/account_projection_graph.js' %}"></script>
 </head>
 
-<!--<body onclick="console.log(JSON.parse('{{bank_account_infos}}'))" onload="loadInitialGraph(JSON.parse('{{bank_account_infos}}'),{{timescales_strings|safe}},{{conversion_to_main_currency_JSON}},'{{main_currency}}')">-->
-<body onclick="console.log(JSON.parse('{{bank_account_infos}}'))" onload="loadInitialGraph({{bank_account_infos}},{{timescales_strings|safe}},{{conversion_to_main_currency_JSON}},'{{main_currency}}',{{balances_infos}})">
+<body onload="loadInitialGraph({{bank_account_infos}},{{timescales_strings|safe}},{{conversion_to_main_currency_JSON}},'{{main_currency}}')">
     {% include "partials/dashboard/graph.html" %}
 </body>
