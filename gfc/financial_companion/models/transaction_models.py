@@ -105,7 +105,7 @@ class Transaction(AbstractTransaction):
         spent_per_category= dict()
         no_of_categories = Category.objects.count()
         for x in transactions:
-            if (x.category == None) :
+            if (x.category is None) :
                 if (spent_per_category.get("Other") == None):
                     spent_per_category["Other"] = x.amount
                 else:

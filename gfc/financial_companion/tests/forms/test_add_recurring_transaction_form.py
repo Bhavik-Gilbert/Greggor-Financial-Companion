@@ -113,7 +113,20 @@ class AddRecurringTransactionFormTestCase(FormTestCase):
         self.form_input['end_date']= '2023-01-01'
         form = AddRecurringTransactionForm(self.user, data=self.form_input)
         self.assertFalse(form.is_valid())
+    
+    def test_form_rejects_the_same_sender_and_receiver_accounts(self):
+        self.form_input['receiver_account'] = 1
+        self.form_input['sender_account'] = 1
+        form = AddRecurringTransactionForm(self.user, data=self.form_input)
+        self.assertFalse(form.is_valid())
 
+    def test_form_rejects_neither_the_sender_or_receiver_accounts_belonging_to_the_user(
+            self):
+        self.form_input['receiver_account'] = 2
+        form = AddRecurringTransactionForm(self.user, data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+    
     def test_form_must_save_correctly(self):
         form = AddRecurringTransactionForm(self.user, data=self.form_input)
         before_count = RecurringTransaction.objects.count()
@@ -148,3 +161,4 @@ class AddRecurringTransactionFormTestCase(FormTestCase):
         self.assertEqual(new_rec_transaction.sender_account.id, 1)
         self.assertTrue(isinstance(new_rec_transaction.receiver_account, Account))
         self.assertEqual(new_rec_transaction.receiver_account.id, 3)
+
