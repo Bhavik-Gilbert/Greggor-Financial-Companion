@@ -98,7 +98,6 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/individual_group.html")
         group: Group = response.context["group"]
-        
 
     def test_invalid_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)

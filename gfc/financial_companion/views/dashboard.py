@@ -6,6 +6,7 @@ from ..helpers import get_data_for_account_projection, get_warning_messages_for_
 from django.contrib.auth.decorators import login_required
 from json import loads
 
+
 @login_required
 def dashboard_view(request: HttpRequest) -> HttpResponse:
     user = request.user
