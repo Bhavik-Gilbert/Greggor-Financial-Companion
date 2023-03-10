@@ -41,8 +41,8 @@ class Command(BaseCommand):
                     receiver_account=account))
             recurringTransactions.extend(
                 RecurringTransaction.objects.filter(
-                    sender_account = account)
-                )
+                    sender_account=account)
+            )
 
         for category in categories:
             CategoryTarget.objects.filter(category_id=category).delete()

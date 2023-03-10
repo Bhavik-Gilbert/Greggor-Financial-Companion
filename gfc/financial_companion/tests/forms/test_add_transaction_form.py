@@ -111,7 +111,7 @@ class AddTransactionFormTestCase(FormTestCase):
         self.assertEqual(transaction.sender_account.id, 1)
         self.assertTrue(isinstance(transaction.receiver_account, Account))
         self.assertEqual(transaction.receiver_account.id, 3)
-    
+
     def test_form_must_save_via_edit_correctly(self):
         old_transaction = Transaction.objects.get(id=2)
         form = AddTransactionForm(self.user, data=self.form_input)
@@ -119,7 +119,9 @@ class AddTransactionFormTestCase(FormTestCase):
         before_count = Transaction.objects.count()
         after_count = Transaction.objects.count()
         self.assertEqual(after_count, before_count)
-        self.assertEqual(new_transaction.description, 'This is a test transaction')
+        self.assertEqual(
+            new_transaction.description,
+            'This is a test transaction')
         # self.assertEqual(transaction.image, self.new_image)
         self.assertTrue(isinstance(new_transaction.category, Category))
         self.assertEqual(new_transaction.category.id, 1)

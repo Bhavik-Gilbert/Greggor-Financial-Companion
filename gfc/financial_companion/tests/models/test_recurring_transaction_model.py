@@ -37,7 +37,7 @@ class RecurringTransactionTestCase(ModelTestCase):
         self.assertEqual(0, len(self.test_model.transactions.all()))
         self.test_model.add_transaction(transaction)
         self.assertEqual(1, len(self.test_model.transactions.all()))
-    
+
     def test_valid_add_transaction_does_not_add_same_transaction_twice(self):
         transaction: Transaction = Transaction.objects.all().first()
         self.assertEqual(0, len(self.test_model.transactions.all()))

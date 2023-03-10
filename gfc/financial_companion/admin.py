@@ -93,9 +93,10 @@ class UserGroup(admin.ModelAdmin):
         'id', 'name', 'description', 'owner_email', 'invite_code', 'get_members', 'group_picture'
     ]
 
+
 @admin.register(RecurringTransaction)
 class RecurringTransaction(admin.ModelAdmin):
     list_display = [
-        'id', 'title', 'amount', 'currency', 'sender_account', 'receiver_account', 'category', 'description', 
+        'id', 'title', 'amount', 'currency', 'sender_account', 'receiver_account', 'category', 'description',
         'start_date', 'interval', 'end_date'
     ]

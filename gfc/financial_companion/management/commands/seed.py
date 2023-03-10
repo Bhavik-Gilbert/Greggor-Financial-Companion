@@ -133,8 +133,9 @@ class Command(BaseCommand):
             )
             self.create_target_for_account(potAccount)
             self.create_transactions_for_account(potAccount, categories)
-            self.create_recurring_transactions_for_account(potAccount, categories)
-        
+            self.create_recurring_transactions_for_account(
+                potAccount, categories)
+
         for i in range(0, randomNumOfBankAccount):
             bankAccount = BankAccount.objects.create(
                 name=self.faker.word(),
@@ -151,7 +152,8 @@ class Command(BaseCommand):
             )
             self.create_target_for_account(bankAccount)
             self.create_transactions_for_account(bankAccount, categories)
-            self.create_recurring_transactions_for_account(potAccount, categories)
+            self.create_recurring_transactions_for_account(
+                potAccount, categories)
 
     def create_transactions_for_account(self, account, categories):
         randomNumOfTransactions = randint(0, self.MAX_TRANSACTIONS_PER_ACCOUNT)
@@ -247,7 +249,8 @@ class Command(BaseCommand):
         print("USERGROUPS SEEDED")
 
     def create_recurring_transactions_for_account(self, account, categories):
-        randomNumOfRecTransactions = randint(0, self.MAX_NUMBER_OF_RECURRING_TRANSACTIONS)
+        randomNumOfRecTransactions = randint(
+            0, self.MAX_NUMBER_OF_RECURRING_TRANSACTIONS)
         oppositePartyOfTransaction = random.choice(
             Account.objects.filter(~Q(id=account.id)))
         randomNoOfTransactions = randint(0, 10)
@@ -268,9 +271,9 @@ class Command(BaseCommand):
                 currency=self.choose_random_enum(CurrencyType),
                 sender_account=sender_account,
                 receiver_account=receiver_account,
-                start_date= datetime.date.today(),
-                end_date = generate_random_end_date(),
-                interval = self.choose_random_enum(Timespan)             
+                start_date=datetime.date.today(),
+                end_date=generate_random_end_date(),
+                interval=self.choose_random_enum(Timespan)
             )
             for j in range(0, randomNoOfTransactions):
                 transaction = Transaction.objects.create(
@@ -284,10 +287,3 @@ class Command(BaseCommand):
                 )
                 transaction.save()
                 recTransaction.add_transaction(transaction)
-
-            
-            
-
-        
-        
-        

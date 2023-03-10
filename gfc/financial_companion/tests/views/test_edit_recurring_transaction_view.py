@@ -32,7 +32,8 @@ class EditTransactionViewTestCase(ViewTestCase):
         self._login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'pages/add_recurring_transaction.html')
+        self.assertTemplateUsed(
+            response, 'pages/add_recurring_transaction.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, AddRecurringTransactionForm))
         self.assertFalse(form.is_bound)
@@ -45,7 +46,8 @@ class EditTransactionViewTestCase(ViewTestCase):
         after_count = RecurringTransaction.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'pages/add_recurring_transaction.html')
+        self.assertTemplateUsed(
+            response, 'pages/add_recurring_transaction.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, AddRecurringTransactionForm))
         # self.assertTrue(form.is_bound)
@@ -73,7 +75,8 @@ class EditTransactionViewTestCase(ViewTestCase):
             response_url,
             status_code=302,
             target_status_code=200)
-        self.assertTemplateUsed(response, 'pages/view_recurring_transactions.html')
+        self.assertTemplateUsed(
+            response, 'pages/view_recurring_transactions.html')
         transaction = RecurringTransaction.objects.get(id=2)
         transaction.refresh_from_db()
         self.assertEqual(transaction.title, "Test")
@@ -87,7 +90,9 @@ class EditTransactionViewTestCase(ViewTestCase):
 
     def test_invalid_recurring_transaction_id_given(self):
         self._login(self.user)
-        invalid_url = reverse('edit_recurring_transaction', kwargs={'pk': 100000})
+        invalid_url = reverse(
+            'edit_recurring_transaction', kwargs={
+                'pk': 100000})
         response = self.client.get(invalid_url, follow=True)
         response_url = reverse('view_recurring_transactions')
         self.assertRedirects(
@@ -95,7 +100,8 @@ class EditTransactionViewTestCase(ViewTestCase):
             response_url,
             status_code=302,
             target_status_code=200)
-        self.assertTemplateUsed(response, 'pages/view_recurring_transactions.html')
+        self.assertTemplateUsed(
+            response, 'pages/view_recurring_transactions.html')
 
     def test_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)

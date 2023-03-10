@@ -63,7 +63,7 @@ class AddRecurringTransactionFormTestCase(FormTestCase):
         self.form_input['title'] = '123456789012345678901234567890*'
         form = AddRecurringTransactionForm(self.user, data=self.form_input)
         self.assertFalse(form.is_valid())
-    
+
     def test_form_rejects_blank_interval(self):
         self.form_input['interval'] = ''
         form = AddRecurringTransactionForm(self.user, data=self.form_input)
@@ -105,15 +105,15 @@ class AddRecurringTransactionFormTestCase(FormTestCase):
         self.assertFalse(form.is_valid())
 
     def test_end_date_after_start_valid(self):
-        self.form_input['end_date']= '2023-06-29'
+        self.form_input['end_date'] = '2023-06-29'
         form = AddRecurringTransactionForm(self.user, data=self.form_input)
         self.assertTrue(form.is_valid())
 
     def test_start_date_after_end_invalid(self):
-        self.form_input['end_date']= '2023-01-01'
+        self.form_input['end_date'] = '2023-01-01'
         form = AddRecurringTransactionForm(self.user, data=self.form_input)
         self.assertFalse(form.is_valid())
-    
+
     def test_form_rejects_the_same_sender_and_receiver_accounts(self):
         self.form_input['receiver_account'] = 1
         self.form_input['sender_account'] = 1
@@ -126,7 +126,6 @@ class AddRecurringTransactionFormTestCase(FormTestCase):
         form = AddRecurringTransactionForm(self.user, data=self.form_input)
         self.assertFalse(form.is_valid())
 
-    
     def test_form_must_save_correctly(self):
         form = AddRecurringTransactionForm(self.user, data=self.form_input)
         before_count = RecurringTransaction.objects.count()
@@ -142,8 +141,7 @@ class AddRecurringTransactionFormTestCase(FormTestCase):
         self.assertEqual(transaction.sender_account.id, 1)
         self.assertTrue(isinstance(transaction.receiver_account, Account))
         self.assertEqual(transaction.receiver_account.id, 3)
-    
-    
+
     def test_form_must_save_via_edit_correctly(self):
         old_transaction = RecurringTransaction.objects.get(id=2)
         form = AddRecurringTransactionForm(self.user, data=self.form_input)
@@ -151,14 +149,21 @@ class AddRecurringTransactionFormTestCase(FormTestCase):
         before_count = RecurringTransaction.objects.count()
         after_count = RecurringTransaction.objects.count()
         self.assertEqual(after_count, before_count)
-        self.assertEqual(new_rec_transaction.description, 'This is a test transaction')
+        self.assertEqual(
+            new_rec_transaction.description,
+            'This is a test transaction')
         # self.assertEqual(transaction.image, self.new_image)
         self.assertTrue(isinstance(new_rec_transaction.category, Category))
         self.assertEqual(new_rec_transaction.category.id, 1)
         self.assertEqual(new_rec_transaction.amount, Decimal("152.95"))
         self.assertEqual(new_rec_transaction.currency, 'USD')
-        self.assertTrue(isinstance(new_rec_transaction.sender_account, Account))
+        self.assertTrue(
+            isinstance(
+                new_rec_transaction.sender_account,
+                Account))
         self.assertEqual(new_rec_transaction.sender_account.id, 1)
-        self.assertTrue(isinstance(new_rec_transaction.receiver_account, Account))
+        self.assertTrue(
+            isinstance(
+                new_rec_transaction.receiver_account,
+                Account))
         self.assertEqual(new_rec_transaction.receiver_account.id, 3)
-

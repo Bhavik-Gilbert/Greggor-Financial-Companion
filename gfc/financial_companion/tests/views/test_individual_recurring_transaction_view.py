@@ -9,7 +9,8 @@ class IndividualRecurringTransactionViewTestCase(ViewTestCase):
 
     def setUp(self):
         self.user: User = User.objects.get(username="@johndoe")
-        self.transaction: RecurringTransaction = RecurringTransaction.objects.get(id=2)
+        self.transaction: RecurringTransaction = RecurringTransaction.objects.get(
+            id=2)
         self.url: str = reverse(
             "individual_recurring_transaction", kwargs={
                 "pk": self.transaction.id})
@@ -23,7 +24,8 @@ class IndividualRecurringTransactionViewTestCase(ViewTestCase):
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "pages/individual_recurring_transaction.html")
+        self.assertTemplateUsed(
+            response, "pages/individual_recurring_transaction.html")
         transaction: RecurringTransaction = response.context["transaction"]
         self.assertTrue(isinstance(transaction, RecurringTransaction))
         self.assertContains(response, self.transaction.title.capitalize())
@@ -45,7 +47,7 @@ class IndividualRecurringTransactionViewTestCase(ViewTestCase):
         # self.assertContains(
         #     response,
         #     str(self.transaction.end_date)
-        #)
+        # )
         self.assertContains(
             response,
             self.transaction.interval.capitalize()

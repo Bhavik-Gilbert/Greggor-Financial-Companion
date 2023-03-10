@@ -41,7 +41,7 @@ class DeleteTransactionViewTestCase(ViewTestCase):
             response_url,
             status_code=302,
             target_status_code=200)
-    
+
     def test_delete_recurring_transaction_keeps_associated_transactions(self):
         self._login(self.user)
         transaction = RecurringTransaction.objects.get(id=2)
@@ -50,7 +50,7 @@ class DeleteTransactionViewTestCase(ViewTestCase):
         response = self.client.get(self.url)
         after_rec_count = RecurringTransaction.objects.count()
         after_count = Transaction.objects.count()
-        self.assertEqual(before_rec_count-1, after_rec_count)
+        self.assertEqual(before_rec_count - 1, after_rec_count)
         self.assertEqual(before_count, after_count)
         response_url = reverse('dashboard')
         self.assertRedirects(

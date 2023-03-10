@@ -21,9 +21,9 @@ def add_recurring_transaction_view(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             form.save()
             messages.add_message(
-            request,
-            messages.WARNING,
-            "New recurring transaction has been added.")
+                request,
+                messages.WARNING,
+                "New recurring transaction has been added.")
             return redirect('view_recurring_transactions')
     else:
         form = AddRecurringTransactionForm(user)
@@ -48,9 +48,9 @@ def edit_recurring_transaction_view(request: HttpRequest, pk) -> HttpResponse:
             if form.is_valid():
                 form.save(instance=transaction)
                 messages.add_message(
-                request,
-                messages.WARNING,
-                "The recurring transaction has been updated")
+                    request,
+                    messages.WARNING,
+                    "The recurring transaction has been updated")
                 return redirect('view_recurring_transactions')
         form = AddRecurringTransactionForm(user, instance=transaction)
         form.fields['category'].queryset = categories
@@ -59,7 +59,8 @@ def edit_recurring_transaction_view(request: HttpRequest, pk) -> HttpResponse:
 
 
 @login_required
-def delete_recurring_transaction_view(request: HttpRequest, pk) -> HttpResponse:
+def delete_recurring_transaction_view(
+        request: HttpRequest, pk) -> HttpResponse:
     try:
         transaction = RecurringTransaction.objects.get(id=pk)
     except ObjectDoesNotExist:
@@ -71,4 +72,3 @@ def delete_recurring_transaction_view(request: HttpRequest, pk) -> HttpResponse:
             messages.WARNING,
             "The recurring transaction has been deleted")
         return redirect('dashboard')
-

@@ -32,7 +32,8 @@ class AddRecurringTransactionViewTestCase(ViewTestCase):
         self._login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'pages/add_recurring_transaction.html')
+        self.assertTemplateUsed(
+            response, 'pages/add_recurring_transaction.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, AddRecurringTransactionForm))
         self.assertFalse(form.is_bound)
@@ -45,7 +46,8 @@ class AddRecurringTransactionViewTestCase(ViewTestCase):
         after_count = RecurringTransaction.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'pages/add_recurring_transaction.html')
+        self.assertTemplateUsed(
+            response, 'pages/add_recurring_transaction.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, AddRecurringTransactionForm))
         self.assertTrue(form.is_bound)
@@ -62,7 +64,8 @@ class AddRecurringTransactionViewTestCase(ViewTestCase):
             response_url,
             status_code=302,
             target_status_code=200)
-        self.assertTemplateUsed(response, 'pages/view_recurring_transactions.html')
+        self.assertTemplateUsed(
+            response, 'pages/view_recurring_transactions.html')
         transaction = RecurringTransaction.objects.get(title='Test')
         self.assertEqual(transaction.description, 'This is a test transaction')
         self.assertEqual(transaction.category.id, 1)

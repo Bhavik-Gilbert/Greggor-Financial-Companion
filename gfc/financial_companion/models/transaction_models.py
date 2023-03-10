@@ -77,7 +77,7 @@ class Transaction(AbstractTransaction):
         blank=False,
         auto_now_add=True
     )
-    
+
     @staticmethod
     def calculate_total(transactions: list):
         total = 0
@@ -85,35 +85,38 @@ class Transaction(AbstractTransaction):
             total += x.amount
         return total
 
-
     @staticmethod
-    def get_transactions_from_time_period(time_choice, user, filter_type = str("all")):
+    def get_transactions_from_time_period(
+            time_choice, user, filter_type=str("all")):
         user_transactions = user.get_user_transactions(filter_type=filter_type)
-        
+
         timespan_int = timespan_map[time_choice]
         start_of_timespan_period = datetime.datetime.today(
         ) - datetime.timedelta(days=timespan_int)
 
         filtered_transactions = []
         for transaction in user_transactions:
-            if transaction.time_of_transaction.timestamp() >= start_of_timespan_period.timestamp():
-                filtered_transactions = [*filtered_transactions, transaction]   
+            if transaction.time_of_transaction.timestamp(
+            ) >= start_of_timespan_period.timestamp():
+                filtered_transactions = [*filtered_transactions, transaction]
         return filtered_transactions
-    
+
     @staticmethod
     def get_category_splits(transactions: list):
-        spent_per_category= dict()
+        spent_per_category = dict()
         no_of_categories = Category.objects.count()
         for x in transactions:
-            if (x.category is None) :
-                if (spent_per_category.get("Other") == None):
+            if (x.category is None):
+                if (spent_per_category.get("Other") is None):
                     spent_per_category["Other"] = x.amount
                 else:
-                    spent_per_category.update({"Other" : spent_per_category.get("Other") + x.amount})
-            elif ((len(spent_per_category) == 0) | (spent_per_category.get(x.category.name) == None)):
+                    spent_per_category.update(
+                        {"Other": spent_per_category.get("Other") + x.amount})
+            elif ((len(spent_per_category) == 0) | (spent_per_category.get(x.category.name) is None)):
                 spent_per_category[x.category.name] = x.amount
             else:
-                spent_per_category.update({x.category.name : spent_per_category.get(x.category.name) + x.amount })
+                spent_per_category.update(
+                    {x.category.name: spent_per_category.get(x.category.name) + x.amount})
         return spent_per_category
 
     class Meta:
@@ -139,7 +142,7 @@ class RecurringTransaction(AbstractTransaction):
 
     class Meta:
         ordering = ['-interval']
-    
+
     def add_transaction(self, transaction: Transaction):
         """Add transaction to transaction in recurring transaction"""
         self.transactions.add(transaction)

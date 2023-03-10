@@ -52,14 +52,15 @@ class AddRecurringTransactionForm(forms.ModelForm):
                 currency=self.cleaned_data.get('currency'),
                 sender_account=self.cleaned_data.get('sender_account'),
                 receiver_account=self.cleaned_data.get('receiver_account'),
-                interval= self.cleaned_data.get('interval'),
-                start_date= self.cleaned_data.get('start_date'),
-                end_date = self.cleaned_data.get('end_date')
+                interval=self.cleaned_data.get('interval'),
+                start_date=self.cleaned_data.get('start_date'),
+                end_date=self.cleaned_data.get('end_date')
             )
         else:
             recurring_transaction: RecurringTransaction = instance
             recurring_transaction.title = self.cleaned_data.get('title')
-            recurring_transaction.description = self.cleaned_data.get('description')
+            recurring_transaction.description = self.cleaned_data.get(
+                'description')
             recurring_transaction.image = self.cleaned_data.get('image')
             recurring_transaction.category = self.cleaned_data.get('category')
             recurring_transaction.amount = self.cleaned_data.get('amount')

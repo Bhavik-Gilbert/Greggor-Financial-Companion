@@ -17,5 +17,3 @@ def view_users_recurring_transactions(request: HttpRequest) -> HttpResponse:
 
     return render(request, "pages/view_recurring_transactions.html",
                   {'transactions': list_of_transactions})
-
-

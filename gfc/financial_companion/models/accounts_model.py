@@ -48,7 +48,7 @@ class Account(Model):
 
         return sorted(
             transactions, key=lambda transaction: transaction.time_of_transaction, reverse=True)
-    
+
     def get_account_recurring_transactions(self) -> list:
         """Returns filtered list of all this accounts RECURRING transactions"""
         transactions: list[fcmodels.RecurringTransaction] = []
@@ -56,9 +56,8 @@ class Account(Model):
         transactions = [
             *transactions,
             *fcmodels.RecurringTransaction.objects.filter(
-            sender_account=self)]
+                sender_account=self)]
         return transactions
-    
 
     def __str__(self):
         return str(self.name)

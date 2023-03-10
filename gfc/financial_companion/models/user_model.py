@@ -53,10 +53,10 @@ class User(AbstractUser):
     def get_user_recurring_transactions(self) -> list:
         user_accounts: list[fcmodels.PotAccount] = fcmodels.PotAccount.objects.filter(
             user=self)
-        transactions: list[fcmodels.RecurringTransaction]= []
+        transactions: list[fcmodels.RecurringTransaction] = []
 
         for account in user_accounts:
-            transactions= [
+            transactions = [
                 *transactions,
                 *account.get_account_recurring_transactions()
             ]

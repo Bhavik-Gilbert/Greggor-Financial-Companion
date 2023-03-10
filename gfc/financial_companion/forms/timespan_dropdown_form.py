@@ -1,6 +1,7 @@
 from django import forms
 from ..helpers import Timespan
 
+
 class TimespanOptionsForm(forms.Form):
     time_choice = forms.ChoiceField(choices=Timespan.choices)
 
