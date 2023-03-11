@@ -1,0 +1,16 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}Add Recurring Transaction{% endblock %}
+
+<!-- Content -->
+{% block content %}
+    <h1>Recurring Transaction</h1>
+    
+    <form method="post" enctype='multipart/form-data'>
+      {% csrf_token %}
+
+      {% include 'partials/form.html' with form=form %}
+      <input type="submit" value="Add Recurring Transaction" class="btn btn-primary">
+    </form>
+{% endblock %}

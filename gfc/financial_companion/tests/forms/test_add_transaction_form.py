@@ -112,6 +112,7 @@ class AddTransactionFormTestCase(FormTestCase):
         self.assertTrue(isinstance(transaction.receiver_account, Account))
         self.assertEqual(transaction.receiver_account.id, 3)
 
+<<<<<<< HEAD
     def test_form_rejects_the_same_sender_and_receiver_accounts(self):
         self.form_input['receiver_account'] = 1
         form = AddTransactionForm(self.user, data=self.form_input)
@@ -120,14 +121,44 @@ class AddTransactionFormTestCase(FormTestCase):
             form.errors['receiver_account'][0],
             "The sender and receiver accounts cannot be the same.")
 
+=======
+    def test_form_must_save_via_edit_correctly(self):
+        old_transaction = Transaction.objects.get(id=2)
+        form = AddTransactionForm(self.user, data=self.form_input)
+        new_transaction = form.save(old_transaction)
+        before_count = Transaction.objects.count()
+        after_count = Transaction.objects.count()
+        self.assertEqual(after_count, before_count)
+        self.assertEqual(
+            new_transaction.description,
+            'This is a test transaction')
+        # self.assertEqual(transaction.image, self.new_image)
+        self.assertTrue(isinstance(new_transaction.category, Category))
+        self.assertEqual(new_transaction.category.id, 1)
+        self.assertEqual(new_transaction.amount, Decimal("152.95"))
+        self.assertEqual(new_transaction.currency, 'USD')
+        self.assertTrue(isinstance(new_transaction.sender_account, Account))
+        self.assertEqual(new_transaction.sender_account.id, 1)
+        self.assertTrue(isinstance(new_transaction.receiver_account, Account))
+        self.assertEqual(new_transaction.receiver_account.id, 3)
+
+    def test_form_rejects_the_same_sender_and_receiver_accounts(self):
+        self.form_input['receiver_account'] = 1
+        form = AddTransactionForm(self.user, data=self.form_input)
+        self.assertFalse(form.is_valid())
+
+>>>>>>> master
     def test_form_rejects_neither_the_sender_or_receiver_accounts_belonging_to_the_user(
             self):
         self.form_input['receiver_account'] = 2
         form = AddTransactionForm(self.user, data=self.form_input)
         self.assertFalse(form.is_valid())
+<<<<<<< HEAD
         self.assertEquals(
             form.errors['receiver_account'][0],
             "Neither the sender or reciever are one of your accounts")
         self.assertEquals(
             form.errors['sender_account'][0],
             "Neither the sender or reciever are one of your accounts")
+=======
+>>>>>>> master

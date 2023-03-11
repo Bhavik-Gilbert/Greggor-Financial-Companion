@@ -1,8 +1,9 @@
 from json import dumps
 from currency_symbols import CurrencySymbols
 from currency_converter import CurrencyConverter
-from .enums import CurrencyType
-from datetime import datetime, timedelta
+from .enums import CurrencyType, Timespan
+from .maps import timespan_map
+from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -54,9 +55,18 @@ def random_filename(filename):
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
 
 
-def paginate(page, list_input):
+def calculate_percentages(spent_per_category: dict(), total):
+    no_of_categories = len(spent_per_category)
+    for key, value in spent_per_category.items():
+        percentage = float((value / total) * 100)
+        spent_per_category.update({key: percentage})
+    return spent_per_category
+
+
+def paginate(page, list_input,
+             number_per_page=settings.NUMBER_OF_ITEMS_PER_PAGE):
     list_of_items = []
-    paginator = Paginator(list_input, settings.NUMBER_OF_TRANSACTIONS)
+    paginator = Paginator(list_input, number_per_page)
     try:
         list_of_items = paginator.page(page)
     except PageNotAnInteger:
@@ -187,6 +197,13 @@ def get_sorted_members_based_on_completed_targets(members):
     return member_completed_pos_list
 
 
+def generate_random_end_date() -> datetime:
+    start_date = datetime.now()
+    end_date = start_date + timedelta(days=1000)
+    random_date = start_date + (end_date - start_date) * random.random()
+    return random_date
+
+
 def get_warning_messages_for_targets(
         request, showNumbersForMultiples=True, targets=None):
     if not targets:
@@ -275,3 +292,22 @@ def convert_list_to_string(list_in):
             output += ","
         output += " and " + str(list_in[list_length - 1])
     return output
+
+
+def check_date_on_interval(
+        interval: Timespan, base_date: date, current_date: date = date.today()) -> bool:
+    """Checks if current date is on an interval date with the base date"""
+    if base_date > current_date:
+        return False
+    interval_in_days: int = timespan_map[interval]
+    return ((current_date - base_date).days % interval_in_days) == 0
+
+
+def check_within_date_range(
+        start_date: date, end_date: date, current_date: date = date.today()) -> bool:
+    """Checks if current date is within the time period"""
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
+    check_current_after_start: bool = current_date >= start_date
+    check_current_before_end: bool = current_date <= end_date
+    return check_current_before_end and check_current_after_start

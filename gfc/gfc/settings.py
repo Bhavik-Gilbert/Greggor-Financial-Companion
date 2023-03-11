@@ -167,8 +167,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = "log_in"
 LOGGED_IN_URL = "dashboard"
 
-# Number of transactions per page
-NUMBER_OF_TRANSACTIONS = 10
+# Number of items per pagniated page
+NUMBER_OF_ITEMS_PER_PAGE = 10
 
 # salt for secure string
 try:
@@ -196,3 +196,6 @@ Q_CLUSTER = {
     'workers': 4,
     'orm': 'default'
 }
+
+# Site url
+SITE_URL_SPENDING_PAGE = "http://localhost:8000/spending_summary"
