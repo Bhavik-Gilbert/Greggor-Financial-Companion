@@ -66,3 +66,4 @@ class Command(BaseCommand):
         Schedule.objects.all().delete()
 
         print("UNSEEDING COMPLETE")
+        
