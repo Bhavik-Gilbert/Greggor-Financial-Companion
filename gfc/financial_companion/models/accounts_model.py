@@ -58,7 +58,7 @@ class Account(Model):
         return list(set(transactions))
 
     def get_account_transactions(
-            self, filter_type: str = "all", allow_accounts: bool = False) -> list:
+            self, filter_type: str = FilterTransactionType.ALL, allow_accounts: bool = False) -> list:
         """Return filtered list of the accounts transactions"""
         transactions: list[fcmodels.Transaction] = []
 
