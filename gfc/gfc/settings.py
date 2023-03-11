@@ -190,9 +190,12 @@ EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
 Q_CLUSTER = {
-    'name': "shop",
+    'name': "financial_companion_schedulers",
     'retry': 60,
     'timeout': 30,
     'workers': 4,
     'orm': 'default'
 }
+
+# Site url
+SITE_URL_SPENDING_PAGE = "http://localhost:8000/spending_summary"

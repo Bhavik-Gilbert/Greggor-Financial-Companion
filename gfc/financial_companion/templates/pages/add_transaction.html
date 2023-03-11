@@ -2,11 +2,11 @@
 {% load static %}
 
 <!-- Title -->
-{% block title %}Add Transaction{% endblock %}
+{% block title %} Transaction Form{% endblock %}
 
 <!-- Content -->
 {% block content %}
-    <h1>Add Transaction</h1>
+    <h1> Transaction Form</h1>
     <head>
       <script src="{% static 'javascript/autocomplete.js' %}"></script>
       <script
@@ -40,6 +40,10 @@
     </div>
 
       {% include 'partials/form.html' with form=form %}
-    <input type="submit" value="Add Transaction" class="btn btn-primary">
-
+      <button type="submit" name="submit_type" value="Submit" class="btn btn-primary">
+    {% if edit %}
+        Edit Transaction
+        {% else %}
+            Create Transaction
+        {% endif %}
 {% endblock %}
