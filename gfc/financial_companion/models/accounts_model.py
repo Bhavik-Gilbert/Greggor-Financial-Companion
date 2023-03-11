@@ -12,7 +12,7 @@ from model_utils.managers import InheritanceManager
 from decimal import Decimal
 from financial_companion.models import User
 import financial_companion.models as fcmodels
-from ..helpers import CurrencyType, AccountType, TransactionType, convert_currency
+from ..helpers import CurrencyType, AccountType, FilterTransactionType
 
 
 class Account(Model):
@@ -31,23 +31,62 @@ class Account(Model):
 
     objects = InheritanceManager()
 
-    def get_account_transactions(self, filter_type: str = "all") -> list:
+    def _get_transactions_filter_account_type(
+            self, new_transactions: list, account_type: str, allow_accounts) -> list:
+        """
+        Return filtered list of transactions based on account_type
+
+        USAGE
+        new_transactions: list of transactions
+        account_type: string ("sender" or "receiver")
+        allow_accounts: boolean if to allow accounts or use pot accounts
+            true if allow accounts
+            false if use pot accounts
+        """
+        transactions: list[Account] = []
+
+        if account_type in ["sender", "receiver"]:
+            for new_transaction in new_transactions:
+                account: Account = getattr(
+                    new_transaction, f"{account_type}_account")
+                if allow_accounts and Account.objects.filter(
+                        id=account.id).count() == 1:
+                    transactions = [*transactions, new_transaction]
+                elif PotAccount.objects.filter(id=account.id).count() == 1:
+                    transactions = [*transactions, new_transaction]
+
+        return list(set(transactions))
+
+    def get_account_transactions(
+            self, filter_type: str = FilterTransactionType.ALL, allow_accounts: bool = False) -> list:
         """Return filtered list of the accounts transactions"""
         transactions: list[fcmodels.Transaction] = []
 
-        if filter_type in TransactionType.get_send_list():
+        if filter_type in FilterTransactionType.get_send_list():
+            new_transactions = fcmodels.Transaction.objects.filter(
+                sender_account=self)
             transactions = [
-                *transactions,
-                *fcmodels.Transaction.objects.filter(
-                    sender_account=self)]
-        if filter_type in TransactionType.get_received_list():
+                *
+                transactions,
+                *
+                self._get_transactions_filter_account_type(
+                    new_transactions,
+                    "sender",
+                    allow_accounts)]
+        if filter_type in FilterTransactionType.get_received_list():
+            new_transactions = fcmodels.Transaction.objects.filter(
+                receiver_account=self)
             transactions = [
-                *transactions,
-                *fcmodels.Transaction.objects.filter(
-                    receiver_account=self)]
+                *
+                transactions,
+                *
+                self._get_transactions_filter_account_type(
+                    new_transactions,
+                    "receiver",
+                    allow_accounts)]
 
         return sorted(
-            transactions, key=lambda transaction: transaction.time_of_transaction, reverse=True)
+            list(set(transactions)), key=lambda transaction: transaction.time_of_transaction, reverse=True)
 
     def get_account_recurring_transactions(self) -> list:
         """Returns filtered list of all this accounts RECURRING transactions"""

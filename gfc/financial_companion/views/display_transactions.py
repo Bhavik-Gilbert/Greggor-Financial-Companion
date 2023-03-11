@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from ..models import Transaction, User
-from financial_companion.helpers import TransactionType
+from financial_companion.helpers import FilterTransactionType
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse
 from financial_companion.helpers import paginate
@@ -12,8 +12,8 @@ def view_users_transactions(request: HttpRequest,
                             filter_type: str) -> HttpResponse:
     user: User = request.user
 
-    if not (filter_type in TransactionType.get_send_list()
-            or filter_type in TransactionType.get_received_list()):
+    if not (filter_type in FilterTransactionType.get_send_list()
+            or filter_type in FilterTransactionType.get_received_list()):
         return redirect('dashboard')
 
     transactions: list[Transaction] = sorted(
@@ -31,18 +31,20 @@ def view_users_transactions(request: HttpRequest,
 
 @login_required
 def view_users_transactions_redirect(request: HttpRequest) -> HttpResponse:
-    return redirect('view_transactions', filter_type="all")
+    return redirect('view_transactions', filter_type=FilterTransactionType.ALL)
 
 
 @login_required
 def filter_transaction_request(request, redirect_name: str):
     if 'sent' in request.POST:
-        return redirect(reverse(redirect_name, kwargs={'filter_type': "sent"}))
+        return redirect(reverse(redirect_name, kwargs={
+                        'filter_type': FilterTransactionType.SENT}))
     elif 'received' in request.POST:
         return redirect(reverse(redirect_name, kwargs={
-                        'filter_type': "received"}))
+                        'filter_type': FilterTransactionType.RECEIVED}))
     elif 'all' in request.POST:
-        return redirect(reverse(redirect_name, kwargs={'filter_type': "all"}))
+        return redirect(reverse(redirect_name, kwargs={
+                        'filter_type': FilterTransactionType.ALL}))
     else:
         return redirect('dashboard')
 
@@ -51,12 +53,12 @@ def filter_transaction_request(request, redirect_name: str):
 def filter_transaction_request_with_pk(request, redirect_name: str, pk: int):
     if 'sent' in request.POST:
         return redirect(reverse(redirect_name, kwargs={
-                        'pk': pk, 'filter_type': "sent"}))
+                        'pk': pk, 'filter_type': FilterTransactionType.SENT}))
     elif 'received' in request.POST:
         return redirect(reverse(redirect_name, kwargs={
-                        'pk': pk, 'filter_type': "received"}))
+                        'pk': pk, 'filter_type': FilterTransactionType.RECEIVED}))
     elif 'all' in request.POST:
         return redirect(reverse(redirect_name, kwargs={
-                        'pk': pk, 'filter_type': "all"}))
+                        'pk': pk, 'filter_type': FilterTransactionType.ALL}))
     else:
         return redirect('dashboard')
