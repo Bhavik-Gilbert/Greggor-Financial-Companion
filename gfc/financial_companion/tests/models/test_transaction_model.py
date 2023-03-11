@@ -5,6 +5,7 @@ from financial_companion.helpers.enums import Timespan
 from financial_companion.models import Transaction, User, PotAccount, User
 from ...models import Transaction
 from freezegun import freeze_time
+from decimal import Decimal
 
 
 class TransactionModelTestCase(ModelTestCase):
