@@ -17,7 +17,7 @@ from datetime import timedelta
 from random import randint, random
 import random
 from financial_companion.helpers import TransactionType, CurrencyType, Timespan, get_random_invite_code, generate_random_end_date
-from financial_companion.scheduler import create_monthly_newsletter_scheduler
+from financial_companion.scheduler import create_monthly_newsletter_scheduler, create_bank_account_interest_scheduler, create_recurring_transactions_scheduler
 
 
 class Command(BaseCommand):
@@ -40,9 +40,18 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.create_users()
         self.create_quiz_questions()
-        create_monthly_newsletter_scheduler()
         self.create_user_groups()
+        self.create_schedulers()
         print("SEEDING COMPLETE")
+    
+    def create_schedulers(self):
+        print(f'Seeding Scheduler Monthly Newsletter{30 * " "}', end='\r')
+        create_monthly_newsletter_scheduler()
+        print(f'Seeding Scheduler Bank Accounts Interest{30 * " "}', end='\r')
+        create_bank_account_interest_scheduler()
+        print(f'Seeding Scheduler Recurring Transactions{30 * " "}', end='\r')
+        create_recurring_transactions_scheduler()
+        print(f"SCHEDULERS SEEDED{30 * ' '}")
 
     def create_categories(self, user):
         randomNumOfCategories = randint(3, self.MAX_NUMBER_OF_CATEGORIES)

@@ -19,3 +19,10 @@ class BankAccountInterestSchedulerFunctionTestCase(SchedulerTestCase):
         self.assertEqual(scheduler.minutes, 1)
         self.assertEqual(scheduler.repeats, -1)
         self.assertEqual(scheduler.schedule_type, Schedule.MONTHLY)
+
+    def test_scheduler_object_not_created_twice(self):
+        create_bank_account_interest_scheduler()
+        before_count: int = Schedule.objects.count()
+        create_bank_account_interest_scheduler()
+        after_count: int = Schedule.objects.count()
+        self.assertEqual(after_count, before_count)
