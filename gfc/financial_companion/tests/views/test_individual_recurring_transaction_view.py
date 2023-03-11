@@ -28,22 +28,21 @@ class IndividualRecurringTransactionViewTestCase(ViewTestCase):
             response, "pages/individual_recurring_transaction.html")
         transaction: RecurringTransaction = response.context["transaction"]
         self.assertTrue(isinstance(transaction, RecurringTransaction))
-        self.assertContains(response, self.transaction.title.capitalize())
+        self.assertContains(response, self.transaction.title)
         self.assertContains(response, self.transaction.description)
         self.assertContains(
-            response, self.transaction.category.name.capitalize())
+            response, self.transaction.category.name)
         self.assertContains(response, self.transaction.amount)
         self.assertContains(response, self.transaction.currency.upper())
         self.assertContains(
             response,
-            self.transaction.sender_account.name.capitalize())
+            self.transaction.sender_account.name)
         self.assertContains(
             response,
-            self.transaction.receiver_account.name.capitalize())
+            self.transaction.receiver_account.name)
         self.assertContains(
             response,
-            self.transaction.interval.capitalize()
-        )
+            self.transaction.interval)
 
     def test_invalid_recurring_transaction_does_not_exist(self):
         self._login(self.user)

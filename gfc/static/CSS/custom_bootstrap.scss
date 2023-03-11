@@ -75,7 +75,7 @@ $theme-colors: map-merge($theme-colors, $custom-theme-colors);
     @media (min-width: 120em) {
       margin: 0 18%;
     }
-  }
+}
 
 .limit img {
   background: url( path-to-image ) 50% 50%;
