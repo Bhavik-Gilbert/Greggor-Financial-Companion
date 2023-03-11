@@ -1,5 +1,5 @@
 
-
+    <h2 class="text-center mt-3 mb-1 text-muted">Associated Transactions</h2>
     <div class="row">
       <div class="col-12">
         <div>
@@ -12,25 +12,33 @@
           </form>
         </div>
           &nbsp;
-        <table class="table  table-bordered table-striped" style="width:100%" style="text-align:center" >
-          <thead class = "table-primary">
-          </thead>
-          {% for transaction in transactions %}
-            <tr style="text-align:center">
-              <td><strong>{{ transaction.id}}</strong></td>
-              <td>{{ transaction.title.capitalize }} </td>
-              {% if transaction.interval == "day" %}
-                <td>Daily</td>
-              {% else %}
-                <td>{{transaction.interval.capitalize}}ly</td>
-              {% endif %}
-              <td>{{ transaction.amount }} {{ transaction.currency.upper }} </td>
-              <td> <a href="{% url 'individual_recurring_transaction' pk=transaction.id%}" class="btn btn-primary justify-content-center">View Info</a</td>
-
-            </tr>
-          </form>
-          {% endfor %}
-        </table>
+        <div class="container container-scrollableX p-0">
+          <table class="table table-bordered table-striped text-center">
+            <thead class = "table-primary">
+              <tr>
+                <th scope="col" class="col-1">ID</th>
+                  <th scope="col" class="col-auto">Transaction Name</th>
+                  <th scope="col" class="col-auto">Frequency</th>
+                  <th scope="col" class="col-auto">Amount</th>
+                  <th scope="col" class="col-2"></th>
+              </tr>
+            </thead>
+            {% for transaction in transactions %}
+              <tr>
+                <td><strong>{{ transaction.id}}</strong></td>
+                <td>{{ transaction.title }} </td>
+                  {% if transaction.interval == "day" %}
+                    <td>Daily</td>
+                  {% else %}
+                    <td>{{transaction.interval}}ly</td>
+                  {% endif %}
+                <td>{{ transaction.amount }} {{ transaction.currency.upper }} </td>
+                <td> <a href="{% url 'individual_recurring_transaction' pk=transaction.id%}" class="btn btn-sm btn-outline-primary justify-content-center">View Info</a</td>
+              </tr>
+            </form>
+            {% endfor %}
+          </table>
+        </div>
         {% include 'partials/pagination.html'  with page_obj=transactions %}
       </div>
     </div>
