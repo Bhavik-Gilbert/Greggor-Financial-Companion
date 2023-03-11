@@ -108,7 +108,7 @@ class AccountTarget(AbstractTarget):
         if plural:
             return "accounts"
         else:
-            return "accounts"
+            return "account"
 
     def __str__(self):
         return self.account.name

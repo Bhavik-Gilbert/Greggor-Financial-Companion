@@ -54,9 +54,18 @@ def random_filename(filename):
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
 
 
-def paginate(page, list_input):
+def calculate_percentages(spent_per_category: dict(), total):
+    no_of_categories = len(spent_per_category)
+    for key, value in spent_per_category.items():
+        percentage = float((value / total) * 100)
+        spent_per_category.update({key: percentage})
+    return spent_per_category
+
+
+def paginate(page, list_input,
+             number_per_page=settings.NUMBER_OF_ITEMS_PER_PAGE):
     list_of_items = []
-    paginator = Paginator(list_input, settings.NUMBER_OF_TRANSACTIONS)
+    paginator = Paginator(list_input, number_per_page)
     try:
         list_of_items = paginator.page(page)
     except PageNotAnInteger:
@@ -110,7 +119,7 @@ def get_projections_balances(accounts, max_timescale_in_months: int = max(
                 ((1 + (interest_rate / 365))**get_number_of_days_in_prev_month(i))
             if tempBalanceTotal >= 0:
                 currentBalance = tempBalanceTotal
-            balances.append(currentBalance)
+            balances.append((currentBalance))
             i += 1
         accountData.update({"balances": balances})
         accountDictionary.update({account.id: accountData})
@@ -154,9 +163,11 @@ def get_data_for_account_projection(user):
     timescale_dict = get_projection_timescale_options()
     timescales_strings = get_short_month_names_for_timescale()
 
+    accountsDictionary = get_projections_balances(accounts)
+
     return {
         'bank_accounts': {acc.id: acc.name for acc in accounts},
-        'bank_account_infos': dumps(get_projections_balances(accounts)),
+        'bank_account_infos': dumps(accountsDictionary),
         'timescale_dict': timescale_dict,
         'timescales_strings': timescales_strings,
         'conversion_to_main_currency_JSON': dumps(conversions),
@@ -183,6 +194,13 @@ def get_sorted_members_based_on_completed_targets(members):
             *member_completed_pos_list, (*member_completed, p.ordinal(pos))]
         pos += 1
     return member_completed_pos_list
+
+
+def generate_random_end_date() -> datetime:
+    start_date = datetime.now()
+    end_date = start_date + timedelta(days=1000)
+    random_date = start_date + (end_date - start_date) * random.random()
+    return random_date
 
 
 def get_warning_messages_for_targets(
