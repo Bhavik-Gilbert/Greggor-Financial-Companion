@@ -10,10 +10,15 @@
         <p class="text-white h6">Accounts</p>
       </a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'view_transactions_redirect' %}">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown" href="#" id="transaction-dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
         <p class="text-white h6">Transactions</p>
       </a>
+      <ul class="dropdown-menu" aria-labelledby="transaction-dropdown">
+        <li><a class="dropdown-item" href="{% url 'view_transactions_redirect' %}">Transactions</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="{% url 'view_recurring_transactions' %}">Subscriptions</a></li>
+      </ul>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="{% url 'categories_list_redirect' %}">

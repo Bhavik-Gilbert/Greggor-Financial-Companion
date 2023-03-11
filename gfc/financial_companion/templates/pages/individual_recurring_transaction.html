@@ -1,0 +1,61 @@
+{% extends "page.html" %}
+
+{%block title%}Recurring Transaction{%endblock%}
+
+{%block content %}
+<div class="card py-3 px-4 bg-primary">
+    <div class="row gy-3">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-12 col-md-8">
+            <h1 class="text-white">Name: {{transaction.title.capitalize}}</h1>
+          </div>
+          <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-end">
+            <a href="{% url 'edit_recurring_transaction' transaction.id %}"><button type="button" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit</button></a>
+            <a href="{% url 'delete_recurring_transaction' transaction.id %}"><button type="button" class="btn btn-danger px-3 mx-2 py-1 mb-md-4">Delete</button></a>
+          </div>
+        </div>
+      </div>
+  
+      <div class="row">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-6 mb-4">
+              <div class="card">
+                <img class="card-img-top" src="" alt="">
+  
+                <div class="card-body">
+                  <div class="card-header">
+                    <h4>Info:</h4>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><p><strong>Description: </strong>{{transaction.description}}</p></li>
+                    <li class="list-group-item"><p><strong>Category: </strong>{{transaction.category.name.capitalize}}</p></li>
+                    <li class="list-group-item"><p><strong>Amount: </strong>{{transaction.amount}} {{transaction.currency.upper}}</p></li>
+                    <li class="list-group-item"><p><strong>Sender Account: </strong>{{transaction.sender_account.name.capitalize}}</p></li>
+                    <li class="list-group-item"><p><strong>Reciver Account: </strong>{{transaction.receiver_account.name.capitalize}}</p></li>
+                    <li class="list-group-item"><p><strong>Repeats every: </strong>{{transaction.interval.capitalize}}</p></li>
+                    <li class="list-group-item"><p><strong>Start Date: </strong>{{transaction.start_date}}</p></li>
+                    <li class="list-group-item"><p><strong>End Date: </strong>{{transaction.end_date}}</p></li>
+                  
+                </ul>
+                </div>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="text-white">Associated Transactions:</h3>
+    <div class="row gy-3 gx-3">
+        {%include 'partials/recurring_transaction_transactions_list.html'  with transactions=transactionslist %}
+
+        <div class="col-12 text-white">
+          {% include 'partials/pagination.html'  with page_obj=transactionslist %}
+        </div>
+    </div>
+  </div>
+
+</div>
+{%endblock%}

@@ -46,6 +46,23 @@
             "interval" : "week",
             "end_date" : "2023-06-06"
           }
-      }    
+      },
+      
+      {
+        "model": "financial_companion.RecurringTransaction",
+        "pk": 4,
+        "fields": {
+            "title": "Greggor Membership",
+            "description": "Monthly greggor subscription.",
+            "category" : 1,
+            "amount" : 20.00,
+            "currency" : "GBP",
+            "sender_account" : 7,
+            "receiver_account" : 8,
+            "start_date" : "2022-03-04",
+            "interval" : "week",
+            "end_date" : "2022-06-06"
+          }
+      }   
 
 ]
