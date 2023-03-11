@@ -12,7 +12,7 @@ from django.db.models import (
 )
 
 from django.core.validators import MinValueValidator
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .accounts_model import Account, PotAccount
 from .category_model import Category
 from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, TransactionType
@@ -76,11 +76,13 @@ class AbstractTransaction(Model):
     
     def clean(self):
         super().clean()
-        
-        check_accounts = PotAccount.objects.filter(Q(id=self.sender_account.id) | Q(id=self.receiver_account.id)).count() > 0
-        if not check_accounts:
-            raise ValidationError("Both sender and receiver accounts cannot be non monetary accounts")
-
+        try:
+            self.sender_account and self.receiver_account
+            check_accounts = PotAccount.objects.filter(Q(id=self.sender_account.id) | Q(id=self.receiver_account.id)).count() > 0
+            if not check_accounts:
+                raise ValidationError("Both sender and receiver accounts cannot be non monetary accounts")
+        except ObjectDoesNotExist:
+            return "either sender or receiver account does not exist"
     class Meta:
         abstract = True
         unique_together = ['sender_account', 'receiver_account']
