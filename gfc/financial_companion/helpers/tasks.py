@@ -18,7 +18,6 @@ from financial_companion.helpers import (
 )
 
 
-
 def send_monthly_newsletter_email():
     User = get_user_model()
     users = User.objects.all()
