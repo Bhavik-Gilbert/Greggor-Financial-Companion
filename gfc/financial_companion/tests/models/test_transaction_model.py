@@ -48,6 +48,7 @@ class TransactionModelTestCase(ModelTestCase):
         self.sender_account: PotAccount = PotAccount.objects.get(id=5)
         self.receiver_account: PotAccount = PotAccount.objects.get(id=6)
         self.sender_account2: PotAccount = PotAccount.objects.get(id=3)
+        self.receiver_account2: PotAccount = PotAccount.objects.get(id=4)
         self.transaction_model: Transaction = Transaction()
         self.transaction_model.title= "New laptop"
         self.transaction_model.description= "Bought new laptop"
@@ -130,8 +131,33 @@ class TransactionModelTestCase(ModelTestCase):
         self.assertEqual(len(Transaction.get_category_splits(
             Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user))), 1)
         
-    # def test_account_balances_change_on_change_sender_account(self):
-    #     self.transaction_model.save()
-    #     self.sender_account.refresh_from_db()
-    #     self.old_sender_account_balance_before = self.transaction_model.sender_account.balance
-    #     self.
+    def test_account_balances_change_on_change_sender_account(self):
+        self.transaction_model.save()
+
+        self.sender_account.refresh_from_db()
+        self.old_sender_account_balance_before = self.transaction_model.sender_account.balance
+        self.new_sender_account_balance_before = self.sender_account2.balance
+        self.transaction_model.sender_account = self.sender_account2
+        self.transaction_model.save()
+        self.transaction_model.refresh_from_db()
+        self.sender_account.refresh_from_db()
+        self.sender_account2.refresh_from_db()
+        self.old_sender_account_balance_after = self.sender_account.balance
+        self.new_sender_account_balance_after = self.sender_account2.balance
+        self.assertEqual(self.old_sender_account_balance_before + self.transaction_model.amount, self.old_sender_account_balance_after)
+        self.assertEqual(self.new_sender_account_balance_before - self.transaction_model.amount, self.new_sender_account_balance_after)
+
+        self.receiver_account.refresh_from_db()
+        self.old_receiver_account_balance_before = self.receiver_account.balance
+        self.new_receiver_account_balance_before = self.receiver_account2.balance
+        self.transaction_model.receiver_account = self.receiver_account2
+        self.transaction_model.save()
+        self.transaction_model.refresh_from_db()
+        self.receiver_account.refresh_from_db()
+        self.receiver_account2.refresh_from_db()
+        self.old_receiver_account_balance_after = self.receiver_account.balance
+        self.new_receiver_account_balance_after = self.receiver_account2.balance
+        self.assertEqual(self.old_receiver_account_balance_before , self.old_receiver_account_balance_after + self.transaction_model.amount)
+        self.assertEqual(self.new_receiver_account_balance_before , self.new_receiver_account_balance_after - self.transaction_model.amount)
+
+
