@@ -68,21 +68,24 @@ class AbstractTransaction(Model):
         Account,
         on_delete=CASCADE,
         related_name="sender_account%(app_label)s_%(class)s_related")
-    
+
     receiver_account = ForeignKey(
         Account,
         on_delete=CASCADE,
         related_name="reciever%(app_label)s_%(class)s_related")
-    
+
     def clean(self):
         super().clean()
         try:
             self.sender_account and self.receiver_account
-            check_accounts = PotAccount.objects.filter(Q(id=self.sender_account.id) | Q(id=self.receiver_account.id)).count() > 0
+            check_accounts = PotAccount.objects.filter(
+                Q(id=self.sender_account.id) | Q(id=self.receiver_account.id)).count() > 0
             if not check_accounts:
-                raise ValidationError("Both sender and receiver accounts cannot be non monetary accounts")
+                raise ValidationError(
+                    "Both sender and receiver accounts cannot be non monetary accounts")
         except ObjectDoesNotExist:
             return "either sender or receiver account does not exist"
+
     class Meta:
         abstract = True
         unique_together = ['sender_account', 'receiver_account']
