@@ -8,6 +8,7 @@ from django.utils import timezone
 from datetime import datetime, date
 from django.conf import settings
 from datetime import date, timedelta
+from financial_companion.helpers.enums import Timespan
 import financial_companion.models as fcmodels
 from financial_companion.helpers import (
     get_number_of_days_in_prev_month,
@@ -20,17 +21,16 @@ from financial_companion.helpers import (
 def send_monthly_newsletter_email():
     User = get_user_model()
     users = User.objects.all()
-
     for user in users:
-        # today = datetime.datetime.now()
-        # transactions = user.get_user_transactions()
-        # filtered_transactions = filter((lambda transaction: time_of_transaction__year==today.year, time_of_transaction__month==today.month),  countries)
-        # print(len(transactions))
-        # print(len(filtered_transactions))
+        transactions = fcmodels.Transaction.get_transactions_from_time_period(
+            Timespan.MONTH, user)
+        targets = user.get_number_of_completed_targets
         context = {
             "user": user,
-            "month": calendar.month_name[datetime.now(tz=None).month],
-            "transactions": user.get_user_transactions()[:10]
+            "month": calendar.month_name[(datetime.now(tz=None).month) - 1],
+            "transactions": transactions[:10],
+            "targets": targets,
+            "site_url_spending": settings.SITE_URL_SPENDING_PAGE
 
         }
         html_content = render_to_string(
@@ -44,7 +44,6 @@ def send_monthly_newsletter_email():
             html_message=html_content,
             fail_silently=False,
         )
-    print("EMAILS SENT")
 
 
 def add_interest_to_bank_accounts():

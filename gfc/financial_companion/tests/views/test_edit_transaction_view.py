@@ -64,13 +64,13 @@ class EditTransactionViewTestCase(ViewTestCase):
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = Transaction.objects.count()
         self.assertEqual(after_count, before_count)
-        response_url = reverse('dashboard')
+        response_url = reverse('individual_transaction', kwargs={'pk': 2})
         self.assertRedirects(
             response,
             response_url,
             status_code=302,
             target_status_code=200)
-        self.assertTemplateUsed(response, 'pages/dashboard.html')
+        self.assertTemplateUsed(response, 'pages/individual_transaction.html')
         transaction = Transaction.objects.get(id=2)
         transaction.refresh_from_db()
         self.assertEqual(transaction.title, "Test")
@@ -86,13 +86,15 @@ class EditTransactionViewTestCase(ViewTestCase):
         self._login(self.user)
         invalid_url = reverse('edit_transaction', kwargs={'pk': 100000})
         response = self.client.get(invalid_url, follow=True)
-        response_url = reverse('dashboard')
+        response_url = reverse(
+            'view_transactions', kwargs={
+                'filter_type': "all"})
         self.assertRedirects(
             response,
             response_url,
             status_code=302,
             target_status_code=200)
-        self.assertTemplateUsed(response, 'pages/dashboard.html')
+        self.assertTemplateUsed(response, 'pages/display_transactions.html')
 
     def test_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)
