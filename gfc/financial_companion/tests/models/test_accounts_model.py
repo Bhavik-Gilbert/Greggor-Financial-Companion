@@ -2,6 +2,7 @@ from .test_model_base import ModelTestCase
 from django.db.models.base import ModelBase
 
 from ...models import Account, Transaction
+from ...helpers import FilterTransactionType
 
 
 class AccountModelTestCase(ModelTestCase):
@@ -44,25 +45,25 @@ class AccountModelTestCase(ModelTestCase):
 
     def test_get_account_transactions_not_allow_accounts(self):
         transactions: list[Transaction] = self.test_model.get_account_transactions(
-            "all", False)
+            FilterTransactionType.ALL, False)
         self.assertEqual(len(transactions), 0)
 
     def test_get_account_transactions_allow_accounts(self):
         transactions: list[Transaction] = self.test_model.get_account_transactions(
-            "all", True)
+            FilterTransactionType.ALL, True)
         self.assertEqual(len(transactions), 3)
 
     def test_get_account_transactions_all_filter(self):
         transactions: list[Transaction] = self.test_model.get_account_transactions(
-            "all", True)
+            FilterTransactionType.ALL, True)
         self.assertEqual(len(transactions), 3)
 
     def test_get_account_transactions_received_filter(self):
         transactions: list[Transaction] = self.test_model.get_account_transactions(
-            "received", True)
+            FilterTransactionType.RECEIVED, True)
         self.assertEqual(len(transactions), 2)
 
     def test_get_account_transactions_sent_filter(self):
         transactions: list[Transaction] = self.test_model.get_account_transactions(
-            "sent", True)
+            FilterTransactionType.SENT, True)
         self.assertEqual(len(transactions), 1)
