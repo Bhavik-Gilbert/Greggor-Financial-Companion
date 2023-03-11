@@ -23,7 +23,7 @@ def send_monthly_newsletter_email():
     User = get_user_model()
     users = User.objects.all()
     for user in users:
-        transactions = fc_models.Transaction.get_transactions_from_time_period(
+        transactions = fcmodels.Transaction.get_transactions_from_time_period(
             Timespan.MONTH, user)
         targets = user.get_number_of_completed_targets
         context = {
