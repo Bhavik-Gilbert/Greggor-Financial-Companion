@@ -43,7 +43,7 @@ class Command(BaseCommand):
         self.create_user_groups()
         self.create_schedulers()
         print("SEEDING COMPLETE")
-    
+
     def create_schedulers(self):
         print(f'Seeding Scheduler Monthly Newsletter{30 * " "}', end='\r')
         create_monthly_newsletter_scheduler()

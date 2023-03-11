@@ -21,7 +21,7 @@ class RecurringTransactionSchedulerFunctionTestCase(SchedulerTestCase):
         self.assertEqual(scheduler.minutes, 1)
         self.assertEqual(scheduler.repeats, -1)
         self.assertEqual(scheduler.schedule_type, Schedule.DAILY)
-    
+
     def test_scheduler_object_not_created_twice(self):
         create_recurring_transactions_scheduler()
         before_count: int = Schedule.objects.count()
