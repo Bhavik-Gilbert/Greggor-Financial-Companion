@@ -7,8 +7,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('financial_companion', '0028_merge_20230309_1705'),
-        ('financial_companion',
-         '0028_rename_transaction_type_accounttarget_target_type_and_more'),
+        ('financial_companion', '0028_rename_transaction_type_accounttarget_target_type_and_more'),
     ]
 
     operations = [

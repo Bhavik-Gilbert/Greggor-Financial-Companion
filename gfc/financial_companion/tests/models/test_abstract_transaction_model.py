@@ -92,7 +92,7 @@ class AbstractTransactionModelTestCase(AbstractModelTestCase):
     def test_invalid_currency_type_may_not_be_blank(self):
         self.test_model.currency = ""
         self._assert_model_is_invalid()
-
+    
     def test_amount_is_valid_for_values_greater_than_0_01(self):
         self.test_model.amount = Decimal("0.01")
         self._assert_model_is_valid()
@@ -101,27 +101,18 @@ class AbstractTransactionModelTestCase(AbstractModelTestCase):
         self.test_model.amount = Decimal("0.00")
         self._assert_model_is_invalid()
 
-    def test_transaction_cannot_have_regular_account_for_sender_and_receiver(
-            self):
+    def test_transaction_cannot_have_regular_account_for_sender_and_receiver(self):
         user = User.objects.get(id=1)
-        test_sender_account = Account.objects.create(
-            name="Test sender", description="this is a test account", user=user)
-        test_receiver_account = Account.objects.create(
-            name="Test receiver", description="this is a test account", user=user)
+        test_sender_account = Account.objects.create(name = "Test sender", description =  "this is a test account", user=user)
+        test_receiver_account = Account.objects.create(name = "Test receiver", description =  "this is a test account", user=user)
         self.test_model.sender_account = test_sender_account
         self.test_model.receiver_account = test_receiver_account
         self._assert_model_is_invalid()
 
     def test_transaction_can_have_regular_account_for_sender_or_receiver(self):
         user = User.objects.get(id=1)
-        test_account1 = PotAccount.objects.create(
-            name="Test sender",
-            description="this is a test account",
-            user=user,
-            balance=10000,
-            currency="GBP")
-        test_account2 = Account.objects.create(
-            name="Test receiver", description="this is a test account", user=user)
+        test_account1 = PotAccount.objects.create(name = "Test sender", description =  "this is a test account", user=user, balance = 10000, currency = "GBP")
+        test_account2 = Account.objects.create(name = "Test receiver", description =  "this is a test account", user=user)
         self.test_model.sender_account = test_account1
         self.test_model.receiver_account = test_account2
         self._assert_model_is_valid()
