@@ -18,7 +18,6 @@ def view_user_pot_accounts(request: HttpRequest) -> HttpResponse:
         pk__in=user_bank_accounts_only)
     user_accounts_only = all_user_accounts.exclude(
         pk__in=all_user_pot_accounts)
-    
 
     targetsForMessages = request.user.get_all_account_targets(
         all_user_accounts)
