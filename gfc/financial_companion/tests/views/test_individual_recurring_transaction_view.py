@@ -42,7 +42,7 @@ class IndividualRecurringTransactionViewTestCase(ViewTestCase):
             self.transaction.receiver_account.name)
         self.assertContains(
             response,
-            self.transaction.interval.title)
+            self.transaction.interval.title())
 
     def test_invalid_recurring_transaction_does_not_exist(self):
         self._login(self.user)
