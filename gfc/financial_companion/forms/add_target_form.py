@@ -26,14 +26,14 @@ class TargetForm(forms.Form):
             self.fields['amount'].initial = self.instance.amount
             self.fields['currency'].initial = self.instance.currency
 
-    target_type = forms.ChoiceField(choices=TransactionType.choices)
-    timespan = forms.ChoiceField(choices=Timespan.choices)
-    amount = forms.DecimalField(decimal_places=2, max_digits=15)
-    currency = forms.ChoiceField(choices=CurrencyType.choices)
+    target_type: forms.ChoiceField = forms.ChoiceField(choices=TransactionType.choices)
+    timespan: forms.ChoiceField = forms.ChoiceField(choices=Timespan.choices)
+    amount: forms.ChoiceField = forms.DecimalField(decimal_places=2, max_digits=15)
+    currency: forms.ChoiceField = forms.ChoiceField(choices=CurrencyType.choices)
 
     def clean(self):
         super().clean()
-        filter_type_dict = {self.foreign_key_name.lower(): self.foreign_key}
+        filter_type_dict: dict = {self.foreign_key_name.lower(): self.foreign_key}
         check_unique_together = self.form_type.objects.filter(
             timespan=self.cleaned_data.get('timespan'),
             **filter_type_dict,
@@ -56,7 +56,7 @@ class TargetForm(forms.Form):
                 self.add_error('timespan', ValidationError(
                     f"This target can not be created as a target with the same timespan, transaction type and {self.foreign_key.__class__.__name__.lower()} exists"))
 
-    def save(self):
+    def save(self) -> AbstractTarget:
         self.full_clean()
         if self.instance is None:
             target = self.form_type()
@@ -64,10 +64,10 @@ class TargetForm(forms.Form):
         else:
             target: AbstractTarget = self.instance
 
-        target.target_type = self.cleaned_data.get('target_type')
-        target.timespan = self.cleaned_data.get('timespan')
-        target.amount = self.cleaned_data.get('amount')
-        target.currency = self.cleaned_data.get('currency')
+        target.target_type: str = self.cleaned_data.get('target_type')
+        target.timespan: Timespan = self.cleaned_data.get('timespan')
+        target.amount: float = self.cleaned_data.get('amount')
+        target.currency: str = self.cleaned_data.get('currency')
         target.save()
 
         return target
