@@ -1,8 +1,9 @@
 from json import dumps
 from currency_symbols import CurrencySymbols
 from currency_converter import CurrencyConverter
-from .enums import CurrencyType
-from datetime import datetime, timedelta
+from .enums import CurrencyType, Timespan
+from .maps import timespan_map
+from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -291,3 +292,18 @@ def convert_list_to_string(list_in):
             output += ","
         output += " and " + str(list_in[list_length - 1])
     return output
+
+def check_date_on_interval(interval: Timespan, base_date: date, current_date: date = date.today()) -> bool:
+    """Checks if current date is on an interval date with the base date"""
+    if base_date > current_date:
+        return False
+    interval_in_days: int = timespan_map[interval]
+    return ((current_date - base_date).days % interval_in_days) == 0
+
+def check_within_date_range(start_date: date, end_date: date, current_date: date = date.today()) -> bool:
+    """Checks if current date is within the time period"""
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
+    check_current_after_start: bool = current_date >= start_date
+    check_current_before_end: bool = current_date <= end_date
+    return check_current_before_end and check_current_after_start
