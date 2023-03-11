@@ -43,6 +43,15 @@
      object-fit: cover;
 }
 
+.table {
+  width: 100%;
+  min-width: 500px;
+}
+
+.container {
+  overflow-x: scroll;
+}
+
 /*!
  * Bootstrap  v5.3.0-alpha1 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors

@@ -86,4 +86,14 @@ $theme-colors: map-merge($theme-colors, $custom-theme-colors);
   object-fit: cover;
 }
 
+.table {
+  width: 100%;
+  min-width: 500px;
+}
+
+.container {
+  overflow-x: scroll;
+}
+
+
 @import "bootstrap/scss/bootstrap"

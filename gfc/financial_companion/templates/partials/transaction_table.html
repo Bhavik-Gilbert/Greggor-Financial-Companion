@@ -16,25 +16,27 @@
             </div>
           </form>
         </div>
-          &nbsp;
-        <table class="table table-bordered table-striped" style="width:100%" class="text-center" >
-          <thead class = "table-primary">
-            <tr>
-                <th scope="col" class="text-center">Transaction ID</th>
-                <th scope="col" class="text-center">Transaction Name</th>
-                <th scope="col" class="text-center">Value</th>
-                <th scope="col"></th>
-            </tr>
-          </thead>
-          {% for transaction in transactions %}
-            <tr class="text-center">
-              <td>{{ transaction.id}}</td>
-              <td>{{ transaction.title.title }}</td>
-              <td>{{ transaction.currency.upper }} {{ transaction.amount }} </td>
-              <td> <a href="{% url 'individual_transaction' pk=transaction.id%}" class="btn btn-primary justify-content-center">View Info</a</td>
-            </tr>
-          {% endfor %}
-        </table>
+        <br>
+        <div class="container p-0 mb-2">
+          <table class="table table-bordered table-striped text-center" >
+            <thead class = "table-primary">
+              <tr class="text-center">
+                  <th scope="col" class="col-1">ID</th>
+                  <th scope="col" class="col-auto">Transaction Name</th>
+                  <th scope="col" class="col-auto">Value</th>
+                  <th scope="col" class="col-2"></th>
+              </tr>
+            </thead>
+            {% for transaction in transactions %}
+              <tr class="text-center">
+                <td>{{ transaction.id}}</td>
+                <td>{{ transaction.title.title }}</td>
+                <td>{{ transaction.currency.upper }} {{ transaction.amount }} </td>
+                <td> <a href="{% url 'individual_transaction' pk=transaction.id%}" class="btn btn-sm btn-outline-primary justify-content-center">View Info</a</td>
+              </tr>
+            {% endfor %}
+          </table>
+        </div>
         {% include 'partials/pagination.html'  with page_obj=transactions %}
       </div>
     </div>
