@@ -7,17 +7,20 @@ $min-contrast-ratio: 2;
 $gold: #e4ad23;
 $silver: #c0c0c0;
 $bronze: #b8860b;
+$navy: #0D2237;
 
 $custom-colors: (
     "gold": $gold,
     "silver": $silver,
     "bronze": $bronze,
+    "navy": $navy,
 );
 
 $custom-theme-colors : (
     "gold": $gold,
     "silver": $silver,
     "bronze": $bronze,
+    "navy": $navy,
 );
 
 @import "bootstrap/scss/_functions";
@@ -76,10 +79,11 @@ $theme-colors: map-merge($theme-colors, $custom-theme-colors);
 
 .limit img {
   background: url( path-to-image ) 50% 50%;
+  width: 100%;
   height: 100%;
-  max-width: 230px;
-  max-height: 230px;
+  aspect-ratio: initial;
+  overflow: hidden;
+  object-fit: cover;
 }
-  
 
 @import "bootstrap/scss/bootstrap"
