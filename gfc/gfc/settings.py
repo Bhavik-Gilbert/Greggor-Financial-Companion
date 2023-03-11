@@ -196,3 +196,6 @@ Q_CLUSTER = {
     'workers': 4,
     'orm': 'default'
 }
+
+# Site url
+SITE_URL_SPENDING_PAGE = "http://localhost:8000/spending_summary"

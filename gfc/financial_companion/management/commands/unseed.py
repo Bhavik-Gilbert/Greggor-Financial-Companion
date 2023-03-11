@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
+from django_q.models import Schedule
 from financial_companion.models import (
     User,
     Account, PotAccount, BankAccount,
@@ -61,3 +62,4 @@ class Command(BaseCommand):
             group.delete()
 
         users.delete()
+        Schedule.objects.all().delete()

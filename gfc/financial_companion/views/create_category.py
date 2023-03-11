@@ -31,7 +31,7 @@ def create_category_view(request: HttpRequest) -> HttpResponse:
         form = CategoryForm(request.POST)
         if form.is_valid():
             user = form.save(request.user)
-            return redirect('dashboard')
+            return redirect("categories_list", search_name="all")
     else:
         form = CategoryForm()
     return render(request, "pages/create_category.html",
