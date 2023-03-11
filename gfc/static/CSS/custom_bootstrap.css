@@ -48,8 +48,12 @@
   min-width: 500px;
 }
 
-.container {
+.container.container-scrollableX {
   overflow-x: scroll;
+}
+
+.container.container-scrollableY {
+  overflow-y: scroll;
 }
 
 /*!
