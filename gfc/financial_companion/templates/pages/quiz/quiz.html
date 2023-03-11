@@ -34,7 +34,7 @@
 
     <br><br>
 
-    <form method="POST" class="col-12 text-center">
+    <form method="POST" class="col-12 text-center mb-3">
         {% csrf_token %}
         <h3 class="col-md-auto">Scores</h3>
         <div class="row justify-content-center g-5">
@@ -50,15 +50,8 @@
         </div>
     </form>
     
-    <br>
-
     {% if quiz_scores %}
-        {% if score_order_type == score_list_order_types.HIGHEST %}
-            <h4>Highest</h4>
-        {% elif score_order_type == score_list_order_types.RECENT %}
-            <h4>Recent</h4>
-        {% endif %}
-        {% include 'partials/quiz/quiz_scores_table.html'  with quiz_scores=quiz_scores %}
+        {% include 'partials/quiz/quiz_scores_table.html' with quiz_scores=quiz_scores %}
     {% else %}
         {% include "partials/dashboard/no_content.html" with content_type_plural="quiz results" %}
     {% endif %}
