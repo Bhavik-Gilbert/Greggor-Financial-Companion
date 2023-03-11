@@ -63,6 +63,7 @@ class Command(BaseCommand):
             group.delete()
 
         users.delete()
+
         Schedule.objects.all().delete()
 
         print("UNSEEDING COMPLETE")
