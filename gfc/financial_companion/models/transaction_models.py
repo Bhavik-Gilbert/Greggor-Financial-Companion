@@ -10,11 +10,18 @@ from django.db.models import (
     ManyToManyField,
     CASCADE, SET_NULL
 )
+
+from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .accounts_model import Account, PotAccount
 from .category_model import Category
 from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, TransactionType
 import datetime
 import os
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
+from decimal import Decimal
+from django.db.models import Q
 
 
 def change_filename(instance, filename):
@@ -48,6 +55,7 @@ class AbstractTransaction(Model):
         blank=False,
         decimal_places=2,
         max_digits=15,
+        validators=[MinValueValidator(Decimal('0.01'))]
     )
 
     currency: CharField = CharField(
@@ -60,10 +68,23 @@ class AbstractTransaction(Model):
         Account,
         on_delete=CASCADE,
         related_name="sender_account%(app_label)s_%(class)s_related")
+
     receiver_account = ForeignKey(
         Account,
         on_delete=CASCADE,
         related_name="reciever%(app_label)s_%(class)s_related")
+
+    def clean(self):
+        super().clean()
+        try:
+            self.sender_account and self.receiver_account
+            check_accounts = PotAccount.objects.filter(
+                Q(id=self.sender_account.id) | Q(id=self.receiver_account.id)).count() > 0
+            if not check_accounts:
+                raise ValidationError(
+                    "Both sender and receiver accounts cannot be non monetary accounts")
+        except ObjectDoesNotExist:
+            return "either sender or receiver account does not exist"
 
     class Meta:
         abstract = True
@@ -121,6 +142,56 @@ class Transaction(AbstractTransaction):
 
     class Meta:
         ordering = ['-time_of_transaction']
+
+    def _update_account_balances(self):
+        check_object_exists = Transaction.objects.filter(
+            id=self.id).count() > 0
+        send_amount = -self.amount
+        receive_amount = self.amount
+
+        if check_object_exists:
+            database_transaction = Transaction.objects.get(id=self.id)
+
+            if database_transaction.sender_account.id == self.sender_account.id:
+                send_amount = database_transaction.amount - \
+                    Decimal(self.amount)
+            else:
+                database_sender_account = Account.objects.get_subclass(
+                    id=database_transaction.sender_account.id)
+                if isinstance(database_sender_account, PotAccount):
+                    database_sender_account.update_balance(
+                        database_transaction.amount, database_transaction.currency)
+
+            if database_transaction.receiver_account.id == self.receiver_account.id:
+                receive_amount = Decimal(
+                    self.amount) - database_transaction.amount
+            else:
+                database_receiver_account = Account.objects.get_subclass(
+                    id=database_transaction.receiver_account.id)
+                if isinstance(database_receiver_account, PotAccount):
+                    database_receiver_account.update_balance(
+                        -database_transaction.amount, database_transaction.currency)
+
+        sender_account = Account.objects.get_subclass(
+            id=self.sender_account.id)
+        receiver_account = Account.objects.get_subclass(
+            id=self.receiver_account.id)
+
+        if isinstance(sender_account, PotAccount):
+            sender_account.update_balance(send_amount, self.currency)
+        if isinstance(receiver_account, PotAccount):
+            receiver_account.update_balance(receive_amount, self.currency)
+
+    def save(self, *args, **kwargs):
+        self._update_account_balances()
+        super().save(*args, **kwargs)
+
+
+@receiver(pre_delete, sender=Transaction,
+          dispatch_uid='delete_transaction_signal')
+def delete_transaction(sender, instance, **kwargs):
+    instance.amount = 0
+    instance._update_account_balances()
 
 
 class RecurringTransaction(AbstractTransaction):

@@ -32,6 +32,10 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
 def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
     try:
         transaction = Transaction.objects.get(id=pk)
+        user = request.user
+        if (transaction.receiver_account.user !=
+                user and transaction.sender_account.user != user):
+            return redirect('dashboard')
     except ObjectDoesNotExist:
         messages.add_message(
             request,
@@ -39,7 +43,6 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
             "The transaction can not be deleted.")
         return redirect('view_transactions', filter_type="all")
     else:
-        user = request.user
         if request.method == 'POST':
             form = AddTransactionForm(
                 user, request.POST, request.FILES, instance=transaction)
