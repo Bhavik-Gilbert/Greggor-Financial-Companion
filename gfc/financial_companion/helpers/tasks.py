@@ -10,8 +10,8 @@ from django.conf import settings
 from datetime import date, timedelta
 import financial_companion.models as fcmodels
 from financial_companion.helpers import (
-    get_number_of_days_in_prev_month, 
-    timespan_map, 
+    get_number_of_days_in_prev_month,
+    timespan_map,
     check_date_on_interval,
     check_within_date_range
 )
@@ -54,12 +54,15 @@ def add_interest_to_bank_accounts():
             ((1 + (account.interest_rate / 365))**no_of_days_in_prev_month)
         account.save()
 
+
 def create_transaction_via_recurring_transactions():
     """Goes through all recurring transactions and creates a transaction if its in the given interval"""
     current_date: date = date.today()
     for recurring_transaction in fcmodels.RecurringTransaction.objects.all():
-        check_current_in_date_range: bool = check_within_date_range(recurring_transaction.start_date, recurring_transaction.end_date, current_date)
-        check_current_on_interval: bool = check_date_on_interval(recurring_transaction.interval, recurring_transaction.start_date, current_date)
+        check_current_in_date_range: bool = check_within_date_range(
+            recurring_transaction.start_date, recurring_transaction.end_date, current_date)
+        check_current_on_interval: bool = check_date_on_interval(
+            recurring_transaction.interval, recurring_transaction.start_date, current_date)
         if check_current_in_date_range and check_current_on_interval:
             transaction: fcmodels.Transaction = fcmodels.Transaction.objects.create(
                 title=recurring_transaction.title,

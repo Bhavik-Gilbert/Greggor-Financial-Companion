@@ -293,14 +293,18 @@ def convert_list_to_string(list_in):
         output += " and " + str(list_in[list_length - 1])
     return output
 
-def check_date_on_interval(interval: Timespan, base_date: date, current_date: date = date.today()) -> bool:
+
+def check_date_on_interval(
+        interval: Timespan, base_date: date, current_date: date = date.today()) -> bool:
     """Checks if current date is on an interval date with the base date"""
     if base_date > current_date:
         return False
     interval_in_days: int = timespan_map[interval]
     return ((current_date - base_date).days % interval_in_days) == 0
 
-def check_within_date_range(start_date: date, end_date: date, current_date: date = date.today()) -> bool:
+
+def check_within_date_range(
+        start_date: date, end_date: date, current_date: date = date.today()) -> bool:
     """Checks if current date is within the time period"""
     if start_date > end_date:
         start_date, end_date = end_date, start_date
