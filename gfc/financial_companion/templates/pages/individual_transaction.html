@@ -29,7 +29,9 @@
   <li class="list-group-item"><strong>Time of Transaction:  </strong>{{transaction.time_of_transaction}}</li>
 {% endblock %}
 
-{% block additional_items %}{% include "partials/view_models/model_photo.html" with picture=transaction.image name=transaction%}{% endblock %}
+{% block additional_items %}
+  {% include "partials/view_models/model_photo.html" with picture=transaction.image name=transaction%}
+{% endblock %}
 
 {% block view_model_objects_URL %}{% url 'view_transactions_redirect' %}{% endblock %}
 {% block view_model_objects_text %}View All Transactions{% endblock %}
