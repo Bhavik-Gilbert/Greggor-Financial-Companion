@@ -5,24 +5,29 @@
 
 <!-- Content -->
 {% block content %}
-
-    <div class="row g-5 justify-content-center">
-      <div class="col-7">
-        <div class="row mb-3">
-          {% include 'partials/dashboard/welcome.html'%}
-        </div>
-        <div class="row mb-3">
-          {% include 'partials/dashboard/account_projection_graph_card.html' with savings_accounts=savings_accounts%}
+  <div class="container p-0">
+    <div class="row g-3 justify-content-center">
+      <div class="col-lg-7 col-12">
+        <div class="row g-3">
+          <div class="col-12">
+            {% include 'partials/dashboard/welcome.html'%}
+          </div>
+          <div class="col-12"> 
+            {% include 'partials/dashboard/account_projection_graph_card.html' with savings_accounts=savings_accounts%}
+          </div>
         </div>
       </div>
-      <div class="col-5">
-        <div class="row mb-3">
-          {% include 'partials/dashboard/accounts.html'%}
+      <div class="col-lg-5 col-12">
+        <div class="row g-3">
+          <div class="col-12">
+            {% include 'partials/dashboard/accounts.html'%}
+          </div>
+          <div class="col-12">
+            {% include 'partials/dashboard/recent-transactions.html'%}
+          </div>
         </div>
-        <div class="row mb-3">
-          {% include 'partials/dashboard/recent-transactions.html'%}
         </div>
       </div>
     </div>
-
+  </div>
 {% endblock %}

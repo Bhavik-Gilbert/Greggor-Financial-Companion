@@ -27,8 +27,8 @@
     {% include 'partials/target.html' with targets=category_targets edit_url='edit_category_target' delete_url='delete_category_target' %}
 {% endblock %}
 
-{% block view_model_objects_URL %}{% url 'all_groups_redirect' %}{% endblock %}
-{% block view_model_objects_text %}Go To Dashboard{% endblock %}
+{% block view_model_objects_URL %}{% url 'categories_list_redirect' %}{% endblock %}
+{% block view_model_objects_text %}View All Categories{% endblock %}
 
 {% block further_content %}
     {% include 'partials/transaction_table.html' with transactions=transactions redirect_name="individual_category" pk=category.id %}

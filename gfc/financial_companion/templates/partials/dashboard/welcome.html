@@ -1,14 +1,20 @@
 {% load static %}
 
 <div class="card text-bg-primary">
-  <div class="row g-0">
-    <div class="col-md-4 my-auto">
-      <img src="{% static 'greggor/greggor-party.png' %}" alt="Greggor" style="max-height:180px; max-width: 100%;" class="d-inline-block align-text-top"></img>
+  <div class="row g-0 text-center">
+    <div class="col-lg-4 col-md-12 my-auto">
+      <img src="{% static 'greggor/greggor-party.png' %}" alt="Greggor" style="max-height:180px; max-width: 100%;"></img>
     </div>
-    <div class="col-md-8 my-auto">
+    <div class="col-lg col-md-12 my-auto ">
       <div class="card-body">
-        <h2 class="card-title">Welcome, {{user.full_name}}</h2>
-        <p class="card-text" style="font-size:1.3em">This is Greggor, your financial companion</p><p></p>
+        <div class="row">
+          <div class="col-lg-auto col-sm-12">
+            <h2 class="card-title">Welcome, {{user.full_name}}</h2>
+          </div>
+          <div class="col-lg-auto col-sm-12">
+            <p class="card-text">This is Greggor, your financial companion</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

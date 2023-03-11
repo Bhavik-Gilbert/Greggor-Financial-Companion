@@ -10,6 +10,7 @@ from financial_companion.models import (
     QuizSet,
     UserGroup
 )
+from django_q.models import Schedule
 
 """ Unseeder CLass to clear all objects from Database"""
 
@@ -62,4 +63,7 @@ class Command(BaseCommand):
             group.delete()
 
         users.delete()
+
         Schedule.objects.all().delete()
+
+        print("UNSEEDING COMPLETE")
