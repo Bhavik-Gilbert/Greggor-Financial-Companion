@@ -11,7 +11,7 @@ from financial_companion.models import User, PotAccount, Account
 
 
 class ParseStatementPDFClassTestCase(HelperTestCase):
-    """Test for the parse statement pdf helpers class"""
+    """Test file for the parse statement pdf helpers class"""
 
     def setUp(self):
         self.bank_statement_parser: ParseStatementPDF = ParseStatementPDF()

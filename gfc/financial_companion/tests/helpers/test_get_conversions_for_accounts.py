@@ -5,7 +5,7 @@ from typing import Any
 
 
 class GetConversionsForAccountsHelperFunctionTestCase(HelperTestCase):
-    """Test for the get_conversions_for_accounts helpers function"""
+    """Test file for the get_conversions_for_accounts helpers function"""
 
     def _assert_get_conversions_for_accounts(
             self, bank_accounts: list[BankAccount], currency_code: str):

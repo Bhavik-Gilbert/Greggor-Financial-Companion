@@ -7,7 +7,7 @@ import datetime
 
 class GetSortedMembersBasedOnCompletedTargetsHelperFunctionTestCase(
         HelperTestCase):
-    """Test for the get_sorted_members_based_on_completed_targets helpers function"""
+    """Test file for the get_sorted_members_based_on_completed_targets helpers function"""
 
     def setUp(self):
         self.group = UserGroup.objects.get(id=3)

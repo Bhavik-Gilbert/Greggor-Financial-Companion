@@ -6,7 +6,7 @@ from django.http import HttpRequest
 
 
 class GetWarningMessagesForTargetsHelperFunctionTestCase(HelperTestCase):
-    """Test for the get_warning_messages_for_targets helpers function"""
+    """Test file for the get_warning_messages_for_targets helpers function"""
 
     def setUp(self):
         self.request = self.client.get('dashboard').wsgi_request
