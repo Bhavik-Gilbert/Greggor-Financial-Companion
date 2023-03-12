@@ -1,5 +1,5 @@
 from django import forms
-from financial_companion.models import PotAccount, RecurringTransaction
+from financial_companion.models import PotAccount, RecurringTransaction, Account
 from datetime import datetime
 from django.utils.timezone import make_aware
 from typing import Any

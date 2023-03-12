@@ -5,7 +5,7 @@
 
 <!-- Content -->
 {% block content %}
-  <div align="center">
+  <div class="text-center">
     <h1>Start Quiz</h1>
 
     <br>
@@ -13,10 +13,12 @@
     {% include 'partials/quiz/quiz_about_info.html' %}
 
     <br><br>
-
-    <div class="container-fluid row gy-3">
-        <a href="{% url 'quiz_questions' pk=quiz_set.id %}" class="btn btn-primary col-12">Start Quiz</a>
-        <a href="{% url 'quiz' %}" class="btn btn-danger col-12">Leave Quiz</a>
+    <div class="row">
+      <div class="row gy-1 justify-content-center">
+          <a href="{% url 'quiz_questions' pk=quiz_set.id %}" class="btn btn-lg btn-primary col-auto">Start Quiz</a>
+      <div class="row gy-1 justify-content-center">
+          <a href="{% url 'quiz' %}" class="btn btn btn-outline-danger col-auto">Leave Quiz</a>
+      </div>
     </div>
   </div>
 {% endblock %}
