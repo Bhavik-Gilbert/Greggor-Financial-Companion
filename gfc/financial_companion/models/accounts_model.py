@@ -119,10 +119,9 @@ class Account(Model):
             account: list[Account] = Account.objects.get_subclass(
                 name=account_name, user=user)
         except Exception:
-            account = Account.create_basic_account(account_name,user)
+            account = Account.create_basic_account(account_name, user)
 
         return account
-        
 
 
 class PotAccount(Account):

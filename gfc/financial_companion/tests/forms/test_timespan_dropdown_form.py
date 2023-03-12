@@ -3,10 +3,11 @@ from financial_companion.forms import TimespanOptionsForm
 from .test_form_base import FormTestCase
 from django.test import TestCase
 
+
 class TimeSpanDropDownFormTestCase(FormTestCase):
     """Unit tests of the time span drop down form"""
 
-    def setUp(self): 
+    def setUp(self):
         self.form_input = {
             "time_choice": "day"
         }
@@ -26,7 +27,3 @@ class TimeSpanDropDownFormTestCase(FormTestCase):
         self.form_input['time_choice'] = ''
         form = TimespanOptionsForm(data=self.form_input)
         self.assertFalse(form.is_valid())
-    
-
-
-

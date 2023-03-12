@@ -8,6 +8,7 @@ from ..forms import MonetaryAccountForm
 from ..models import PotAccount, User, Account, BankAccount
 from django.contrib import messages
 
+
 @login_required
 def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
     """View to add monetary account"""
@@ -48,9 +49,9 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
             id=pk, user=request.user.id)
     except Exception:
         messages.add_message(
-        request,
-        messages.ERROR,
-        "This account can not be edited")
+            request,
+            messages.ERROR,
+            "This account can not be edited")
         return redirect("view_accounts")
 
     this_bank_account_list: list[BankAccount] = BankAccount.objects.filter(

@@ -95,7 +95,7 @@ class EditTransactionViewTestCase(ViewTestCase):
             status_code=302,
             target_status_code=200)
         self.assertTemplateUsed(response, 'pages/display_transactions.html')
-    
+
     def test_someone_elses_transaction_id_given(self):
         self._login(self.user)
         invalid_url = reverse('edit_transaction', kwargs={'pk': 9})

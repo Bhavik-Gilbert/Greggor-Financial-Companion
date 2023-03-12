@@ -16,9 +16,9 @@ def create_target(request, Target, current_item):
         if form.is_valid():
             form.save()
             messages.add_message(
-        request,
-        messages.SUCCESS,
-        "Target created successfully!")
+                request,
+                messages.SUCCESS,
+                "Target created successfully!")
             return None
     else:
         form = TargetForm(foreign_key=current_item, form_type=Target)
@@ -90,9 +90,9 @@ def edit_target(request, Target, current_item, foreign_key):
             instance=current_item,
             form_type=Target)
         if form.is_valid():
-    
-                form.save()
-                return None
+
+            form.save()
+            return None
     else:
 
         form = TargetForm(

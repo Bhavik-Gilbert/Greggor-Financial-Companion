@@ -3,7 +3,7 @@ from .test_model_base import ModelTestCase
 from django.db.models.base import ModelBase
 from django.utils import timezone
 from decimal import Decimal
-from financial_companion.models.transaction_models import  change_filename
+from financial_companion.models.transaction_models import change_filename
 from ...helpers import CurrencyType
 from ...models import AbstractTransaction, Transaction, User
 from financial_companion.helpers.enums import Timespan
@@ -12,7 +12,6 @@ from financial_companion.helpers.enums import Timespan, CurrencyType
 from financial_companion.models import Transaction, User, PotAccount, User
 from freezegun import freeze_time
 from decimal import Decimal
-
 
 
 class TransactionModelTestCase(ModelTestCase):
@@ -104,10 +103,12 @@ class TransactionModelTestCase(ModelTestCase):
     def test_time_of_transaction_auto_adds_time_if_blank(self):
         self.test_model.time_of_transaction = ""
         self._assert_model_is_valid()
-    
+
     def test_change_filename(self):
-        self.transaction = Transaction.objects.get(id = 2)
-        self.assertFalse(change_filename(self.transaction,"test").find("transactions"),  -1)
+        self.transaction = Transaction.objects.get(id=2)
+        self.assertFalse(
+            change_filename(
+                self.transaction, "test").find("transactions"), -1)
 
     def test_sender_account_balance_decreases_on_create_transaction(self):
         self._assert_balance_changes_on_transaction_created(
@@ -210,4 +211,3 @@ class TransactionModelTestCase(ModelTestCase):
             self.new_receiver_account_balance_before,
             self.new_receiver_account_balance_after -
             self.transaction_model.amount)
-

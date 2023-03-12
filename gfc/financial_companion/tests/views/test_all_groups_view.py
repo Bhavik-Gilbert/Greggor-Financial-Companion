@@ -65,8 +65,9 @@ class AllGroupsViewCase(ViewTestCase):
         self.assertNotContains(response, "SavingsRUs")
         self.assertNotContains(response, "Fun savers")
         self.assertContains(response, "You have no groups yet")
-    
-    def test_view_redirects_when_search_button_pressed_for_valid_search_name(self):
+
+    def test_view_redirects_when_search_button_pressed_for_valid_search_name(
+            self):
         self.form_data = {
             'search': True
         }
@@ -76,8 +77,9 @@ class AllGroupsViewCase(ViewTestCase):
                 'search_name': "Spending Club"})
         response = self.client.post(self.url, self.form_data)
         self.assertEqual(response.status_code, 302)
-    
-    def test_view_redirects_when_search_button_pressed_for_invalid_search_name(self):
+
+    def test_view_redirects_when_search_button_pressed_for_invalid_search_name(
+            self):
         self.form_data = {
             'search': ""
         }

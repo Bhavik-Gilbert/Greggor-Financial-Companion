@@ -121,8 +121,9 @@ class UserGroupModelTestCase(ModelTestCase):
         self.test_model.add_member(self.first_user)
         members = self.test_model.get_members()
         self.assertTrue(str(self.first_user) in members)
-    
-    def test_change_filename(self):
-        self.user_group = UserGroup.objects.get(id = 1)
-        self.assertFalse(change_filename(self.user_group,"test").find("group_profile"),  -1)
 
+    def test_change_filename(self):
+        self.user_group = UserGroup.objects.get(id=1)
+        self.assertFalse(
+            change_filename(
+                self.user_group, "test").find("group_profile"), -1)

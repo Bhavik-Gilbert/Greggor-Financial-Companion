@@ -51,12 +51,14 @@ class AccountTargetModelTestCase(ModelTestCase):
     @freeze_time("2025-01-01 13:00:00")
     def test_valid_target_is_complete_when_not_complete(self):
         self.assertEqual(self.test_model.is_complete(), False)
-    
-    def test_get_model_name_function_when_plural_is_false(self)-> None:
-        self.assertEquals(self.test_model.getModelName(),"account")
-    
-    def test_get_model_name_function_when_plural_is_true(self)-> None:
-        self.assertEquals(self.test_model.getModelName(plural=True),"accounts")
 
-    def test_get_str_function(self)-> None:
-        self.assertEquals(self.test_model.__str__(),"ghi")
+    def test_get_model_name_function_when_plural_is_false(self) -> None:
+        self.assertEquals(self.test_model.getModelName(), "account")
+
+    def test_get_model_name_function_when_plural_is_true(self) -> None:
+        self.assertEquals(
+            self.test_model.getModelName(
+                plural=True), "accounts")
+
+    def test_get_str_function(self) -> None:
+        self.assertEquals(self.test_model.__str__(), "ghi")

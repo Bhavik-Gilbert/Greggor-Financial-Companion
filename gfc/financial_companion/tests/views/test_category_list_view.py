@@ -74,8 +74,9 @@ class CategoryListViewCase(ViewTestCase):
         self.assertNotContains(response, 'Entertainment')
         self.assertNotContains(response, 'Going out and having fun')
         self.assertContains(response, "You have no categories yet")
-    
-    def test_view_redirects_when_search_button_pressed_for_valid_search_name(self):
+
+    def test_view_redirects_when_search_button_pressed_for_valid_search_name(
+            self):
         self.form_data = {
             'search': True
         }
@@ -83,8 +84,9 @@ class CategoryListViewCase(ViewTestCase):
         self.url = reverse('categories_list', kwargs={'search_name': "Food"})
         response = self.client.post(self.url, self.form_data)
         self.assertEqual(response.status_code, 302)
-    
-    def test_view_redirects_when_search_button_pressed_for_invalid_search_name(self):
+
+    def test_view_redirects_when_search_button_pressed_for_invalid_search_name(
+            self):
         self.form_data = {
             'search': ""
         }

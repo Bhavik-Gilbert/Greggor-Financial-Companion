@@ -344,7 +344,9 @@ class UserModelTestCase(ModelTestCase):
     def test_get_leaderboard_score_after_year(self):
         score = self.test_model.get_leaderboard_score()
         self.assertTrue(score == 0)
-    
+
     def test_change_filename(self):
-        self.user = User.objects.get(id = 1)
-        self.assertFalse(change_filename(self.user,"test").find("user_profile"),  -1)
+        self.user = User.objects.get(id=1)
+        self.assertFalse(
+            change_filename(
+                self.user, "test").find("user_profile"), -1)
