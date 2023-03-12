@@ -4,7 +4,7 @@ from financial_companion.forms import TargetForm
 from django.contrib.auth.decorators import login_required
 from ..models import Category, CategoryTarget, PotAccount, AccountTarget, UserTarget
 from django.contrib import messages
-from financial_companion.models import CategoryTarget, Category
+from financial_companion.models import CategoryTarget, Category, User
 import re
 
 
@@ -249,3 +249,25 @@ def delete_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
         messages.WARNING,
         "This user target has been deleted")
     return redirect("dashboard")
+
+@login_required
+def all_targets_view(request: HttpRequest) -> HttpResponse:
+    """View to allow users to view all their targets"""
+    targets = request.user.get_all_targets()
+    return render(request, "partials/target_table.html",
+                  {'targets': targets})
+
+@login_required
+def filter_transaction_request(request, redirect_name: str):
+    if 'account' in request.POST:
+        return redirect(reverse(redirect_name, kwargs={'filter_type': "account"}))
+    elif 'category' in request.POST:
+        return redirect(reverse(redirect_name, kwargs={
+                        'filter_type': "category"}))
+    elif 'user' in request.POST:
+        return redirect(reverse(redirect_name, kwargs={
+                        'filter_type': "user"}))
+    elif 'all' in request.POST:
+        return redirect(reverse(redirect_name, kwargs={'filter_type': "all"}))
+    else:
+        return redirect('dashboard')

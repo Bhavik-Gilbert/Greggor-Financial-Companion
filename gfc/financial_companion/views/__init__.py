@@ -19,7 +19,7 @@ from .change_password import change_password_view
 from .quiz_view import quiz_view, quiz_question_view, quiz_ready_view, quiz_score_view
 from .create_user_group import create_user_group_view, delete_user_group_view, edit_user_group_view
 from .view_groups import all_groups_view, all_groups_redirect
-from .create_target_view import create_category_target_view, edit_category_target_view, create_account_target_view, create_user_target_view, edit_account_target_view, edit_user_target_view, delete_user_target_view, delete_account_target_view, delete_category_target_view
+from .create_target_view import create_category_target_view, edit_category_target_view, create_account_target_view, create_user_target_view, edit_account_target_view, edit_user_target_view, delete_user_target_view, delete_account_target_view, delete_category_target_view, all_targets_view
 from .join_user_group import join_user_group_view
 from .view_savings_accounts import view_savings_accounts
 from .remove_user_from_user_group import remove_user_from_user_group_view

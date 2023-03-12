@@ -15,7 +15,7 @@ import os
 import datetime
 from random import randint, random
 import random
-from financial_companion.helpers import TransactionType, CurrencyType, MonetaryAccountType, Timespan, get_random_invite_code
+from financial_companion.helpers import TransactionType, CurrencyType, AccountType, Timespan, get_random_invite_code
 from financial_companion.scheduler import create_monthly_newsletter_scheduler
 
 
