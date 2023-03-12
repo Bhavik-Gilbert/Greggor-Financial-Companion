@@ -170,8 +170,6 @@ class TransactionModelTestCase(ModelTestCase):
         self.assertEqual(len(Transaction.get_category_splits(
             Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user))), 1)
 
-<<<<<<< HEAD
-=======
     def test_account_balances_change_on_change_sender_account(self):
         self.transaction_model.save()
 
@@ -212,4 +210,4 @@ class TransactionModelTestCase(ModelTestCase):
             self.new_receiver_account_balance_before,
             self.new_receiver_account_balance_after -
             self.transaction_model.amount)
->>>>>>> master
+
