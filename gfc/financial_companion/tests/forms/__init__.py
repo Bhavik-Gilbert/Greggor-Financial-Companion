@@ -14,3 +14,4 @@ from .test_quiz_question_form import QuizQuestionFormTestCase
 from .test_add_recurring_transaction_form import AddRecurringTransactionFormTestCase
 from .test_create_user_group_form import CreateUserGroupFormTestCase
 from .test_user_change_password_form import UserChangePasswordFormTestCase
+from .test_timespan_dropdown_form import TimeSpanDropDownFormTestCase
