@@ -116,22 +116,13 @@ class Account(Model):
     def get_or_create_account(account_name: str, user: User):
         """Returns account if it exists or creates a new one"""
         try:
-            accounts_list: list[Account] = Account.objects.filter(
-                name=account_name).select_subclasses()
-            get_account: Account = None
-
-            for account in accounts_list:
-                if (account.__class__ == Account) or (
-                        account.__class__ == PotAccount and account.user == user):
-                    get_account = account
-                    break
-
-            if get_account is None:
-                get_account = Account.create_basic_account(account_name, user)
-
-            return get_account
+            account: list[Account] = Account.objects.get_subclass(
+                name=account_name, user=user)
         except Exception:
-            return None
+            account = Account.create_basic_account(account_name,user)
+
+        return account
+        
 
 
 class PotAccount(Account):

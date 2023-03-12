@@ -111,4 +111,7 @@ class AbstractTargetModelTestCase(AbstractModelTestCase):
     
     def test_get_model_name_function_when_plural_is_true(self)-> None:
         self.assertEquals(self.test_model.getModelName(plural=True),"targets")
+    
+    def test_get_str_function(self)-> None:
+        self.assertEquals(self.test_model.__str__(),"target")
         
