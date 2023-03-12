@@ -107,5 +107,20 @@
             "receiver_account" : 5,
             "time_of_transaction" : "2023-01-01T12:00:00+00:00"
         }
+    },
+    {
+        "model": "financial_companion.Transaction",
+        "pk": 9,
+        "fields": {
+            "title": "old phone",
+            "description": "sold old phone",
+            "image": "transactions/23.jpg",
+            "category" : 1,
+            "amount" : 499.99,
+            "currency" : "USD",
+            "sender_account" : 4,
+            "receiver_account" : 5,
+            "time_of_transaction" : "2023-01-01T12:00:00+00:00"
+        }
     }
 ]

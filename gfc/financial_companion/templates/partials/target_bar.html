@@ -3,42 +3,15 @@
 {% load maths %}
 
 <div class="row g-2">
-  <p>Overall Greggor Mood:</p>
-  {% with overall_greggor=targets|get_greggor_for_overall_completeness %}
+  <div class="card">
+  <h4 class="card-title">Overall Greggor Mood:</h4>
+  {% with overall_greggor=targets|get_greggor_type_for_overall_completeness %}
     {% include 'partials/greggor_logo.html' with greggor_type=overall_greggor%}
+  </div>
   {% for target in targets %}
-    {% with completeness=target|get_completeness %}
-      {% with type_of_greggor=completeness|get_greggor_type_from_completeness %}
-      <div class="row-12 row-md-12">
-        <div class="col-12 col-md-12">
-          <div class="card">
-            <div class="card-body">
-              <div class="row">
-                <div class="col-12 col-md-12">
-                  <span style="float:right;">
-                    {% include 'partials/greggor_logo.html' with height=50 greggor_type=type_of_greggor%}
-                  </span>
-                  <p style="text-align:left;">
-                    <h4 class="card-title">{{target.transaction_type.capitalize}}</h4>
-                </p>
-                </div>
-              </div>
-              {% if completeness >= 100 %}
-                <div class="progress" role="progressbar" aria-label="Default striped example" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-                  <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" style="width: {{completeness}}%">{{completeness}}%</div>
-                </div>
-              {% else %}
-                <div class="progress" role="progressbar" aria-label="Default striped example" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-                  <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: {{completeness}}%">{{completeness}}%</div>
-                </div>
-              {% endif %}
-              <p class="card-text-end">Goal Amount: {{target.currency.upper}} {{target.amount}}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      {% endwith %}
-    {% endwith %}
+  <div class="row-12 row-md-12">
+      {% include 'partials/target_card.html' with target=target%}
+  </div>
   {% endfor %}
   {% endwith %}
 </div>

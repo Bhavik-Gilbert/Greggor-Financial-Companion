@@ -11,9 +11,10 @@ register = template.Library()
 @register.filter
 def get_greggor(greggor_type: str = ""):
     """Returns the filepath for the wanted greggor logo"""
+
     base_path: str = os.path.join("greggor", "greggor-")
     greggor_type: str = greggor_type.lower()
-    # print(greggor_type)
+
     if len(greggor_type) != 0 and greggor_type in iter(GreggorTypes):
         return f"{base_path}{greggor_type}.png"
 
@@ -31,6 +32,8 @@ def get_greggor(greggor_type: str = ""):
 
 @register.filter
 def get_greggor_type_from_completeness(completeness):
+    """Returns the desired type of greggor based on the level of completeness of a target"""
+
     if completeness >= 100:
         return "party"
     elif completeness < 50:
@@ -39,7 +42,8 @@ def get_greggor_type_from_completeness(completeness):
         return "normal"
 
 @register.filter
-def get_greggor_for_overall_completeness(targets):
+def get_greggor_type_for_overall_completeness(targets):
+    """Returns the desired type of greggor based on the average completeness of all the targets"""
+
     overall_completeness = get_overall_completeness(targets)
-    greggor_type = get_greggor_type_from_completeness(overall_completeness)
-    return get_greggor(greggor_type)
+    return get_greggor_type_from_completeness(overall_completeness)

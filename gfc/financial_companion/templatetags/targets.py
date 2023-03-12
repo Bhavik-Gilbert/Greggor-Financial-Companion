@@ -35,6 +35,8 @@ def get_completeness(current):
         return round(0, 2)
     else:
         completeness = (total / float(current.amount)) * 100
+        # print("completeness")
+        # print(completeness)
         return round(completeness, 2)
 
 
@@ -51,8 +53,17 @@ def get_user_transactions(current):
 
 def get_overall_completeness(targets):
     overall_completeness = 0
-    count = 0
+    count = len(targets)
+    if count == 0:
+        return 0
     for target in targets:
-        overall_completeness += get_completeness(target)
-        count += 1
+        overall_completeness = overall_completeness + get_completeness(target)
     return overall_completeness/count
+
+@register.filter
+def get_edit_url(target):
+    return "edit_" + target.getModelName() + "_target"
+
+@register.filter
+def get_delete_url(target):
+    return "delete_" + target.getModelName() + "_target"
