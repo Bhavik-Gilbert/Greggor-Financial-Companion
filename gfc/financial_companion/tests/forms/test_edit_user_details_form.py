@@ -6,7 +6,7 @@ from financial_companion.models import User
 
 
 class EditUserDetailsFormTestCase(FormTestCase):
-    """Test of the sign up form"""
+    """Unit tests of the edit user details form"""
 
     def setUp(self):
         self.url = reverse('edit_user_details')

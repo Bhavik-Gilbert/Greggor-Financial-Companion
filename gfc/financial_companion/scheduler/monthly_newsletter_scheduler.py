@@ -8,9 +8,7 @@ from django_q.models import Schedule
 
 def create_monthly_newsletter_scheduler():
     schedulers = Schedule.objects.filter(name="Monthly Newsletter")
-    if (len(schedulers) > 0):
-        pass
-    else:
+    if (len(schedulers) == 0):
         date_time_str = f'{timezone.now().month + 1}-01-{timezone.now().year}'
         date_object = datetime.strptime(
             date_time_str, '%m-%d-%Y').replace(tzinfo=pytz.timezone(settings.TIME_ZONE))
