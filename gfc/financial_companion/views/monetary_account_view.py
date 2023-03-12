@@ -6,7 +6,7 @@ from django.contrib import messages
 from ..helpers import AccountType
 from ..forms import MonetaryAccountForm
 from ..models import PotAccount, User, Account, BankAccount
-
+from django.contrib import messages
 
 @login_required
 def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
@@ -47,7 +47,11 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
         this_account: Account = Account.objects.get_subclass(
             id=pk, user=request.user.id)
     except Exception:
-        return redirect("dashboard")
+        messages.add_message(
+        request,
+        messages.ERROR,
+        "This account can not be edited")
+        return redirect("view_accounts")
 
     this_bank_account_list: list[BankAccount] = BankAccount.objects.filter(
         id=pk, user=request.user.id)

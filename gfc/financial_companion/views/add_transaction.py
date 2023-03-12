@@ -35,7 +35,7 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         user = request.user
         if (transaction.receiver_account.user !=
                 user and transaction.sender_account.user != user):
-            return redirect('dashboard')
+            return redirect('view_transactions', filter_type="all")
     except ObjectDoesNotExist:
         messages.add_message(
             request,
