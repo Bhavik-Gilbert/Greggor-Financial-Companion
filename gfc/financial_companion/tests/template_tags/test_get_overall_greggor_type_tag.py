@@ -1,0 +1,28 @@
+from .test_template_tag_base import TemplateTagTestCase
+from financial_companion.helpers import GreggorTypes
+from financial_companion.templatetags import get_greggor_type_for_overall_completeness
+from financial_companion.models import CategoryTarget, Transaction
+from datetime import datetime
+
+
+class GetOverallGreggorTypeTemplateTagTestCase(TemplateTagTestCase):
+    """Test for the get_greggor_type_for_overall_completeness logo template tag"""
+
+    def setUp(self):
+        self.target1 = CategoryTarget.objects.get(pk=1)
+        self.target3 = CategoryTarget.objects.get(pk=3)
+        self.trasaction2 = Transaction.objects.get(pk=9)
+        self.trasaction2.time_of_transaction = datetime.now()
+        self.trasaction2.save()
+
+    def test_get_valid_greggor_type(self):
+        self.target1 = CategoryTarget.objects.get(pk=1)
+        self.target3 = CategoryTarget.objects.get(pk=3)
+        target_list= [self.target1, self.target3]
+        result = get_greggor_type_for_overall_completeness(target_list)
+        self.assertEqual(result,"party")
+
+    def test_get_valid_greggor_type_with_empty_target_list(self):
+        target_list= []
+        result = get_greggor_type_for_overall_completeness(target_list)
+        self.assertEqual(result,"sad")
