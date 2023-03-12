@@ -5,7 +5,7 @@ from financial_companion.models.user_group_model import UserGroup, change_filena
 
 
 class UserGroupModelTestCase(ModelTestCase):
-    """Test file for user model class"""
+    """Test file for user group model class"""
 
     def setUp(self):
         super().setUp()

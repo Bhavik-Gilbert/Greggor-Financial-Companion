@@ -4,7 +4,7 @@ from financial_companion.models import User, PotAccount, Transaction
 from django.urls import reverse
 
 
-class FilterTransactionsViewTestCase(ViewTestCase):
+class FilterTransactionsWithPKViewTestCase(ViewTestCase):
     """Unit tests of the filter transactions request with pk view"""
 
     def setUp(self):

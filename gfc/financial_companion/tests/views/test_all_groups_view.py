@@ -11,7 +11,7 @@ class AllGroupsViewCase(ViewTestCase):
         self.url = reverse('all_groups', kwargs={'search_name': "all"})
         self.user = User.objects.get(username='@johndoe')
 
-    def test_log_in_url(self):
+    def test_view_all_groups_url(self):
         self.assertEqual(self.url, '/groups/all/')
 
     def test_post_when_search_is_empty(self):
@@ -50,7 +50,7 @@ class AllGroupsViewCase(ViewTestCase):
         self.assertContains(response, "SavingsRUs")
         self.assertContains(response, "Fun savers")
 
-    def test_post_when_incorrect_category_name_is_applied(self):
+    def test_post_when_incorrect_group_name_is_applied(self):
         self._login(self.user)
         self.url = reverse(
             'all_groups', kwargs={

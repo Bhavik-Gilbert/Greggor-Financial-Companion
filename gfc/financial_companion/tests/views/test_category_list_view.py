@@ -11,7 +11,7 @@ class CategoryListViewCase(ViewTestCase):
         self.url = reverse('categories_list', kwargs={'search_name': "all"})
         self.user = User.objects.get(username='@johndoe')
 
-    def test_log_in_url(self):
+    def test_category_list_view_url(self):
         self.assertEqual(self.url, '/categories/all/')
 
     def test_post_when_search_is_empty(self):

@@ -10,7 +10,7 @@ class DisplayTransactionRedirectViewTestCase(ViewTestCase):
         self.url = reverse('view_transactions_redirect')
         self.user = User.objects.get(username='@johndoe')
 
-    def test_valid_log_in_url(self):
+    def test_valid_display_transactions_redirect_url(self):
         self.assertEqual(self.url, '/view_transactions/')
 
     def test_valid_get_view_transactions_redirect(self):

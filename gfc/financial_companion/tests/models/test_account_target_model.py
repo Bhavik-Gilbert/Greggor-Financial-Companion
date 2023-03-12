@@ -6,14 +6,14 @@ import datetime
 
 
 class AccountTargetModelTestCase(ModelTestCase):
-    """Test file for AccountTarget model class"""
+    """Test file for the AccountTarget model class"""
 
     def setUp(self) -> None:
         super().setUp()
         self.test_model: AccountTarget = AccountTarget.objects.get(id=1)
         self.second_model: AccountTarget = AccountTarget.objects.get(id=2)
 
-    def test_valid_target_category(self) -> None:
+    def test_valid_target_account(self) -> None:
         self._assert_model_is_valid()
 
     def test_valid_duplicate_account_duplicate_timespan(self) -> None:
