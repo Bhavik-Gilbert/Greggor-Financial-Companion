@@ -1,5 +1,4 @@
 from .test_template_tag_base import TemplateTagTestCase
-from financial_companion.helpers import GreggorTypes
 from financial_companion.templatetags import get_greggor_type_from_completeness
 
 

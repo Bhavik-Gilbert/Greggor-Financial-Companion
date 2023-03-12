@@ -1,9 +1,9 @@
 from json import dumps
 from currency_symbols import CurrencySymbols
 from currency_converter import CurrencyConverter
-from kzt_exchangerates import Rates as KZTRates
-from .enums import CurrencyType
-from datetime import datetime, timedelta
+from .enums import CurrencyType, Timespan
+from .maps import timespan_map
+from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -35,19 +35,6 @@ def convert_currency(amount: float, current_currency_code: str,
         return amount
 
     try:
-        if current_currency_code == CurrencyType.KZT or target_currency_code == CurrencyType.KZT:
-            kzt_rates = KZTRates()
-            if current_currency_code == CurrencyType.KZT:
-                return amount * \
-                    kzt_rates.get_exchange_rate(target_currency_code)
-            else:
-                return amount * \
-                    kzt_rates.get_exchange_rate(
-                        current_currency_code, from_kzt=True)
-    except Exception:
-        raise Exception("KZT Rates converter not working")
-
-    try:
         c: CurrencyConverter = CurrencyConverter(
             fallback_on_missing_rate=True,
             fallback_on_wrong_date=True)
@@ -68,17 +55,18 @@ def random_filename(filename):
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
 
 
-def calculate_percentages(spent_per_category : dict(), total):
+def calculate_percentages(spent_per_category: dict(), total):
     no_of_categories = len(spent_per_category)
     for key, value in spent_per_category.items():
         percentage = float((value / total) * 100)
-        spent_per_category.update({key : percentage})
+        spent_per_category.update({key: percentage})
     return spent_per_category
 
 
-def paginate(page, list_input):
+def paginate(page, list_input,
+             number_per_page=settings.NUMBER_OF_ITEMS_PER_PAGE):
     list_of_items = []
-    paginator = Paginator(list_input, settings.NUMBER_OF_TRANSACTIONS)
+    paginator = Paginator(list_input, number_per_page)
     try:
         list_of_items = paginator.page(page)
     except PageNotAnInteger:
@@ -132,7 +120,7 @@ def get_projections_balances(accounts, max_timescale_in_months: int = max(
                 ((1 + (interest_rate / 365))**get_number_of_days_in_prev_month(i))
             if tempBalanceTotal >= 0:
                 currentBalance = tempBalanceTotal
-            balances.append(currentBalance)
+            balances.append((currentBalance))
             i += 1
         accountData.update({"balances": balances})
         accountDictionary.update({account.id: accountData})
@@ -176,9 +164,11 @@ def get_data_for_account_projection(user):
     timescale_dict = get_projection_timescale_options()
     timescales_strings = get_short_month_names_for_timescale()
 
+    accountsDictionary = get_projections_balances(accounts)
+
     return {
         'bank_accounts': {acc.id: acc.name for acc in accounts},
-        'bank_account_infos': dumps(get_projections_balances(accounts)),
+        'bank_account_infos': dumps(accountsDictionary),
         'timescale_dict': timescale_dict,
         'timescales_strings': timescales_strings,
         'conversion_to_main_currency_JSON': dumps(conversions),
@@ -187,36 +177,11 @@ def get_data_for_account_projection(user):
     }
 
 
-def get_completed_targets(targets):
-    filteredTargets = []
-    for target in targets:
-        if target.is_complete():
-            filteredTargets.append(target)
-    return filteredTargets
-
-
-def get_number_of_completed_targets(targets):
-    return len(get_completed_targets(targets))
-
-
-def get_nearly_completed_targets(targets):
-    filteredTargets = []
-    for target in targets:
-        if target.is_nearly_complete():
-            filteredTargets.append(target)
-    return filteredTargets
-
-
-def get_number_of_nearly_completed_targets(targets):
-    return len(get_nearly_completed_targets(targets))
-
-
 def get_sorted_members_based_on_completed_targets(members):
     member_completed_list = []
     for member in members:
-        targets = member.get_all_targets()
-        completed = get_number_of_completed_targets(targets)
-        member_completed_list = [*member_completed_list, (member, completed)]
+        score = member.get_leaderboard_score()
+        member_completed_list = [*member_completed_list, (member, score)]
     member_completed_list = sorted(
         member_completed_list,
         key=lambda x: x[1],
@@ -232,21 +197,28 @@ def get_sorted_members_based_on_completed_targets(members):
     return member_completed_pos_list
 
 
+def generate_random_end_date() -> datetime:
+    start_date = datetime.now()
+    end_date = start_date + timedelta(days=1000)
+    random_date = start_date + (end_date - start_date) * random.random()
+    return random_date
+
+
 def get_warning_messages_for_targets(
         request, showNumbersForMultiples=True, targets=None):
     if not targets:
         targets = request.user.get_all_targets()
-    completedTargets = get_completed_targets(targets)
-    nearlyCompletedTargets = get_nearly_completed_targets(targets)
+    completedTargets = request.user.get_completed_targets(targets)
+    nearlyCompletedTargets = request.user.get_nearly_completed_targets(targets)
 
     sortedTargetsDict = {'completed': {}, 'nearlyExceeded': {}, 'exceeded': {}}
     for target in targets:
         dictionaryToAdd = None
-        if target.transaction_type == 'income' and target in completedTargets:
+        if target.target_type == 'income' and target in completedTargets:
             dictionaryToAdd = sortedTargetsDict['completed']
-        elif target.transaction_type == 'expense' and target in nearlyCompletedTargets:
+        elif target.target_type == 'expense' and target in nearlyCompletedTargets:
             dictionaryToAdd = sortedTargetsDict['nearlyExceeded']
-        elif target.transaction_type == 'expense' and target in completedTargets:
+        elif target.target_type == 'expense' and target in completedTargets:
             dictionaryToAdd = sortedTargetsDict['exceeded']
 
         if dictionaryToAdd is not None:
@@ -320,3 +292,22 @@ def convert_list_to_string(list_in):
             output += ","
         output += " and " + str(list_in[list_length - 1])
     return output
+
+
+def check_date_on_interval(
+        interval: Timespan, base_date: date, current_date: date = date.today()) -> bool:
+    """Checks if current date is on an interval date with the base date"""
+    if base_date > current_date:
+        return False
+    interval_in_days: int = timespan_map[interval]
+    return ((current_date - base_date).days % interval_in_days) == 0
+
+
+def check_within_date_range(
+        start_date: date, end_date: date, current_date: date = date.today()) -> bool:
+    """Checks if current date is within the time period"""
+    if start_date > end_date:
+        start_date, end_date = end_date, start_date
+    check_current_after_start: bool = current_date >= start_date
+    check_current_before_end: bool = current_date <= end_date
+    return check_current_before_end and check_current_after_start

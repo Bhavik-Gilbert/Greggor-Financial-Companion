@@ -13,6 +13,8 @@ class AddTransactionForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(AddTransactionForm, self).__init__(*args, **kwargs)
+        self.fields['category'].queryset = Category.objects.filter(
+            user=user.id)
         self.fields['category'].label_from_instance = self.label_from_instance
         self.fields['sender_account'].label_from_instance = self.label_from_instance
         self.fields['receiver_account'].label_from_instance = self.label_from_instance
@@ -60,6 +62,7 @@ class AddTransactionForm(forms.ModelForm):
             transaction.receiver_account = self.cleaned_data.get(
                 'receiver_account')
             transaction.save()
+
         return transaction
 
     def clean(self):
@@ -104,7 +107,7 @@ class AddTransactionsViaBankStatementForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop("user", None)
+        self.user = kwargs.pop("user", None)
         super(
             AddTransactionsViaBankStatementForm,
             self).__init__(
@@ -112,7 +115,7 @@ class AddTransactionsViaBankStatementForm(forms.Form):
             **kwargs)
 
         self.fields['account']: forms.ModelChoiceField = forms.ModelChoiceField(
-            queryset=PotAccount.objects.filter(user=user)
+            queryset=PotAccount.objects.filter(user=self.user)
         )
 
     def save(self):
@@ -145,7 +148,7 @@ class AddTransactionsViaBankStatementForm(forms.Form):
 
             new_transaction: Transaction = Transaction()
             new_transaction.receiver_account, new_transaction.sender_account = bank_statement_parser.get_sender_receiver(
-                parsed_transaction, account)
+                parsed_transaction, account, self.user)
             new_transaction.title: str = title
             new_transaction.description: str = description
             new_transaction.amount: float = parsed_transaction["amount"]

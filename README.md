@@ -88,3 +88,13 @@ $ python3 manage.py test
 
 ## Sources
 The packages used by this application are specified in `requirements.txt`
+
+<br />
+
+### Tabula
+Usage under the The MIT License (MIT): https://github.com/tabulapdf/tabula-java/blob/master/LICENSE 
+<br />
+Information about tabula-py: https://tabula-py.readthedocs.io/en/latest/
+<br />
+Information about tabula-java: https://github.com/tabulapdf/tabula-java
+

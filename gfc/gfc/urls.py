@@ -147,6 +147,18 @@ urlpatterns = [
         views.join_user_group_view,
         name="join_user_group"),
     path(
+        'remove_user_from_user_group/<int:group_pk>/<int:user_pk>',
+        views.remove_user_from_user_group_view,
+        name="remove_user_from_user_group"),
+    path(
+        'make_owner_of_user_group/<int:group_pk>/<int:user_pk>',
+        views.make_owner_of_user_group_view,
+        name="make_owner_of_user_group"),
+    path(
+        'add_user_to_user_group/<int:group_pk>',
+        views.add_user_to_user_group_view,
+        name="add_user_to_user_group"),
+    path(
         'reset_password',
         PasswordResetView.as_view(
             template_name="pages/email/password_reset.html"),
@@ -249,7 +261,25 @@ urlpatterns = [
     path('add_transactions_via_bank_statement/',
          views.add_transactions_via_bank_statement,
          name='add_transactions_via_bank_statement'),
-    path('spending_summary/', views.spending_summary, name='spending_summary')
+    path('spending_summary/', views.spending_summary, name='spending_summary'),
+    path('view_recurring_transactions/',
+         views.view_users_recurring_transactions,
+         name='view_recurring_transactions'),
+    path('add_recurring_transaction/',
+         views.add_recurring_transaction_view,
+         name='add_recurring_transaction'),
+    path(
+        'edit_recurring_transaction/<int:pk>',
+        views.edit_recurring_transaction_view,
+        name='edit_recurring_transaction'),
+    path(
+        'delete_recurring_transaction/<int:pk>',
+        views.delete_recurring_transaction_view,
+        name='delete_recurring_transaction'),
+    re_path(
+        'individual_recurring_transaction/(?P<pk>\\d+)/$',
+        views.individual_recurring_transaction_view,
+        name='individual_recurring_transaction')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 if settings.DEBUG:

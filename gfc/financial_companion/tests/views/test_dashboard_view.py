@@ -39,23 +39,23 @@ class DashboardViewTestCase(ViewTestCase):
         self._login(self.user)
         response = self.client.get(self.url)
         self.assertContains(response, self.user.full_name().title())
-        self.assertContains(response, self.account.name.capitalize())
-        self.assertContains(response, self.account.description.capitalize())
+        self.assertContains(response, self.account.name.title())
+        self.assertContains(response, self.account.description.title())
         self.assertContains(response, self.account.balance)
         for transaction in self.recent:
             self.assertContains(response, transaction.title.title())
             self.assertContains(
-                response, transaction.category.name.capitalize())
+                response, transaction.category.name.title())
             self.assertContains(response, transaction.amount)
             self.assertContains(
                 response,
-                transaction.sender_account.name.capitalize())
+                transaction.sender_account.name.title())
             self.assertContains(
                 response,
-                transaction.receiver_account.name.capitalize())
+                transaction.receiver_account.name.title())
         self.assertTemplateUsed(
             response,
-            'partials/dashboard/account_projection_graph.html'
+            'partials/dashboard/account_projection_graph_card.html'
         )
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)

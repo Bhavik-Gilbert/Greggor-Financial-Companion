@@ -1,17 +1,24 @@
-<div class="col-12 col-md-6">
-    <div class="card border-primary">
-        <div class="card-header">
-            <h4>{{quiz_question.question}}</h4>
-        </div>
-        <div class="card-body">
-            {% for question in quiz_question.get_potential_answers %}
+{% load widget_tweaks %}
+
+{% for field in form %}
+    <div class="col-10 col-md-5">
+        <div class="card border-primary">
+            <div class="card-header">
+                <h4>{{field.label_tag}}</h4>
+            </div>
+            <div class="card-body">
                 <div class="form-check text-start">
-                    <input class="form-check-input" type="radio" name="{{ quiz_question.id }}" id="{{ quiz_question }}_{{ question }}" value="{{question}}" checked>
-                    <label class="form-check-label" for="{{ quiz_question }}_{{ question }}">
-                    {{question}}
-                    </label>
+                    {{field}}
                 </div>
-            {% endfor %}
+            </div>
+
+            {% if field.errors %}
+                <div class="card-footer text-danger">
+                    {% for error in field.errors %}
+                        {{ error }}
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
     </div>
-</div>
+{% endfor %}

@@ -1,14 +1,16 @@
 from django.core.management.base import BaseCommand, CommandError
+from django_q.models import Schedule
 from financial_companion.models import (
     User,
     Account, PotAccount, BankAccount,
     CategoryTarget, UserTarget, AccountTarget,
-    AbstractTransaction, Transaction,  # RecurringTransactions,
+    AbstractTransaction, Transaction, RecurringTransaction,
     Category,
     QuizQuestion,
     QuizSet,
     UserGroup
 )
+from django_q.models import Schedule
 
 """ Unseeder CLass to clear all objects from Database"""
 
@@ -16,18 +18,19 @@ from financial_companion.models import (
 class Command(BaseCommand):
     def handle(self, *args, **options):
         users = User.objects.filter(email__endswith='@gfc.org')
-        potAndBankAccounts = []
+        Accounts = []
         targets = []
         categories = []
         transactions = []
         groups = []
+        recurringTransactions = []
         for user in users:
-            potAndBankAccounts.extend(PotAccount.objects.filter(user=user))
+            Accounts.extend(Account.objects.filter(user=user))
             targets.extend(UserTarget.objects.filter(user=user))
             categories.extend(Category.objects.filter(user=user))
             groups.extend(UserGroup.objects.filter(owner_email=user.email))
 
-        for account in potAndBankAccounts:
+        for account in Accounts:
             transactions.extend(
                 Transaction.objects.filter(
                     receiver_account=account))
@@ -35,6 +38,13 @@ class Command(BaseCommand):
                 Transaction.objects.filter(
                     sender_account=account))
             targets.extend(AccountTarget.objects.filter(account_id=account))
+            recurringTransactions.extend(
+                RecurringTransaction.objects.filter(
+                    receiver_account=account))
+            recurringTransactions.extend(
+                RecurringTransaction.objects.filter(
+                    sender_account=account)
+            )
 
         for category in categories:
             CategoryTarget.objects.filter(category_id=category).delete()
@@ -43,7 +53,7 @@ class Command(BaseCommand):
         for transaction in transactions:
             transaction.delete()
 
-        for account in potAndBankAccounts:
+        for account in Accounts:
             account.delete()
 
         QuizSet.objects.filter(seeded=True).delete()
@@ -53,3 +63,7 @@ class Command(BaseCommand):
             group.delete()
 
         users.delete()
+
+        Schedule.objects.all().delete()
+
+        print("UNSEEDING COMPLETE")

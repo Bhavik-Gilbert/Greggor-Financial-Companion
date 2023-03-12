@@ -10,12 +10,12 @@
         <div class="accordion-item">
           <h2 class="accordion-header" id="heading{{ account.name }}">
             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ account.name }}" aria-expanded="true" aria-controls="collapse{{ account.name }}">
-              {{account.name}}
+              {{account.name.title}}
             </button>
           </h2>
           <div id="collapse{{ account.name }}" class="accordion-collapse collapse" aria-labelledby="heading{{ account.name }}" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-              <p><strong>Description: </strong>{{account.description.capitalize}}</p>
+              <p><strong>Description: </strong>{{account.description.title}}</p>
               <p><strong>Balance: </strong>{{account.balance}} {{account.currency.upper}}</p>
             </div>
           </div>
@@ -25,9 +25,9 @@
   {% else %}
     {% include "partials/dashboard/no_content.html" with content_type_plural="accounts" %}
   {% endif %}
-{% endblock %}}
+{% endblock %}
 
-{% block content_type_plural %}Accounts{% endblock %}}
+{% block content_type_plural %}Accounts{% endblock %}
 
 {% block card_URL %}{% url 'view_accounts' %}{% endblock %}
 

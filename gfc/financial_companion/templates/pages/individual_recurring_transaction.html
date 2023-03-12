@@ -1,0 +1,40 @@
+{% extends "partials/view_models/view_model.html" %}
+
+{% block object_name %}{{transaction.title}}{% endblock %}
+{% block model_name %}Recurring Transaction{% endblock %}
+
+{% block page_header_model %}Recurring Transaction{% endblock %}
+{% block page_header_name %}{{transaction.title}}{% endblock %}
+
+{% block card_title %}Recurring Transaction Information:{% endblock %}
+
+{% block edit_delete_buttons %}
+    {% url 'edit_recurring_transaction' transaction.id as edit_recurring_transaction %}
+    {% url 'delete_recurring_transaction' transaction.id as delete_recurring_transaction %}
+    {% include "partials/view_models/edit_and_delete_models_buttons.html" with edit_URL=edit_recurring_transaction delete_URL=delete_recurring_transaction model_name="recurring transaction"%}
+{% endblock %}
+
+{% block confirmation_model_name %}recurring transaction{% endblock %}
+
+{% block table_content %}
+    <li class="list-group-item"><p><strong>Description: </strong>{{transaction.description}}</p></li>
+    <li class="list-group-item"><p><strong>Category: </strong>{{transaction.category.name}}</p></li>
+    <li class="list-group-item"><p><strong>Amount: </strong>{{transaction.currency.upper}} {{transaction.amount}}</p></li>
+    <li class="list-group-item"><p><strong>Sender Account: </strong>{{transaction.sender_account.name}}</p></li>
+    <li class="list-group-item"><p><strong>Receiver Account: </strong>{{transaction.receiver_account.name}}</p></li>
+    <li class="list-group-item"><p><strong>Frequency: </strong>{{transaction.interval.title}}</p></li>
+    <li class="list-group-item"><p><strong>Start Date: </strong>{{transaction.start_date}}</p></li>
+    <li class="list-group-item"><p><strong>End Date: </strong>{{transaction.end_date}}</p></li>
+{% endblock %}
+
+{% block additional_items %}
+  {% include "partials/view_models/model_photo.html" with picture=transaction.image name=transaction%}
+{% endblock %}
+
+{% block view_model_objects_URL %}{% url 'view_recurring_transactions' %}{% endblock %}
+{% block view_model_objects_text %}View All Recurring Transactions{% endblock %}
+
+{% block further_content %}
+  {% include 'partials/recurring_transaction_transactions_list.html'  with transactions=transactionslist %}
+{% endblock %}
+

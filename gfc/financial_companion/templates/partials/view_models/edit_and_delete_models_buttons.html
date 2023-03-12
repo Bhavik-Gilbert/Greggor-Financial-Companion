@@ -1,0 +1,14 @@
+<div class="col"></div>
+<div class="col-auto justify-content-end">
+    <div class="container text-end p-0">
+        {% if add_target_URL %}
+            <a href="{{add_target_URL}}" class="btn btn-{{size}} btn-info my-1">Add Target</a>
+        {% endif %}
+        {% if edit_URL %}
+            <a href="{{edit_URL}}" class="btn btn-{{size}} btn-success my-1">Edit</a>
+        {% endif %}
+        {% if delete_URL %}
+            <a href="{{delete_URL}}" class="btn btn-{{size}} btn-danger my-1" onclick="return confirm('Are you sure you want to delete this {{model_name}}?')">Delete</a>
+        {% endif %}
+    </div>
+</div>

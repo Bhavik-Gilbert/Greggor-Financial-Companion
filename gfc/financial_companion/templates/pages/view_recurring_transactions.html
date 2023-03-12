@@ -1,0 +1,12 @@
+{% extends 'page.html' %}
+{% block title %}View Recurring Transactions{% endblock %}
+
+{% block content %}
+    <div class="text-center">
+    <h1>Standing Orders & Subscriptions:</h1>
+        <a class="btn btn-primary mb-3" href ="{%url 'add_recurring_transaction' %}">Add New</a>
+    </div>
+    <hr class="hr col-12"/>
+
+    {%include 'partials/recurring_transaction_table.html'  with transactions=transactions redirect_name="view_recurring_transactions" %}
+{% endblock %}

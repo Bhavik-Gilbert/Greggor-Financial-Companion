@@ -9,20 +9,27 @@ class Timespan(models.TextChoices):
     YEAR: str = "year"
 
 
-class TransactionType(models.TextChoices):
-    """ENUM for transaction types"""
-    INCOME: str = "income"
-    EXPENSE: str = "expense"
+class FilterTransactionType(models.TextChoices):
+    """ENUM for filter types"""
+    ALL: str = "all"
+    SENT: str = "sent"
+    RECEIVED: str = "received"
 
     @staticmethod
     def get_send_list() -> list[str]:
         """Filter list for sent transactions"""
-        return ["sent", "all"]
+        return [FilterTransactionType.SENT, FilterTransactionType.ALL]
 
     @staticmethod
     def get_received_list() -> list[str]:
         """Filter list for received transactions"""
-        return ["all", "received"]
+        return [FilterTransactionType.ALL, FilterTransactionType.RECEIVED]
+
+
+class TransactionType(models.TextChoices):
+    """ENUM for transaction types"""
+    INCOME: str = "income"
+    EXPENSE: str = "expense"
 
 
 class CurrencyType(models.TextChoices):
@@ -38,13 +45,13 @@ class CurrencyType(models.TextChoices):
     RUB: str = "RUB"
     NZD: str = "NZD"
     CHF: str = "CHF"
-    KZT: str = "KZT"
 
 
-class MonetaryAccountType(models.TextChoices):
+class AccountType(models.TextChoices):
     """ENUM for transaction types"""
     POT: str = "pot"
     BANK: str = "bank"
+    REGULAR: str = "regular"
 
 
 class ScoreListOrderType(models.TextChoices):

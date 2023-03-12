@@ -1,51 +1,37 @@
-{% extends "page.html" %}
+{% extends "partials/view_models/view_model.html" %}
 
-<!-- Title -->
-{% block title %}Transaction{% endblock %}
+{% block object_name %}{{transaction.title}}{% endblock %}
+{% block model_name %}Transaction{% endblock %}
 
-<!-- Content -->
-{% block content %}
-<div class="card py-3 px-4 bg-primary">
-  <div class="row gy-3">
-    <div class="col-12">
-      <div class="row">
-        <div class="col-12 col-md-8">
-          <h1 class="text-white">Transaction Name: {{transaction.title.capitalize}}</h1>
-        </div>
-        <div class="col-12 col-md-4 d-flex justify-content-start justify-content-md-end">
-          <a href="{% url 'edit_transaction' transaction.id %}"><button type="button" class="btn btn-success px-3 mr-2 py-1 mb-md-4">Edit</button></a>
-          <a href="{% url 'delete_transaction' transaction.id %}"><button type="button" class="btn btn-danger px-3 mx-2 py-1 mb-md-4">Delete</button></a>
-        </div>
-      </div>
-    </div>
+{% block page_header_model %}Transaction{% endblock %}
+{% block page_header_name %}{{transaction.title}}{% endblock %}
 
-    <div class="row">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6 mb-4">
-            <div class="card">
-              <img class="card-img-top" src="" alt="">
+{% block card_title %}Transaction Information:{% endblock %}
 
-              <div class="card-body">
-                <div class="card-header">
-                  <h4>Transaction Info:</h4>
-                </div>
-                <ul class="list-group list-group-flush">
-                  <li class="list-group-item"><p><strong>Transaction Description: </strong>{{transaction.description}}</p></li>
-                  <li class="list-group-item"><p><strong>Transaction Category: </strong>{{transaction.category.name.capitalize}}</p></li>
-                  <li class="list-group-item"><p><strong>Transaction Amount: </strong>{{transaction.amount}}</p></li>
-                  <li class="list-group-item"><p><strong>Transaction Currency: </strong>{{transaction.currency.upper}}</p></li>
-                  <li class="list-group-item"><p><strong>Sender Account: </strong>{{transaction.sender_account.name.capitalize}}</p></li>
-                  <li class="list-group-item"><p><strong>Reciver Account: </strong>{{transaction.receiver_account.name.capitalize}}</p></li>
-                  <li class="list-group-item"><p><strong>Time of Transaction: </strong>{{transaction.time_of_transaction}}</p></li>
-                </ul>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+{% block edit_delete_buttons %}
+  {% url 'edit_transaction' transaction.id as edit_transaction %}
+  {% url 'delete_transaction' transaction.id as delete_transaction %}
+  {% include "partials/view_models/edit_and_delete_models_buttons.html" with edit_URL=edit_transaction delete_URL=delete_transaction model_name="transaction"%}
 {% endblock %}
+
+{% block confirmation_model_name %}transaction{% endblock %}
+
+{% block table_content %}
+  {% if transaction.description %}
+    <li class="list-group-item"><strong>Description:  </strong>{{transaction.description}}</li>
+  {% endif %}
+  {% if transaction.category.name %}
+    <li class="list-group-item"><strong>Category:  </strong>{{transaction.category.name}}</li>
+  {% endif %}
+  <li class="list-group-item"><strong>Amount:  </strong>{{transaction.currency.upper}} {{transaction.amount}}</li>
+  <li class="list-group-item"><strong>Sender Account:  </strong>{{transaction.sender_account.name}}</li>
+  <li class="list-group-item"><strong>Receiver Account:  </strong>{{transaction.receiver_account.name}}</li>
+  <li class="list-group-item"><strong>Time of Transaction:  </strong>{{transaction.time_of_transaction}}</li>
+{% endblock %}
+
+{% block additional_items %}
+  {% include "partials/view_models/model_photo.html" with picture=transaction.image name=transaction%}
+{% endblock %}
+
+{% block view_model_objects_URL %}{% url 'view_transactions_redirect' %}{% endblock %}
+{% block view_model_objects_text %}View All Transactions{% endblock %}

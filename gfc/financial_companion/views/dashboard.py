@@ -4,13 +4,12 @@ from django.contrib import messages
 from financial_companion.models import PotAccount, Transaction
 from ..helpers import get_data_for_account_projection, get_warning_messages_for_targets
 from django.contrib.auth.decorators import login_required
+from json import loads
 
 
 @login_required
 def dashboard_view(request: HttpRequest) -> HttpResponse:
-
     user = request.user
-
     user_accounts = PotAccount.objects.filter(user=user.id)
     user_transactions = []
     for account in user_accounts:
