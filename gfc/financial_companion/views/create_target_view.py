@@ -6,12 +6,13 @@ from ..models import Category, CategoryTarget, PotAccount, AccountTarget, UserTa
 from django.contrib import messages
 from financial_companion.models import CategoryTarget, Category
 import re
+from typing import Any
 
 
-def create_target(request, Target, current_item):
-    title_first_word = re.split(r"\B([A-Z])", Target.__name__)[0]
-    title = f'{title_first_word} Target'
-    form = TargetForm(request.POST, foreign_key=current_item, form_type=Target)
+def create_target(request, Target, current_item) -> Any:
+    title_first_word: str = re.split(r"\B([A-Z])", Target.__name__)[0]
+    title: str = f'{title_first_word} Target'
+    form: TargetForm = TargetForm(request.POST, foreign_key=current_item, form_type=Target)
     if request.method == "POST":
         if form.is_valid():
             try:
@@ -28,7 +29,7 @@ def create_target(request, Target, current_item):
 
                 return None
     else:
-        form = TargetForm(foreign_key=current_item, form_type=Target)
+        form: TargetForm = TargetForm(foreign_key=current_item, form_type=Target)
     return render(request, "pages/create_targets.html",
                   {'form': form, "form_toggle": True, 'title': title})
 
@@ -42,7 +43,7 @@ def create_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
             id=pk, user=request.user)
     except Exception:
         return redirect("dashboard")
-    to_return = create_target(
+    to_return: HttpResponse = create_target(
         request,
         CategoryTarget,
         current_category)
@@ -64,7 +65,7 @@ def create_account_target_view(request: HttpRequest, pk: int) -> HttpResponse:
     except Exception:
         return redirect("dashboard")
 
-    to_return = create_target(
+    to_return: HttpResponse = create_target(
         request,
         AccountTarget,
         current_account)
@@ -79,7 +80,7 @@ def create_account_target_view(request: HttpRequest, pk: int) -> HttpResponse:
 @login_required
 def create_user_target_view(request: HttpRequest) -> HttpResponse:
     """View to allow users to add a target to a user"""
-    to_return = create_target(request, UserTarget, request.user)
+    to_return: HttpResponse = create_target(request, UserTarget, request.user)
 
     if to_return is None:
         return redirect('dashboard')
@@ -87,7 +88,7 @@ def create_user_target_view(request: HttpRequest) -> HttpResponse:
         return to_return
 
 
-def edit_target(request, Target, current_item, foreign_key):
+def edit_target(request: HttpRequest, Target, current_item, foreign_key) -> HttpResponse:
     title_first_word = re.split(r"\B([A-Z])", Target.__name__)[0]
     title = f'{title_first_word} Target'
     if request.method == "POST":
