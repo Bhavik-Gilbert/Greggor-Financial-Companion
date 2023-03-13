@@ -8,7 +8,7 @@ from financial_companion.models import User
 
 
 class UserChangePasswordFormTestCase(FormTestCase):
-    """Test of the sign up form"""
+    """Unit tests of the change password form"""
 
     def setUp(self):
         self.url = reverse('change_password')

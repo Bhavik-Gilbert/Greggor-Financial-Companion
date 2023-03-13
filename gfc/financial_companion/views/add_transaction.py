@@ -37,12 +37,12 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         user: User = request.user
         if (transaction.receiver_account.user !=
                 user and transaction.sender_account.user != user):
-            return redirect('dashboard')
+            return redirect('view_transactions', filter_type="all")
     except ObjectDoesNotExist:
         messages.add_message(
             request,
             messages.ERROR,
-            "The transaction can not be deleted.")
+            "The transaction can not be edited.")
         return redirect('view_transactions', filter_type="all")
     else:
         if request.method == 'POST':

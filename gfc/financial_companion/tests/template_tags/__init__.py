@@ -1,3 +1,4 @@
 from .test_get_greggor_logo_tag import GetGreggorTemplateTagTestCase
 from .test_target_tag import GetCompletenessTemplateTagTestCase
-from .test_maths_template_tags import DivideTemplateTagTestCase, SigFigsTemplateTagTestCase
+from .test_maths_divide import MathsDivideTemplateTagTestCase
+from .test_maths_sig_fig import MathsSigFigTemplateTagTestCase

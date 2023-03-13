@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 
 
 class SendMonthlyNewsletterTaskTestCase(HelperTestCase):
-    """Test for the send monthly newsletter task function"""
+    """Test file for the send monthly newsletter task function"""
 
     def setUp(self):
         send_monthly_newsletter_email()

@@ -244,7 +244,7 @@ class Command(BaseCommand):
         print("QUESTIONS SEEDED")
 
     def create_user_groups(self) -> None:
-        randomNumOfGroups: int = randint(0, self.MAX_NUMBER_OF_GROUPS)
+        randomNumOfGroups: int = randint(1, self.MAX_NUMBER_OF_GROUPS)
         owner: User = User.objects.get(username='@johndoe')
         for i in range(0, randomNumOfGroups):
             UserGroup.objects.create(

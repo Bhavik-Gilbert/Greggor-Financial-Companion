@@ -4,7 +4,7 @@ from financial_companion.models import BankAccount
 
 
 class GetShortMonthNamesForTimescaleHelperFunctionTestCase(HelperTestCase):
-    """Test for the test_get_short_month_names_for_timescale helpers function"""
+    """Test file for the test_get_short_month_names_for_timescale helpers function"""
 
     def setUp(self):
         self.valid_bank_accounts = BankAccount.objects.filter(
