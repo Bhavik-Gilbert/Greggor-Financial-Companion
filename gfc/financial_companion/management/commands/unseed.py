@@ -8,22 +8,26 @@ from financial_companion.models import (
     Category,
     QuizQuestion,
     QuizSet,
-    UserGroup
+    UserGroup,
+    AbstractTarget
 )
 from django_q.models import Schedule
+from typing import Union
+from django.db import models
+
 
 """ Unseeder CLass to clear all objects from Database"""
 
 
 class Command(BaseCommand):
-    def handle(self, *args, **options):
-        users = User.objects.filter(email__endswith='@gfc.org')
-        Accounts = []
-        targets = []
-        categories = []
-        transactions = []
-        groups = []
-        recurringTransactions = []
+    def handle(self, *args, **options) -> None:
+        users: Union[models.QuerySet, list[User]] = User.objects.filter(email__endswith='@gfc.org')
+        Accounts: Union[models.QuerySet, list[Account]] = []
+        targets: Union[models.QuerySet, list[AbstractTarget]] = []
+        categories: Union[models.QuerySet, list[Category]] = []
+        transactions: Union[models.QuerySet, list[Transaction]] = []
+        groups: Union[models.QuerySet, list[UserGroup]] = []
+        recurringTransactions: Union[models.QuerySet, list[RecurringTransaction]] = []
         for user in users:
             Accounts.extend(Account.objects.filter(user=user))
             targets.extend(UserTarget.objects.filter(user=user))

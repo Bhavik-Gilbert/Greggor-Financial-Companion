@@ -5,7 +5,7 @@ from ..helpers import Timespan, TransactionType, CurrencyType
 from django.core.exceptions import ValidationError
 import re
 from decimal import Decimal
-from typing import Union, List
+from typing import Union
 
 
 class TargetForm(forms.Form):
