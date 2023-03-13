@@ -138,5 +138,25 @@
             "amount": "0",
             "account": 3
         }
+    },
+    {
+        "model": "financial_companion.accounttarget",
+        "pk": 8,
+        "fields": {
+            "target_type": "income",
+            "timespan": "week",
+            "amount": "12",
+            "account": 3
+        }
+    },
+    {
+        "model": "financial_companion.accounttarget",
+        "pk": 8,
+        "fields": {
+            "target_type": "expense",
+            "timespan": "day",
+            "amount": "12",
+            "account": 3
+        }
     }
 ]
