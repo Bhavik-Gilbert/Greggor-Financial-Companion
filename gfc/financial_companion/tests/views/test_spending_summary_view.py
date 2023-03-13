@@ -94,4 +94,38 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertEqual(money_in, total_received)
         money_out: float = response.context["money_out"]
         self.assertEqual(money_out, total_spent)
+    
+    
+    @freeze_time("2023-01-01 22:00:00")
+    def test_change_timespan_spending_summary_page(self):
+        self._login(self.user)
+        time: Timespan = Timespan.WEEK
+        self.assertTrue(isinstance(time, Timespan))
+        response = self.client.post(self.url, {"time_choice": "day"})
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "pages/spending_summary.html")
+        form: TimespanOptionsForm = response.context["form"]
+        self.assertTrue(isinstance(form, TimespanOptionsForm))
+        total_spent = Transaction.calculate_total(
+            Transaction.get_transactions_from_time_period(
+                time, self.user, "sent"))
+        total_received = Transaction.calculate_total(
+            Transaction.get_transactions_from_time_period(
+                time, self.user, "received"))
+        categories = Transaction.get_category_splits(
+            Transaction.get_transactions_from_time_period(
+                time, self.user, "sent"))
+        percentages = functions.calculate_percentages(categories, total_spent)
+        percentages_list = list(percentages.values())
+        labels = list(percentages.keys())
+
+        keyset: list[str] = response.context["keyset"]
+        self.assertEqual(keyset, labels)
+        dataset: list[float] = response.context["dataset"]
+        self.assertEqual(dataset, percentages_list)
+        money_in: float = response.context["money_in"]
+        self.assertEqual(money_in, total_received)
+        money_out: float = response.context["money_out"]
+        self.assertEqual(money_out, total_spent)
+       
 
