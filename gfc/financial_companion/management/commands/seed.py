@@ -25,8 +25,8 @@ class Command(BaseCommand):
     # MINIMUM OF FOUR PREDEFINED USERS ARE CREATED IRRESPECTIVE OF VARIABLE
     # VALUE
     USER_COUNT = 4
-    MAX_ACCOUNTS_PER_USER = 10
-    MAX_TRANSACTIONS_PER_ACCOUNT = 5
+    MAX_ACCOUNTS_PER_USER = 6
+    MAX_TRANSACTIONS_PER_ACCOUNT = 10
     MAX_NUMBER_OF_CATEGORIES = 10
     MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER = 5
     OBJECT_HAS_TARGET_PROBABILITY = 0.6
@@ -121,9 +121,9 @@ class Command(BaseCommand):
     def create_accounts_for_user(self, user, categories):
         randomNumOfBasicAccounts = randint(
             1, self.MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER)
-        randomNumOfPotAccounts = randint(1, self.MAX_ACCOUNTS_PER_USER)
+        randomNumOfPotAccounts = randint(1, self.MAX_ACCOUNTS_PER_USER -1)
         randomNumOfBankAccount = randint(
-            0, self.MAX_ACCOUNTS_PER_USER - randomNumOfPotAccounts)
+            1, self.MAX_ACCOUNTS_PER_USER - randomNumOfPotAccounts)
 
         for i in range(0, randomNumOfBasicAccounts):
             regular_account = Account.objects.create(
@@ -176,7 +176,6 @@ class Command(BaseCommand):
             sender_account = account
             receiver_account = oppositePartyOfTransaction
 
-        print(randomNumOfTransactions)
         for i in range(0, randomNumOfTransactions):
             Transaction.objects.create(
                 title=self.faker.word(),
