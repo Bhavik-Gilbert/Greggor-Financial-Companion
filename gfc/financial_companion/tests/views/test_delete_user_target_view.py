@@ -21,8 +21,10 @@ class DeleteUserTargetViewTestCase(ViewTestCase):
         self.assertEqual(after_count + 1, before_count)
         self.assertTemplateUsed(response, 'pages/dashboard.html')
         messages_list = list(response.context['messages'])
-        self.assertEqual(len(messages_list), 2)
-        self.assertTrue('Targets exceeded: ' in str(messages_list[1]))
+        self.assertEqual(len(messages_list), 3)
+        self.assertTrue('This user target has been deleted' in str(messages_list[0]))
+        self.assertTrue('Targets completed: ' in str(messages_list[1]))
+        self.assertTrue('Targets nearly exceeded: ' in str(messages_list[2]))
 
     def test_user_tries_to_delete_someone_elses_user_target(self):
         self._login(self.user)

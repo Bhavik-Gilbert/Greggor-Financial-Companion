@@ -58,6 +58,7 @@ class DashboardViewTestCase(ViewTestCase):
             'partials/dashboard/account_projection_graph_card.html'
         )
         messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(len(messages), 1)
+        self.assertEqual(len(messages), 2)
         self.assertLessEqual(len(messages), 3)
-        self.assertTrue('Targets exceeded: ' in str(messages[0]))
+        self.assertTrue('Targets completed: ' in str(messages[0]))
+        self.assertTrue('Targets nearly exceeded: ' in str(messages[1]))
