@@ -1,4 +1,4 @@
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from faker import Faker
 from financial_companion.models import (
     User, UserGroup,
@@ -13,7 +13,6 @@ from django.db.models import Q
 from django.conf import settings
 import os
 import datetime
-from datetime import timedelta
 from random import randint, random
 import random
 from financial_companion.helpers import TransactionType, CurrencyType, Timespan, get_random_invite_code, generate_random_end_date
@@ -24,27 +23,27 @@ class Command(BaseCommand):
     PASSWORD = "Password123"
     # MINIMUM OF FOUR PREDEFINED USERS ARE CREATED IRRESPECTIVE OF VARIABLE
     # VALUE
-    USER_COUNT = 4
-    MAX_ACCOUNTS_PER_USER = 6
-    MAX_TRANSACTIONS_PER_ACCOUNT = 10
-    MAX_NUMBER_OF_CATEGORIES = 10
-    MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER = 5
-    OBJECT_HAS_TARGET_PROBABILITY = 0.6
-    MAX_NUMBER_OF_GROUPS = 5
-    MAX_NUMBER_OF_RECURRING_TRANSACTIONS = 3
+    USER_COUNT: int = 4
+    MAX_ACCOUNTS_PER_USER: int = 6
+    MAX_TRANSACTIONS_PER_ACCOUNT: int = 10
+    MAX_NUMBER_OF_CATEGORIES: int = 10
+    MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER: int = 5
+    OBJECT_HAS_TARGET_PROBABILITY: int = 0.6
+    MAX_NUMBER_OF_GROUPS: int = 5
+    MAX_NUMBER_OF_RECURRING_TRANSACTIONS: int = 3
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
-        self.faker = Faker("en_US")
+        self.faker: Faker = Faker("en_US")
 
-    def handle(self, *args, **options):
+    def handle(self, *args, **options) -> None:
         self.create_users()
         self.create_quiz_questions()
         self.create_user_groups()
         self.create_schedulers()
         print("SEEDING COMPLETE")
 
-    def create_schedulers(self):
+    def create_schedulers(self) -> None:
         print(f'Seeding Scheduler Monthly Newsletter{30 * " "}', end='\r')
         create_monthly_newsletter_scheduler()
         print(f'Seeding Scheduler Bank Accounts Interest{30 * " "}', end='\r')
@@ -53,11 +52,11 @@ class Command(BaseCommand):
         create_recurring_transactions_scheduler()
         print(f"SCHEDULERS SEEDED{30 * ' '}")
 
-    def create_categories(self, user):
-        randomNumOfCategories = randint(3, self.MAX_NUMBER_OF_CATEGORIES)
-        categories = []
+    def create_categories(self, user) -> list[Category]:
+        randomNumOfCategories: int = randint(3, self.MAX_NUMBER_OF_CATEGORIES)
+        categories: list[Category] = []
         for i in range(0, randomNumOfCategories):
-            category = Category.objects.create(
+            category: Category = Category.objects.create(
                 user=user,
                 name=self.faker.word(),
                 description=self.faker.text()
@@ -74,7 +73,7 @@ class Command(BaseCommand):
             categories.append(category)
         return categories
 
-    def create_users(self):
+    def create_users(self) -> None:
         self.create_single_user("Michael", "Kolling", self.PASSWORD, True)
         self.create_single_user("admin", "user", self.PASSWORD, True)
         self.create_single_user("John", "Doe", self.PASSWORD, False)
@@ -86,9 +85,9 @@ class Command(BaseCommand):
                 False)
         print("USERS SEEDED")
 
-    def create_single_user(self, first_name, last_name, password, adminStatus):
+    def create_single_user(self, first_name, last_name, password, adminStatus) -> None:
         try:
-            user = User.objects.create_user(
+            user: User = User.objects.create_user(
                 first_name=first_name,
                 last_name=last_name,
                 username=self.format_username(first_name, last_name),
@@ -99,7 +98,7 @@ class Command(BaseCommand):
                 is_superuser=adminStatus
             )
             if (not (adminStatus)):
-                categories = self.create_categories(user)
+                categories: list[Category] = self.create_categories(user)
                 if (float(randint(0, 100)) / 100 <
                         self.OBJECT_HAS_TARGET_PROBABILITY):
                     UserTarget.objects.create(
@@ -118,22 +117,22 @@ class Command(BaseCommand):
             f'Seeding User {User.objects.count()} with accounts and transactions',
             end='\r')
 
-    def create_accounts_for_user(self, user, categories):
-        randomNumOfBasicAccounts = randint(
+    def create_accounts_for_user(self, user, categories) -> None:
+        randomNumOfBasicAccounts: int = randint(
             1, self.MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER)
-        randomNumOfPotAccounts = randint(1, self.MAX_ACCOUNTS_PER_USER -1)
-        randomNumOfBankAccount = randint(
+        randomNumOfPotAccounts: int = randint(1, self.MAX_ACCOUNTS_PER_USER -1)
+        randomNumOfBankAccount: int = randint(
             1, self.MAX_ACCOUNTS_PER_USER - randomNumOfPotAccounts)
 
         for i in range(0, randomNumOfBasicAccounts):
-            regular_account = Account.objects.create(
+            Account.objects.create(
                 name=self.faker.word(),
                 description=self.faker.text(),
                 user=user
             )
 
         for i in range(0, randomNumOfPotAccounts):
-            potAccount = PotAccount.objects.create(
+            potAccount: PotAccount = PotAccount.objects.create(
                 name=self.faker.word(),
                 description=self.faker.text(),
                 user=user,
@@ -146,7 +145,7 @@ class Command(BaseCommand):
                 potAccount, categories)
 
         for i in range(0, randomNumOfBankAccount):
-            bankAccount = BankAccount.objects.create(
+            bankAccount: BankAccount = BankAccount.objects.create(
                 name=self.faker.word(),
                 description=self.faker.text(),
                 user=user,
@@ -164,17 +163,17 @@ class Command(BaseCommand):
             self.create_recurring_transactions_for_account(
                 potAccount, categories)
 
-    def create_transactions_for_account(self, account, categories):
-        randomNumOfTransactions = randint(0, self.MAX_TRANSACTIONS_PER_ACCOUNT)
-        oppositePartyOfTransaction = random.choice(
+    def create_transactions_for_account(self, account, categories) -> None:
+        randomNumOfTransactions: int = randint(0, self.MAX_TRANSACTIONS_PER_ACCOUNT)
+        oppositePartyOfTransaction: Account = random.choice(
             Account.objects.filter(~Q(id=account.id)))
 
         if (randint(0, 1) == 0):
-            sender_account = oppositePartyOfTransaction
-            receiver_account = account
+            sender_account: Account = oppositePartyOfTransaction
+            receiver_account: Account = account
         else:
-            sender_account = account
-            receiver_account = oppositePartyOfTransaction
+            sender_account: Account = account
+            receiver_account: Account = oppositePartyOfTransaction
 
         for i in range(0, randomNumOfTransactions):
             Transaction.objects.create(
@@ -187,16 +186,16 @@ class Command(BaseCommand):
                 receiver_account=receiver_account
             )
 
-    def format_username(self, first_name, last_name):
+    def format_username(self, first_name, last_name) -> str:
         return f'@{first_name}{last_name}'.lower()
 
-    def format_email(self, first_name, last_name):
+    def format_email(self, first_name, last_name) -> str:
         return f'{first_name}.{last_name}@gfc.org'.lower()
 
-    def choose_random_enum(self, enum):
+    def choose_random_enum(self, enum) -> list[enumerate]:
         return random.choice(list(enum))
 
-    def create_target_for_account(self, account):
+    def create_target_for_account(self, account) -> None:
         if (float(randint(0, 100)) / 100 < self.OBJECT_HAS_TARGET_PROBABILITY):
             AccountTarget.objects.create(
                 target_type=self.choose_random_enum(TransactionType),
@@ -206,7 +205,7 @@ class Command(BaseCommand):
                 account=account
             )
 
-    def create_quiz_questions(self):
+    def create_quiz_questions(self) -> None:
         question_path: str = os.path.join(
             settings.TEXT_DATA_DIRS["financial_companion"],
             f"seeder{os.sep}questions.txt")
@@ -241,9 +240,9 @@ class Command(BaseCommand):
                     end='\r')
         print("QUESTIONS SEEDED")
 
-    def create_user_groups(self):
-        randomNumOfGroups = randint(0, self.MAX_NUMBER_OF_GROUPS)
-        owner = User.objects.get(username='@johndoe')
+    def create_user_groups(self) -> None:
+        randomNumOfGroups: int = randint(0, self.MAX_NUMBER_OF_GROUPS)
+        owner: User = User.objects.get(username='@johndoe')
         for i in range(0, randomNumOfGroups):
             UserGroup.objects.create(
                 name=self.faker.word(),
@@ -251,28 +250,28 @@ class Command(BaseCommand):
                 invite_code=get_random_invite_code(8),
                 owner_email=owner.email
             )
-        all_groups = UserGroup.objects.all()
+        all_groups: UserGroup = UserGroup.objects.all()
         for group in all_groups:
             group.members.set(User.objects.all())
 
         print("USERGROUPS SEEDED")
 
-    def create_recurring_transactions_for_account(self, account, categories):
-        randomNumOfRecTransactions = randint(
+    def create_recurring_transactions_for_account(self, account, categories) -> None:
+        randomNumOfRecTransactions: int = randint(
             0, self.MAX_NUMBER_OF_RECURRING_TRANSACTIONS)
-        oppositePartyOfTransaction = random.choice(
+        oppositePartyOfTransaction: Account = random.choice(
             Account.objects.filter(~Q(id=account.id)))
-        randomNoOfTransactions = randint(0, 10)
+        randomNoOfTransactions: int = randint(0, 10)
 
         if (randint(0, 1) == 0):
-            sender_account = oppositePartyOfTransaction
-            receiver_account = account
+            sender_account: Account = oppositePartyOfTransaction
+            receiver_account: PotAccount = account
         else:
-            sender_account = account
-            receiver_account = oppositePartyOfTransaction
+            sender_account: PotAccount = account
+            receiver_account: Account = oppositePartyOfTransaction
 
         for i in range(0, randomNumOfRecTransactions):
-            recTransaction = RecurringTransaction.objects.create(
+            recTransaction: RecurringTransaction = RecurringTransaction.objects.create(
                 title=self.faker.word(),
                 description=self.faker.text(),
                 category=random.choice(categories),
@@ -285,7 +284,7 @@ class Command(BaseCommand):
                 interval=self.choose_random_enum(Timespan)
             )
             for j in range(0, randomNoOfTransactions):
-                transaction = Transaction.objects.create(
+                transaction: Transaction = Transaction.objects.create(
                     title=recTransaction.title,
                     description=recTransaction.description,
                     category=recTransaction.category,
