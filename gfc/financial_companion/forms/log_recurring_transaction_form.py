@@ -3,6 +3,7 @@ from django.core.validators import RegexValidator
 from financial_companion.models import RecurringTransaction
 from typing import Any
 
+
 class RecurringTransactionForm(forms.ModelForm):
     """Form to log recurring transactions"""
 

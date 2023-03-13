@@ -85,7 +85,8 @@ class Command(BaseCommand):
                 False)
         print("USERS SEEDED")
 
-    def create_single_user(self, first_name, last_name, password, adminStatus) -> None:
+    def create_single_user(self, first_name, last_name,
+                           password, adminStatus) -> None:
         try:
             user: User = User.objects.create_user(
                 first_name=first_name,
@@ -120,7 +121,8 @@ class Command(BaseCommand):
     def create_accounts_for_user(self, user, categories) -> None:
         randomNumOfBasicAccounts: int = randint(
             1, self.MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER)
-        randomNumOfPotAccounts: int = randint(1, self.MAX_ACCOUNTS_PER_USER -1)
+        randomNumOfPotAccounts: int = randint(
+            1, self.MAX_ACCOUNTS_PER_USER - 1)
         randomNumOfBankAccount: int = randint(
             1, self.MAX_ACCOUNTS_PER_USER - randomNumOfPotAccounts)
 
@@ -164,7 +166,8 @@ class Command(BaseCommand):
                 potAccount, categories)
 
     def create_transactions_for_account(self, account, categories) -> None:
-        randomNumOfTransactions: int = randint(0, self.MAX_TRANSACTIONS_PER_ACCOUNT)
+        randomNumOfTransactions: int = randint(
+            0, self.MAX_TRANSACTIONS_PER_ACCOUNT)
         oppositePartyOfTransaction: Account = random.choice(
             Account.objects.filter(~Q(id=account.id)))
 
@@ -256,7 +259,8 @@ class Command(BaseCommand):
 
         print("USERGROUPS SEEDED")
 
-    def create_recurring_transactions_for_account(self, account, categories) -> None:
+    def create_recurring_transactions_for_account(
+            self, account, categories) -> None:
         randomNumOfRecTransactions: int = randint(
             0, self.MAX_NUMBER_OF_RECURRING_TRANSACTIONS)
         oppositePartyOfTransaction: Account = random.choice(

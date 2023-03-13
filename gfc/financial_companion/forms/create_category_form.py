@@ -3,6 +3,7 @@ from financial_companion.models import Category
 from ..helpers import Timespan
 from typing import Any
 
+
 class CategoryForm(forms.ModelForm):
     """Form to add a new transaction"""
 

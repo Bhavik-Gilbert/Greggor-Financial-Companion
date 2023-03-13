@@ -3,12 +3,13 @@ from django.core.validators import RegexValidator
 from financial_companion.models import User
 from typing import Any
 
+
 class UserSignUpForm(forms.ModelForm):
     """Form to register users"""
 
     class Meta:
         model: User = User
-        fields: list[str]= [
+        fields: list[str] = [
             'first_name',
             'last_name',
             'username',
@@ -35,7 +36,8 @@ class UserSignUpForm(forms.ModelForm):
 
         super().clean()
         new_password: str = self.cleaned_data.get('new_password')
-        password_confirmation: str = self.cleaned_data.get('password_confirmation')
+        password_confirmation: str = self.cleaned_data.get(
+            'password_confirmation')
         if new_password != password_confirmation:
             self.add_error(
                 'password_confirmation',

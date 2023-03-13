@@ -4,6 +4,7 @@ from financial_companion.models import UserGroup
 from financial_companion.helpers.functions import get_random_invite_code
 from typing import Any
 
+
 class UserGroupForm(forms.ModelForm):
     """Form to create user groups"""
 

@@ -14,11 +14,14 @@ def add_recurring_transaction_view(request: HttpRequest) -> HttpResponse:
     """View to record a recurring transaction"""
 
     user: User = request.user
-    categories: Union[QuerySet, list[Category]]  = Category.objects.filter(user=user.id)
+    categories: Union[QuerySet, list[Category]
+                      ] = Category.objects.filter(user=user.id)
 
     if request.method == 'POST':
-        form: AddRecurringTransactionForm = AddRecurringTransactionForm(user, request.POST, request.FILES)
-        form.fields['category'].queryset: Union[QuerySet, list[Category]] = categories
+        form: AddRecurringTransactionForm = AddRecurringTransactionForm(
+            user, request.POST, request.FILES)
+        form.fields['category'].queryset: Union[QuerySet,
+                                                list[Category]] = categories
         if form.is_valid():
             form.save()
             messages.add_message(
@@ -28,20 +31,24 @@ def add_recurring_transaction_view(request: HttpRequest) -> HttpResponse:
             return redirect('view_recurring_transactions')
     else:
         form: AddRecurringTransactionForm = AddRecurringTransactionForm(user)
-        form.fields['category'].queryse: Union[QuerySet, list[Category]] = categories
+        form.fields['category'].queryse: Union[QuerySet,
+                                               list[Category]] = categories
     return render(request, "pages/add_recurring_transaction.html",
                   {'form': form, 'edit': False})
 
 
 @login_required
-def edit_recurring_transaction_view(request: HttpRequest, pk: int) -> HttpResponse:
+def edit_recurring_transaction_view(
+        request: HttpRequest, pk: int) -> HttpResponse:
     try:
-        transaction: RecurringTransaction = RecurringTransaction.objects.get(id=pk)
+        transaction: RecurringTransaction = RecurringTransaction.objects.get(
+            id=pk)
     except ObjectDoesNotExist:
         return redirect('view_recurring_transactions')
     else:
         user: User = request.user
-        categories: Union[QuerySet, list[Category]] = Category.objects.filter(user=user.id)
+        categories: Union[QuerySet, list[Category]
+                          ] = Category.objects.filter(user=user.id)
         if request.method == 'POST':
             form: AddRecurringTransactionForm = AddRecurringTransactionForm(
                 user, request.POST, request.FILES, instance=transaction)
@@ -53,8 +60,10 @@ def edit_recurring_transaction_view(request: HttpRequest, pk: int) -> HttpRespon
                     messages.WARNING,
                     "The recurring transaction has been updated")
                 return redirect('view_recurring_transactions')
-        form: AddRecurringTransactionForm = AddRecurringTransactionForm(user, instance=transaction)
-        form.fields['category'].queryset: Union[QuerySet, list[Category]] = categories
+        form: AddRecurringTransactionForm = AddRecurringTransactionForm(
+            user, instance=transaction)
+        form.fields['category'].queryset: Union[QuerySet,
+                                                list[Category]] = categories
         return render(request, "pages/add_recurring_transaction.html",
                       {'form': form, 'edit': True, 'pk': pk})
 
@@ -63,7 +72,8 @@ def edit_recurring_transaction_view(request: HttpRequest, pk: int) -> HttpRespon
 def delete_recurring_transaction_view(
         request: HttpRequest, pk) -> HttpResponse:
     try:
-        transaction: RecurringTransaction = RecurringTransaction.objects.get(id=pk)
+        transaction: RecurringTransaction = RecurringTransaction.objects.get(
+            id=pk)
     except ObjectDoesNotExist:
         return redirect('dashboard')
     else:

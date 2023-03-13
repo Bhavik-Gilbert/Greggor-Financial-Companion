@@ -6,6 +6,7 @@ from financial_companion.forms import UserChangePasswordForm
 from django.contrib.auth.decorators import login_required
 from financial_companion.models import User
 
+
 @login_required
 def change_password_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':

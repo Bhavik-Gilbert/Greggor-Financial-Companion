@@ -12,7 +12,10 @@ from typing import Any
 def create_target(request, Target, current_item) -> Any:
     title_first_word: str = re.split(r"\B([A-Z])", Target.__name__)[0]
     title: str = f'{title_first_word} Target'
-    form: TargetForm = TargetForm(request.POST, foreign_key=current_item, form_type=Target)
+    form: TargetForm = TargetForm(
+        request.POST,
+        foreign_key=current_item,
+        form_type=Target)
     if request.method == "POST":
         if form.is_valid():
             try:
@@ -29,7 +32,8 @@ def create_target(request, Target, current_item) -> Any:
 
                 return None
     else:
-        form: TargetForm = TargetForm(foreign_key=current_item, form_type=Target)
+        form: TargetForm = TargetForm(
+            foreign_key=current_item, form_type=Target)
     return render(request, "pages/create_targets.html",
                   {'form': form, "form_toggle": True, 'title': title})
 
@@ -88,7 +92,8 @@ def create_user_target_view(request: HttpRequest) -> HttpResponse:
         return to_return
 
 
-def edit_target(request: HttpRequest, Target, current_item, foreign_key) -> HttpResponse:
+def edit_target(request: HttpRequest, Target, current_item,
+                foreign_key) -> HttpResponse:
     title_first_word = re.split(r"\B([A-Z])", Target.__name__)[0]
     title = f'{title_first_word} Target'
     if request.method == "POST":

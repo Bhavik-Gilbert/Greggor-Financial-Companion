@@ -28,15 +28,19 @@ class TargetForm(forms.Form):
             self.fields['amount'].initial = self.instance.amount
             self.fields['currency'].initial = self.instance.currency
 
-    target_type: forms.ChoiceField = forms.ChoiceField(choices=TransactionType.choices)
+    target_type: forms.ChoiceField = forms.ChoiceField(
+        choices=TransactionType.choices)
     timespan: forms.ChoiceField = forms.ChoiceField(choices=Timespan.choices)
-    amount: forms.DecimalField = forms.DecimalField(decimal_places=2, max_digits=15)
-    currency: forms.ChoiceField = forms.ChoiceField(choices=CurrencyType.choices)
+    amount: forms.DecimalField = forms.DecimalField(
+        decimal_places=2, max_digits=15)
+    currency: forms.ChoiceField = forms.ChoiceField(
+        choices=CurrencyType.choices)
 
     def clean(self):
         super().clean()
-        filter_type_dict: dict[str, models.Model] = {self.foreign_key_name.lower(): self.foreign_key}
-        check_unique_together: Union[models.QuerySet, list[AbstractTarget]]  = self.form_type.objects.filter(
+        filter_type_dict: dict[str, models.Model] = {
+            self.foreign_key_name.lower(): self.foreign_key}
+        check_unique_together: Union[models.QuerySet, list[AbstractTarget]] = self.form_type.objects.filter(
             timespan=self.cleaned_data.get('timespan'),
             **filter_type_dict,
             target_type=self.cleaned_data.get('target_type')

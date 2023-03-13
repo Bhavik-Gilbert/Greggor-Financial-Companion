@@ -61,9 +61,12 @@ class AddRecurringTransactionForm(forms.ModelForm):
             recurring_transaction.description: str = self.cleaned_data.get(
                 'description')
             recurring_transaction.image = self.cleaned_data.get('image')
-            recurring_transaction.category: Category = self.cleaned_data.get('category')
-            recurring_transaction.amount: float = self.cleaned_data.get('amount')
-            recurring_transaction.currency: str = self.cleaned_data.get('currency')
+            recurring_transaction.category: Category = self.cleaned_data.get(
+                'category')
+            recurring_transaction.amount: float = self.cleaned_data.get(
+                'amount')
+            recurring_transaction.currency: str = self.cleaned_data.get(
+                'currency')
             recurring_transaction.sender_account: Account = self.cleaned_data.get(
                 'sender_account')
             recurring_transaction.receiver_account: Account = self.cleaned_data.get(

@@ -16,7 +16,6 @@ import string
 from typing import Any
 
 
-
 def get_currency_symbol(currency_code: str) -> str:
     """Returns currency symbol for given currency code"""
     currency_code: str = currency_code.upper()
@@ -65,7 +64,7 @@ def calculate_percentages(spent_per_category: dict(), total: float) -> dict:
 
 
 def paginate(page: int, list_input: list[Any],
-             number_per_page: int =settings.NUMBER_OF_ITEMS_PER_PAGE) -> Page:
+             number_per_page: int = settings.NUMBER_OF_ITEMS_PER_PAGE) -> Page:
     list_of_items: list[Any] = []
     paginator: Paginator = Paginator(list_input, number_per_page)
     try:
@@ -85,7 +84,8 @@ def get_random_invite_code(length) -> str:
     return result_str
 
 
-def get_conversions_for_accounts(bank_accounts, main_currency="GBP") -> dict[str, float]:
+def get_conversions_for_accounts(
+        bank_accounts, main_currency="GBP") -> dict[str, float]:
     conversions: dict[str, float] = {}
     conversions.update({str(main_currency): 1.0})
     for bank_account in bank_accounts:
@@ -153,18 +153,20 @@ def get_number_of_days_in_prev_month(offset_inMonths: int = 0) -> int:
     return no_of_days_in_prev_month
 
 
-def get_data_for_account_projection(user: fcmodels.User) -> dict[str, Any]:
+def get_data_for_account_projection(user) -> dict[str, Any]:
     accounts = fcmodels.BankAccount.objects.filter(
         user_id=user, interest_rate__gt=0)
     mainCurrency: str = "GBP"
     if (accounts):
         mainCurrency: str = accounts[0].currency
-    conversions: dict[str, float] = get_conversions_for_accounts(accounts, mainCurrency)
+    conversions: dict[str, float] = get_conversions_for_accounts(
+        accounts, mainCurrency)
 
     timescale_dict: dict[int, str] = get_projection_timescale_options()
     timescales_strings: list[str] = get_short_month_names_for_timescale()
 
-    accountsDictionary: dict[str, list[float]] = get_projections_balances(accounts)
+    accountsDictionary: dict[str, list[float]
+                             ] = get_projections_balances(accounts)
 
     return {
         'bank_accounts': {acc.id: acc.name for acc in accounts},
@@ -181,7 +183,8 @@ def get_sorted_members_based_on_completed_targets(members: Any) -> list:
     member_completed_list: list = []
     for member in members:
         score: float = member.get_leaderboard_score()
-        member_completed_list: list[tuple] = [*member_completed_list, (member, score)]
+        member_completed_list: list[tuple] = [
+            *member_completed_list, (member, score)]
     member_completed_list: list[tuple[Any, float]] = sorted(
         member_completed_list,
         key=lambda x: x[1],
@@ -200,18 +203,21 @@ def get_sorted_members_based_on_completed_targets(members: Any) -> list:
 def generate_random_end_date() -> datetime:
     start_date: datetime = datetime.now()
     end_date: datetime = start_date + timedelta(days=1000)
-    random_date: datetime = start_date + (end_date - start_date) * random.random()
+    random_date: datetime = start_date + \
+        (end_date - start_date) * random.random()
     return random_date
 
 
 def get_warning_messages_for_targets(
-        request, show_numbers_for_multiples: bool =True, targets=None):
+        request, show_numbers_for_multiples: bool = True, targets=None):
     if not targets:
         targets = request.user.get_all_targets()
     completed_targets = request.user.get_completed_targets(targets)
-    nearly_completed_targets = request.user.get_nearly_completed_targets(targets)
+    nearly_completed_targets = request.user.get_nearly_completed_targets(
+        targets)
 
-    sorted_targets_dict: dict[str, dict] = {'completed': {}, 'nearlyExceeded': {}, 'exceeded': {}}
+    sorted_targets_dict: dict[str, dict] = {
+        'completed': {}, 'nearlyExceeded': {}, 'exceeded': {}}
     for target in targets:
         dictionary_to_add: dict = None
         if target.target_type == 'income' and target in completed_targets:

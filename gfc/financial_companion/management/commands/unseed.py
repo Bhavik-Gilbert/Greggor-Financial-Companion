@@ -21,13 +21,15 @@ from django.db import models
 
 class Command(BaseCommand):
     def handle(self, *args, **options) -> None:
-        users: Union[models.QuerySet, list[User]] = User.objects.filter(email__endswith='@gfc.org')
+        users: Union[models.QuerySet, list[User]] = User.objects.filter(
+            email__endswith='@gfc.org')
         Accounts: Union[models.QuerySet, list[Account]] = []
         targets: Union[models.QuerySet, list[AbstractTarget]] = []
         categories: Union[models.QuerySet, list[Category]] = []
         transactions: Union[models.QuerySet, list[Transaction]] = []
         groups: Union[models.QuerySet, list[UserGroup]] = []
-        recurringTransactions: Union[models.QuerySet, list[RecurringTransaction]] = []
+        recurringTransactions: Union[models.QuerySet,
+                                     list[RecurringTransaction]] = []
         for user in users:
             Accounts.extend(Account.objects.filter(user=user))
             targets.extend(UserTarget.objects.filter(user=user))

@@ -15,7 +15,8 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
 
     user: User = request.user
     if request.method == 'POST':
-        form: AddTransactionForm = AddTransactionForm(user, request.POST, request.FILES)
+        form: AddTransactionForm = AddTransactionForm(
+            user, request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.add_message(
@@ -54,7 +55,8 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
                     messages.SUCCESS,
                     "Your transaction has been successfully updated!")
                 return redirect('individual_transaction', pk=pk)
-        form: AddTransactionForm = AddTransactionForm(user, instance=transaction)
+        form: AddTransactionForm = AddTransactionForm(
+            user, instance=transaction)
         return render(request, "pages/add_transaction.html",
                       {'form': form, 'edit': True, 'pk': pk})
 
