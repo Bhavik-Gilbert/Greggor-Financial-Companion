@@ -117,8 +117,8 @@ class Transaction(AbstractTransaction):
 
         filtered_transactions = []
         for transaction in user_transactions:
-            if transaction.time_of_transaction.timestamp(
-            ) >= start_of_timespan_period.timestamp():
+            if ((transaction.time_of_transaction.timestamp(
+            ) >= start_of_timespan_period.timestamp()) & (transaction.time_of_transaction.timestamp()<= datetime.datetime.today().timestamp())) :
                 filtered_transactions = [*filtered_transactions, transaction]
         return filtered_transactions
 
@@ -137,7 +137,6 @@ class Transaction(AbstractTransaction):
             else:
                 spent_per_category.update(
                     {x.category.name: spent_per_category.get(x.category.name) + x.amount})
-        print(spent_per_category)
         return spent_per_category
 
     class Meta:
