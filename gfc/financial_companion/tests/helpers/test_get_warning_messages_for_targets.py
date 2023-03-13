@@ -14,7 +14,7 @@ class GetWarningMessagesForTargetsHelperFunctionTestCase(HelperTestCase):
         self.request = self.client.get('dashboard').wsgi_request
         self.request.user = User.objects.get(pk=1)
         self.targets = self.request.user.get_all_targets()
-    
+
     @freeze_time("2023-01-05 13:00:00")
     def test_get_messages_no_show_numbers_no_targets(self):
         outputRequest: HttpRequest = get_warning_messages_for_targets(
