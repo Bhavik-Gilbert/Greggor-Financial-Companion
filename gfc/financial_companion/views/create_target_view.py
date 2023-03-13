@@ -264,11 +264,11 @@ def view_targets(request: HttpRequest) -> HttpResponse:
             time = form.get_time()
             income_or_expense = form.get_income_or_expense()
             target_type = form.get_target_type()
-            if time is not "":
+            if time != "":
                 targets = list(filter(lambda target: time == target.timespan, targets))
-            if target_type is not "":
+            if target_type != "":
                 targets = list(filter(lambda target: target_type == target.getModelName(), targets))
-            if income_or_expense is not "":
+            if income_or_expense != "":
                 targets = list(filter(lambda target: income_or_expense == target.target_type, targets))
     form = TargetFilterForm()
     return render(request, "pages/target_table.html",
