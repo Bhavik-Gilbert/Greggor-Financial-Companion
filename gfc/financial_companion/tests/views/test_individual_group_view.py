@@ -53,6 +53,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         self.assertContains(response, "Leaderboard:")
         self.assertContains(response, "1st")
         self.assertContains(response, "2nd")
+        self.assertContains(response, "For every income target which is completed you will gain one point. For every expense target completed you will lose a point. For every income target nearly completed (this is when it >= 75% completed and < 100% completed) you will gain half a point. For every expense target nearly completed you will lose half a point.")
         self.assertNotContains(response, "Members:")
 
     def test_invalid_group_does_not_exist(self):
