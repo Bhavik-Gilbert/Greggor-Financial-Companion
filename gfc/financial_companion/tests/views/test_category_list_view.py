@@ -9,10 +9,30 @@ class CategoryListViewCase(ViewTestCase):
 
     def setUp(self):
         self.url = reverse('categories_list', kwargs={'search_name': "all"})
+        self.redirect_url = reverse('categories_list_redirect')
         self.user = User.objects.get(username='@johndoe')
 
     def test_category_list_view_url(self):
         self.assertEqual(self.url, '/categories/all/')
+
+    def test_valid_categories_list_redirect_url(self):
+        self.assertEqual(self.redirect_url, "/categories/")
+
+    def test_valid_get_categories_list_redirect(self):
+        self._login(self.user)
+        response = self.client.post(self.redirect_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pages/category_list.html')
+        messages_list = list(response.context['messages'])
+        self.assertEqual(len(messages_list), 2)
+        self.assertTrue('Targets completed: ' in str(messages_list[0]))
+        self.assertTrue('Targets nearly exceeded: ' in str(messages_list[1]))
+        self.assertContains(response, "Food")
+        self.assertContains(response, "Eating out expenses")
+        self.assertContains(response, "Travel")
+        self.assertContains(response, "Going to and from uni")
+        self.assertContains(response, 'Entertainment')
+        self.assertContains(response, 'Going out and having fun')
 
     def test_post_when_search_is_empty(self):
         self._login(self.user)
