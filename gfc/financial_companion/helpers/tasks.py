@@ -12,7 +12,6 @@ from financial_companion.helpers.enums import Timespan
 import financial_companion.models as fcmodels
 from financial_companion.helpers import (
     get_number_of_days_in_prev_month,
-    timespan_map,
     check_date_on_interval,
     check_within_date_range
 )
