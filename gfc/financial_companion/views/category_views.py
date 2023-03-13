@@ -7,7 +7,7 @@ from django.urls import reverse
 
 
 @login_required
-def category_list_view(request: HttpRequest, search_name: str) -> HttpResponse:
+def category_list_view(request: HttpRequest, search_name: str = "all") -> HttpResponse:
     """View to view list of existing categories"""
 
     if request.method == "POST" and "search" in request.POST:
@@ -33,10 +33,3 @@ def category_list_view(request: HttpRequest, search_name: str) -> HttpResponse:
 
     return render(request, "pages/category_list.html",
                   {"categories": categories})
-
-
-@login_required
-def category_list_redirect(request: HttpRequest) -> HttpResponse:
-    """Redirect to view list of all existing categories"""
-
-    return redirect("categories_list", search_name="all")

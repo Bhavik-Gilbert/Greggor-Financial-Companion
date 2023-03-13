@@ -9,6 +9,7 @@ class AllGroupsViewCase(ViewTestCase):
 
     def setUp(self):
         self.url = reverse('all_groups', kwargs={'search_name': "all"})
+        self.redirect_url = reverse('all_groups_redirect')
         self.user = User.objects.get(username='@johndoe')
 
     def test_view_all_groups_url(self):
@@ -17,6 +18,20 @@ class AllGroupsViewCase(ViewTestCase):
     def test_post_when_search_is_empty(self):
         self._login(self.user)
         response = self.client.post(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pages/all_groups.html')
+        messages_list = list(response.context['messages'])
+        self.assertEqual(len(messages_list), 0)
+        self.assertContains(response, "Saving Club")
+        self.assertContains(response, "johndoe@example.org")
+        self.assertContains(response, "Save with us")
+        
+    def test_valid_all_groups_redirect_url(self):
+        self.assertEqual(self.redirect_url, "/groups/")
+
+    def test_valid_get_all_groups_redirect(self):
+        self._login(self.user)
+        response = self.client.post(self.redirect_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/all_groups.html')
         messages_list = list(response.context['messages'])

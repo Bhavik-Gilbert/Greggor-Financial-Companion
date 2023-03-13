@@ -8,7 +8,7 @@ from financial_companion.helpers import FilterTransactionType
 
 @login_required
 def individual_category_view(
-        request: HttpRequest, pk: int, filter_type: str) -> HttpResponse:
+        request: HttpRequest, pk: int, filter_type: str =FilterTransactionType.ALL) -> HttpResponse:
     """View to see information on individual categories"""
     user: User = request.user
 
@@ -35,11 +35,3 @@ def individual_category_view(
         "transactions": list_of_transactions
     })
 
-
-@login_required
-def individual_category_redirect(
-        request: HttpRequest, pk: int) -> HttpResponse:
-    """View to redirect to see information on individual categories with base inputs"""
-
-    return redirect('individual_category', pk=pk,
-                    filter_type=FilterTransactionType.ALL)

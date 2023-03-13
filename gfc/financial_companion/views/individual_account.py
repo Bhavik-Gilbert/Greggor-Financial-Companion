@@ -11,7 +11,7 @@ from financial_companion.helpers import paginate
 
 @login_required
 def individual_account_view(
-        request: HttpRequest, pk: int, filter_type: str) -> HttpResponse:
+        request: HttpRequest, pk: int, filter_type: str =FilterTransactionType.ALL) -> HttpResponse:
     """View to see information on individual categories"""
     user: User = request.user
 
@@ -35,8 +35,3 @@ def individual_account_view(
     return render(request, "pages/individual_account.html",
                   {"account": account, "account_targets": account_targets, 'transactions': list_of_transactions})
 
-
-@login_required
-def individual_account_redirect(request: HttpRequest, pk: int) -> HttpResponse:
-    return redirect('individual_account', pk=pk,
-                    filter_type=FilterTransactionType.ALL)

@@ -18,11 +18,25 @@ class IndividualAccountViewTestCase(ViewTestCase):
             kwargs={
                 "pk": self.account.id,
                 "filter_type": "all"})
+        self.redirect_url: str = reverse(
+            "individual_account_redirect", kwargs={
+                "pk": self.account.id})
 
     def test_valid_individual_account_url(self):
         self.assertEqual(
             self.url,
             f"/individual_account/{self.account.id}/all/")
+        
+    def test_valid_individual_account_redirect_url(self):
+        self.assertEqual(self.redirect_url, f"/individual_account/{self.account.id}/")
+
+    def test_valid_get_individual_account_redirect(self):
+        self._login(self.user)
+        response: HttpResponse = self.client.get(self.redirect_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "pages/individual_account.html")
+        account: Account = response.context["account"]
+        self.assertTrue(isinstance(account, PotAccount))
 
     def test_valid_get_view_individual_account(self):
         self._login(self.user)
