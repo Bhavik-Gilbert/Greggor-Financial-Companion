@@ -155,5 +155,24 @@
             "balance": 1000,
             "currency": "GBP"
         }
+    },
+
+    {
+        "model": "financial_companion.Account",
+        "pk": 9,
+        "fields": {
+            "name": "Leisure",
+            "description": "this is a test pot account",
+            "user": "1"
+        }
+    },
+
+    {
+        "model": "financial_companion.PotAccount",
+        "pk": 9,
+        "fields": {
+            "balance": 500,
+            "currency": "GBP"
+        }
     }
 ]

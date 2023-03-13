@@ -35,7 +35,7 @@
         "fields": {
             "target_type": "expense",
             "timespan": "year",
-            "amount": "123",
+            "amount": "22000",
             "category": 1
         }
     },
@@ -45,7 +45,7 @@
         "fields": {
             "target_type": "expense",
             "timespan": "year",
-            "amount": "123",
+            "amount": "1234",
             "category": 3
         }
     },
@@ -67,6 +67,16 @@
             "timespan": "year",
             "amount": "0",
             "category": 1
+        }
+    },
+    {
+        "model": "financial_companion.categorytarget",
+        "pk": 8,
+        "fields": {
+            "target_type": "income",
+            "timespan": "year",
+            "amount": "1",
+            "category": 4
         }
     },
     {
@@ -137,6 +147,16 @@
             "timespan": "week",
             "amount": "0",
             "account": 3
+        }
+    },
+    {
+        "model": "financial_companion.accounttarget",
+        "pk": 6,
+        "fields": {
+            "target_type": "income",
+            "timespan": "year",
+            "amount": "500",
+            "account": 9
         }
     }
 ]

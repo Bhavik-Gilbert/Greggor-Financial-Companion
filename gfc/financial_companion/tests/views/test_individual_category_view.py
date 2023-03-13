@@ -109,7 +109,7 @@ class IndividualCategoryViewTestCase(ViewTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/individual_category.html")
         category_targets: Category = response.context["category_targets"]
-        self.assertEqual(len(category_targets), 0)
+        self.assertEqual(len(category_targets), 1)
 
     def test_invalid_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)
