@@ -1,10 +1,11 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
-from financial_companion.forms import TargetForm
+from financial_companion.forms import TargetForm, TargetFilterForm
 from django.contrib.auth.decorators import login_required
 from ..models import Category, CategoryTarget, PotAccount, AccountTarget, UserTarget
 from django.contrib import messages
 from financial_companion.models import CategoryTarget, Category, User
+from financial_companion.helpers.enums import Timespan, TransactionType, TargetType
 import re
 
 
@@ -251,11 +252,27 @@ def delete_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
     return redirect("dashboard")
 
 @login_required
-def all_targets_view(request: HttpRequest) -> HttpResponse:
+def view_targets(request: HttpRequest) -> HttpResponse:
     """View to allow users to view all their targets"""
+    time = None
+    income_or_expense = None
+    target_type = None
     targets = request.user.get_all_targets()
-    return render(request, "partials/target_table.html",
-                  {'targets': targets})
+    if request.method == "POST":
+        form = TargetFilterForm(request.POST)
+        if form.is_valid():
+            time = form.get_time()
+            income_or_expense = form.get_income_or_expense()
+            target_type = form.get_target_type()
+            if time is not "":
+                targets = list(filter(lambda target: time == target.timespan, targets))
+            if target_type is not "":
+                targets = list(filter(lambda target: target_type == target.getModelName(), targets))
+            if income_or_expense is not "":
+                targets = list(filter(lambda target: income_or_expense == target.target_type, targets))
+    form = TargetFilterForm()
+    return render(request, "pages/target_table.html",
+                  {'targets': targets, 'form': form})
 
 @login_required
 def filter_transaction_request(request, redirect_name: str):

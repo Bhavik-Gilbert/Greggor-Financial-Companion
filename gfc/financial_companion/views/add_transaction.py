@@ -13,17 +13,17 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
     """View to record a transaction made"""
 
     user = request.user
-    categories = Category.objects.filter(user=user.id)
-
     if request.method == 'POST':
         form = AddTransactionForm(user, request.POST, request.FILES)
-        form.fields['category'].queryset = categories
         if form.is_valid():
             form.save()
-            return redirect('dashboard')
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                "Your transaction has been successfully added!")
+            return redirect('view_transactions', filter_type="all")
     else:
         form = AddTransactionForm(user)
-        form.fields['category'].queryset = categories
     return render(request, "pages/add_transaction.html",
                   {'form': form, 'edit': False})
 
@@ -32,20 +32,28 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
 def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
     try:
         transaction = Transaction.objects.get(id=pk)
-    except ObjectDoesNotExist:
-        return redirect('dashboard')
-    else:
         user = request.user
-        categories = Category.objects.filter(user=user.id)
+        if (transaction.receiver_account.user !=
+                user and transaction.sender_account.user != user):
+            return redirect('dashboard')
+    except ObjectDoesNotExist:
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "The transaction can not be deleted.")
+        return redirect('view_transactions', filter_type="all")
+    else:
         if request.method == 'POST':
             form = AddTransactionForm(
                 user, request.POST, request.FILES, instance=transaction)
-            form.fields['category'].queryset = categories
             if form.is_valid():
                 form.save(instance=transaction)
-                return redirect('dashboard')
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    "Your transaction has been successfully updated!")
+                return redirect('individual_transaction', pk=pk)
         form = AddTransactionForm(user, instance=transaction)
-        form.fields['category'].queryset = categories
         return render(request, "pages/add_transaction.html",
                       {'form': form, 'edit': True, 'pk': pk})
 
@@ -60,9 +68,9 @@ def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         transaction.delete()
         messages.add_message(
             request,
-            messages.WARNING,
+            messages.ERROR,
             "The transaction has been deleted")
-        return redirect('dashboard')
+        return redirect('view_transactions', filter_type="all")
 
 
 @login_required

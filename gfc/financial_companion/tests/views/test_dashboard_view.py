@@ -55,7 +55,7 @@ class DashboardViewTestCase(ViewTestCase):
                 transaction.receiver_account.name.title())
         self.assertTemplateUsed(
             response,
-            'partials/dashboard/account_projection_graph.html'
+            'partials/dashboard/account_projection_graph_card.html'
         )
         messages = list(get_messages(response.wsgi_request))
         self.assertEqual(len(messages), 1)

@@ -4,7 +4,7 @@ from financial_companion.models import (
     User, UserGroup,
     Account, PotAccount, BankAccount,
     CategoryTarget, UserTarget, AccountTarget,
-    Transaction,  # RecurringTransactions,
+    Transaction, RecurringTransaction,
     Category,
     QuizQuestion
 )
@@ -13,10 +13,11 @@ from django.db.models import Q
 from django.conf import settings
 import os
 import datetime
+from datetime import timedelta
 from random import randint, random
 import random
-from financial_companion.helpers import TransactionType, CurrencyType, AccountType, Timespan, get_random_invite_code
-from financial_companion.scheduler import create_monthly_newsletter_scheduler
+from financial_companion.helpers import TransactionType, CurrencyType, Timespan, get_random_invite_code, generate_random_end_date
+from financial_companion.scheduler import create_monthly_newsletter_scheduler, create_bank_account_interest_scheduler, create_recurring_transactions_scheduler
 
 
 class Command(BaseCommand):
@@ -25,30 +26,32 @@ class Command(BaseCommand):
     # VALUE
     USER_COUNT = 6
     MAX_ACCOUNTS_PER_USER = 10
-    MAX_TRANSACTIONS_PER_ACCOUNT = 50
+    MAX_TRANSACTIONS_PER_ACCOUNT = 5
     MAX_NUMBER_OF_CATEGORIES = 10
-    MAX_NUMBER_OF_BASIC_ACCOUNTS = 5
+    MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER = 5
     OBJECT_HAS_TARGET_PROBABILITY = 0.6
     MAX_NUMBER_OF_GROUPS = 5
+    MAX_NUMBER_OF_RECURRING_TRANSACTIONS = 4
 
     def __init__(self):
         super().__init__()
         self.faker = Faker("en_US")
 
     def handle(self, *args, **options):
-        self.create_basic_accounts()
         self.create_users()
         self.create_quiz_questions()
-        create_monthly_newsletter_scheduler()
         self.create_user_groups()
+        self.create_schedulers()
         print("SEEDING COMPLETE")
 
-    def create_basic_accounts(self):
-        for i in range(0, self.MAX_NUMBER_OF_BASIC_ACCOUNTS):
-            Account.objects.create(
-                name=self.faker.word(),
-                description=self.faker.text()
-            )
+    def create_schedulers(self):
+        print(f'Seeding Scheduler Monthly Newsletter{30 * " "}', end='\r')
+        create_monthly_newsletter_scheduler()
+        print(f'Seeding Scheduler Bank Accounts Interest{30 * " "}', end='\r')
+        create_bank_account_interest_scheduler()
+        print(f'Seeding Scheduler Recurring Transactions{30 * " "}', end='\r')
+        create_recurring_transactions_scheduler()
+        print(f"SCHEDULERS SEEDED{30 * ' '}")
 
     def create_categories(self, user):
         randomNumOfCategories = randint(3, self.MAX_NUMBER_OF_CATEGORIES)
@@ -62,7 +65,7 @@ class Command(BaseCommand):
             if (float(randint(0, 100)) / 100 <
                     self.OBJECT_HAS_TARGET_PROBABILITY):
                 CategoryTarget.objects.create(
-                    transaction_type=self.choose_random_enum(TransactionType),
+                    target_type=self.choose_random_enum(TransactionType),
                     timespan=self.choose_random_enum(Timespan),
                     amount=float(randint(0, 1000000)) / 100,
                     currency=self.choose_random_enum(CurrencyType),
@@ -100,7 +103,7 @@ class Command(BaseCommand):
                 if (float(randint(0, 100)) / 100 <
                         self.OBJECT_HAS_TARGET_PROBABILITY):
                     UserTarget.objects.create(
-                        transaction_type=self.choose_random_enum(
+                        target_type=self.choose_random_enum(
                             TransactionType),
                         timespan=self.choose_random_enum(Timespan),
                         amount=float(randint(0, 1000000)) / 100,
@@ -116,9 +119,19 @@ class Command(BaseCommand):
             end='\r')
 
     def create_accounts_for_user(self, user, categories):
+        randomNumOfBasicAccounts = randint(
+            1, self.MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER)
         randomNumOfPotAccounts = randint(1, self.MAX_ACCOUNTS_PER_USER)
         randomNumOfBankAccount = randint(
             0, self.MAX_ACCOUNTS_PER_USER - randomNumOfPotAccounts)
+
+        for i in range(0, randomNumOfBasicAccounts):
+            regular_account = Account.objects.create(
+                name=self.faker.word(),
+                description=self.faker.text(),
+                user=user
+            )
+
         for i in range(0, randomNumOfPotAccounts):
             potAccount = PotAccount.objects.create(
                 name=self.faker.word(),
@@ -129,6 +142,9 @@ class Command(BaseCommand):
             )
             self.create_target_for_account(potAccount)
             self.create_transactions_for_account(potAccount, categories)
+            self.create_recurring_transactions_for_account(
+                potAccount, categories)
+
         for i in range(0, randomNumOfBankAccount):
             bankAccount = BankAccount.objects.create(
                 name=self.faker.word(),
@@ -141,10 +157,12 @@ class Command(BaseCommand):
                 str(randint(1000000, 9999999)),
                 sort_code=str(randint(0, 9)) + "" + str(randint(10000, 99999)),
                 iban=self.faker.name()[0] * 33,
-                interest_rate=float(randint(-1000, 1000)) / 100
+                interest_rate=float(randint(-50, 1000)) / 100
             )
             self.create_target_for_account(bankAccount)
             self.create_transactions_for_account(bankAccount, categories)
+            self.create_recurring_transactions_for_account(
+                potAccount, categories)
 
     def create_transactions_for_account(self, account, categories):
         randomNumOfTransactions = randint(0, self.MAX_TRANSACTIONS_PER_ACCOUNT)
@@ -181,7 +199,7 @@ class Command(BaseCommand):
     def create_target_for_account(self, account):
         if (float(randint(0, 100)) / 100 < self.OBJECT_HAS_TARGET_PROBABILITY):
             AccountTarget.objects.create(
-                transaction_type=self.choose_random_enum(TransactionType),
+                target_type=self.choose_random_enum(TransactionType),
                 timespan=self.choose_random_enum(Timespan),
                 amount=float(randint(0, 1000000)) / 100,
                 currency=self.choose_random_enum(CurrencyType),
@@ -238,3 +256,43 @@ class Command(BaseCommand):
             group.members.set(User.objects.all())
 
         print("USERGROUPS SEEDED")
+
+    def create_recurring_transactions_for_account(self, account, categories):
+        randomNumOfRecTransactions = randint(
+            0, self.MAX_NUMBER_OF_RECURRING_TRANSACTIONS)
+        oppositePartyOfTransaction = random.choice(
+            Account.objects.filter(~Q(id=account.id)))
+        randomNoOfTransactions = randint(0, 10)
+
+        if (randint(0, 1) == 0):
+            sender_account = oppositePartyOfTransaction
+            receiver_account = account
+        else:
+            sender_account = account
+            receiver_account = oppositePartyOfTransaction
+
+        for i in range(0, randomNumOfRecTransactions):
+            recTransaction = RecurringTransaction.objects.create(
+                title=self.faker.word(),
+                description=self.faker.text(),
+                category=random.choice(categories),
+                amount=float(randint(0, 1000000)) / 100,
+                currency=self.choose_random_enum(CurrencyType),
+                sender_account=sender_account,
+                receiver_account=receiver_account,
+                start_date=datetime.date.today(),
+                end_date=generate_random_end_date(),
+                interval=self.choose_random_enum(Timespan)
+            )
+            for j in range(0, randomNoOfTransactions):
+                transaction = Transaction.objects.create(
+                    title=recTransaction.title,
+                    description=recTransaction.description,
+                    category=recTransaction.category,
+                    amount=recTransaction.amount,
+                    currency=recTransaction.currency,
+                    sender_account=sender_account,
+                    receiver_account=receiver_account
+                )
+                transaction.save()
+                recTransaction.add_transaction(transaction)

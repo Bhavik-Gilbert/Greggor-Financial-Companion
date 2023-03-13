@@ -5,7 +5,7 @@ from .models import (
     User,
     Category,
     Account, PotAccount, BankAccount,
-    Transaction,
+    Transaction, RecurringTransaction,
     CategoryTarget, AccountTarget, UserTarget,
     UserGroup
 )
@@ -62,33 +62,41 @@ class BankAccount(admin.ModelAdmin):
 @admin.register(Transaction)
 class Transaction(admin.ModelAdmin):
     list_display = [
-        'id', 'title', 'amount', 'currency', 'sender_account', 'receiver_account', 'category', 'description'
+        'id', 'title', 'amount', 'currency', 'sender_account', 'receiver_account', 'category', 'description', 'time_of_transaction'
     ]
 
 
 @admin.register(CategoryTarget)
 class CategoryTarget(admin.ModelAdmin):
     list_display = [
-        'id', 'transaction_type', 'timespan', 'amount', 'currency', 'category_id'
+        'id', 'target_type', 'timespan', 'amount', 'currency', 'category_id'
     ]
 
 
 @admin.register(UserTarget)
 class UserTarget(admin.ModelAdmin):
     list_display = [
-        'id', 'transaction_type', 'timespan', 'amount', 'currency', 'user'
+        'id', 'target_type', 'timespan', 'amount', 'currency', 'user'
     ]
 
 
 @admin.register(AccountTarget)
 class AccountTarget(admin.ModelAdmin):
     list_display = [
-        'id', 'transaction_type', 'timespan', 'amount', 'currency', 'account_id'
+        'id', 'target_type', 'timespan', 'amount', 'currency', 'account_id'
     ]
 
 
 @admin.register(UserGroup)
 class UserGroup(admin.ModelAdmin):
     list_display = [
-        'id', 'name', 'description', 'owner_email', 'invite_code', 'get_members'
+        'id', 'name', 'description', 'owner_email', 'invite_code', 'get_members', 'group_picture'
+    ]
+
+
+@admin.register(RecurringTransaction)
+class RecurringTransaction(admin.ModelAdmin):
+    list_display = [
+        'id', 'title', 'amount', 'currency', 'sender_account', 'receiver_account', 'category', 'description',
+        'start_date', 'interval', 'end_date'
     ]

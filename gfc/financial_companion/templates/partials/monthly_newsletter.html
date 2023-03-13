@@ -1,15 +1,13 @@
-<h1>{{user.full_name}}, here is your monthly spending newsletter for {{month}}!</h1>
+<h1>{{user.full_name}}, here is your monthly spending newsletter for last month!</h1>
 <div style="background-color: rgb(160, 219, 247);padding:20px;">
    <h3> Lets take a look at your targets:</h3>
     
-    <p>This month you have met x targets!</p>
-
-    <p>You have overspent on these categories:</p>
-    <!-- List -->
+    <p>This month you have met {{targets}} targets!</p>
 
     <!-- Table of all spending this month -->
-
-    <table bordercolor = "#000000" class="table  table-bordered table-striped" style="width:100%" style="text-align:center" >
+    {%if transactions%}
+    <h3> Recent Transactions</h3>
+    <table role="presentation" border="1" cellspacing="0" width="100%" >
         <thead class = "table-primary">
           <tr>
               <th scope="col" style="text-align:center">Transaction Name</th>
@@ -25,8 +23,11 @@
           </tr>
         {% endfor %}
       </table>
-
+      {%else%}
+      <p>You do not have any transactions for {{month}}!</p>
+      {%endif%}
     <!-- Link to the stats page. -->
-    <p>For a more detailed view of your spending, checkout out your personalised <a href="http://localhost:8000/admin/django_q/schedule/"> stats page!</a></p>
+    
+    <h4>For a more detailed view of your spending, checkout out your personalised <a href={{site_url_spending}}> stats page!</a></h2>
     
 </div>

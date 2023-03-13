@@ -6,17 +6,19 @@ from django.db.models import (
     CASCADE
 )
 
+from django.core.validators import MinValueValidator
 from .category_model import Category
 from .user_model import User
 from .accounts_model import PotAccount
 from ..helpers import Timespan, TransactionType, CurrencyType
+from decimal import Decimal
 from financial_companion.templatetags import get_completeness
 
 
 class AbstractTarget(Model):
     """Abstract model for target spending and saving"""
 
-    transaction_type: CharField = CharField(
+    target_type: CharField = CharField(
         choices=TransactionType.choices, max_length=7
     )
 
@@ -25,7 +27,7 @@ class AbstractTarget(Model):
     )
 
     amount: DecimalField = DecimalField(
-        decimal_places=2, max_digits=15
+        decimal_places=2, max_digits=15, validators=[MinValueValidator(Decimal('0.01'))]
     )
 
     currency: CharField = CharField(
@@ -64,7 +66,7 @@ class CategoryTarget(AbstractTarget):
     category: ForeignKey = ForeignKey(Category, on_delete=CASCADE)
 
     class Meta:
-        unique_together = ["transaction_type", "timespan", "category"]
+        unique_together = ["target_type", "timespan", "category"]
 
     def getModelName(self, plural=False):
         if plural:
@@ -82,7 +84,7 @@ class UserTarget(AbstractTarget):
     user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
 
     class Meta:
-        unique_together = ["transaction_type", "timespan", "user"]
+        unique_together = ["target_type", "timespan", "user"]
 
     def getModelName(self, plural=False):
         if plural:
@@ -100,13 +102,13 @@ class AccountTarget(AbstractTarget):
     account: ForeignKey = ForeignKey(PotAccount, on_delete=CASCADE)
 
     class Meta:
-        unique_together = ["transaction_type", "timespan", "account"]
+        unique_together = ["target_type", "timespan", "account"]
 
     def getModelName(self, plural=False):
         if plural:
             return "accounts"
         else:
-            return "accounts"
+            return "account"
 
     def __str__(self):
         return self.account.name

@@ -162,7 +162,7 @@ class ParseStatementPDFClassTestCase(HelperTestCase):
         parsed_transaction: dict[str, Any] = self._get_transaction()
         parsed_transaction["transaction_type"]: str = TransactionType.EXPENSE
         receiver, sender = self.bank_statement_parser.get_sender_receiver(
-            parsed_transaction, self.account)
+            parsed_transaction, self.account, self.user)
         self.assertEqual(self.account, sender)
 
     def test_valid_get_sender_receiver_is_receiver(self):
@@ -170,7 +170,7 @@ class ParseStatementPDFClassTestCase(HelperTestCase):
         parsed_transaction: dict[str, Any] = self._get_transaction()
         parsed_transaction["transaction_type"]: str = TransactionType.INCOME
         receiver, sender = self.bank_statement_parser.get_sender_receiver(
-            parsed_transaction, self.account)
+            parsed_transaction, self.account, self.user)
         self.assertEqual(self.account, receiver)
 
     def test_invalid_get_sender_receiver_transaction_type_is_not_in_transaction_type_enum_is_sender(
@@ -179,7 +179,7 @@ class ParseStatementPDFClassTestCase(HelperTestCase):
         parsed_transaction: dict[str, Any] = self._get_transaction()
         parsed_transaction["transaction_type"]: str = "Invalid"
         receiver, sender = self.bank_statement_parser.get_sender_receiver(
-            parsed_transaction, self.account)
+            parsed_transaction, self.account, self.user)
         self.assertEqual(self.account, sender)
 
     def test_valid_get_dataframe_list_statement_column_expense_indexes_separate_income_expense_columns(

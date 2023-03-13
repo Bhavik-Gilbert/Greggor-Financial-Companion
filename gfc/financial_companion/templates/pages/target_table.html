@@ -1,4 +1,5 @@
 {% extends 'page.html' %}
+{% load targets %}
 {% block title %}View Targets{% endblock %}
 
 {% block content %}
@@ -9,28 +10,39 @@
   <hr class="hr col-12"/>
     <div class="row">
       <div class="col-12">
+        <div>
+            <form class="row" method="post">
+                {% csrf_token %}
+                <div class="col-3">
+                    {% include 'partials/form.html' with form=form %}
+                </div>
+                <input type="submit" value="Apply" class="btn btn-primary col-1 col-md-1 my-1">
+              </form>
+        </div>
           &nbsp;
         <table class="table  table-bordered table-striped" style="width:100%" style="text-align:center" >
           <thead class = "table-primary">
             <tr>
                 <th scope="col" style="text-align:center">Target ID</th>
-                <th scope="col" style="text-align:center">Transaction Type</th>
+                <th scope="col" style="text-align:center">Income/Expense</th>
                 <th scope="col" style="text-align:center">Timespan</th>
                 <th scope="col" style="text-align:center">Amount</th>
                 <th scope="col" style="text-align:center">Currency</th>
                 <th scope="col" style="text-align:center">Target Type</th>
-                <th scope="col" style="text-align:center">View More</th>
+                <th scope="col" style="text-align:center">Applied To</th>
+                <th scope="col" style="text-align:center">Progress %</th>
             </tr>
           </thead>
           {% for target in targets %}
             <tr style="text-align:center">
               <td>{{ target.id }}</td>
-              <td>{{ target.transaction_type }}</td>
+              <td>{{ target.target_type.title }}</td>
               <td>{{ target.timespan }}</td>
               <td>{{ target.amount }}</td>
               <td>{{ target.currency }}</td>
+              <td>{{ target|get_model }}</td>
               <td>{{ target }}</td>
-              <td></td>
+              <td>{{ target|get_completeness }}</td>
             </tr>
           </form>
           {% endfor %}

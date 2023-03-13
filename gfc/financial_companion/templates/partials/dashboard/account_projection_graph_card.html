@@ -3,8 +3,10 @@
 {% block card_title %}Projection:{% endblock %}
 
 {% block card_content %}
-    {% if bank_accounts %}
-        {% include "partials/dashboard/account_projection_graph.html" %}
+    {% if not bank_accounts %}
+        <div>
+            {% include "partials/dashboard/account_projection_graph.html" %}
+        </div>
     {% else %}
         {% include "partials/dashboard/no_content.html" with content_type_plural="savings accounts" %}
     {% endif %}

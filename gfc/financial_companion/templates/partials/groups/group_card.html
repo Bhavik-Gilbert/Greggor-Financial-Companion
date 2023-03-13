@@ -1,14 +1,18 @@
 {%for group in groups %}
 <div class="col-sm-4 py-4">
-    <div class="card">
-        <div class="card-body">
-        <h5 class="card-title">Name: {{ group.name }}</h5>
-        <p class="card-text"><Strong>Owner's email: </Strong> {{ group.owner_email }}</p>
-        <p class="card-text"><Strong>Description: </Strong> {{ group.description }}</p>
+    <div class="card justify-content-center h-100">
+        <div class="card-header pb-1 text-center">
+            <h4 class="card-title">{{ group.name }}</h5>
         </div>
-        <div class="card-footer text-muted justify-content-center">
-            <a href="{% url 'individual_group_redirect' pk=group.id %}" class="btn btn-primary justify-content-center">View</a>
+        <div class="card-body">
+            <ul class="list-group list-group-flush text-left"></ul>
+                <li class="list-group-item"><strong>Owner's email: </strong> {{ group.owner_email }}</li>
+                <li class="list-group-item"><strong>Description: </strong> {{ group.description }}</li>
+            </ul>
+        </div>
+        <div class="card-footer text-muted justify-content-center text-center">
+            <a href="{% url 'individual_group_redirect' pk=group.id %}" class="btn btn-outline-primary">View</a>
         </div>
     </div>
-</div>
+  </div>
 {% endfor %}

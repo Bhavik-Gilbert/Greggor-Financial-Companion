@@ -1,0 +1,50 @@
+{% extends "page.html" %}
+
+{% block title %}Spending Summary{% endblock %}
+
+{% block content %}
+<body>
+    <div class="row justify-content-center gy-4">
+        <h1 class="col-12">Spending Summary</h1>
+        <div>
+            <form class="row" method="post">
+                {% csrf_token %}
+                <div class="col-6 col-md-3">
+                    {% include 'partials/form.html' with form=form %}
+                </div>
+                <input type="submit" value="Apply" class="btn btn-primary col-6 col-md-2 my-4">
+              </form>
+        </div>
+        <strong>Currently Selected: Last {{time}}</strong>
+        <div class="col-12 col-md-4">
+            {%include 'partials/target_bar.html' with targets=targets %}
+        </div>
+        <div class="col-12 col-md-8">
+          {% if dataset != None %}
+                <div class="card bg-primary">
+                    <p><strong>Your Spending:</strong></p>
+                    {% include 'partials/dashboard/graph.html' with chart_name='categories' %}
+                    <script>
+                        var dataset = {{ dataset|safe }}.map(num => parseFloat(num));
+                        var keyset = {{ keyset|safe }};
+                        setChart(dataset, keyset, '% of Spending', "", 'pie');
+                    </script>
+                </div>
+                &nbsp
+                <div class="card bg-primary">
+                    <p><strong>Money In vs Money Out</strong></p>
+                    {% include 'partials/dashboard/graph.html' with chart_name='in_out' %}
+                    <script>
+                         var money_in = {{ money_in|safe }};
+                    var money_out = {{money_out|safe}};
+
+                    setChart([money_in, money_out], ['Money In', 'Money Out'], 'Amount', "Income vs Outcome", 'doughnut')
+                    </script>
+        {% else %}
+            <div>No spending summary to show as there is no transaction data for the selected time period.</div>
+            <div>Try selecting a new time period.</div>
+        {% endif %}
+        </div>
+    </div>
+</body>
+{%endblock%}

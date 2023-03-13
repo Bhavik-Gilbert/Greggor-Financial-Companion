@@ -1,0 +1,16 @@
+{% load targets %}
+{% load get_logo %}
+
+<div class="row g-2">
+  <div class="card">
+  <h4 class="card-title">Overall Greggor Mood:</h4>
+  {% with overall_greggor=targets|get_greggor_type_for_overall_completeness %}
+    {% include 'partials/greggor_logo.html' with greggor_type=overall_greggor%}
+  </div>
+  {% for target in targets %}
+  <div class="row-12 row-md-12">
+      {% include 'partials/target_card.html' with target=target%}
+  </div>
+  {% endfor %}
+  {% endwith %}
+</div>

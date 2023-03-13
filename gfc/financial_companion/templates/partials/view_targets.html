@@ -1,0 +1,26 @@
+{% extends "page.html" %}
+
+<!-- Title -->
+{% block title %}View Targets{% endblock %}
+
+<!-- Content -->
+{% block content %}
+  <div class="row gy-3 justify-content-left text-center">
+    <h1 class="col-12">View Targets</h1>
+
+    <div class="col-12">
+      <a class="btn btn-primary mb-3" href="{% url 'add_monetary_account' %}">Add New</a>
+    </div>
+    {% if targets != None %}
+      {% for target in targets %}
+        {% include 'partials/target_card.html' with target=target %}
+      {% endfor %}
+    {% else %}
+      <div class="col-12">
+        <div class="card bg-warning mb-3 text-center pt-3 pb-1">
+          <p>You currently do not have any targets</p>
+        </div>
+      </div>
+    {% endif %}
+    </div>
+{% endblock %}
