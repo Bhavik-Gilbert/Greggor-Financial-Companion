@@ -62,6 +62,7 @@ class AddTransactionForm(forms.ModelForm):
             transaction.receiver_account: Account = self.cleaned_data.get(
                 'receiver_account')
             transaction.save()
+
         return transaction
 
     def clean(self):

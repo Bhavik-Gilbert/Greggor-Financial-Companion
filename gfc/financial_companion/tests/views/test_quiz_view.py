@@ -85,7 +85,7 @@ class QuizViewTestCase(ViewTestCase):
         QuizScore.objects.all().delete()
         response: HttpResponse = self.client.get(self.url)
         self._assert_response_contains(
-            response, ["You haven't taken part in a quiz yet"])
+            response, ["You have no quiz results"])
 
     def test_invalid_question_total_must_be_int_try_str(self):
         url: str = f"{self.url}hi/{ScoreListOrderType.RECENT}/"
