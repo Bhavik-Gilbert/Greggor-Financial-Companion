@@ -7,7 +7,8 @@ from financial_companion.forms import JoinUserGroupForm
 
 
 @login_required
-def all_groups_view(request: HttpRequest, search_name: str = "all") -> HttpResponse:
+def all_groups_view(request: HttpRequest,
+                    search_name: str = "all") -> HttpResponse:
 
     user_groups = []
     user = request.user
@@ -41,4 +42,3 @@ def all_groups_view(request: HttpRequest, search_name: str = "all") -> HttpRespo
 
     return render(request, "pages/all_groups.html",
                   {"groups": user_groups, "form": form})
-

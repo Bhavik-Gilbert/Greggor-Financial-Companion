@@ -14,7 +14,7 @@ class CategoryListViewCase(ViewTestCase):
 
     def test_category_list_view_url(self):
         self.assertEqual(self.url, '/categories/all/')
-    
+
     def test_valid_categories_list_redirect_url(self):
         self.assertEqual(self.redirect_url, "/categories/")
 

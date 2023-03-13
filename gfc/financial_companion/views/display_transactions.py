@@ -29,7 +29,6 @@ def view_users_transactions(request: HttpRequest,
                   {'transactions': list_of_transactions})
 
 
-
 @login_required
 def filter_transaction_request(request, redirect_name: str):
     if 'sent' in request.POST:

@@ -25,7 +25,7 @@ class AllGroupsViewCase(ViewTestCase):
         self.assertContains(response, "Saving Club")
         self.assertContains(response, "johndoe@example.org")
         self.assertContains(response, "Save with us")
-        
+
     def test_valid_all_groups_redirect_url(self):
         self.assertEqual(self.redirect_url, "/groups/")
 

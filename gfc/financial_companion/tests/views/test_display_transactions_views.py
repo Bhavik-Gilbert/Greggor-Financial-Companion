@@ -28,7 +28,7 @@ class DisplayTransactionsViewTestCase(ViewTestCase):
         self.assertContains(response, 'New Bike')
         self.assertContains(response, 5)
         self.assertContains(response, 499.99)
-        
+
     def test_valid_display_transactions_redirect_url(self):
         self.assertEqual(self.url_redirect, '/view_transactions/')
 

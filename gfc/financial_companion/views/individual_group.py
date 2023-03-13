@@ -10,7 +10,7 @@ from ..helpers import paginate, get_sorted_members_based_on_completed_targets
 
 @login_required
 def individual_group_view(request: HttpRequest, pk: int,
-                          leaderboard: str ="False") -> HttpResponse:
+                          leaderboard: str = "False") -> HttpResponse:
     """View to see information on individual group"""
     try:
         group: UserGroup = UserGroup.objects.get(id=pk)
@@ -47,6 +47,3 @@ def individual_group_view(request: HttpRequest, pk: int,
                           "add_user_form": form,
                           "leaderboard": leaderboard == "True"
                       })
-
-
-

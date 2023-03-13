@@ -26,9 +26,11 @@ class IndividualAccountViewTestCase(ViewTestCase):
         self.assertEqual(
             self.url,
             f"/individual_account/{self.account.id}/all/")
-        
+
     def test_valid_individual_account_redirect_url(self):
-        self.assertEqual(self.redirect_url, f"/individual_account/{self.account.id}/")
+        self.assertEqual(
+            self.redirect_url,
+            f"/individual_account/{self.account.id}/")
 
     def test_valid_get_individual_account_redirect(self):
         self._login(self.user)

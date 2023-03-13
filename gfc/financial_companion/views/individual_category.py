@@ -8,7 +8,7 @@ from financial_companion.helpers import FilterTransactionType
 
 @login_required
 def individual_category_view(
-        request: HttpRequest, pk: int, filter_type: str =FilterTransactionType.ALL) -> HttpResponse:
+        request: HttpRequest, pk: int, filter_type: str = FilterTransactionType.ALL) -> HttpResponse:
     """View to see information on individual categories"""
     user: User = request.user
 
@@ -34,4 +34,3 @@ def individual_category_view(
         "category_targets": category_targets,
         "transactions": list_of_transactions
     })
-

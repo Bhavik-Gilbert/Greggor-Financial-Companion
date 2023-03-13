@@ -15,15 +15,17 @@ class IndividualGroupViewTestCase(ViewTestCase):
             "individual_group", kwargs={
                 "pk": self.group.id, "leaderboard": "False"})
         self.redirect_url: str = reverse("individual_group_redirect", kwargs={
-             "pk": self.group.id})
+            "pk": self.group.id})
 
     def test_valid_individual_group_url(self):
         self.assertEqual(
             self.url,
             f"/individual_group/{self.group.id}/False/")
-        
+
     def test_valid_individual_group_redirect_url(self):
-        self.assertEqual(self.redirect_url, f"/individual_group/{self.group.id}/")
+        self.assertEqual(
+            self.redirect_url,
+            f"/individual_group/{self.group.id}/")
 
     def test_valid_get_view_individual_group_redirect(self):
         self._login(self.owner)

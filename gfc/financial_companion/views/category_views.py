@@ -7,7 +7,8 @@ from django.urls import reverse
 
 
 @login_required
-def category_list_view(request: HttpRequest, search_name: str = "all") -> HttpResponse:
+def category_list_view(request: HttpRequest,
+                       search_name: str = "all") -> HttpResponse:
     """View to view list of existing categories"""
 
     if request.method == "POST" and "search" in request.POST:
