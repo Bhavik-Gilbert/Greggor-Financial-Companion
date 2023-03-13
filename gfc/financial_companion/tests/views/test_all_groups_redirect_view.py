@@ -5,16 +5,16 @@ from django.urls import reverse
 
 
 class AllGroupsRedirectViewTestCase(ViewTestCase):
-    """Unit tests of the categories list redirect view"""
+    """Unit tests of the view all groups redirect view"""
 
     def setUp(self):
         self.user: User = User.objects.get(username="@johndoe")
         self.url: str = reverse("all_groups_redirect")
 
-    def test_valid_categories_list_redirect_url(self):
+    def test_valid_all_groups_redirect_url(self):
         self.assertEqual(self.url, "/groups/")
 
-    def test_valid_get_categories_list_redirect(self):
+    def test_valid_get_all_groups_redirect(self):
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url, follow=True)
         self.assertTrue(self._is_logged_in())

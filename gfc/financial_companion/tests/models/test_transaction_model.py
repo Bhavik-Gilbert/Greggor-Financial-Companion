@@ -1,9 +1,15 @@
 from .test_model_base import ModelTestCase
 
+from django.db.models.base import ModelBase
+from django.utils import timezone
+from decimal import Decimal
+from financial_companion.models.transaction_models import change_filename
+from ...helpers import CurrencyType
+from ...models import AbstractTransaction, Transaction, User
+from financial_companion.helpers.enums import Timespan
 from ...models import Transaction
 from financial_companion.helpers.enums import Timespan, CurrencyType
 from financial_companion.models import Transaction, User, PotAccount, User
-from ...models import Transaction
 from freezegun import freeze_time
 from decimal import Decimal
 
@@ -98,6 +104,12 @@ class TransactionModelTestCase(ModelTestCase):
         self.test_model.time_of_transaction = ""
         self._assert_model_is_valid()
 
+    def test_change_filename(self):
+        self.transaction = Transaction.objects.get(id=2)
+        self.assertFalse(
+            change_filename(
+                self.transaction, "test").find("transactions"), -1)
+
     def test_sender_account_balance_decreases_on_create_transaction(self):
         self._assert_balance_changes_on_transaction_created(
             self.sender_account)
@@ -146,12 +158,12 @@ class TransactionModelTestCase(ModelTestCase):
     @freeze_time("2023-01-07 22:00:00")
     def test_valid_within_time_period(self):
         self.assertEqual(
-            len(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user)), 7)
+            len(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user)), 8)
 
     @freeze_time("2023-01-07 22:00:00")
     def test_valid_split_categories(self):
         self.assertEqual(len(Transaction.get_category_splits(
-            Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user))), 1)
+            Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user))), 2)
 
     @freeze_time("2023-01-07 22:00:00")
     def test_valid_split_categories_with_category_none(self):

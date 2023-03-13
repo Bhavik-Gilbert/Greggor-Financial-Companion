@@ -4,7 +4,7 @@ import random
 
 
 class PaginateFunctionTestCase(HelperTestCase):
-    """Test for the paginate helpers function"""
+    """Test file for the paginate helpers function"""
 
     def setUp(self):
         self.random_list = []

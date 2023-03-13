@@ -5,7 +5,7 @@ from freezegun import freeze_time
 
 
 class RandomFilenameHelperFunctionTestCase(HelperTestCase):
-    """Test for the random_filename helpers function"""
+    """Test file for the random_filename helpers function"""
 
     def setUp(self):
         self.filename = "greggor.png"

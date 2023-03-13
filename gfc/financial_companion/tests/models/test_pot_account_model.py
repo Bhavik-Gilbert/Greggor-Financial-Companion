@@ -7,7 +7,7 @@ from ...models import PotAccount
 
 
 class PotAccountModelTestCase(ModelTestCase):
-    """test file for the pot accounts model"""
+    """Test file for the Pot Account model"""
 
     def setUp(self) -> None:
         super().setUp()
