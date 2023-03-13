@@ -24,14 +24,14 @@ class Command(BaseCommand):
     PASSWORD = "Password123"
     # MINIMUM OF FOUR PREDEFINED USERS ARE CREATED IRRESPECTIVE OF VARIABLE
     # VALUE
-    USER_COUNT = 6
+    USER_COUNT = 4
     MAX_ACCOUNTS_PER_USER = 10
     MAX_TRANSACTIONS_PER_ACCOUNT = 50
     MAX_NUMBER_OF_CATEGORIES = 10
     MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER = 5
     OBJECT_HAS_TARGET_PROBABILITY = 0.6
     MAX_NUMBER_OF_GROUPS = 5
-    MAX_NUMBER_OF_RECURRING_TRANSACTIONS = 4
+    MAX_NUMBER_OF_RECURRING_TRANSACTIONS = 3
 
     def __init__(self):
         super().__init__()
@@ -176,6 +176,7 @@ class Command(BaseCommand):
             sender_account = account
             receiver_account = oppositePartyOfTransaction
 
+        print(randomNumOfTransactions)
         for i in range(0, randomNumOfTransactions):
             Transaction.objects.create(
                 title=self.faker.word(),

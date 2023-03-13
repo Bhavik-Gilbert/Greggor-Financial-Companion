@@ -1,22 +1,24 @@
 from django import forms
 from financial_companion.models import AbstractTarget
+from django.db import models
 from ..helpers import Timespan, TransactionType, CurrencyType
 from django.core.exceptions import ValidationError
 import re
 from decimal import Decimal
+from typing import Union, List
 
 
 class TargetForm(forms.Form):
     """Form to add a target"""
 
     def __init__(self, *args, **kwargs) -> None:
-        self.foreign_key = kwargs.get("foreign_key")
+        self.foreign_key: models.Model = kwargs.get("foreign_key")
         kwargs.pop("foreign_key", None)
         self.instance: AbstractTarget = kwargs.get("instance")
         kwargs.pop("instance", None)
         self.form_type: AbstractTarget = kwargs.get("form_type")
         kwargs.pop("form_type", None)
-        self.foreign_key_name = re.split(
+        self.foreign_key_name: str = re.split(
             r"\B([A-Z])", self.form_type.__name__)[0]
         super(TargetForm, self).__init__(*args, **kwargs)
 
@@ -28,13 +30,13 @@ class TargetForm(forms.Form):
 
     target_type: forms.ChoiceField = forms.ChoiceField(choices=TransactionType.choices)
     timespan: forms.ChoiceField = forms.ChoiceField(choices=Timespan.choices)
-    amount: forms.ChoiceField = forms.DecimalField(decimal_places=2, max_digits=15)
+    amount: forms.DecimalField = forms.DecimalField(decimal_places=2, max_digits=15)
     currency: forms.ChoiceField = forms.ChoiceField(choices=CurrencyType.choices)
 
     def clean(self):
         super().clean()
-        filter_type_dict: dict = {self.foreign_key_name.lower(): self.foreign_key}
-        check_unique_together = self.form_type.objects.filter(
+        filter_type_dict: dict[str, models.Model] = {self.foreign_key_name.lower(): self.foreign_key}
+        check_unique_together: Union[models.QuerySet, list[AbstractTarget]]  = self.form_type.objects.filter(
             timespan=self.cleaned_data.get('timespan'),
             **filter_type_dict,
             target_type=self.cleaned_data.get('target_type')
