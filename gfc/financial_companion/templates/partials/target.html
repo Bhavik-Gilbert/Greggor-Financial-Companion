@@ -19,7 +19,7 @@
                 <li class="list-group-item"><strong>Timespan:</strong> {{target.timespan.title}}</li>
                 <li class="list-group-item">
                   <div class="progress" role="progressbar" aria-label="Default striped example" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar {%if completeness >= 100%}{%if target.transaction_type == 'income'%}bg-success{% else %}bg-danger{% endif %}{% endif %} progress-bar-striped progress-bar-animated" style="width: {{completeness}}%">{{completeness}}%</div>
+                    <div class="progress-bar {%if completeness >= 100%}{%if target.target_type == "expense"%}bg-success{% else %}bg-danger{% endif %}{% endif %} progress-bar-striped progress-bar-animated" style="width: {{completeness}}%">{{completeness}}%</div>
                   </div>
                 </li>
                 <li class="list-group-item"><strong>Goal Amount:</strong> {{target.currency.upper}} {{target.amount}}</li>
