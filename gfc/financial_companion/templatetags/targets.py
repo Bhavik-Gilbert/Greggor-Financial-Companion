@@ -62,8 +62,18 @@ def get_overall_completeness(targets):
     if count == 0:
         return 0
     for target in targets:
-        overall_completeness = overall_completeness + get_completeness(target)
+        if target.target_type == "income":
+            overall_completeness = overall_completeness + get_completeness(target)
+        else:
+            overall_completeness = overall_completeness + (100-get_completeness(target))
     return overall_completeness/count
+
+@register.filter
+def check_completeness_if_expense(completeness, target):
+    if target != None:
+        if target.target_type == "expense":
+            return 100-completeness
+    return completeness
 
 @register.filter
 def get_edit_url(target):

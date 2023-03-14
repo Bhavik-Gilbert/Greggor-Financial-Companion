@@ -33,7 +33,6 @@ def get_greggor(greggor_type: str = ""):
 @register.filter
 def get_greggor_type_from_completeness(completeness):
     """Returns the desired type of greggor based on the level of completeness of a target"""
-
     if completeness >= 100:
         return "party"
     elif completeness < 50:
