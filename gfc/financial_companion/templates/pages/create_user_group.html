@@ -6,11 +6,13 @@
 <!-- Content -->
 {% block content %}
     <h1>User Group Form</h1>
-    {% if form_toggle %}
+    <form method="post" enctype='multipart/form-data'>
+
+    <!-- {% if form_toggle %}
         <form action='{% url 'create_user_group' %}' method="post" enctype='multipart/form-data'>
     {% else %}
         <form action='{% url 'edit_user_group' pk %}' method="post" enctype='multipart/form-data'>
-    {% endif %}
+    {% endif %} -->
 
     {% csrf_token %}
     {% include 'partials/form.html' with form=form %}
