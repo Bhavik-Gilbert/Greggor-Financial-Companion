@@ -8,6 +8,7 @@ from ..models import UserGroup, User
 from django.db.models import QuerySet
 from typing import Any, Union
 
+
 @login_required
 def join_user_group_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':

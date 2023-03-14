@@ -10,6 +10,7 @@ from typing import Union
 from django.db.models import QuerySet
 from django.core.paginator import Page
 
+
 @login_required
 def individual_group_view(request: HttpRequest, pk: int,
                           leaderboard: str = "False") -> HttpResponse:
@@ -22,7 +23,8 @@ def individual_group_view(request: HttpRequest, pk: int,
         user: User = request.user
         members: Union[QuerySet, list[User]] = group.members.all()
         members_list: list[User] = list(members)
-        sorted_members_list: list[User] = sorted(members_list, key=lambda x: x.id)
+        sorted_members_list: list[User] = sorted(
+            members_list, key=lambda x: x.id)
         is_owner = (group.owner_email == user.email)
         owners_email: str = group.owner_email
         count: int = group.members_count()

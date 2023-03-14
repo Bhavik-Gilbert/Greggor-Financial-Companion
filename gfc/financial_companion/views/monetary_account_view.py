@@ -9,6 +9,7 @@ from ..models import PotAccount, User, Account, BankAccount
 from django.contrib import messages
 from django import forms
 
+
 @login_required
 def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
     """View to add monetary account"""
@@ -22,7 +23,8 @@ def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
         if "account_type" in request.POST:
             # set form to account type
             account_type: str = request.POST["account_type"]
-            form: forms.ModelForm = MonetaryAccountForm(form_type=account_type, user=user)
+            form: forms.ModelForm = MonetaryAccountForm(
+                form_type=account_type, user=user)
         elif "submit_type" in request.POST:
             # get form from request and check form
             account_type: str = request.POST["submit_type"]

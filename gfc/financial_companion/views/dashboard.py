@@ -12,7 +12,8 @@ from django.db.models import QuerySet
 @login_required
 def dashboard_view(request: HttpRequest) -> HttpResponse:
     user: User = request.user
-    user_accounts: Union[QuerySet, list[PotAccount]] = PotAccount.objects.filter(user=user.id)
+    user_accounts: Union[QuerySet, list[PotAccount]
+                         ] = PotAccount.objects.filter(user=user.id)
     user_transactions: Union[QuerySet, list[Transaction]] = []
     for account in user_accounts:
         user_transactions: Union[QuerySet, list[Transaction]] = [
@@ -25,7 +26,8 @@ def dashboard_view(request: HttpRequest) -> HttpResponse:
             Transaction.objects.filter(
                 receiver_account=account)]
 
-    recent_transactions: Union[QuerySet, list[Transaction]] = user_transactions[0:3]
+    recent_transactions: Union[QuerySet,
+                               list[Transaction]] = user_transactions[0:3]
 
     context: dict[str, Any] = {
         'accounts': user_accounts,

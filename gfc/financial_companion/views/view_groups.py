@@ -8,11 +8,12 @@ from typing import Union, Any
 from django.core.paginator import Page
 from django.db.models import QuerySet
 
+
 @login_required
 def all_groups_view(request: HttpRequest,
                     search_name: str = "all") -> HttpResponse:
 
-    user_groups:list[UserGroup] = []
+    user_groups: list[UserGroup] = []
     user: User = request.user
     user_email: str = user.email
     all_groups: Union[QuerySet, list[UserGroup]] = UserGroup.objects.all()

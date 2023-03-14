@@ -28,7 +28,8 @@ def individual_category_view(
     transactions: list[Transaction] = category.get_category_transactions(
         filter_type)
 
-    list_of_transactions: Page = paginate(request.GET.get('page', 1), transactions)
+    list_of_transactions: Page = paginate(
+        request.GET.get('page', 1), transactions)
 
     return render(request, "pages/individual_category.html", {
         "category": category,

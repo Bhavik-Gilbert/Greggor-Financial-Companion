@@ -5,6 +5,7 @@ from ..models import RecurringTransaction, User
 from financial_companion.helpers import paginate
 from django.core.paginator import Page
 
+
 @login_required
 def individual_recurring_transaction_view(
         request: HttpRequest, pk: int) -> HttpResponse:
