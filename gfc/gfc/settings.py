@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 from django.contrib.messages import constants as messages
+from dotenv import load_dotenv
+
+# Load environment data
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,11 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-try:
-    with open(os.path.dirname(os.path.abspath(__file__)) + "\\hidden_keys\\secret_key.txt") as f:
-        SECRET_KEY = f.read().strip()
-except BaseException:
-    SECRET_KEY = 'django-insecure-)2rxjsa3d&2d83qxnyjyca(d(kl=tt6g*h&*et!-u$fa-w94_j'
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY","django-insecure-)2rxjsa3d&2d83qxnyjyca(d(kl=tt6g*h&*et!-u$fa-w94_j'")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # TODO: set false before submission
@@ -171,11 +171,7 @@ LOGGED_IN_URL = "dashboard"
 NUMBER_OF_ITEMS_PER_PAGE = 10
 
 # salt for secure string
-try:
-    with open(os.path.dirname(os.path.abspath(__file__)) + "\\hidden_keys\\salt_key.txt") as f:
-        SALT_KEY = f.read().strip()
-except BaseException:
-    SALT_KEY = "temporarysalt"
+SALT_KEY = os.environ.get("SECURE_STRING_SALT", "temporarysalt")
 
 # Default language for Faker
 FAKER_LOCALE = "en_GB"
@@ -184,7 +180,7 @@ FAKER_LOCALE = "en_GB"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = "greggorfinancialcompanion@gmail.com"
-EMAIL_HOST_PASSWORD = "ajoaavtgkujobzep"
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD_KEY", None)
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
@@ -199,3 +195,8 @@ Q_CLUSTER = {
 
 # Site url
 SITE_URL_SPENDING_PAGE = "http://localhost:8000/spending_summary"
+
+
+print(SECRET_KEY)
+print(EMAIL_HOST_PASSWORD)
+print(SALT_KEY)
