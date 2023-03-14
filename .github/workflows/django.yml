@@ -1,5 +1,8 @@
 name: Django CI
 
+env:
+  NAME: 'Main'
+
 on:
   push:
     branches: [ "master" ]
