@@ -29,7 +29,7 @@ def spending_summary(request: HttpRequest) -> HttpResponse:
         Transaction.get_transactions_from_time_period(
             time, request.user, "sent"))
     percentages = functions.calculate_percentages(categories, total_spent)
-    percentages_list = list(percentages.values())
+    percentages_list: list[float] = list(percentages.values())
     labels = list(percentages.keys())
     form = TimespanOptionsForm()
     if percentages_list == []:
