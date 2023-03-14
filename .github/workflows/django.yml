@@ -27,9 +27,9 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       env:
-        DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-        EMAIL_PASSWORD_KEY: ${{ secrets.EMAIL_PASSWORD_KEY }}
-        SECURE_STRING_SALT: ${{ secrets.SECURE_STRING_SALT }}
+        DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }} | base64 --decode
+        EMAIL_PASSWORD_KEY: ${{ secrets.EMAIL_PASSWORD_KEY }} | base64 --decode
+        SECURE_STRING_SALT: ${{ secrets.SECURE_STRING_SALT }} | base64 --decode
       run: |
           coverage run gfc/manage.py test financial_companion --timing
           coverage report --omit="./venv/*,*tests*,*apps.py,*manage.py,*__init__.py,*migrations*,*asgi*,*wsgi*,*admin.py,*urls.py"
