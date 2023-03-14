@@ -50,7 +50,7 @@ urlpatterns = [
         name="add_monetary_account"),
     path(
         'view_accounts/',
-        views.view_user_pot_accounts,
+        views.view_user_accounts,
         name='view_accounts'),
     path(
         'create_category/',

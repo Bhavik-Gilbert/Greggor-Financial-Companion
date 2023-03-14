@@ -1,20 +1,22 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
-from ..models import UserGroup
+from ..models import UserGroup, User
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from financial_companion.forms import JoinUserGroupForm
-
+from typing import Union, Any
+from django.core.paginator import Page
+from django.db.models import QuerySet
 
 @login_required
 def all_groups_view(request: HttpRequest,
                     search_name: str = "all") -> HttpResponse:
 
-    user_groups = []
-    user = request.user
-    user_email = user.email
-    all_groups = UserGroup.objects.all()
-    form = JoinUserGroupForm()
+    user_groups:list[UserGroup] = []
+    user: User = request.user
+    user_email: str = user.email
+    all_groups: Union[QuerySet, list[UserGroup]] = UserGroup.objects.all()
+    form: JoinUserGroupForm = JoinUserGroupForm()
 
     # need to get all the groups the user is in
     for group in all_groups:
@@ -33,7 +35,7 @@ def all_groups_view(request: HttpRequest,
                             search_name=(request.POST["search"]))
 
     if (search_name != "all"):
-        filter_groups = []
+        filter_groups: list[UserGroup] = []
         for group in user_groups:
             if search_name in group.name:
                 filter_groups = [*filter_groups, group]

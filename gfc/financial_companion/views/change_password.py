@@ -29,5 +29,5 @@ def change_password_view(request: HttpRequest) -> HttpResponse:
                 request,
                 messages.ERROR,
                 "The password provided is incorrect")
-    form = UserChangePasswordForm()
+    form: UserChangePasswordForm = UserChangePasswordForm()
     return render(request, 'pages/change_password.html', {'form': form})
