@@ -7,7 +7,7 @@ from financial_companion.models import UserGroup, User
 
 
 class CreateUserGroupFormTestCase(FormTestCase):
-    """Test of the create user group form"""
+    """Unit tests of the create user group form"""
 
     def setUp(self):
         self.test_user = User.objects.get(username='@johndoe')
@@ -17,7 +17,7 @@ class CreateUserGroupFormTestCase(FormTestCase):
             'description': 'We are the best financial club',
         }
 
-    def test_valid_sign_up_form(self):
+    def test_valid_create_user_group_form(self):
         form = UserGroupForm(data=self.form_input)
         self.assertTrue(form.is_valid())
 

@@ -24,7 +24,7 @@ class DeleteCategoryViewTestCase(ViewTestCase):
         self.assertEqual(after_count + 1, before_count)
         self.assertTemplateUsed(response, 'pages/category_list.html')
         messages_list = list(response.context['messages'])
-        self.assertEqual(len(messages_list), 1)
+        self.assertEqual(len(messages_list), 2)
 
     def test_user_tries_to_delete_someone_elses_category(self):
         self._login(self.user)

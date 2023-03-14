@@ -7,7 +7,8 @@ from financial_companion.forms import JoinUserGroupForm
 
 
 @login_required
-def all_groups_view(request: HttpRequest, search_name: str) -> HttpResponse:
+def all_groups_view(request: HttpRequest,
+                    search_name: str = "all") -> HttpResponse:
 
     user_groups = []
     user = request.user
@@ -41,10 +42,3 @@ def all_groups_view(request: HttpRequest, search_name: str) -> HttpResponse:
 
     return render(request, "pages/all_groups.html",
                   {"groups": user_groups, "form": form})
-
-
-@login_required
-def all_groups_redirect(request: HttpRequest) -> HttpResponse:
-    """Redirect to view list of all existing categories"""
-
-    return redirect("all_groups", search_name="all")

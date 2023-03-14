@@ -21,3 +21,4 @@ django-cleanup==7.0.0
 inflect==6.0.2
 numpy==1.24.0
 django-session-timeout==0.1.0
+python-dotenv==1.0.0

@@ -5,7 +5,7 @@ from financial_companion.models.user_model import User
 
 
 class CategoryModelTestCase(ModelTestCase):
-    """Test file for category model class"""
+    """Test file for Category model class"""
 
     def setUp(self):
         super().setUp()

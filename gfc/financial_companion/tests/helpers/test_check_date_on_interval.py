@@ -5,7 +5,7 @@ from freezegun import freeze_time
 
 
 class CheckDateOnIntervalHelperFunctionTestCase(HelperTestCase):
-    """Test for the check_date_on_interval helpers function"""
+    """Test file for the check_date_on_interval helpers function"""
 
     def _assert_interval_is_invalid(
             self, interval: Timespan, start_date: date, current_date: date):
