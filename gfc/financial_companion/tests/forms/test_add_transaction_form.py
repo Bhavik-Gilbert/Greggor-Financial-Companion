@@ -4,7 +4,6 @@ from financial_companion.models import Transaction, Category, Account, User
 from .test_form_base import FormTestCase
 from django.test import TestCase
 from financial_companion.models import Transaction
-# from financial_companion.tests.helpers.test_image import dragon.jpeg
 from decimal import Decimal
 from django.core.files.uploadedfile import SimpleUploadedFile
 
@@ -15,7 +14,6 @@ class AddTransactionFormTestCase(FormTestCase):
     def setUp(self):
         self.user = User.objects.get(username='@johndoe')
         image_path = "financial_companion/tests/data/dragon.jpeg"
-        # self.new_image = SimpleUploadedFile(name='dragon.jpeg', content=open(image_path, 'rb').read(), content_type='image/jpeg')
         self.form_input = {
             "title": "Test",
             "description": "This is a test transaction",
@@ -102,7 +100,6 @@ class AddTransactionFormTestCase(FormTestCase):
         after_count = Transaction.objects.count()
         self.assertEqual(after_count, before_count + 1)
         self.assertEqual(transaction.description, 'This is a test transaction')
-        # self.assertEqual(transaction.image, self.new_image)
         self.assertTrue(isinstance(transaction.category, Category))
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("152.95"))
@@ -130,7 +127,6 @@ class AddTransactionFormTestCase(FormTestCase):
         self.assertEqual(
             new_transaction.description,
             'This is a test transaction')
-        # self.assertEqual(transaction.image, self.new_image)
         self.assertTrue(isinstance(new_transaction.category, Category))
         self.assertEqual(new_transaction.category.id, 1)
         self.assertEqual(new_transaction.amount, Decimal("152.95"))
@@ -147,7 +143,7 @@ class AddTransactionFormTestCase(FormTestCase):
         self.assertFalse(form.is_valid())
         self.assertEquals(
             form.errors['receiver_account'][0],
-            "Neither the sender or reciever are one of your accounts")
+            "Neither the sender or reciever are accounts with a balance to track.")
         self.assertEquals(
             form.errors['sender_account'][0],
-            "Neither the sender or reciever are one of your accounts")
+            "Neither the sender or reciever are accounts with a balance to track.")

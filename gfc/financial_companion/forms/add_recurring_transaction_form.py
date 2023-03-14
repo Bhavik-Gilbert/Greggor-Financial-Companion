@@ -57,19 +57,7 @@ class AddRecurringTransactionForm(forms.ModelForm):
                 end_date=self.cleaned_data.get('end_date')
             )
         else:
-            recurring_transaction: RecurringTransaction = instance
-            recurring_transaction.title = self.cleaned_data.get('title')
-            recurring_transaction.description = self.cleaned_data.get(
-                'description')
-            recurring_transaction.image = self.cleaned_data.get('image')
-            recurring_transaction.category = self.cleaned_data.get('category')
-            recurring_transaction.amount = self.cleaned_data.get('amount')
-            recurring_transaction.currency = self.cleaned_data.get('currency')
-            recurring_transaction.sender_account = self.cleaned_data.get(
-                'sender_account')
-            recurring_transaction.receiver_account = self.cleaned_data.get(
-                'receiver_account')
-            recurring_transaction.save()
+            recurring_transaction: RecurringTransaction = super().save(commit=True)
         return recurring_transaction
 
     def clean(self):
@@ -91,10 +79,10 @@ class AddRecurringTransactionForm(forms.ModelForm):
         elif not ((sender_account.id in ids) or (receiver_account.id in ids)):
             self.add_error(
                 'sender_account',
-                'Neither the sender or reciever are one of your accounts')
+                'Neither the sender or reciever are accounts with a balance to track.')
             self.add_error(
                 'receiver_account',
-                'Neither the sender or reciever are one of your accounts')
+                'Neither the sender or reciever are accounts with a balance to track.')
         if start_date > end_date:
             self.add_error(
                 'end_date',
