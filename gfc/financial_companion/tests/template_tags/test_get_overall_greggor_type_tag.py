@@ -18,9 +18,9 @@ class GetOverallGreggorTypeTemplateTagTestCase(TemplateTagTestCase):
         self.target3 = CategoryTarget.objects.get(pk=3)
         target_list= [self.target1, self.target3]
         result = get_greggor_type_for_overall_completeness(target_list)
-        self.assertEqual(result,"sad")
+        self.assertEqual(result,"distraught")
 
     def test_get_valid_greggor_type_with_empty_target_list(self):
         target_list= []
         result = get_greggor_type_for_overall_completeness(target_list)
-        self.assertEqual(result,"sad")
+        self.assertEqual(result,"distraught")
