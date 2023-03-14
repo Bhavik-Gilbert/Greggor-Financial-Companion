@@ -25,7 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY","django-insecure-)2rxjsa3d&2d83qxnyjyca(d(kl=tt6g*h&*et!-u$fa-w94_j'")
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-)2rxjsa3d&2d83qxnyjyca(d(kl=tt6g*h&*et!-u$fa-w94_j'")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # TODO: set false before submission
@@ -195,8 +197,3 @@ Q_CLUSTER = {
 
 # Site url
 SITE_URL_SPENDING_PAGE = "http://localhost:8000/spending_summary"
-
-
-print(SECRET_KEY)
-print(EMAIL_HOST_PASSWORD)
-print(SALT_KEY)
