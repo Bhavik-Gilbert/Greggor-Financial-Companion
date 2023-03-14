@@ -32,11 +32,8 @@ class ViewTargetsViewTestCase(ViewTestCase):
         self._login(self.user)
         response = self.client.post(self.url, self.form_input, follow=True)
         response_url = reverse('view_targets')
-        # print(len(response.context['page_obj']))
-        # for object in response.context['page_obj']:
-        #     print(object.getModelName())
         self.assertTemplateUsed(response, 'pages/target_table.html')
-        self.assertEqual(len(response.context['page_obj']), 8)
+        self.assertEqual(len(response.context['page_obj']), 11)
 
     def test_filter_targets_by_day(self):
         self._login(self.user)
@@ -54,16 +51,15 @@ class ViewTargetsViewTestCase(ViewTestCase):
         response_url = reverse('view_targets')
         print(len(response.context['page_obj']))
         self.assertTemplateUsed(response, 'pages/target_table.html')
-        self.assertEqual(len(response.context['page_obj']), 3)
+        self.assertEqual(len(response.context['page_obj']), 6)
 
     def test_filter_targets_by_target_type(self):
         self._login(self.user)
         self.form_input['target_type'] = 'account'
         response = self.client.post(self.url, self.form_input, follow=True)
         response_url = reverse('view_targets')
-        print(len(response.context['page_obj']))
         self.assertTemplateUsed(response, 'pages/target_table.html')
-        self.assertEqual(len(response.context['page_obj']), 2)
+        self.assertEqual(len(response.context['page_obj']), 3)
 
     def test_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)

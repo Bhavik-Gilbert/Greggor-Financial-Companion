@@ -4,7 +4,7 @@ from financial_companion.models import BankAccount
 
 
 class GetProjectionBalancesHelperFunctionTestCase(HelperTestCase):
-    """Test for the get_projections_balances helpers function"""
+    """Test file for the get_projections_balances helpers function"""
 
     def setUp(self):
         self.bank_accounts = BankAccount.objects.filter(interest_rate__gt=0)

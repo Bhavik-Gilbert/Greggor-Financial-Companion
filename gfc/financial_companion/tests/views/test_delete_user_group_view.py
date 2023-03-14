@@ -12,7 +12,7 @@ class DeleteUserGroupViewTestCase(ViewTestCase):
         self.url = reverse('delete_user_group', kwargs={"pk": 1})
         self.user = User.objects.get(username='@johndoe')
 
-    def test_delete_category_url(self):
+    def test_delete_user_group_url(self):
         self.assertEqual(self.url, '/delete_user_group/1')
 
     def test_successful_deletion(self):
@@ -29,8 +29,7 @@ class DeleteUserGroupViewTestCase(ViewTestCase):
         self._login(self.user)
         self.url = reverse('delete_user_group', kwargs={"pk": 2})
         response_url: str = reverse(
-            "all_groups", kwargs={
-                "search_name": "all"})
+            "all_groups_redirect")
         before_count = UserGroup.objects.count()
         response = self.client.get(self.url, follow=True)
         after_count = UserGroup.objects.count()
@@ -46,8 +45,7 @@ class DeleteUserGroupViewTestCase(ViewTestCase):
         self._login(self.user)
         self.url = reverse('delete_user_group', kwargs={"pk": 300})
         response_url: str = reverse(
-            "all_groups", kwargs={
-                "search_name": "all"})
+            "all_groups_redirect")
         before_count = UserGroup.objects.count()
         response = self.client.get(self.url, follow=True)
         after_count = UserGroup.objects.count()

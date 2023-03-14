@@ -34,7 +34,7 @@ urlpatterns = [
         name='categories_list'),
     path(
         'categories/',
-        views.category_list_redirect,
+        views.category_list_view,
         name='categories_list_redirect'),
     path(
         'groups/<str:search_name>/',
@@ -42,7 +42,7 @@ urlpatterns = [
         name='all_groups'),
     path(
         'groups/',
-        views.all_groups_redirect,
+        views.all_groups_view,
         name='all_groups_redirect'),
     path(
         'add_monetary_account/',
@@ -80,7 +80,7 @@ urlpatterns = [
     path('delete_profile/', views.delete_profile_view, name="delete_profile"),
     path(
         'view_transactions/',
-        views.view_users_transactions_redirect,
+        views.view_users_transactions,
         name="view_transactions_redirect"),
     path(
         'change_password/',
@@ -199,7 +199,7 @@ urlpatterns = [
     ),
     re_path(
         'individual_account/(?P<pk>\\d+)/$',
-        views.individual_account_redirect,
+        views.individual_account_view,
         name="individual_account_redirect"
     ),
     re_path(
@@ -219,7 +219,7 @@ urlpatterns = [
     ),
     re_path(
         'individual_category/(?P<pk>\\d+)/$',
-        views.individual_category_redirect,
+        views.individual_category_view,
         name="individual_category_redirect"
     ),
     re_path(
@@ -250,7 +250,7 @@ urlpatterns = [
     ),
     re_path(
         'individual_group/(?P<pk>\\d+)/$',
-        views.individual_group_redirect,
+        views.individual_group_view,
         name="individual_group_redirect"
     ),
     re_path(

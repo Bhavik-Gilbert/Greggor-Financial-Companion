@@ -8,6 +8,8 @@ from ...models import AbstractTransaction, RecurringTransaction, Transaction
 
 
 class RecurringTransactionTestCase(ModelTestCase):
+    """Test file for RecurringTransaction model class"""
+
     def setUp(self) -> None:
         super().setUp()
         self.test_model: RecurringTransaction = RecurringTransaction.objects.get(

@@ -9,7 +9,7 @@ from financial_companion.helpers import paginate
 
 @login_required
 def view_users_transactions(request: HttpRequest,
-                            filter_type: str) -> HttpResponse:
+                            filter_type: str = FilterTransactionType.ALL) -> HttpResponse:
     user: User = request.user
 
     if not (filter_type in FilterTransactionType.get_send_list()
@@ -27,11 +27,6 @@ def view_users_transactions(request: HttpRequest,
 
     return render(request, "pages/display_transactions.html",
                   {'transactions': list_of_transactions})
-
-
-@login_required
-def view_users_transactions_redirect(request: HttpRequest) -> HttpResponse:
-    return redirect('view_transactions', filter_type=FilterTransactionType.ALL)
 
 
 @login_required

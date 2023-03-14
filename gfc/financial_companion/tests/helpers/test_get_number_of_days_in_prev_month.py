@@ -6,7 +6,7 @@ import sys
 
 
 class GetNumberOfDaysInPrevMonthHelperFunctionTestCase(HelperTestCase):
-    """Test for the get_number_of_days_in_prev_month helpers function"""
+    """Test file for the get_number_of_days_in_prev_month helpers function"""
 
     @freeze_time("2022-08-04 12:00:00")
     def test_return_days_valid_offset(self):

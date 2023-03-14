@@ -10,7 +10,7 @@ class ProfileViewTestCase(ViewTestCase):
         self.url = reverse('profile')
         self.user = User.objects.get(username='@michaelkolling')
 
-    def test_delete_transaction_url(self):
+    def test_profile_url(self):
         self.assertEqual(self.url, '/profile/')
 
     def test_get_profile(self):

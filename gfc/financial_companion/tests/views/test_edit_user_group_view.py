@@ -58,8 +58,7 @@ class EditUserGroupViewTestCase(ViewTestCase):
         self._login(self.user)
         self.url = reverse('edit_user_group', kwargs={"pk": 2})
         response_url: str = reverse(
-            "all_groups", kwargs={
-                "search_name": "all"})
+            "all_groups_redirect")
         response = self.client.post(self.url, self.form_input, follow=True)
         self.assertRedirects(
             response,
@@ -72,8 +71,7 @@ class EditUserGroupViewTestCase(ViewTestCase):
         self._login(self.user)
         self.url = reverse('edit_user_group', kwargs={"pk": 300})
         response_url: str = reverse(
-            "all_groups", kwargs={
-                "search_name": "all"})
+            "all_groups_redirect")
         response = self.client.post(self.url, self.form_input, follow=True)
         self.assertRedirects(
             response,

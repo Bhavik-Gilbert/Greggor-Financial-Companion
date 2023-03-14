@@ -12,10 +12,10 @@ class HomeViewTestCase(ViewTestCase):
         self.url: str = reverse('home')
         self.user = User.objects.get(username='@johndoe')
 
-    def test_valid_log_in_url(self):
+    def test_valid_home_url(self):
         self.assertEqual(self.url, '/')
 
-    def test_valid_get_log_in(self):
+    def test_valid_get_home(self):
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/index.html')
