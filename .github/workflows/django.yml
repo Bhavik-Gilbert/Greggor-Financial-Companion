@@ -25,15 +25,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-
-    - name: Temp
-      env:
-        DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-        EMAIL_PASSWORD_KEY: ${{ secrets.EMAIL_PASSWORD_KEY }}
-        SECURE_STRING_SALT: ${{ secrets.SECURE_STRING_SALT }}
-      run: |
-          env
-          python manage.py runserver
     - name: Run Tests
       env:
         DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
