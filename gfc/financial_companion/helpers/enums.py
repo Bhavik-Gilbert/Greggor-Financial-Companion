@@ -66,4 +66,3 @@ class GreggorTypes(models.TextChoices):
     DISTRAUGHT: str = "distraught"
     SAD: str = "sad"
     PARTY: str = "party"
-
