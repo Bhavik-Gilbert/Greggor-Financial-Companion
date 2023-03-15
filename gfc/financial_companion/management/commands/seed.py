@@ -319,8 +319,7 @@ class Command(BaseCommand):
                         pk__in=quiz_set.questions.all())
                 )
                 quiz_set.questions.add(question)
-                if not QuizSet.set_exists(quiz_set.questions.all()):
-                    quiz_set.save()
+                quiz_set.save()
 
             self.create_quiz_scores(quiz_set)
         print("QUIZ SETS WITH SCORES SEEDED")
