@@ -1,6 +1,8 @@
 {% load targets %}
+<div class="row g-2 justify-content-right">
   {% for target in targets %}
   <div class="col-12 col-md-3">
     {% include 'partials/target_card.html' with target=target%}
   </div>
   {% endfor %}
+</div>
