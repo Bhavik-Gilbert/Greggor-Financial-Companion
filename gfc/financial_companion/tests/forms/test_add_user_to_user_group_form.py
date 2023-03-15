@@ -8,7 +8,7 @@ from financial_companion.models import User
 
 
 class AddUserToUserGroupFormTestCase(FormTestCase):
-    """Test of the add user to user group form"""
+    """Unit tests of the add user to user group form"""
 
     def setUp(self):
         self.url = reverse('sign_up')

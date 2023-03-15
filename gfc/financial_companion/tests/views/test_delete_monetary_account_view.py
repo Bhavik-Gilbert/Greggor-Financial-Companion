@@ -7,13 +7,13 @@ from financial_companion.models import User, Account
 
 
 class DeleteMonetaryAccountViewTestCase(ViewTestCase):
-    """Tests of the create category view."""
+    """Tests of the delete monetary account view."""
 
     def setUp(self):
         self.url = reverse('delete_monetary_account', kwargs={"pk": 5})
         self.user = User.objects.get(username='@johndoe')
 
-    def test_delete_category_url(self):
+    def test_delete_monetary_account_url(self):
         self.assertEqual(self.url, '/delete_monetary_account/5/')
 
     def test_succesful_deletion(self):
@@ -26,7 +26,7 @@ class DeleteMonetaryAccountViewTestCase(ViewTestCase):
         messages_list = list(response.context['messages'])
         self.assertEqual(len(messages_list), 1)
 
-    def test_user_tries_to_edit_someone_elses_category(self):
+    def test_user_tries_to_edit_someone_elses_monetary_account(self):
         self._login(self.user)
         self.url = reverse('delete_monetary_account', kwargs={"pk": 4})
         response_url: str = reverse("dashboard")

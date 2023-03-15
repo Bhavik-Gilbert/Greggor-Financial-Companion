@@ -3,7 +3,7 @@ from financial_companion.helpers import get_projection_timescale_options
 
 
 class GetProjectionTimescaleOptionsHelperFunctionTestCase(HelperTestCase):
-    """Test for the get_projection_timescale_options helpers function"""
+    """Test file for the get_projection_timescale_options helpers function"""
 
     def test_return_valid_timescale_options(self):
         projectionTimescaleOptions = get_projection_timescale_options()

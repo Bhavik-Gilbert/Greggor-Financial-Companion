@@ -3,7 +3,7 @@ from financial_companion.helpers import get_data_for_account_projection
 
 
 class GetDataForAccountProjectionHelperFunctionTestCase(HelperTestCase):
-    """Test for the get_data_for_account_projection helpers function"""
+    """Test file for the get_data_for_account_projection helpers function"""
 
     def setUp(self):
         self.valid_user_with_savings_accounts = 1

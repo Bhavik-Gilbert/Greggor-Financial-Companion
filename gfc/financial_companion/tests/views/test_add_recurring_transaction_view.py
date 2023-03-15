@@ -6,7 +6,7 @@ from decimal import Decimal
 
 
 class AddRecurringTransactionViewTestCase(ViewTestCase):
-    """Unit tests of the add transaction view"""
+    """Unit tests of the add recurring transaction view"""
 
     def setUp(self):
         self.url = reverse('add_recurring_transaction')

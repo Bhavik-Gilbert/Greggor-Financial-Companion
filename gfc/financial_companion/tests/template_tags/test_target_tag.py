@@ -81,7 +81,7 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
             self._get_all_transactions(
                 self.user_target))
 
-    # test the filter trnasaction on each different time span
+    # test the filter transaction on each different time span
     # freeze time is year month day
     @freeze_time("2023-01-01 13:00:00")
     def test_filter_transactions_with_timespan_day_and_time_within_a_day(self):

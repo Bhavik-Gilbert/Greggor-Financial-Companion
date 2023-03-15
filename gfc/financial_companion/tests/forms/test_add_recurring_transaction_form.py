@@ -9,7 +9,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 class AddRecurringTransactionFormTestCase(FormTestCase):
-    """Test of the add transaction form"""
+    """Unit tests of the add transaction form"""
 
     def setUp(self):
         self.user = User.objects.get(username='@johndoe')

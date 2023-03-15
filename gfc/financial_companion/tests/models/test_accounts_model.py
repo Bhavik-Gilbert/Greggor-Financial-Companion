@@ -6,7 +6,7 @@ from ...helpers import FilterTransactionType
 
 
 class AccountModelTestCase(ModelTestCase):
-    """test file for the accounts model"""
+    """Test file for the Accounts model"""
 
     def setUp(self) -> None:
         super().setUp()

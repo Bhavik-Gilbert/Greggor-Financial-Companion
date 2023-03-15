@@ -5,7 +5,7 @@ from freezegun import freeze_time
 
 
 class CheckWithinDateRangeHelperFunctionTestCase(HelperTestCase):
-    """Test for the check_within_date_range helpers function"""
+    """Test file for the check_within_date_range helpers function"""
 
     def _assert_range_is_invalid(
             self, start_date: date, end_date: date, current_date: date):

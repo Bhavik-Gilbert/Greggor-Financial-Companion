@@ -1,11 +1,11 @@
 from .test_model_base import ModelTestCase
 from django.db.models.base import ModelBase
 from financial_companion.models.user_model import User
-from financial_companion.models.user_group_model import UserGroup
+from financial_companion.models.user_group_model import UserGroup, change_filename
 
 
 class UserGroupModelTestCase(ModelTestCase):
-    """Test file for user model class"""
+    """Test file for user group model class"""
 
     def setUp(self):
         super().setUp()
@@ -121,3 +121,9 @@ class UserGroupModelTestCase(ModelTestCase):
         self.test_model.add_member(self.first_user)
         members = self.test_model.get_members()
         self.assertTrue(str(self.first_user) in members)
+
+    def test_change_filename(self):
+        self.user_group = UserGroup.objects.get(id=1)
+        self.assertFalse(
+            change_filename(
+                self.user_group, "test").find("group_profile"), -1)

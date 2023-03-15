@@ -4,17 +4,17 @@ from financial_companion.models import RecurringTransaction, User, Transaction
 from django.urls import reverse
 
 
-class DeleteTransactionViewTestCase(ViewTestCase):
-    """Unit tests of the delete transaction view"""
+class DeleteRecurringTransactionViewTestCase(ViewTestCase):
+    """Unit tests of the delete recurring transaction view"""
 
     def setUp(self):
         self.url = reverse('delete_recurring_transaction', kwargs={"pk": 2})
         self.user = User.objects.get(username='@johndoe')
 
-    def test_delete_transaction_url(self):
+    def test_delete_recurring_transaction_url(self):
         self.assertEqual(self.url, '/delete_recurring_transaction/2')
 
-    def test_get_delete_transaction(self):
+    def test_get_delete_recurring_transaction(self):
         self._login(self.user)
         transaction = RecurringTransaction.objects.get(id=2)
         before_count = RecurringTransaction.objects.count()
@@ -28,7 +28,7 @@ class DeleteTransactionViewTestCase(ViewTestCase):
             status_code=302,
             target_status_code=200)
 
-    def test_transaction_does_not_exist(self):
+    def test_recurring_transaction_does_not_exist(self):
         self._login(self.user)
         self.url = reverse('delete_recurring_transaction', kwargs={'pk': 1000})
         before_count = User.objects.count()

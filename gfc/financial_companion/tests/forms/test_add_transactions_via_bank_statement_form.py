@@ -10,7 +10,7 @@ from decimal import Decimal
 
 
 class AddTransactionsViaBankStatementFormTestCase(FormTestCase):
-    """Test of the add transactions via bank statement form"""
+    """Unit tests of the add transactions via bank statement form"""
 
     def setUp(self):
         self.user: User = User.objects.get(username="@johndoe")

@@ -8,7 +8,7 @@ from financial_companion.models import User
 
 
 class SignUpFormTestCase(FormTestCase):
-    """Test of the sign up form"""
+    """Unit tests of the sign up form"""
 
     def setUp(self):
         self.url = reverse('sign_up')
