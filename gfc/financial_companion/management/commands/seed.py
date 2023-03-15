@@ -43,7 +43,7 @@ class Command(BaseCommand):
     MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER: int = 3
     OBJECT_HAS_TARGET_PROBABILITY: int = 0.6
     MAX_NUMBER_OF_GROUPS: int = 5
-    MAX_NUMBER_OF_RECURRING_TRANSACTIONS: int = 2
+    MAX_NUMBER_OF_RECURRING_TRANSACTIONS: int = 3
     MAX_NUMBER_OF_QUIZ_SETS: int = 3
     MAX_NUMBER_OF_QUIZ_SCORES: int = 5
 
@@ -80,8 +80,7 @@ class Command(BaseCommand):
                 name=self.faker.word(),
                 description=self.faker.text()
             )
-            if (float(randint(0, 100)) / 100 <
-                    self.OBJECT_HAS_TARGET_PROBABILITY):
+            if (float(randint(0, 100)) / 100 < self.OBJECT_HAS_TARGET_PROBABILITY) or (CategoryTarget.objects.count() == 0):
                 CategoryTarget.objects.create(
                     target_type=self._choose_random_enum(TransactionType),
                     timespan=self._choose_random_enum(Timespan),
@@ -123,8 +122,7 @@ class Command(BaseCommand):
             )
             if not admin_status:
                 categories: Category = self.create_categories(user)
-                if (float(randint(0, 100)) / 100 <
-                        self.OBJECT_HAS_TARGET_PROBABILITY):
+                if (float(randint(0, 100)) / 100 < self.OBJECT_HAS_TARGET_PROBABILITY) or (UserTarget.objects.count() == 0):
                     UserTarget.objects.create(
                         target_type=self._choose_random_enum(
                             TransactionType),
@@ -199,7 +197,7 @@ class Command(BaseCommand):
         and save it to the database
         """
         random_number_of_transactions: int = randint(
-            0, self.MAX_TRANSACTIONS_PER_ACCOUNT)
+            1, self.MAX_TRANSACTIONS_PER_ACCOUNT)
         opposite_party_of_transaction: Account = random.choice(
             Account.objects.filter(~Q(id=account.id), user=account.user))
 
@@ -246,7 +244,7 @@ class Command(BaseCommand):
 
     def create_target_for_account(self, account: Account) -> None:
         """Creates a target for a given account and stores it in the database"""
-        if (float(randint(0, 100)) / 100 < self.OBJECT_HAS_TARGET_PROBABILITY):
+        if (float(randint(0, 100)) / 100 < self.OBJECT_HAS_TARGET_PROBABILITY) or (AccountTarget.objects.count() == 0):
             AccountTarget.objects.create(
                 target_type=self._choose_random_enum(TransactionType),
                 timespan=self._choose_random_enum(Timespan),
@@ -355,7 +353,7 @@ class Command(BaseCommand):
         for a given account and save it to the database
         """
         random_number_of_recurring_transactions: int = randint(
-            0, self.MAX_NUMBER_OF_RECURRING_TRANSACTIONS)
+            1, self.MAX_NUMBER_OF_RECURRING_TRANSACTIONS)
         opposite_party_of_transaction: Account = random.choice(
             Account.objects.filter(~Q(id=account.id), user=account.user))
         random_number_of_transactions: int = randint(0, 10)
