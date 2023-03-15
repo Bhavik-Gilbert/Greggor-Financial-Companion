@@ -9,6 +9,7 @@ from financial_companion.models import (
     Category,
     QuizQuestion,
     QuizSet,
+    QuizScore,
     UserGroup
 )
 from django.db.models import QuerySet
@@ -26,11 +27,13 @@ class Command(BaseCommand):
         transactions: QuerySet[Transaction] = []
         groups: QuerySet[UserGroup] = []
         recurring_transactions: QuerySet[RecurringTransaction] = []
+        quiz_scores: QuerySet[QuizScore] = []
         for user in users:
             accounts.extend(Account.objects.filter(user=user))
             targets.extend(UserTarget.objects.filter(user=user))
             categories.extend(Category.objects.filter(user=user))
             groups.extend(UserGroup.objects.filter(owner_email=user.email))
+            quiz_scores.extend(QuizScore.objects.filter(user=user))
 
         for account in accounts:
             transactions.extend(
@@ -58,6 +61,8 @@ class Command(BaseCommand):
         for account in accounts:
             account.delete()
 
+        for quiz_score in quiz_scores:
+            quiz_score.delete()
         QuizSet.objects.filter(seeded=True).delete()
         QuizQuestion.objects.filter(seeded=True).delete()
 

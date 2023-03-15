@@ -7,7 +7,7 @@ from financial_companion.models import (
     CategoryTarget, UserTarget, AccountTarget,
     Transaction, RecurringTransaction,
     Category,
-    QuizQuestion
+    QuizQuestion, QuizScore, QuizSet
 )
 from django.db.utils import IntegrityError
 from django.db.models import Q
@@ -43,6 +43,8 @@ class Command(BaseCommand):
     OBJECT_HAS_TARGET_PROBABILITY: int = 0.6
     MAX_NUMBER_OF_GROUPS: int = 5
     MAX_NUMBER_OF_RECURRING_TRANSACTIONS: int = 2
+    MAX_NUMBER_OF_QUIZ_SETS: int = 3
+    MAX_NUMBER_OF_QUIZ_SCORES: int = 5
 
     def __init__(self) -> None:
         super().__init__()
@@ -289,6 +291,45 @@ class Command(BaseCommand):
                     f'Seeding Question {QuizQuestion.objects.count()}',
                     end='\r')
         print("QUESTIONS SEEDED")
+        self.create_quiz_sets()
+    
+    def create_quiz_sets(self) -> None:
+        """Creates a random number of quiz sets and saves it to the database"""
+        number_of_quiz_sets: int = randint(1, self.MAX_NUMBER_OF_QUIZ_SETS)
+
+        for i in range(number_of_quiz_sets):
+            print(
+                f'Seeding Question {QuizSet.objects.count() + 1}',
+            end='\r')
+
+            quiz_set: QuizSet = QuizSet.objects.create(
+                seeded=True
+            )
+            number_of_set_questions: int = randint(int(QuizQuestion.objects.count() / 2), QuizQuestion.objects.count())
+            for i in range(number_of_set_questions):
+                question: QuizQuestion = random.choice(
+                    QuizQuestion.objects.exclude(pk__in=quiz_set.questions.all())
+                )
+                quiz_set.questions.add(question)
+                if not QuizSet.set_exists(quiz_set.questions.all()):
+                    quiz_set.save()
+
+            self.create_quiz_scores(quiz_set)
+            print("QUIZ SETS WITH SCORES SEEDED")
+    
+    def create_quiz_scores(self, quiz_set: QuizSet) -> None:
+        """Creates a random number of quiz scores and saves it to the database"""
+        number_of_quiz_scores: int = randint(1, self.MAX_NUMBER_OF_QUIZ_SCORES)
+
+        for i in range(number_of_quiz_scores):
+            total_questions: int = quiz_set.questions.count()
+            QuizScore.objects.create(
+                user=random.choice(User.objects.all()),
+                total_questions=total_questions,
+                correct_questions=randint(0, total_questions),
+                quiz_set=quiz_set
+            )
+        
 
     def create_user_groups(self) -> None:
         """
