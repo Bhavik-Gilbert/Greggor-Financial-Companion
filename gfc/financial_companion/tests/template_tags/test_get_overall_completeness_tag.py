@@ -1,8 +1,7 @@
 from .test_template_tag_base import TemplateTagTestCase
 from financial_companion.templatetags import get_overall_completeness, get_completeness,check_completeness_if_expense
 from financial_companion.models import CategoryTarget, Transaction, Category
-from django.utils import timezone
-
+from freezegun import freeze_time
 
 class GetOverallCompletenessTemplateTagTestCase(TemplateTagTestCase):
     """Test for the get_overall_completeness target template tag"""
@@ -10,10 +9,8 @@ class GetOverallCompletenessTemplateTagTestCase(TemplateTagTestCase):
     def setUp(self):
         self.target1 = CategoryTarget.objects.get(pk=1)
         self.target3 = CategoryTarget.objects.get(pk=3)
-        self.trasaction = Transaction.objects.get(pk=8)
-        self.trasaction.time_of_transaction = timezone.now()
-        self.trasaction.save()
 
+    @freeze_time("2023-01-01 22:00:00")
     def test_get_valid_overall_completeness(self):
         target_list= [self.target1, self.target3]
         result = get_overall_completeness(target_list)
