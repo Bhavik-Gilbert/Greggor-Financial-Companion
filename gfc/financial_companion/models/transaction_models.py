@@ -117,15 +117,14 @@ class Transaction(AbstractTransaction):
 
         filtered_transactions = []
         for transaction in user_transactions:
-            if transaction.time_of_transaction.timestamp(
-            ) >= start_of_timespan_period.timestamp():
+            if ((transaction.time_of_transaction.timestamp(
+            ) >= start_of_timespan_period.timestamp()) & (transaction.time_of_transaction.timestamp() <= datetime.datetime.today().timestamp())):
                 filtered_transactions = [*filtered_transactions, transaction]
         return filtered_transactions
 
     @staticmethod
     def get_category_splits(transactions: list):
         spent_per_category = dict()
-        no_of_categories = Category.objects.count()
         for x in transactions:
             if (x.category is None):
                 if (spent_per_category.get("Other") is None):
