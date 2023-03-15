@@ -15,7 +15,8 @@ from django.conf import settings
 from django.db.models import QuerySet
 from django.db import models
 import os
-from datetime import datetime, date, timedelta, timezone
+from datetime import datetime, date, timedelta
+import pytz
 from random import randint, random
 import random
 from financial_companion.helpers import (
@@ -137,7 +138,7 @@ class Command(BaseCommand):
             pass
 
         print(
-            f'Seeding User {User.objects.count() + 1} with accounts and transactions',
+            f'Seeding User {User.objects.count()} with accounts and transactions',
             end='\r')
 
     def create_accounts_for_user(self, user: User, categories: QuerySet[Category]) -> None:
@@ -299,7 +300,7 @@ class Command(BaseCommand):
 
         for i in range(number_of_quiz_sets):
             print(
-                f'Seeding Question {QuizSet.objects.count() + 1}',
+                f'Seeding QuizSet {QuizSet.objects.count()}',
             end='\r')
 
             quiz_set: QuizSet = QuizSet.objects.create(
@@ -315,7 +316,7 @@ class Command(BaseCommand):
                     quiz_set.save()
 
             self.create_quiz_scores(quiz_set)
-            print("QUIZ SETS WITH SCORES SEEDED")
+        print("QUIZ SETS WITH SCORES SEEDED")
     
     def create_quiz_scores(self, quiz_set: QuizSet) -> None:
         """Creates a random number of quiz scores and saves it to the database"""
@@ -399,7 +400,7 @@ class Command(BaseCommand):
                 )
                 transaction.save()
                 transaction.time_of_transaction: datetime = datetime.combine(
-                    current_date, datetime.min.time()).replace(tzinfo=timezone.utc)
+                    current_date, datetime.min.time()).replace(tzinfo=pytz.timezone(settings.TIME_ZONE))
                 transaction.save()
                 recurring_transaction.add_transaction(transaction)
 
