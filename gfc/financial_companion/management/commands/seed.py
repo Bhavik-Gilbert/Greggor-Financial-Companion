@@ -110,7 +110,7 @@ class Command(BaseCommand):
         Creates a single user alongside a random number of account accounts 
         and saves them in the database
         """
-        try:
+        if User.objects.filter(username=self._format_username(first_name, last_name)).count() == 0:
             user: User = User.objects.create_user(
                 first_name=first_name,
                 last_name=last_name,
@@ -134,8 +134,6 @@ class Command(BaseCommand):
                         user=user
                     )
                 self.create_accounts_for_user(user, categories)
-        except (IntegrityError):
-            pass
 
         print(
             f'Seeding User {User.objects.count()} with accounts and transactions',
