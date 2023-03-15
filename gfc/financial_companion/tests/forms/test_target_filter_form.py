@@ -46,12 +46,12 @@ class TargetFilterFormTestCase(FormTestCase):
 
     def test_get_time_function(self):
         form = TargetFilterForm(data=self.form_input)
-        self.assertTrue(form.get_time(),"day")
+        self.assertTrue(form.get_time(), "day")
 
     def test_get_income_or_expense_function(self):
         form = TargetFilterForm(data=self.form_input)
-        self.assertTrue(form.get_income_or_expense(),"income")
+        self.assertTrue(form.get_income_or_expense(), "income")
 
     def test_get_target_type_function(self):
         form = TargetFilterForm(data=self.form_input)
-        self.assertTrue(form.get_target_type(),"account")
+        self.assertTrue(form.get_target_type(), "account")

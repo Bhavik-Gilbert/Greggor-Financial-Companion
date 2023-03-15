@@ -23,7 +23,7 @@ class ViewTargetsViewTestCase(ViewTestCase):
         self._login(self.user)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'pages/target_table.html')
+        self.assertTemplateUsed(response, 'pages/view_targets.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, TargetFilterForm))
         self.assertFalse(form.is_bound)
@@ -32,16 +32,15 @@ class ViewTargetsViewTestCase(ViewTestCase):
         self._login(self.user)
         response = self.client.post(self.url, self.form_input, follow=True)
         response_url = reverse('view_targets')
-        self.assertTemplateUsed(response, 'pages/target_table.html')
-        self.assertEqual(len(response.context['page_obj']), 11)
+        self.assertTemplateUsed(response, 'pages/view_targets.html')
+        self.assertEqual(len(response.context['page_obj']), 10)
 
     def test_filter_targets_by_day(self):
         self._login(self.user)
         self.form_input['time'] = 'day'
         response = self.client.post(self.url, self.form_input, follow=True)
         response_url = reverse('view_targets')
-        print(len(response.context['page_obj']))
-        self.assertTemplateUsed(response, 'pages/target_table.html')
+        self.assertTemplateUsed(response, 'pages/view_targets.html')
         self.assertEqual(len(response.context['page_obj']), 3)
 
     def test_filter_targets_by_income_or_expense(self):
@@ -49,8 +48,7 @@ class ViewTargetsViewTestCase(ViewTestCase):
         self.form_input['income_or_expense'] = 'income'
         response = self.client.post(self.url, self.form_input, follow=True)
         response_url = reverse('view_targets')
-        print(len(response.context['page_obj']))
-        self.assertTemplateUsed(response, 'pages/target_table.html')
+        self.assertTemplateUsed(response, 'pages/view_targets.html')
         self.assertEqual(len(response.context['page_obj']), 6)
 
     def test_filter_targets_by_target_type(self):
@@ -58,7 +56,7 @@ class ViewTargetsViewTestCase(ViewTestCase):
         self.form_input['target_type'] = 'account'
         response = self.client.post(self.url, self.form_input, follow=True)
         response_url = reverse('view_targets')
-        self.assertTemplateUsed(response, 'pages/target_table.html')
+        self.assertTemplateUsed(response, 'pages/view_targets.html')
         self.assertEqual(len(response.context['page_obj']), 3)
 
     def test_get_view_redirects_when_not_logged_in(self):

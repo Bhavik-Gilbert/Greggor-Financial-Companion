@@ -29,12 +29,15 @@ def spending_summary(request: HttpRequest) -> HttpResponse:
         Transaction.get_transactions_from_time_period(
             time, request.user, "sent"))
     percentages = functions.calculate_percentages(categories, total_spent)
-    percentages_list = list(percentages.values())
+    percentages_list: list[float] = list(percentages.values())
     labels = list(percentages.keys())
     form = TimespanOptionsForm()
     if percentages_list == []:
         percentages_list = None
-    targets = list(filter(lambda target: time == target.timespan, request.user.get_all_targets()))
+    targets = list(
+        filter(
+            lambda target: time == target.timespan,
+            request.user.get_all_targets()))
     list_of_targets = paginate(request.GET.get('page', 1), targets)
     return render(request, "pages/spending_summary.html", {'keyset': labels, 'dataset': percentages_list,
                   'form': form, 'money_in': total_received, 'money_out': total_spent, 'time': str(time).capitalize(), 'targets': list_of_targets})

@@ -25,6 +25,7 @@ class FilterTransactionType(models.TextChoices):
         """Filter list for received transactions"""
         return [FilterTransactionType.ALL, FilterTransactionType.RECEIVED]
 
+
 class TransactionType(models.TextChoices):
     """ENUM for transaction types"""
     INCOME: str = "income"
@@ -61,9 +62,11 @@ class ScoreListOrderType(models.TextChoices):
 
 class GreggorTypes(models.TextChoices):
     """ENUM for greggor logo types"""
+    DISTRAUGHT: str = "distraught"
     SAD: str = "sad"
     PARTY: str = "party"
     NORMAL: str = "normal"
+
 
 class TargetType(models.TextChoices):
     """ENUM for target types"""

@@ -6,6 +6,7 @@ from ..models import Category, CategoryTarget, PotAccount, AccountTarget, UserTa
 from django.contrib import messages
 from financial_companion.models import CategoryTarget, Category, User
 from financial_companion.helpers.enums import Timespan, TransactionType, TargetType
+from financial_companion.helpers import paginate
 import re
 
 
@@ -236,6 +237,7 @@ def delete_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
         "This user target has been deleted")
     return redirect("dashboard")
 
+
 @login_required
 def view_targets(request: HttpRequest) -> HttpResponse:
     """View to allow users to view all their targets"""
@@ -250,19 +252,31 @@ def view_targets(request: HttpRequest) -> HttpResponse:
             income_or_expense = form.get_income_or_expense()
             target_type = form.get_target_type()
             if time != "":
-                targets = list(filter(lambda target: time == target.timespan, targets))
+                targets = list(
+                    filter(
+                        lambda target: time == target.timespan,
+                        targets))
             if target_type != "":
-                targets = list(filter(lambda target: target_type == target.getModelName(), targets))
+                targets = list(
+                    filter(
+                        lambda target: target_type == target.getModelName(),
+                        targets))
             if income_or_expense != "":
-                targets = list(filter(lambda target: income_or_expense == target.target_type, targets))
+                targets = list(
+                    filter(
+                        lambda target: income_or_expense == target.target_type,
+                        targets))
     form = TargetFilterForm()
-    return render(request, "pages/target_table.html",
-                  {'targets': targets, 'form': form})
+    list_of_targets = paginate(request.GET.get('page', 1), targets)
+    return render(request, "pages/view_targets.html",
+                  {'targets': list_of_targets, 'form': form})
+
 
 @login_required
 def filter_transaction_request(request, redirect_name: str):
     if 'account' in request.POST:
-        return redirect(reverse(redirect_name, kwargs={'filter_type': "account"}))
+        return redirect(reverse(redirect_name, kwargs={
+                        'filter_type': "account"}))
     elif 'category' in request.POST:
         return redirect(reverse(redirect_name, kwargs={
                         'filter_type': "category"}))
