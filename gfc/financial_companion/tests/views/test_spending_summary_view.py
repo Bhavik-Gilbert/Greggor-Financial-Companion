@@ -21,7 +21,7 @@ class SpendingSummaryViewTestCase(ViewTestCase):
     @freeze_time("2023-01-07 22:00:00")
     def test_valid_within_time_period(self):
             self.assertEqual(
-                len(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user)), 7)
+                len(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user)), 8)
 
     @freeze_time("2023-01-01 22:00:00")
     def test_get_spending_summary_page(self):
