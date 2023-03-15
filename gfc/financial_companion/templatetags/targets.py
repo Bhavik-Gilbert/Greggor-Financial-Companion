@@ -36,8 +36,6 @@ def get_completeness(current):
         return round(0, 2)
     else:
         completeness = (total / float(current.amount)) * 100
-        # print("completeness")
-        # print(completeness)
         return round(completeness, 2)
 
 
