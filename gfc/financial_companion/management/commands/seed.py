@@ -80,7 +80,8 @@ class Command(BaseCommand):
                 name=self.faker.word(),
                 description=self.faker.text()
             )
-            if (float(randint(0, 100)) / 100 < self.OBJECT_HAS_TARGET_PROBABILITY) or (CategoryTarget.objects.count() == 0):
+            if (float(randint(0, 100)) / 100 <
+                    self.OBJECT_HAS_TARGET_PROBABILITY) or (CategoryTarget.objects.count() == 0):
                 CategoryTarget.objects.create(
                     target_type=self._choose_random_enum(TransactionType),
                     timespan=self._choose_random_enum(Timespan),
@@ -104,12 +105,14 @@ class Command(BaseCommand):
                 False)
         print("USERS SEEDED")
 
-    def create_single_user(self, first_name: str, last_name: str, password: str, admin_status: bool) -> None:
+    def create_single_user(self, first_name: str, last_name: str,
+                           password: str, admin_status: bool) -> None:
         """
-        Creates a single user alongside a random number of account accounts 
+        Creates a single user alongside a random number of account accounts
         and saves them in the database
         """
-        if User.objects.filter(username=self._format_username(first_name, last_name)).count() == 0:
+        if User.objects.filter(username=self._format_username(
+                first_name, last_name)).count() == 0:
             user: User = User.objects.create_user(
                 first_name=first_name,
                 last_name=last_name,
@@ -122,7 +125,8 @@ class Command(BaseCommand):
             )
             if not admin_status:
                 categories: Category = self.create_categories(user)
-                if (float(randint(0, 100)) / 100 < self.OBJECT_HAS_TARGET_PROBABILITY) or (UserTarget.objects.count() == 0):
+                if (float(randint(0, 100)) / 100 <
+                        self.OBJECT_HAS_TARGET_PROBABILITY) or (UserTarget.objects.count() == 0):
                     UserTarget.objects.create(
                         target_type=self._choose_random_enum(
                             TransactionType),
@@ -137,9 +141,10 @@ class Command(BaseCommand):
             f'Seeding User {User.objects.count()} with accounts and transactions',
             end='\r')
 
-    def create_accounts_for_user(self, user: User, categories: QuerySet[Category]) -> None:
+    def create_accounts_for_user(
+            self, user: User, categories: QuerySet[Category]) -> None:
         """
-        Creates a random number of accounts for a given user, 
+        Creates a random number of accounts for a given user,
         alongside their targets, transactions and recurring transactions,
         and saves them to the database
         """
@@ -148,8 +153,9 @@ class Command(BaseCommand):
         random_number_of_pot_accounts: int = randint(
             1, self.MAX_ACCOUNTS_PER_USER - 1)
         random_number_of_bank_accounts: int = max(
-            1, 
-            randint(0, (self.MAX_ACCOUNTS_PER_USER - random_number_of_pot_accounts))
+            1,
+            randint(0, (self.MAX_ACCOUNTS_PER_USER -
+                    random_number_of_pot_accounts))
         )
 
         for i in range(0, random_number_of_basic_accounts):
@@ -191,7 +197,8 @@ class Command(BaseCommand):
             self.create_recurring_transactions_for_account(
                 pot_account, categories)
 
-    def create_transactions_for_account(self, account: Account, categories: QuerySet[Category]) -> None:
+    def create_transactions_for_account(
+            self, account: Account, categories: QuerySet[Category]) -> None:
         """
         Create a random number of transactions for a given account
         and save it to the database
@@ -228,7 +235,8 @@ class Command(BaseCommand):
     def _choose_random_enum(self, enum: models.TextChoices) -> str:
         return random.choice(list(enum))
 
-    def _generate_start_date(self, interval: int, number_of_intervals: int) -> date:
+    def _generate_start_date(self, interval: int,
+                             number_of_intervals: int) -> date:
         """Get start date from interval"""
         total_days: int = interval * number_of_intervals
         start_time: datetime = datetime.now() - timedelta(days=total_days)
@@ -244,7 +252,8 @@ class Command(BaseCommand):
 
     def create_target_for_account(self, account: Account) -> None:
         """Creates a target for a given account and stores it in the database"""
-        if (float(randint(0, 100)) / 100 < self.OBJECT_HAS_TARGET_PROBABILITY) or (AccountTarget.objects.count() == 0):
+        if (float(randint(0, 100)) / 100 <
+                self.OBJECT_HAS_TARGET_PROBABILITY) or (AccountTarget.objects.count() == 0):
             AccountTarget.objects.create(
                 target_type=self._choose_random_enum(TransactionType),
                 timespan=self._choose_random_enum(Timespan),
@@ -289,7 +298,7 @@ class Command(BaseCommand):
                     end='\r')
         print("QUESTIONS SEEDED")
         self.create_quiz_sets()
-    
+
     def create_quiz_sets(self) -> None:
         """Creates a random number of quiz sets and saves it to the database"""
         number_of_quiz_sets: int = randint(1, self.MAX_NUMBER_OF_QUIZ_SETS)
@@ -297,15 +306,17 @@ class Command(BaseCommand):
         for i in range(number_of_quiz_sets):
             print(
                 f'Seeding QuizSet {QuizSet.objects.count()}',
-            end='\r')
+                end='\r')
 
             quiz_set: QuizSet = QuizSet.objects.create(
                 seeded=True
             )
-            number_of_set_questions: int = randint(int(QuizQuestion.objects.count() / 2), QuizQuestion.objects.count())
+            number_of_set_questions: int = randint(
+                int(QuizQuestion.objects.count() / 2), QuizQuestion.objects.count())
             for i in range(number_of_set_questions):
                 question: QuizQuestion = random.choice(
-                    QuizQuestion.objects.exclude(pk__in=quiz_set.questions.all())
+                    QuizQuestion.objects.exclude(
+                        pk__in=quiz_set.questions.all())
                 )
                 quiz_set.questions.add(question)
                 if not QuizSet.set_exists(quiz_set.questions.all()):
@@ -313,7 +324,7 @@ class Command(BaseCommand):
 
             self.create_quiz_scores(quiz_set)
         print("QUIZ SETS WITH SCORES SEEDED")
-    
+
     def create_quiz_scores(self, quiz_set: QuizSet) -> None:
         """Creates a random number of quiz scores and saves it to the database"""
         number_of_quiz_scores: int = randint(1, self.MAX_NUMBER_OF_QUIZ_SCORES)
@@ -326,7 +337,6 @@ class Command(BaseCommand):
                 correct_questions=randint(0, total_questions),
                 quiz_set=quiz_set
             )
-        
 
     def create_user_groups(self) -> None:
         """
@@ -347,7 +357,8 @@ class Command(BaseCommand):
 
         print("USERGROUPS SEEDED")
 
-    def create_recurring_transactions_for_account(self, account: Account, categories: QuerySet[Category]) -> None:
+    def create_recurring_transactions_for_account(
+            self, account: Account, categories: QuerySet[Category]) -> None:
         """
         Create a random number of recurring transactions with transactions
         for a given account and save it to the database
@@ -384,7 +395,8 @@ class Command(BaseCommand):
             )
 
             current_date: date = recurring_transaction.start_date
-            while check_within_date_range(recurring_transaction.start_date, datetime.now().date(), current_date):
+            while check_within_date_range(
+                    recurring_transaction.start_date, datetime.now().date(), current_date):
                 transaction: Transaction = Transaction.objects.create(
                     title=recurring_transaction.title,
                     description=recurring_transaction.description,

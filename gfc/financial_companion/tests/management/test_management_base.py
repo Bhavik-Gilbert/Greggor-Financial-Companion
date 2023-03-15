@@ -13,6 +13,7 @@ class NullOutput(object):
     def flush(self, *args) -> None:
         pass
 
+
 class ManagementTestCase(TestCase):
     """
     Base class for testing management commands.

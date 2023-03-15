@@ -85,7 +85,7 @@ class AbstractTransaction(Model):
                     "Both sender and receiver accounts cannot be non monetary accounts")
         except ObjectDoesNotExist:
             raise ValidationError(
-                    "either sender or receiver account does not exist")
+                "either sender or receiver account does not exist")
 
     class Meta:
         abstract = True
@@ -154,10 +154,10 @@ class Transaction(AbstractTransaction):
             database_transaction = Transaction.objects.get(id=self.id)
 
             if (database_transaction.sender_account.id == self.sender_account.id and
-            database_transaction.receiver_account.id == self.receiver_account.id and
-            database_transaction.amount == self.amount):
+                database_transaction.receiver_account.id == self.receiver_account.id and
+                    database_transaction.amount == self.amount):
                 return
-            
+
             if database_transaction.sender_account.id == self.sender_account.id:
                 send_amount = database_transaction.amount - \
                     Decimal(self.amount)
