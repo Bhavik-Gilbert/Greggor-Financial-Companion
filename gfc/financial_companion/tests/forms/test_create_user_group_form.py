@@ -58,4 +58,3 @@ class CreateUserGroupFormTestCase(FormTestCase):
             current_user_group.description,
             'We are the best financial club')
         self.assertEqual(before_count, after_count)
-        

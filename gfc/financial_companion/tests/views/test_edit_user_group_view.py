@@ -53,8 +53,9 @@ class EditUserGroupViewTestCase(ViewTestCase):
         after_count = UserGroup.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/individual_group.html')
-    
-    def test_successful_edit_user_group_form_submission_when_group_picture_is_false(self):
+
+    def test_successful_edit_user_group_form_submission_when_group_picture_is_false(
+            self):
         self._login(self.user)
         before_count = UserGroup.objects.count()
         self.form_input['group_picture'] = False
