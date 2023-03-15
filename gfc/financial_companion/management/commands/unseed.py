@@ -17,7 +17,7 @@ from django_q.models import Schedule
 
 class Command(BaseCommand):
     """Database Unseeder"""
-    def handle(self, *args, **options):
+    def handle(self, *args, **options) -> None:
         """Unseed Database"""
         users: User = User.objects.filter(email__endswith='@gfc.org')
         accounts: QuerySet[Account] = []

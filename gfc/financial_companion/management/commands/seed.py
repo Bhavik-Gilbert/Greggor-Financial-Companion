@@ -15,12 +15,12 @@ from django.conf import settings
 from django.db.models import QuerySet
 from django.db import models
 import os
-import datetime
+from datetime import datetime, date, timedelta, timezone
 from random import randint, random
 import random
 from financial_companion.helpers import (
     TransactionType, CurrencyType, Timespan,
-    get_random_invite_code, generate_random_end_date,
+    get_random_invite_code,
     check_within_date_range, timespan_map
 )
 from financial_companion.scheduler import (
@@ -44,11 +44,11 @@ class Command(BaseCommand):
     MAX_NUMBER_OF_GROUPS: int = 5
     MAX_NUMBER_OF_RECURRING_TRANSACTIONS: int = 2
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.faker: Faker = Faker("en_US")
 
-    def handle(self, *args: list[Any], **options: dict[Any, Any]):
+    def handle(self, *args: list[Any], **options: dict[Any, Any]) -> None:
         """Seeds Database"""
         self.create_users()
         self.create_quiz_questions()
@@ -56,7 +56,7 @@ class Command(BaseCommand):
         self.create_schedulers()
         print("SEEDING COMPLETE")
 
-    def create_schedulers(self):
+    def create_schedulers(self) -> None:
         """Creates scheduler objects and saves them in database"""
         print(f'Seeding Scheduler Monthly Newsletter{30 * " "}', end='\r')
         create_monthly_newsletter_scheduler()
@@ -66,7 +66,7 @@ class Command(BaseCommand):
         create_recurring_transactions_scheduler()
         print(f"SCHEDULERS SEEDED{30 * ' '}")
 
-    def create_categories(self, user: User):
+    def create_categories(self, user: User) -> QuerySet[Category]:
         """Creates a random number of categories and saves them in database"""
         random_number_of_categories: int = randint(
             3, self.MAX_NUMBER_OF_CATEGORIES)
@@ -80,16 +80,16 @@ class Command(BaseCommand):
             if (float(randint(0, 100)) / 100 <
                     self.OBJECT_HAS_TARGET_PROBABILITY):
                 CategoryTarget.objects.create(
-                    target_type=self.choose_random_enum(TransactionType),
-                    timespan=self.choose_random_enum(Timespan),
+                    target_type=self._choose_random_enum(TransactionType),
+                    timespan=self._choose_random_enum(Timespan),
                     amount=float(randint(0, 1000000)) / 100,
-                    currency=self.choose_random_enum(CurrencyType),
+                    currency=self._choose_random_enum(CurrencyType),
                     category=category
                 )
             categories.append(category)
         return categories
 
-    def create_users(self):
+    def create_users(self) -> None:
         """Creates users and saves them in database"""
         self.create_single_user("Michael", "Kolling", self.PASSWORD, True)
         self.create_single_user("admin", "user", self.PASSWORD, True)
@@ -102,7 +102,7 @@ class Command(BaseCommand):
                 False)
         print("USERS SEEDED")
 
-    def create_single_user(self, first_name: str, last_name: str, password: str, admin_status: bool):
+    def create_single_user(self, first_name: str, last_name: str, password: str, admin_status: bool) -> None:
         """
         Creates a single user alongside a random number of account accounts 
         and saves them in the database
@@ -111,8 +111,8 @@ class Command(BaseCommand):
             user: User = User.objects.create_user(
                 first_name=first_name,
                 last_name=last_name,
-                username=self.format_username(first_name, last_name),
-                email=self.format_email(first_name, last_name),
+                username=self._format_username(first_name, last_name),
+                email=self._format_email(first_name, last_name),
                 password=password,
                 bio=self.faker.text(),
                 is_staff=admin_status,
@@ -123,11 +123,11 @@ class Command(BaseCommand):
                 if (float(randint(0, 100)) / 100 <
                         self.OBJECT_HAS_TARGET_PROBABILITY):
                     UserTarget.objects.create(
-                        target_type=self.choose_random_enum(
+                        target_type=self._choose_random_enum(
                             TransactionType),
-                        timespan=self.choose_random_enum(Timespan),
+                        timespan=self._choose_random_enum(Timespan),
                         amount=float(randint(0, 1000000)) / 100,
-                        currency=self.choose_random_enum(CurrencyType),
+                        currency=self._choose_random_enum(CurrencyType),
                         user=user
                     )
                 self.create_accounts_for_user(user, categories)
@@ -135,10 +135,10 @@ class Command(BaseCommand):
             pass
 
         print(
-            f'Seeding User {User.objects.count()} with accounts and transactions',
+            f'Seeding User {User.objects.count() + 1} with accounts and transactions',
             end='\r')
 
-    def create_accounts_for_user(self, user: User, categories: QuerySet[Category]):
+    def create_accounts_for_user(self, user: User, categories: QuerySet[Category]) -> None:
         """
         Creates a random number of accounts for a given user, 
         alongside their targets, transactions and recurring transactions,
@@ -147,10 +147,10 @@ class Command(BaseCommand):
         random_number_of_basic_accounts: int = randint(
             1, self.MAX_NUMBER_OF_BASIC_ACCOUNTS_PER_USER)
         random_number_of_pot_accounts: int = randint(
-            1, self.MAX_ACCOUNTS_PER_USER)
+            1, self.MAX_ACCOUNTS_PER_USER - 1)
         random_number_of_bank_accounts: int = max(
-            randint(1, (self.MAX_ACCOUNTS_PER_USER - random_number_of_pot_accounts)), 
-            1
+            1, 
+            randint(0, (self.MAX_ACCOUNTS_PER_USER - random_number_of_pot_accounts))
         )
 
         for i in range(0, random_number_of_basic_accounts):
@@ -166,7 +166,7 @@ class Command(BaseCommand):
                 description=self.faker.text(),
                 user=user,
                 balance=float(randint(-1000000, 1000000)) / 100,
-                currency=self.choose_random_enum(CurrencyType)
+                currency=self._choose_random_enum(CurrencyType)
             )
             self.create_target_for_account(pot_account)
             self.create_transactions_for_account(pot_account, categories)
@@ -179,7 +179,7 @@ class Command(BaseCommand):
                 description=self.faker.text(),
                 user=user,
                 balance=float(randint(-1000000, 1000000)) / 100,
-                currency=self.choose_random_enum(CurrencyType),
+                currency=self._choose_random_enum(CurrencyType),
                 bank_name=self.faker.word(),
                 account_number=str(randint(0, 9)) + "" +
                 str(randint(1000000, 9999999)),
@@ -192,7 +192,7 @@ class Command(BaseCommand):
             self.create_recurring_transactions_for_account(
                 pot_account, categories)
 
-    def create_transactions_for_account(self, account: Account, categories: QuerySet[Category]):
+    def create_transactions_for_account(self, account: Account, categories: QuerySet[Category]) -> None:
         """
         Create a random number of transactions for a given account
         and save it to the database
@@ -215,32 +215,46 @@ class Command(BaseCommand):
                 description=self.faker.text(),
                 category=random.choice(categories),
                 amount=float(randint(0, 1000000)) / 100,
-                currency=self.choose_random_enum(CurrencyType),
+                currency=self._choose_random_enum(CurrencyType),
                 sender_account=sender_account,
                 receiver_account=receiver_account
             )
 
-    def format_username(self, first_name: str, last_name: str) -> str:
+    def _format_username(self, first_name: str, last_name: str) -> str:
         return f'@{first_name}{last_name}'.lower()
 
-    def format_email(self, first_name, last_name) -> str:
+    def _format_email(self, first_name, last_name) -> str:
         return f'{first_name}.{last_name}@gfc.org'.lower()
 
-    def choose_random_enum(self, enum: models.TextChoices) -> str:
+    def _choose_random_enum(self, enum: models.TextChoices) -> str:
         return random.choice(list(enum))
 
-    def create_target_for_account(self, account: Account):
+    def _generate_start_date(self, interval: int, number_of_intervals: int) -> date:
+        """Get start date from interval"""
+        total_days: int = interval * number_of_intervals
+        start_time: datetime = datetime.now() - timedelta(days=total_days)
+        return start_time.date()
+
+    def _generate_random_end_date(self) -> date:
+        """Generate random end date"""
+        start_date: datetime = datetime.now()
+        end_date: datetime = start_date + timedelta(days=1000)
+        random_date: datetime = start_date + \
+            (end_date - start_date) * random.random()
+        return random_date.date()
+
+    def create_target_for_account(self, account: Account) -> None:
         """Creates a target for a given account and stores it in the database"""
         if (float(randint(0, 100)) / 100 < self.OBJECT_HAS_TARGET_PROBABILITY):
             AccountTarget.objects.create(
-                target_type=self.choose_random_enum(TransactionType),
-                timespan=self.choose_random_enum(Timespan),
+                target_type=self._choose_random_enum(TransactionType),
+                timespan=self._choose_random_enum(Timespan),
                 amount=float(randint(0, 1000000)) / 100,
-                currency=self.choose_random_enum(CurrencyType),
+                currency=self._choose_random_enum(CurrencyType),
                 account=account
             )
 
-    def create_quiz_questions(self):
+    def create_quiz_questions(self) -> None:
         """Creates the quiz questions and stores it in the database"""
         question_path: os.path = os.path.join(
             settings.TEXT_DATA_DIRS["financial_companion"],
@@ -276,7 +290,7 @@ class Command(BaseCommand):
                     end='\r')
         print("QUESTIONS SEEDED")
 
-    def create_user_groups(self):
+    def create_user_groups(self) -> None:
         """
         Create a random number of user groups and save them to the database
         """
@@ -295,7 +309,7 @@ class Command(BaseCommand):
 
         print("USERGROUPS SEEDED")
 
-    def create_recurring_transactions_for_account(self, account: Account, categories: QuerySet[Category]):
+    def create_recurring_transactions_for_account(self, account: Account, categories: QuerySet[Category]) -> None:
         """
         Create a random number of recurring transactions with transactions
         for a given account and save it to the database
@@ -314,20 +328,25 @@ class Command(BaseCommand):
             receiver_account: Account = opposite_party_of_transaction
 
         for i in range(0, random_number_of_recurring_transactions):
+            interval: Timespan = self._choose_random_enum(Timespan)
+            start_date: date = self._generate_start_date(
+                timespan_map[interval], random_number_of_transactions)
+
             recurring_transaction: RecurringTransaction = RecurringTransaction.objects.create(
                 title=self.faker.word(),
                 description=self.faker.text(),
                 category=random.choice(categories),
                 amount=float(randint(0, 1000000)) / 100,
-                currency=self.choose_random_enum(CurrencyType),
+                currency=self._choose_random_enum(CurrencyType),
                 sender_account=sender_account,
                 receiver_account=receiver_account,
-                start_date=datetime.date.today(),
-                end_date=generate_random_end_date(),
-                interval=self.choose_random_enum(Timespan)
+                start_date=start_date,
+                end_date=self._generate_random_end_date(),
+                interval=interval
             )
 
-            for j in range(0, random_number_of_transactions):
+            current_date: date = recurring_transaction.start_date
+            while check_within_date_range(recurring_transaction.start_date, datetime.now().date(), current_date):
                 transaction: Transaction = Transaction.objects.create(
                     title=recurring_transaction.title,
                     description=recurring_transaction.description,
@@ -338,4 +357,10 @@ class Command(BaseCommand):
                     receiver_account=receiver_account
                 )
                 transaction.save()
+                transaction.time_of_transaction: datetime = datetime.combine(
+                    current_date, datetime.min.time()).replace(tzinfo=timezone.utc)
+                transaction.save()
                 recurring_transaction.add_transaction(transaction)
+
+                current_date: date = current_date + \
+                    timedelta(days=timespan_map[interval])
