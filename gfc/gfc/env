@@ -1,3 +1,0 @@
-DJANGO_SECRET_KEY = "aowhmz)7t(^z-0vog4hkj0k+4e6)x@t=nc9prifzk#w!d2uwg)"
-SECURE_STRING_SALT = "gfcsalt"
-EMAIL_PASSWORD_KEY = "ajoaavtgkujobzep"
