@@ -6,14 +6,14 @@ from decimal import Decimal
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 
-
 class AddRecurringTransactionViewTestCase(ViewTestCase):
     """Unit tests of the add recurring transaction view"""
 
     def setUp(self):
         self.url = reverse('add_recurring_transaction')
         self.image_path = "financial_companion/tests/data/dragon.jpeg"
-        self.image_upload = self._get_image_upload_file(self.image_path, "jpeg")
+        self.image_upload = self._get_image_upload_file(
+            self.image_path, "jpeg")
         self.form_input = {
             "title": "Test",
             "description": "This is a test transaction",
@@ -74,7 +74,8 @@ class AddRecurringTransactionViewTestCase(ViewTestCase):
         self.assertEqual(transaction.description, 'This is a test transaction')
         self.assertEqual(transaction.category.id, 1)
         self.assertTrue("transactions/" in transaction.image.name)
-        self.assertTrue(self.image_path.split("/")[-1].split(".")[-1] in transaction.image.name)
+        self.assertTrue(self.image_path.split(
+            "/")[-1].split(".")[-1] in transaction.image.name)
         self.assertEqual(transaction.amount, Decimal("152.95"))
         self.assertEqual(transaction.currency, 'USD')
         self.assertEqual(transaction.sender_account.id, 1)

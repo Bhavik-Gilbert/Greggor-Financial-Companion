@@ -45,11 +45,15 @@ class BaseTestCase(TestCase):
 
         return upload_file
 
-    def _get_image_upload_file(self, app_file_path: str, img_type: str) -> SimpleUploadedFile:
+    def _get_image_upload_file(self, app_file_path: str,
+                               img_type: str) -> SimpleUploadedFile:
         local_file_path: str = os.path.join(settings.BASE_DIR, app_file_path)
         self.assertTrue(os.path.exists(local_file_path))
         upload_file: SimpleUploadedFile = None
         with open(local_file_path, 'rb') as local_file:
-            upload_file = SimpleUploadedFile(f"image.{img_type}", local_file.read(), content_type=f"image/{img_type}")
-        
+            upload_file = SimpleUploadedFile(
+                f"image.{img_type}",
+                local_file.read(),
+                content_type=f"image/{img_type}")
+
         return upload_file

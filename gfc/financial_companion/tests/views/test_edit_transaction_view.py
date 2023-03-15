@@ -12,7 +12,8 @@ class EditTransactionViewTestCase(ViewTestCase):
     def setUp(self):
         self.url = reverse('edit_transaction', kwargs={"pk": 2})
         self.image_path = "financial_companion/tests/data/dragon.jpeg"
-        self.image_upload = self._get_image_upload_file(self.image_path, "jpeg")
+        self.image_upload = self._get_image_upload_file(
+            self.image_path, "jpeg")
         self.form_input = {
             "title": "Test",
             "description": "This is a test transaction",
@@ -55,7 +56,8 @@ class EditTransactionViewTestCase(ViewTestCase):
             transaction.description,
             "Bought a new phone from Apple")
         self.assertTrue("transactions/" in transaction.image.name)
-        self.assertFalse(self.image_path.split("/")[-1].split(".")[-1] in transaction.image.name)
+        self.assertFalse(self.image_path.split(
+            "/")[-1].split(".")[-1] in transaction.image.name)
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("1499.99"))
         self.assertEqual(transaction.currency, 'USD')
@@ -80,7 +82,8 @@ class EditTransactionViewTestCase(ViewTestCase):
         self.assertEqual(transaction.title, "Test")
         self.assertEqual(transaction.description, "This is a test transaction")
         self.assertTrue("transactions/" in transaction.image.name)
-        self.assertTrue(self.image_path.split("/")[-1].split(".")[-1] in transaction.image.name)
+        self.assertTrue(self.image_path.split(
+            "/")[-1].split(".")[-1] in transaction.image.name)
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("152.95"))
         self.assertEqual(transaction.currency, 'USD')
@@ -117,4 +120,3 @@ class EditTransactionViewTestCase(ViewTestCase):
 
     def test_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)
-    

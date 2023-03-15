@@ -12,7 +12,8 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
     def setUp(self):
         self.url = reverse('edit_recurring_transaction', kwargs={"pk": 2})
         self.image_path = "financial_companion/tests/data/dragon.jpeg"
-        self.image_upload = self._get_image_upload_file(self.image_path, "jpeg")
+        self.image_upload = self._get_image_upload_file(
+            self.image_path, "jpeg")
         self.form_input = {
             "title": "Test",
             "description": "This is a test transaction",
@@ -60,7 +61,8 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
             transaction.description,
             "Paying off hire car.")
         self.assertFalse("transactions/" in transaction.image.name)
-        self.assertFalse(self.image_path.split("/")[-1].split(".")[-1] in transaction.image.name)
+        self.assertFalse(self.image_path.split(
+            "/")[-1].split(".")[-1] in transaction.image.name)
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("130.59"))
         self.assertEqual(transaction.currency, 'USD')
@@ -86,7 +88,8 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
         self.assertEqual(transaction.title, "Test")
         self.assertEqual(transaction.description, "This is a test transaction")
         self.assertTrue("transactions/" in transaction.image.name)
-        self.assertTrue(self.image_path.split("/")[-1].split(".")[-1] in transaction.image.name)
+        self.assertTrue(self.image_path.split(
+            "/")[-1].split(".")[-1] in transaction.image.name)
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("152.95"))
         self.assertEqual(transaction.currency, 'USD')
