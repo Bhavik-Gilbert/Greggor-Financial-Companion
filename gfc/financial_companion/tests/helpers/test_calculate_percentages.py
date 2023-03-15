@@ -20,6 +20,6 @@ class CalculatePercentagesFunctionTestCase(HelperTestCase):
                 Timespan.WEEK, self.user))
         categories = Transaction.get_category_splits(
             Transaction.get_transactions_from_time_period(
-                Timespan.WEEK, self.user))
+                Timespan.WEEK, self.user), self.user)
         percentages = functions.calculate_percentages(categories, total)
         self.assertEqual(round(list(percentages.values())[0]), 97)

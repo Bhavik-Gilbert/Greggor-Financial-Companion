@@ -15,9 +15,6 @@
           <div class="col-12"> 
             {% include 'partials/dashboard/account_projection_graph_card.html' with savings_accounts=savings_accounts%}
           </div>
-          <div class="col-12">
-            {% include 'partials/dashboard/income_outcome_graph_card.html' with money_in=money_in money_out=money_out%}
-          </div>
         </div>
       </div>
       <div class="col-lg-5 col-12">
@@ -27,6 +24,9 @@
           </div>
           <div class="col-12">
             {% include 'partials/dashboard/recent-transactions.html'%}
+          </div>
+          <div class="col-12">
+            {% include 'partials/dashboard/income_outcome_graph_card.html' with money_in=money_in money_out=money_out%}
           </div>
         </div>
         </div>
