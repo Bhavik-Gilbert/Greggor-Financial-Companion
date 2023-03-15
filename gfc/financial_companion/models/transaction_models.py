@@ -118,7 +118,7 @@ class Transaction(AbstractTransaction):
         filtered_transactions = []
         for transaction in user_transactions:
             if ((transaction.time_of_transaction.timestamp(
-            ) >= start_of_timespan_period.timestamp()) & (transaction.time_of_transaction.timestamp()<= datetime.datetime.today().timestamp())) :
+            ) >= start_of_timespan_period.timestamp()) & (transaction.time_of_transaction.timestamp() <= datetime.datetime.today().timestamp())):
                 filtered_transactions = [*filtered_transactions, transaction]
         return filtered_transactions
 
