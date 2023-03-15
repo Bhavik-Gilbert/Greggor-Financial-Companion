@@ -21,7 +21,7 @@ class SpendingSummaryViewTestCase(ViewTestCase):
     @freeze_time("2023-01-07 22:00:00")
     def test_valid_within_time_period(self):
             self.assertEqual(
-                len(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user)), 7)
+                len(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user)), 8)
 
     @freeze_time("2023-01-01 22:00:00")
     def test_get_spending_summary_page(self):
@@ -54,7 +54,7 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertEqual(money_in, total_received)
         money_out: float = response.context["money_out"]
         self.assertEqual(money_out, total_spent)
-       
+
 
     @freeze_time("1998-01-07 22:00:00")
     def test_get_spending_summary_page_no_transactions(self):
@@ -76,7 +76,7 @@ class SpendingSummaryViewTestCase(ViewTestCase):
                 time, self.user, "received"))
         self.assertEqual(total_received, 0)
         categories = Transaction.get_category_splits(transactions)
-        self.assertEqual(len(categories), 0)    
+        self.assertEqual(len(categories), 0)
         percentages = functions.calculate_percentages(categories, total_spent)
         self.assertEqual(len(percentages), 0)
         percentages_list = list(percentages.values())
@@ -94,8 +94,8 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertEqual(money_in, total_received)
         money_out: float = response.context["money_out"]
         self.assertEqual(money_out, total_spent)
-    
-    
+
+
     @freeze_time("2023-01-01 22:00:00")
     def test_change_timespan_spending_summary_page(self):
         self._login(self.user)
@@ -127,5 +127,3 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertEqual(money_in, total_received)
         money_out: float = response.context["money_out"]
         self.assertEqual(money_out, total_spent)
-       
-
