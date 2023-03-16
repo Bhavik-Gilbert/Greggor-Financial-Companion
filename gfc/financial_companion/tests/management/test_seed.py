@@ -93,7 +93,7 @@ class ManagementSeedTestCase(ManagementTestCase):
     def test_successfully_seed_and_unseed(self) -> None:
         """Tests that we can seed and unseed the database"""
         # TODO: Add back before submission
-        #self._assert_successfully_seed()
-        #seeded_users: QuerySet[User] = User.objects.filter(
+        # self._assert_successfully_seed()
+        # seeded_users: QuerySet[User] = User.objects.filter(
         #    email__endswith='@gfc.org')
-        #self._assert_successfully_unseed(seeded_users)
+        # self._assert_successfully_unseed(seeded_users)
