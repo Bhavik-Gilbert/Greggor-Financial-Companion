@@ -66,3 +66,10 @@ class GreggorTypes(models.TextChoices):
     DISTRAUGHT: str = "distraught"
     SAD: str = "sad"
     PARTY: str = "party"
+
+
+class TargetType(models.TextChoices):
+    """ENUM for target types"""
+    USER: str = "user"
+    ACCOUNT: str = "account"
+    CATEGORY: str = "category"
