@@ -44,6 +44,7 @@ class Command(BaseCommand):
     OBJECT_HAS_TARGET_PROBABILITY: int = 0.6
     MAX_NUMBER_OF_GROUPS: int = 5
     MAX_NUMBER_OF_RECURRING_TRANSACTIONS: int = 3
+    MAX_NUMBER_OF_RECURRING_TRANSACTION_TRANSACTIONS: int = 5
     MAX_NUMBER_OF_QUIZ_SETS: int = 3
     MAX_NUMBER_OF_QUIZ_SCORES: int = 5
 
@@ -366,7 +367,7 @@ class Command(BaseCommand):
             1, self.MAX_NUMBER_OF_RECURRING_TRANSACTIONS)
         opposite_party_of_transaction: Account = random.choice(
             Account.objects.filter(~Q(id=account.id), user=account.user))
-        random_number_of_transactions: int = randint(0, 10)
+        random_number_of_transactions: int = randint(0, self.MAX_NUMBER_OF_RECURRING_TRANSACTION_TRANSACTIONS)
 
         if (randint(0, 1) == 0):
             sender_account: Account = opposite_party_of_transaction
