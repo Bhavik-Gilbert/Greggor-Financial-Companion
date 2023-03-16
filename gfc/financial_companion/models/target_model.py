@@ -35,28 +35,28 @@ class AbstractTarget(Model):
     )
 
     class Meta:
-        abstract = True
+        abstract: bool = True
 
-    def is_complete(self):
+    def is_complete(self) -> bool:
         if get_completeness(self) >= 100:
             return True
         else:
             return False
 
-    def is_nearly_complete(self):
-        completeness = get_completeness(self)
+    def is_nearly_complete(self) -> bool:
+        completeness: float = get_completeness(self)
         if completeness >= 75 and completeness < 100:
             return True
         else:
             return False
 
-    def getModelName(self, plural=False):
+    def getModelName(self, plural: bool=False) -> str:
         if plural:
             return "targets"
         else:
             return "target"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.getModelName()
 
 
@@ -66,15 +66,15 @@ class CategoryTarget(AbstractTarget):
     category: ForeignKey = ForeignKey(Category, on_delete=CASCADE)
 
     class Meta:
-        unique_together = ["target_type", "timespan", "category"]
+        unique_together: list = ["target_type", "timespan", "category"]
 
-    def getModelName(self, plural=False):
+    def getModelName(self, plural: bool=False) -> str:
         if plural:
             return "categories"
         else:
             return "category"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.category.name
 
 
@@ -84,15 +84,15 @@ class UserTarget(AbstractTarget):
     user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
 
     class Meta:
-        unique_together = ["target_type", "timespan", "user"]
+        unique_together: list = ["target_type", "timespan", "user"]
 
-    def getModelName(self, plural=False):
+    def getModelName(self, plural: bool=False) -> str:
         if plural:
             return "users"
         else:
             return "user"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "personal target"
 
 
@@ -102,13 +102,13 @@ class AccountTarget(AbstractTarget):
     account: ForeignKey = ForeignKey(PotAccount, on_delete=CASCADE)
 
     class Meta:
-        unique_together = ["target_type", "timespan", "account"]
+        unique_together: list = ["target_type", "timespan", "account"]
 
-    def getModelName(self, plural=False):
+    def getModelName(self, plural: bool=False):
         if plural:
             return "accounts"
         else:
             return "account"
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.account.name
