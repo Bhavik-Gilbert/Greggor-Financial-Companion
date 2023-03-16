@@ -45,7 +45,7 @@ def get_category_transactions(current):
 
 def get_account_transactions(current):
     account = current.account
-    if current.target_type == TransactionType.INCOME:
+    if current.target_type == TransactionType.EXPENSE:
         return account.get_account_transactions("sent")
     else:
         return account.get_account_transactions("received")
