@@ -22,9 +22,10 @@ from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from decimal import Decimal
 from django.db.models import Q
+from financial_companion.models import User
 
 
-def change_filename(instance, filename):
+def change_filename(instance, filename: str) -> str:
     return os.path.join('transactions', random_filename(filename))
 
 
@@ -49,7 +50,7 @@ class AbstractTransaction(Model):
         upload_to=change_filename
     )
 
-    category = ForeignKey(Category, on_delete=SET_NULL, null=True, blank=True)
+    category: ForeignKey = ForeignKey(Category, on_delete=SET_NULL, null=True, blank=True)
 
     amount: DecimalField = DecimalField(
         blank=False,
@@ -64,12 +65,12 @@ class AbstractTransaction(Model):
         max_length=3,
     )
 
-    sender_account = ForeignKey(
+    sender_account: ForeignKey = ForeignKey(
         Account,
         on_delete=CASCADE,
         related_name="sender_account%(app_label)s_%(class)s_related")
 
-    receiver_account = ForeignKey(
+    receiver_account: ForeignKey = ForeignKey(
         Account,
         on_delete=CASCADE,
         related_name="reciever%(app_label)s_%(class)s_related")
@@ -78,7 +79,7 @@ class AbstractTransaction(Model):
         super().clean()
         try:
             self.sender_account and self.receiver_account
-            check_accounts = PotAccount.objects.filter(
+            check_accounts: bool = PotAccount.objects.filter(
                 Q(id=self.sender_account.id) | Q(id=self.receiver_account.id)).count() > 0
             if not check_accounts:
                 raise ValidationError(
@@ -88,8 +89,8 @@ class AbstractTransaction(Model):
                 "either sender or receiver account does not exist")
 
     class Meta:
-        abstract = True
-        unique_together = ['sender_account', 'receiver_account']
+        abstract: bool = True
+        unique_together: list[str] = ['sender_account', 'receiver_account']
 
 
 class Transaction(AbstractTransaction):
@@ -101,22 +102,22 @@ class Transaction(AbstractTransaction):
     )
 
     @staticmethod
-    def calculate_total(transactions: list):
-        total = 0
+    def calculate_total(transactions: list) -> int:
+        total: int = 0
         for x in transactions:
             total += x.amount
         return total
 
     @staticmethod
     def get_transactions_from_time_period(
-            time_choice, user, filter_type=str("all")):
-        user_transactions = user.get_user_transactions(filter_type=filter_type)
+            time_choice: Timespan, user: User, filter_type: str=str("all")) -> list:
+        user_transactions: list[Transaction] = user.get_user_transactions(filter_type=filter_type)
 
-        timespan_int = timespan_map[time_choice]
-        start_of_timespan_period = datetime.datetime.today(
+        timespan_int: int = timespan_map[time_choice]
+        start_of_timespan_period: datetime = datetime.datetime.today(
         ) - datetime.timedelta(days=timespan_int)
 
-        filtered_transactions = []
+        filtered_transactions: list[Transaction] = []
         for transaction in user_transactions:
             if ((transaction.time_of_transaction.timestamp(
             ) >= start_of_timespan_period.timestamp()) & (transaction.time_of_transaction.timestamp() <= datetime.datetime.today().timestamp())):
@@ -124,8 +125,8 @@ class Transaction(AbstractTransaction):
         return filtered_transactions
 
     @staticmethod
-    def get_category_splits(transactions: list):
-        spent_per_category = dict()
+    def get_category_splits(transactions: list) -> dict[str, float]:
+        spent_per_category: dict[str, float] = dict()
         for x in transactions:
             if (x.category is None):
                 if (spent_per_category.get("Other") is None):
@@ -141,16 +142,16 @@ class Transaction(AbstractTransaction):
         return spent_per_category
 
     class Meta:
-        ordering = ['-time_of_transaction']
+        ordering: list[str] = ['-time_of_transaction']
 
     def _update_account_balances(self):
-        check_object_exists = Transaction.objects.filter(
+        check_object_exists: list[Transaction] = Transaction.objects.filter(
             id=self.id).count() > 0
-        send_amount = -self.amount
-        receive_amount = self.amount
+        send_amount: float = -self.amount
+        receive_amount: float = self.amount
 
         if check_object_exists:
-            database_transaction = Transaction.objects.get(id=self.id)
+            database_transaction: list[Transaction] = Transaction.objects.get(id=self.id)
 
             if (database_transaction.sender_account.id == self.sender_account.id and
                 database_transaction.receiver_account.id == self.receiver_account.id and
@@ -158,28 +159,28 @@ class Transaction(AbstractTransaction):
                 return
 
             if database_transaction.sender_account.id == self.sender_account.id:
-                send_amount = database_transaction.amount - \
+                send_amount: float = database_transaction.amount - \
                     Decimal(self.amount)
             else:
-                database_sender_account = Account.objects.get_subclass(
+                database_sender_account: Account = Account.objects.get_subclass(
                     id=database_transaction.sender_account.id)
                 if isinstance(database_sender_account, PotAccount):
                     database_sender_account.update_balance(
                         database_transaction.amount, database_transaction.currency)
 
             if database_transaction.receiver_account.id == self.receiver_account.id:
-                receive_amount = Decimal(
+                receive_amount: Decimal = Decimal(
                     self.amount) - database_transaction.amount
             else:
-                database_receiver_account = Account.objects.get_subclass(
+                database_receiver_account: Account = Account.objects.get_subclass(
                     id=database_transaction.receiver_account.id)
                 if isinstance(database_receiver_account, PotAccount):
                     database_receiver_account.update_balance(
                         -database_transaction.amount, database_transaction.currency)
 
-        sender_account = Account.objects.get_subclass(
+        sender_account: Account = Account.objects.get_subclass(
             id=self.sender_account.id)
-        receiver_account = Account.objects.get_subclass(
+        receiver_account: Account = Account.objects.get_subclass(
             id=self.receiver_account.id)
 
         if isinstance(sender_account, PotAccount):
@@ -194,7 +195,7 @@ class Transaction(AbstractTransaction):
 
 @receiver(pre_delete, sender=Transaction,
           dispatch_uid='delete_transaction_signal')
-def delete_transaction(sender, instance, **kwargs):
+def delete_transaction(sender, instance: Transaction, **kwargs):
     instance.amount = 0
     instance._update_account_balances()
 
@@ -217,7 +218,7 @@ class RecurringTransaction(AbstractTransaction):
     transactions: ManyToManyField = ManyToManyField(Transaction)
 
     class Meta:
-        ordering = ['-interval']
+        ordering: list[str] = ['-interval']
 
     def add_transaction(self, transaction: Transaction):
         """Add transaction to transaction in recurring transaction"""
