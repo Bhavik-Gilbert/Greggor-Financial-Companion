@@ -1,17 +1,17 @@
-"""Unit tests of the pot account form."""
 from .test_form_base import FormTestCase
 from typing import Any
 from financial_companion.forms import PotAccountForm, MonetaryAccountForm
 from financial_companion.helpers import CurrencyType, AccountType
 from financial_companion.models import User
 from decimal import Decimal
+from typing import Any
 
 
 class PotAccountFormTestCase(FormTestCase):
     """Unit tests of the pot account form."""
 
     def setUp(self):
-        self.form_input: dict[Any] = {
+        self.form_input: dict[str, Any] = {
             "name": "Test Pot",
             "description": "This is a test pot",
             "balance": Decimal("99.99"),
