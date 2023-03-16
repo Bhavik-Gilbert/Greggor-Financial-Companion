@@ -1,5 +1,3 @@
-
-    <h2 class="text-center mt-3 mb-1 text-muted">Associated Transactions</h2>
     <div class="row">
       <div class="col-12">
         <div>
@@ -30,7 +28,7 @@
                   {% if transaction.interval == "day" %}
                     <td>Daily</td>
                   {% else %}
-                    <td>{{transaction.interval}}ly</td>
+                    <td>{{transaction.interval.capitalize}}ly</td>
                   {% endif %}
                 <td>{{ transaction.amount }} {{ transaction.currency.upper }} </td>
                 <td> <a href="{% url 'individual_recurring_transaction' pk=transaction.id%}" class="btn btn-sm btn-outline-primary justify-content-center">View Info</a</td>

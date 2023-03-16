@@ -1,0 +1,28 @@
+{% extends "partials/dashboard/dashboard_card.html" %}
+
+{% block card_title %}Income and Outcome:{% endblock %}
+
+{% block card_content %}
+    <div>
+        <p><strong>Income and Expenditure in the last month:</strong></p>
+        {% if money_in == 0 and money_out == 0 %}
+            {% include "partials/dashboard/no_content.html" with content_type_plural="transaction data" %}
+        {% else %}
+                {% include 'partials/dashboard/graph.html' with chart_name='in_out' %}
+                <script>
+                    var money_in = {{ money_in|safe }};
+                    var money_out = {{money_out|safe}};
+                    
+                    setChart([money_in, money_out], ['Money In', 'Money Out'], 'Amount', "Income vs Outcome", chartType='doughnut')
+                </script>
+
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block content_type_plural %}Income vs Outcome{% endblock %}
+
+{% block card_URL %}{% url 'spending_summary' %}{% endblock %}
+
+{% block action_title %}View More Analytics{% endblock %}
