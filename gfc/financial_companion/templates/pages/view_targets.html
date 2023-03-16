@@ -1,16 +1,15 @@
 {% extends 'page.html' %}
-{% load targets %}
 {% block title %}View Targets{% endblock %}
 
 {% block content %}
   <div class="text-center">
   <h1>Targets</h1>
     </div>
-
   <hr class="hr col-12"/>
     <div class="row">
       <div class="col-12">
         <div>
+          {% if targets%}
             <form class="row" method="post">
                 {% csrf_token %}
                 <div class="col-3">
@@ -20,34 +19,11 @@
               </form>
         </div>
           &nbsp;
-        <table class="table  table-bordered table-striped" style="width:100%" style="text-align:center" >
-          <thead class = "table-primary">
-            <tr>
-                <th scope="col" style="text-align:center">Target ID</th>
-                <th scope="col" style="text-align:center">Income/Expense</th>
-                <th scope="col" style="text-align:center">Timespan</th>
-                <th scope="col" style="text-align:center">Amount</th>
-                <th scope="col" style="text-align:center">Currency</th>
-                <th scope="col" style="text-align:center">Target Type</th>
-                <th scope="col" style="text-align:center">Applied To</th>
-                <th scope="col" style="text-align:center">Progress %</th>
-            </tr>
-          </thead>
-          {% for target in targets %}
-            <tr style="text-align:center">
-              <td>{{ target.id }}</td>
-              <td>{{ target.target_type.title }}</td>
-              <td>{{ target.timespan }}</td>
-              <td>{{ target.amount }}</td>
-              <td>{{ target.currency }}</td>
-              <td>{{ target|get_model }}</td>
-              <td>{{ target }}</td>
-              <td>{{ target|get_completeness }}</td>
-            </tr>
-          </form>
-          {% endfor %}
-        </table>
-        {% include 'partials/pagination.html'  with page_obj=targets %}
+            {% include 'partials/target_table.html' with targets=targets %}
+            {% include 'partials/pagination.html'  with page_obj=targets %}
+          {% else %}
+            {% include 'partials/dashboard/no_content.html' with content_type_plural='targets'%}
+          {% endif %}
       </div>
     </div>
 {% endblock %}

@@ -270,20 +270,3 @@ def view_targets(request: HttpRequest) -> HttpResponse:
     list_of_targets = paginate(request.GET.get('page', 1), targets)
     return render(request, "pages/view_targets.html",
                   {'targets': list_of_targets, 'form': form})
-
-
-@login_required
-def filter_transaction_request(request, redirect_name: str):
-    if 'account' in request.POST:
-        return redirect(reverse(redirect_name, kwargs={
-                        'filter_type': "account"}))
-    elif 'category' in request.POST:
-        return redirect(reverse(redirect_name, kwargs={
-                        'filter_type': "category"}))
-    elif 'user' in request.POST:
-        return redirect(reverse(redirect_name, kwargs={
-                        'filter_type': "user"}))
-    elif 'all' in request.POST:
-        return redirect(reverse(redirect_name, kwargs={'filter_type': "all"}))
-    else:
-        return redirect('dashboard')

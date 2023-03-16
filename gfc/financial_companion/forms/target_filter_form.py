@@ -3,6 +3,7 @@ from ..helpers import Timespan, TransactionType, TargetType
 
 
 class TargetFilterForm(forms.Form):
+    """Form to filter targets by time, type or income vs expense"""
     time = forms.ChoiceField(
         choices=[
             ('',
