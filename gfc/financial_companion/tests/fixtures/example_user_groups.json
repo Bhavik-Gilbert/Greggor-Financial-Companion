@@ -6,7 +6,8 @@
             "name": "Saving Club",
             "description": "Save with us",
             "invite_code": "ABCDEFGH",
-            "owner_email": "johndoe@example.org"
+            "owner_email": "johndoe@example.org",
+            "group_picture": ""
             }
     },
     {
@@ -16,7 +17,8 @@
             "name": "Spending Club",
             "description": "Spend with us",
             "invite_code": "IJKLMNOP",
-            "owner_email": "janedoe@example.org"
+            "owner_email": "janedoe@example.org",
+            "group_picture": ""
             }
     },
     {
@@ -27,7 +29,8 @@
             "description": "Fun savers",
             "invite_code": "QRSTUVWX",
             "owner_email": "johndoe@example.org",
-            "members": [1, 2]
+            "members": [1, 2],
+            "group_picture": ""
             }
     }
 ]

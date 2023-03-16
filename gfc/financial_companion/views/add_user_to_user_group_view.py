@@ -5,13 +5,15 @@ from django.contrib import messages
 from financial_companion.forms import AddUserToUserGroupForm
 from django.contrib.auth.decorators import login_required
 from ..models import UserGroup, User
+from typing import Any
+from django.db.models import QuerySet
 
 
 @login_required
 def add_user_to_user_group_view(
         request: HttpRequest, group_pk: int) -> HttpResponse:
     if request.method == 'POST':
-        form = AddUserToUserGroupForm(request.POST)
+        form: AddUserToUserGroupForm = AddUserToUserGroupForm(request.POST)
         try:
             current_user_group: UserGroup = UserGroup.objects.get(
                 id=group_pk)
@@ -22,7 +24,7 @@ def add_user_to_user_group_view(
                 "Failed to identify user group")
             return redirect("all_groups_redirect")
         if form.is_valid():
-            user_email = form.cleaned_data.get('user_email')
+            user_email: str = form.cleaned_data.get('user_email')
             try:
                 user: User = User.objects.get(
                     email=user_email)

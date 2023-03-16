@@ -11,6 +11,7 @@ from .test_add_transaction_form import AddTransactionFormTestCase
 from .test_add_user_to_user_group_form import AddUserToUserGroupFormTestCase
 from .test_regular_account_form import RegularAccountFormTestCase
 from .test_quiz_question_form import QuizQuestionFormTestCase
+from .test_target_filter_form import TargetFilterFormTestCase
 from .test_add_recurring_transaction_form import AddRecurringTransactionFormTestCase
 from .test_create_user_group_form import CreateUserGroupFormTestCase
 from .test_user_change_password_form import UserChangePasswordFormTestCase
