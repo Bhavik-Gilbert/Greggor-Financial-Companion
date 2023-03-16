@@ -8,6 +8,7 @@ from django.http import HttpRequest, HttpResponse
 from freezegun import freeze_time
 from datetime import datetime
 
+
 class SpendingSummaryViewTestCase(ViewTestCase):
     """Test Case for user spending summary page."""
     def setUp(self):
@@ -15,14 +16,13 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.test_model: Transaction = Transaction.objects.get(id=4)
         self.user = User.objects.get(id=1)
 
-
     def test_spending_summary_url(self):
         self.assertEqual(self.url, '/spending_summary/')
 
     @freeze_time("2023-01-07 22:00:00")
     def test_valid_within_time_period(self):
-            self.assertEqual(
-                len(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user)), 8)
+        self.assertEqual(
+            len(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user)), 8)
 
     @freeze_time("2023-01-01 22:00:00")
     def test_get_spending_summary_page(self):
@@ -55,7 +55,6 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertEqual(money_in, total_received)
         money_out: float = response.context["money_out"]
         self.assertEqual(money_out, total_spent)
-       
 
     @freeze_time("1998-01-07 22:00:00")
     def test_get_spending_summary_page_no_transactions(self):
@@ -68,7 +67,7 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         time: Timespan = Timespan.DAY
         self.assertTrue(isinstance(time, Timespan))
         transactions = Transaction.get_transactions_from_time_period(
-                time, self.user, "sent")
+            time, self.user, "sent")
         self.assertEqual(len(transactions), 0)
         total_spent = Transaction.calculate_total(transactions)
         self.assertEqual(total_spent, 0)
@@ -76,12 +75,17 @@ class SpendingSummaryViewTestCase(ViewTestCase):
             Transaction.get_transactions_from_time_period(
                 time, self.user, "received"))
         self.assertEqual(total_received, 0)
+<<<<<<< HEAD
         categories = Transaction.get_category_splits(transactions, self.user)
         self.assertEqual(len(categories), 0)    
+=======
+        categories = Transaction.get_category_splits(transactions)
+        self.assertEqual(len(categories), 0)
+>>>>>>> master
         percentages = functions.calculate_percentages(categories, total_spent)
         self.assertEqual(len(percentages), 0)
         percentages_list = list(percentages.values())
-        self.assertEqual(len(percentages_list),0)
+        self.assertEqual(len(percentages_list), 0)
         labels = list(percentages.keys())
         self.assertEqual(len(labels), 0)
         if percentages_list == []:
@@ -95,8 +99,7 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertEqual(money_in, total_received)
         money_out: float = response.context["money_out"]
         self.assertEqual(money_out, total_spent)
-    
-    
+
     @freeze_time("2023-01-01 22:00:00")
     def test_change_timespan_spending_summary_page(self):
         self._login(self.user)
@@ -128,5 +131,3 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertEqual(money_in, total_received)
         money_out: float = response.context["money_out"]
         self.assertEqual(money_out, total_spent)
-       
-

@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
-from financial_companion.helpers import functions
+from financial_companion.helpers import functions, paginate
 from financial_companion.helpers import TransactionType
 from financial_companion.helpers.enums import Timespan
 from financial_companion.models import Transaction, Category, User
@@ -36,5 +36,10 @@ def spending_summary(request: HttpRequest) -> HttpResponse:
     form = TimespanOptionsForm()
     if percentages_list == []:
         percentages_list = None
+    targets = list(
+        filter(
+            lambda target: time == target.timespan,
+            request.user.get_all_targets()))
+    list_of_targets = paginate(request.GET.get('page', 1), targets)
     return render(request, "pages/spending_summary.html", {'keyset': labels, 'dataset': percentages_list,
-                  'form': form, 'money_in': total_received, 'money_out': total_spent, 'time': str(time).capitalize()})
+                  'form': form, 'money_in': total_received, 'money_out': total_spent, 'time': str(time).capitalize(), 'targets': list_of_targets})

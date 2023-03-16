@@ -3,6 +3,7 @@ from ..helpers import GreggorTypes
 import os
 import holidays
 import datetime
+from .targets import get_overall_completeness
 
 register = template.Library()
 
@@ -10,6 +11,7 @@ register = template.Library()
 @register.filter
 def get_greggor(greggor_type: str = ""):
     """Returns the filepath for the wanted greggor logo"""
+
     base_path: str = os.path.join("greggor", "greggor-")
     greggor_type: str = greggor_type.lower()
 
@@ -27,3 +29,24 @@ def get_greggor(greggor_type: str = ""):
 
     # TODO: Add other greggor types
     return f"{base_path}{GreggorTypes.NORMAL}.png"
+
+
+@register.filter
+def get_greggor_type_from_completeness(completeness):
+    """Returns the desired type of greggor based on the level of completeness of a target"""
+    if completeness >= 90:
+        return "party"
+    elif completeness < 15:
+        return "distraught"
+    elif completeness < 35:
+        return "sad"
+    else:
+        return "normal"
+
+
+@register.filter
+def get_greggor_type_for_overall_completeness(targets):
+    """Returns the desired type of greggor based on the average completeness of all the targets"""
+
+    overall_completeness = get_overall_completeness(targets)
+    return get_greggor_type_from_completeness(overall_completeness)
