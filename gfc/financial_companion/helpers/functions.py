@@ -237,7 +237,6 @@ def get_warning_messages_for_targets(
             if key:
                 if key in dictionary_to_add.keys():
                     list_to_append: list = dictionary_to_add[key].copy()
-                    print(dictionary_to_add[key])
                 else:
                     list_to_append: list = []
                 list_to_append.append(target)

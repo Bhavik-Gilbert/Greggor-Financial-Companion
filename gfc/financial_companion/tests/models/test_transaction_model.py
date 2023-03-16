@@ -163,13 +163,13 @@ class TransactionModelTestCase(ModelTestCase):
     @freeze_time("2023-01-07 22:00:00")
     def test_valid_split_categories(self):
         self.assertEqual(len(Transaction.get_category_splits(
-            Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user))), 2)
+            Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user), self.user)), 2)
 
     @freeze_time("2023-01-07 22:00:00")
     def test_valid_split_categories_with_category_none(self):
         self._set_categories_none(self.transactions)
         self.assertEqual(len(Transaction.get_category_splits(
-            Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user))), 1)
+            Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user), self.user)), 1)
 
     def test_account_balances_change_on_change_sender_account(self):
         self.transaction_model.save()

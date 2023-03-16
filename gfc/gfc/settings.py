@@ -93,7 +93,10 @@ DATABASES: dict[dict[str, Any]] = {
     }
 }
 
-FIXTURE_DIRS: list[Path] = [os.path.join(BASE_DIR, "financial_companion/tests/fixtures")]
+FIXTURE_DIRS: list[Path] = [
+    os.path.join(
+        BASE_DIR,
+        "financial_companion/tests/fixtures")]
 TEXT_DATA_DIRS: dict[str, Path] = {
     "financial_companion": os.path.join(BASE_DIR, "financial_companion/data")
 }
