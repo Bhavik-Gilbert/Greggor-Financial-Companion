@@ -62,10 +62,10 @@ class ScoreListOrderType(models.TextChoices):
 
 class GreggorTypes(models.TextChoices):
     """ENUM for greggor logo types"""
+    NORMAL: str = "normal"
     DISTRAUGHT: str = "distraught"
     SAD: str = "sad"
     PARTY: str = "party"
-    NORMAL: str = "normal"
 
 
 class TargetType(models.TextChoices):

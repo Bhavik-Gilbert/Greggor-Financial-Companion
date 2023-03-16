@@ -197,13 +197,6 @@ def get_sorted_members_based_on_completed_targets(members):
     return member_completed_pos_list
 
 
-def generate_random_end_date() -> datetime:
-    start_date = datetime.now()
-    end_date = start_date + timedelta(days=1000)
-    random_date = start_date + (end_date - start_date) * random.random()
-    return random_date
-
-
 def get_warning_messages_for_targets(
         request, showNumbersForMultiples=True, targets=None):
     if not targets:
