@@ -65,4 +65,8 @@ class GreggorTypes(models.TextChoices):
     NORMAL: str = "normal"
     DISTRAUGHT: str = "distraught"
     SAD: str = "sad"
+    SLEEPY: str = "sleepy"
     PARTY: str = "party"
+    CUPID: str = "cupid"
+    GRAD: str = "grad"
+    
