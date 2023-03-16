@@ -69,4 +69,3 @@ class GreggorTypes(models.TextChoices):
     PARTY: str = "party"
     CUPID: str = "cupid"
     GRAD: str = "grad"
-    

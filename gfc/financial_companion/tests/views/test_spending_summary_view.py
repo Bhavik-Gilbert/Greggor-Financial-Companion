@@ -11,6 +11,7 @@ from datetime import datetime
 
 class SpendingSummaryViewTestCase(ViewTestCase):
     """Test Case for user spending summary page."""
+
     def setUp(self):
         self.url = reverse('spending_summary')
         self.test_model: Transaction = Transaction.objects.get(id=4)
@@ -75,13 +76,15 @@ class SpendingSummaryViewTestCase(ViewTestCase):
             Transaction.get_transactions_from_time_period(
                 time, self.user, "received"))
         self.assertEqual(total_received, 0)
-<<<<<<< HEAD
+
+
+<< << << < HEAD
         categories = Transaction.get_category_splits(transactions, self.user)
-        self.assertEqual(len(categories), 0)    
-=======
+        self.assertEqual(len(categories), 0)
+== == == =
         categories = Transaction.get_category_splits(transactions)
         self.assertEqual(len(categories), 0)
->>>>>>> master
+>>>>>> > master
         percentages = functions.calculate_percentages(categories, total_spent)
         self.assertEqual(len(percentages), 0)
         percentages_list = list(percentages.values())

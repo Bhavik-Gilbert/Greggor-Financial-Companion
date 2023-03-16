@@ -135,7 +135,8 @@ class Transaction(AbstractTransaction):
                     spent_per_category.update(
                         {"Other": spent_per_category.get("Other") + x.amount})
             else:
-                if ((len(spent_per_category) == 0) or (spent_per_category.get(x.category.name) is None)):
+                if ((len(spent_per_category) == 0) or (
+                        spent_per_category.get(x.category.name) is None)):
                     spent_per_category[x.category.name] = x.amount
                 else:
                     spent_per_category.update(

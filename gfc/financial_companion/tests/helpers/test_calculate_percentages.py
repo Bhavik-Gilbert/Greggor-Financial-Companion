@@ -34,4 +34,3 @@ class CalculatePercentagesFunctionTestCase(HelperTestCase):
                 Timespan.WEEK, self.user), self.user)
         percentages = functions.calculate_percentages(categories, total)
         self.assertFalse(bool(percentages))
-
