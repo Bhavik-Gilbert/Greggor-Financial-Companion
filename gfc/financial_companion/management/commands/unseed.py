@@ -20,7 +20,6 @@ from typing import Union
 from django.db import models
 
 
-
 class Command(BaseCommand):
     """Database Unseeder"""
 

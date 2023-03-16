@@ -88,7 +88,7 @@ def get_random_invite_code(length: int) -> str:
 
 
 def get_conversions_for_accounts(
-        bank_accounts, main_currency: str ="GBP") -> dict[str, float]:
+        bank_accounts, main_currency: str = "GBP") -> dict[str, float]:
     """get conversion rates for all currencies for all bank accounts"""
     conversions: dict[str, float] = {}
     conversions.update({str(main_currency): 1.0})
@@ -110,7 +110,7 @@ def get_projection_timescale_options() -> dict[int, str]:
 def get_projections_balances(accounts, max_timescale_in_months: int = max(
         get_projection_timescale_options().keys())) -> dict[str, list[float]]:
     """returns the projected balances for inputed accounts for the given time scale in months"""
-    account_dictionary: dict[int, dict[str,list[float]]] = {}
+    account_dictionary: dict[int, dict[str, list[float]]] = {}
     for account in accounts:
         interest_rate: float = float(account.interest_rate / 100)
         account_data: dict[str, Any] = {
@@ -188,7 +188,8 @@ def get_data_for_account_projection(user) -> dict[str, Any]:
     }
 
 
-def get_sorted_members_based_on_completed_targets(members: Any) -> list[tuple[Any, str]]:
+def get_sorted_members_based_on_completed_targets(
+        members: Any) -> list[tuple[Any, str]]:
     """return a sorted list of users sorted based on complated targets"""
     member_completed_list: list[tuple[Any, float]] = []
     for member in members:
@@ -202,7 +203,7 @@ def get_sorted_members_based_on_completed_targets(members: Any) -> list[tuple[An
     )
     pos: int = 1
     p: inflect.engine = inflect.engine()  # used to convert a number into a position
-    member_completed_pos_list: list[tuple[Any, str]]= []
+    member_completed_pos_list: list[tuple[Any, str]] = []
     for member_completed in member_completed_list:
         member_completed_pos_list = [
             *member_completed_pos_list, (*member_completed, p.ordinal(pos))]
