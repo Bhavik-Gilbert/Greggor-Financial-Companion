@@ -8,7 +8,7 @@ from django_q.models import Schedule
 
 def create_recurring_transactions_scheduler():
     """Creates a scheduler object for recurring transactions"""
-    date_time_str: str = f'{timezone.now().month + 1}-01-{timezone.now().year}'
+    date_time_str: str = f'{timezone.now().month}-{timezone.now().day + 1}-{timezone.now().year}'
     date_object: datetime.strptime = datetime.strptime(
         date_time_str, '%m-%d-%Y').replace(tzinfo=pytz.timezone(settings.TIME_ZONE))
 
