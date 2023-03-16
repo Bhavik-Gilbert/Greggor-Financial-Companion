@@ -4,13 +4,14 @@ from financial_companion.helpers import paginate
 import random
 from django.core.paginator import Page
 
+
 class PaginateFunctionTestCase(HelperTestCase):
     """Test file for the paginate helpers function"""
 
     def setUp(self):
         self.random_list: list[int] = []
         for i in range(0, 15):
-            n: int  = random.randint(1, 30)
+            n: int = random.randint(1, 30)
             self.random_list.append(n)
 
     def test_valid_page_number_given(self):

@@ -3,6 +3,7 @@ from financial_companion.helpers import add_interest_to_bank_accounts
 from financial_companion.models import BankAccount
 from decimal import Decimal
 
+
 class AddInterestToBankAccountsTaskTestCase(HelperTestCase):
     """Test file for the add interest to bank accounts task"""
 
@@ -11,5 +12,6 @@ class AddInterestToBankAccountsTaskTestCase(HelperTestCase):
             if (account.interest_rate > 0):
                 before_adding: Decimal = account.balance
                 add_interest_to_bank_accounts()
-                after_adding: Decimal = BankAccount.objects.get(id=account.id).balance
+                after_adding: Decimal = BankAccount.objects.get(
+                    id=account.id).balance
                 self.assertGreater(after_adding, before_adding)

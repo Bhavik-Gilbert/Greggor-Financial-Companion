@@ -6,6 +6,7 @@ from ...models import Transaction
 from freezegun import freeze_time
 from decimal import Decimal
 
+
 class CalculatePercentagesFunctionTestCase(HelperTestCase):
     """Test file for the calculate percentages function"""
 
@@ -21,5 +22,6 @@ class CalculatePercentagesFunctionTestCase(HelperTestCase):
         categories: dict[str, Decimal] = Transaction.get_category_splits(
             Transaction.get_transactions_from_time_period(
                 Timespan.WEEK, self.user))
-        percentages: dict[str, Decimal] = functions.calculate_percentages(categories, total)
+        percentages: dict[str, Decimal] = functions.calculate_percentages(
+            categories, total)
         self.assertEqual(round(list(percentages.values())[0]), 97)

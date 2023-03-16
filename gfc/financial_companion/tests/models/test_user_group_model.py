@@ -9,8 +9,10 @@ class UserGroupModelTestCase(ModelTestCase):
 
     def setUp(self):
         super().setUp()
-        self.test_model: UserGroup = UserGroup.objects.get(invite_code='ABCDEFGH')
-        self.second_group: UserGroup = UserGroup.objects.get(invite_code='IJKLMNOP')
+        self.test_model: UserGroup = UserGroup.objects.get(
+            invite_code='ABCDEFGH')
+        self.second_group: UserGroup = UserGroup.objects.get(
+            invite_code='IJKLMNOP')
         self.first_user: User = User.objects.get(username='@johndoe')
         self.second_user: User = User.objects.get(username='@janedoe')
 
@@ -22,15 +24,15 @@ class UserGroupModelTestCase(ModelTestCase):
         self._assert_model_is_invalid()
 
     def test_name_doesnt_need_to_be_unique(self):
-        self.test_model.name: str= self.second_group.name
+        self.test_model.name: str = self.second_group.name
         self._assert_model_is_valid()
 
     def test_name_has_length_of_max_50(self):
-        self.test_model.name : str= 'j' * 50
+        self.test_model.name: str = 'j' * 50
         self._assert_model_is_valid()
 
     def test_name_is_not_more_than_50_characters(self):
-        self.test_model.name : str = 'j' * 51
+        self.test_model.name: str = 'j' * 51
         self._assert_model_is_invalid()
 
     def test_description_is_not_blank(self):

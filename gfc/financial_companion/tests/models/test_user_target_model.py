@@ -5,6 +5,7 @@ from freezegun import freeze_time
 import datetime
 from ...helpers import Timespan, TransactionType
 
+
 class UserTargetModelTestCase(ModelTestCase):
     """Test file for UserTarget model class"""
 
@@ -24,13 +25,13 @@ class UserTargetModelTestCase(ModelTestCase):
 
     def test_valid_duplicate_user_duplicate_target_type(self):
         self.second_model.user: User = self.test_model.user
-        self.second_model.target_type: TransactionType = self.test_model.target_type 
+        self.second_model.target_type: TransactionType = self.test_model.target_type
         self.second_model.save()
         self._assert_model_is_valid()
 
     def test_valid_duplicate_timespan_duplicate_target_type(self):
         self.second_model.timespan: Timespan = self.test_model.timespan
-        self.second_model.target_type: TransactionType= self.test_model.target_type
+        self.second_model.target_type: TransactionType = self.test_model.target_type
         self.second_model.save()
         self._assert_model_is_valid()
 

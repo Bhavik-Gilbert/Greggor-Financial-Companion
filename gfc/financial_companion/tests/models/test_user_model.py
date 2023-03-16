@@ -17,7 +17,8 @@ class UserModelTestCase(ModelTestCase):
         self.second_user: User = User.objects.get(username='@janedoe')
         self.third_user: User = User.objects.get(username='@michaelkolling')
         self.fourth_user: User = User.objects.get(username='@michaelhigham')
-        self.total_completed_targets: int  = 7  # 6/7 will be complete at the first time check
+        # 6/7 will be complete at the first time check
+        self.total_completed_targets: int = 7
 
     def test_valid_user(self):
         self._assert_model_is_valid()
@@ -51,11 +52,11 @@ class UserModelTestCase(ModelTestCase):
         self._assert_model_is_invalid()
 
     def test_last_name_doesnt_need_to_be_unique(self):
-        self.test_model.last_name: str= self.second_user.last_name
+        self.test_model.last_name: str = self.second_user.last_name
         self._assert_model_is_valid()
 
     def test_last_name_has_length_of_max_50(self):
-        self.test_model.last_name : str= 'j' * 50
+        self.test_model.last_name: str = 'j' * 50
         self._assert_model_is_valid()
 
     def test_last_name_not_more_than_50(self):
@@ -67,7 +68,7 @@ class UserModelTestCase(ModelTestCase):
         self._assert_model_is_valid()
 
     def test_bio_need_not_be_unique(self):
-        self.test_model.bio : str= self.second_user.bio
+        self.test_model.bio: str = self.second_user.bio
         self._assert_model_is_valid()
 
     def test_bio_can_be_520_chars(self):
@@ -135,7 +136,7 @@ class UserModelTestCase(ModelTestCase):
 
     @freeze_time("2023-01-01 13:00:00")
     def test_get_all_completed_targets_when_user_has_targets(self):
-        targets : list[AbstractTarget]= self.test_model.get_all_targets()
+        targets: list[AbstractTarget] = self.test_model.get_all_targets()
         self.assertTrue(self.test_model.get_completed_targets(targets) != [])
 
     @freeze_time("2023-01-01 13:00:00")
@@ -278,7 +279,7 @@ class UserModelTestCase(ModelTestCase):
 
     @freeze_time("2023-01-06 13:00:00")
     def test_get_number_of_completed_targets_within_week(self):
-        completed: int= self.test_model.get_number_of_completed_targets()
+        completed: int = self.test_model.get_number_of_completed_targets()
         self.assertTrue(completed <= self.total_completed_targets)
 
     @freeze_time("2023-01-11 13:00:00")
@@ -308,7 +309,7 @@ class UserModelTestCase(ModelTestCase):
 
     @freeze_time("2023-01-01 13:00:00")
     def test_get_leaderboard_score_within_day(self):
-        score: float =  self.test_model.get_leaderboard_score()
+        score: float = self.test_model.get_leaderboard_score()
         self.assertTrue(score == 0.0)
 
     @freeze_time("2023-01-03 13:00:00")

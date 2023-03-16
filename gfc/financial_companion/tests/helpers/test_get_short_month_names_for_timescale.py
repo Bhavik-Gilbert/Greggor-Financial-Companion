@@ -11,13 +11,15 @@ class GetShortMonthNamesForTimescaleHelperFunctionTestCase(HelperTestCase):
     def setUp(self):
         self.valid_bank_accounts: Union[QuerySet, list[BankAccount]] = BankAccount.objects.filter(
             interest_rate__gt=0)
-        self.no_bank_accounts: Union[QuerySet, list[BankAccount]] = BankAccount.objects.filter(id__lt=0)
+        self.no_bank_accounts: Union[QuerySet, list[BankAccount]
+                                     ] = BankAccount.objects.filter(id__lt=0)
         self.max_timescale_in_months: int = max(
             get_projection_timescale_options().keys())
 
     def test_return_dates_valid_max_timescale(self):
         timescale_in_months: int = 5
-        dates: list[str] = get_short_month_names_for_timescale(timescale_in_months)
+        dates: list[str] = get_short_month_names_for_timescale(
+            timescale_in_months)
         self.assertEqual(len(dates), timescale_in_months)
 
     def test_return_dates_no_max_timescale(self):
@@ -26,7 +28,8 @@ class GetShortMonthNamesForTimescaleHelperFunctionTestCase(HelperTestCase):
 
     def test_return_dates_null_max_timescale(self):
         timescale_in_months: int = 0
-        dates: list[str] = get_short_month_names_for_timescale(timescale_in_months)
+        dates: list[str] = get_short_month_names_for_timescale(
+            timescale_in_months)
         self.assertEqual(len(dates), timescale_in_months)
 
     def test_return_dates_invalid_max_timescale(self):

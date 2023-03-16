@@ -5,6 +5,7 @@ from typing import Union
 from django.db.models import QuerySet
 from typing import Any
 
+
 class GetConversionsForAccountsHelperFunctionTestCase(HelperTestCase):
     """Test file for the get_conversions_for_accounts helpers function"""
 
@@ -36,7 +37,8 @@ class GetConversionsForAccountsHelperFunctionTestCase(HelperTestCase):
     def setUp(self):
         self.valid_bank_accounts: Union[QuerySet, list[BankAccount]] = BankAccount.objects.filter(
             interest_rate__gt=0)
-        self.no_valid_bank_accounts: Union[QuerySet, list[BankAccount]] = BankAccount.objects.filter(id__lt=0)
+        self.no_valid_bank_accounts: Union[QuerySet,
+                                           list[BankAccount]] = BankAccount.objects.filter(id__lt=0)
 
     def test_valid_bank_accounts_valid_currency_code(self):
         for currency_code in CurrencyType:

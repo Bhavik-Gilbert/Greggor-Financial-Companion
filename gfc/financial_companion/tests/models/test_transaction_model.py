@@ -100,7 +100,7 @@ class TransactionModelTestCase(ModelTestCase):
         self._assert_model_is_valid()
 
     def test_time_of_transaction_auto_adds_time_if_blank(self):
-        self.test_model.time_of_transaction: str= ""
+        self.test_model.time_of_transaction: str = ""
         self._assert_model_is_valid()
 
     def test_change_filename(self):

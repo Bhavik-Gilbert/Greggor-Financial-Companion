@@ -19,7 +19,7 @@ class CategoryModelTestCase(ModelTestCase):
         self._assert_model_is_invalid()
 
     def test_name_has_length_of_max_50(self):
-        self.test_model.name : str= 'j' * 50
+        self.test_model.name: str = 'j' * 50
         self._assert_model_is_valid()
 
     def test_name_is_not_more_than_50_characters(self):

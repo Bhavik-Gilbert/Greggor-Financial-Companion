@@ -6,6 +6,7 @@ import datetime
 from typing import Union
 from django.db.models import QuerySet
 
+
 class GetSortedMembersBasedOnCompletedTargetsHelperFunctionTestCase(
         HelperTestCase):
     """Test file for the get_sorted_members_based_on_completed_targets helpers function"""
@@ -18,8 +19,8 @@ class GetSortedMembersBasedOnCompletedTargetsHelperFunctionTestCase(
 
     @freeze_time("2023-01-01 13:00:00")
     def test_order_is_correct(self):
-        score_1: float= self.member_1.get_leaderboard_score()
-        score_2: float= self.member_2.get_leaderboard_score()
+        score_1: float = self.member_1.get_leaderboard_score()
+        score_2: float = self.member_2.get_leaderboard_score()
         sorted_members_list = get_sorted_members_based_on_completed_targets(
             self.members)
         if score_1 > score_2:
