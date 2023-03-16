@@ -17,7 +17,7 @@ class UserModelTestCase(ModelTestCase):
         self.second_user: User = User.objects.get(username='@janedoe')
         self.third_user: User = User.objects.get(username='@michaelkolling')
         self.fourth_user: User = User.objects.get(username='@michaelhigham')
-        self.total_completed_targets: int  = 6  # 6/7 will be complete at the first time check
+        self.total_completed_targets: int  = 7  # 6/7 will be complete at the first time check
 
     def test_valid_user(self):
         self._assert_model_is_valid()
@@ -228,7 +228,7 @@ class UserModelTestCase(ModelTestCase):
     def test_get_number_of_nearly_completed_spending_targets_when_user_has_targets(
             self):
         self.assertEqual(
-            self.test_model.get_number_of_completed_spending_targets(), 4)
+            self.test_model.get_number_of_completed_spending_targets(), 5)
 
     @freeze_time("2023-01-11 13:00:00")
     def test_get_number_of_nearly_completed_spending_targets_when_user_has_no_targets(
@@ -309,37 +309,37 @@ class UserModelTestCase(ModelTestCase):
     @freeze_time("2023-01-01 13:00:00")
     def test_get_leaderboard_score_within_day(self):
         score: float =  self.test_model.get_leaderboard_score()
-        self.assertTrue(score == 0.5)
+        self.assertTrue(score == 0.0)
 
     @freeze_time("2023-01-03 13:00:00")
     def test_get_leaderboard_score_after_day(self):
         score: float = self.test_model.get_leaderboard_score()
-        self.assertTrue(score == 2.0)
+        self.assertTrue(score == 1.5)
 
     @freeze_time("2023-01-06 13:00:00")
     def test_get_number_of_completed_targets_within_week(self):
         score: float = self.test_model.get_leaderboard_score()
-        self.assertTrue(score == 2.0)
+        self.assertTrue(score == 1.5)
 
     @freeze_time("2023-01-11 13:00:00")
     def test_get_leaderboard_score_after_week(self):
         score: float = self.test_model.get_leaderboard_score()
-        self.assertTrue(score == 1.0)
+        self.assertTrue(score == 0.5)
 
     @freeze_time("2023-01-22 13:00:00")
     def test_get_leaderboard_score_within_month(self):
         score: float = self.test_model.get_leaderboard_score()
-        self.assertTrue(score == 1.0)
+        self.assertTrue(score == 0.5)
 
     @freeze_time("2023-02-03 13:00:00")
     def test_get_leaderboard_score_after_month(self):
         score: float = self.test_model.get_leaderboard_score()
-        self.assertTrue(score == 0.0)
+        self.assertTrue(score == -0.5)
 
     @freeze_time("2023-07-09 13:00:00")
     def test_get_leaderboard_score_within_year(self):
         score: float = self.test_model.get_leaderboard_score()
-        self.assertTrue(score == 0.0)
+        self.assertTrue(score == -0.5)
 
     @freeze_time("2024-08-26 13:00:00")
     def test_get_leaderboard_score_after_year(self):

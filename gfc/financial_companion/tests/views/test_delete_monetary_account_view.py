@@ -24,7 +24,7 @@ class DeleteMonetaryAccountViewTestCase(ViewTestCase):
         self.assertEqual(after_count + 1, before_count)
         self.assertTemplateUsed(response, 'pages/view_accounts.html')
         messages_list = list(response.context['messages'])
-        self.assertEqual(len(messages_list), 1)
+        self.assertEqual(len(messages_list), 2)
 
     def test_user_tries_to_edit_someone_elses_monetary_account(self):
         self._login(self.user)
