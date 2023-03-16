@@ -15,6 +15,7 @@ class CreateUserGroupFormTestCase(FormTestCase):
         self.form_input = {
             'name': 'Financial Club',
             'description': 'We are the best financial club',
+            'group_picture': ''
         }
 
     def test_valid_create_user_group_form(self):
@@ -27,6 +28,7 @@ class CreateUserGroupFormTestCase(FormTestCase):
             form,
             'name',
             'description',
+            'group_picture'
         )
         description_widget = form.fields['description'].widget
         self.assertTrue(isinstance(description_widget, forms.Textarea))
@@ -45,7 +47,7 @@ class CreateUserGroupFormTestCase(FormTestCase):
 
     def test_form_updates_correctly(self):
         user_group = UserGroup.objects.get(id=1)
-        form = UserGroupForm(data=self.form_input)
+        form = UserGroupForm(data=self.form_input, instance=user_group)
         before_count = UserGroup.objects.count()
         current_user_group = form.save(
             current_user=self.test_user,
