@@ -16,7 +16,6 @@ from json import dumps
 def spending_summary(request: HttpRequest) -> HttpResponse:
     time = Timespan.DAY
     user = request.user
-    print(user.id)
     if request.method == "POST":
         form = TimespanOptionsForm(request.POST)
         if form.is_valid():
