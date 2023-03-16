@@ -13,6 +13,10 @@ import os
 from pathlib import Path
 from django.contrib.messages import constants as messages
 from typing import Any, Union, Literal
+from dotenv import load_dotenv
+
+# Load environment data
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR: Path = Path(__file__).resolve().parent.parent
@@ -22,11 +26,9 @@ BASE_DIR: Path = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-try:
-    with open(os.path.dirname(os.path.abspath(__file__)) + "\\hidden_keys\\secret_key.txt") as f:
-        SECRET_KEY: str = f.read().strip()
-except BaseException:
-    SECRET_KEY: str = 'django-insecure-)2rxjsa3d&2d83qxnyjyca(d(kl=tt6g*h&*et!-u$fa-w94_j'
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-)2rxjsa3d&2d83qxnyjyca(d(kl=tt6g*h&*et!-u$fa-w94_j'")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG: bool = True  # TODO: set false before submission
@@ -172,11 +174,7 @@ LOGGED_IN_URL: str = "dashboard"
 NUMBER_OF_ITEMS_PER_PAGE: int = 10
 
 # salt for secure string
-try:
-    with open(os.path.dirname(os.path.abspath(__file__)) + "\\hidden_keys\\salt_key.txt") as f:
-        SALT_KEY: str = f.read().strip()
-except BaseException:
-    SALT_KEY: str = "temporarysalt"
+SALT_KEY = os.environ.get("SECURE_STRING_SALT", "temporarysalt")
 
 # Default language for Faker
 FAKER_LOCALE: str = "en_GB"

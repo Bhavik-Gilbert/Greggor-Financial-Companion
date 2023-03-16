@@ -12,7 +12,7 @@
     <tr class="text-center">
         <td>{{ quiz_score.total_questions }}</td>
         <td>{{ quiz_score.correct_questions }}</td>
-        <td>{{ quiz_score.get_score }}</td>
+        <td>{{ quiz_score.get_score }}%</td>
         <td>{{ quiz_score.time_of_submission }}</td>
         <td><a href="{% url 'quiz_score' pk=quiz_score.id %}" class="btn btn-sm btn-outline-primary">View Results</a></td>
     </tr>

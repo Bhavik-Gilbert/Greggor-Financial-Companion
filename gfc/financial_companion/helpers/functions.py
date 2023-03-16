@@ -210,15 +210,6 @@ def get_sorted_members_based_on_completed_targets(members: Any) -> list[tuple[An
     return member_completed_pos_list
 
 
-def generate_random_end_date() -> datetime:
-    """return a random end date"""
-    start_date: datetime = datetime.now()
-    end_date: datetime = start_date + timedelta(days=1000)
-    random_date: datetime = start_date + \
-        (end_date - start_date) * random.random()
-    return random_date
-
-
 def get_warning_messages_for_targets(
         request: HttpRequest, show_numbers_for_multiples: bool = True, targets=None) -> HttpRequest:
     """Return a httprequest containing messages for nearly exceeded, exceeded and completed targets"""

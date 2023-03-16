@@ -18,10 +18,10 @@
     }
 
     Chart.defaults.color = '{{primary}} !IMPORTANT';
-    if (chartType == "line") {
+    if (chartType == "line"| chartType == "bar") {
       // TODO: Create set line chart method
       new Chart(ctx, {
-        type: 'line',
+        type: chartType,
         data: {
           labels: chartLabels,
           datasets: chartDataset

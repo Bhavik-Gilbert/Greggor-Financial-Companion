@@ -53,3 +53,36 @@ def get_account_transactions(current):
 
 def get_user_transactions(current):
     return current.user.get_user_transactions()
+
+
+def get_overall_completeness(targets):
+    overall_completeness = 0
+    count = len(targets)
+    if count == 0:
+        return 0
+    for target in targets:
+        if target.target_type == "income":
+            overall_completeness = overall_completeness + \
+                get_completeness(target)
+        else:
+            overall_completeness = overall_completeness + \
+                (100 - get_completeness(target))
+    return overall_completeness / count
+
+
+@register.filter
+def check_completeness_if_expense(completeness, target):
+    if target is not None:
+        if target.target_type == "expense":
+            return 100 - completeness
+    return completeness
+
+
+@register.filter
+def get_edit_url(target):
+    return "edit_" + target.getModelName() + "_target"
+
+
+@register.filter
+def get_delete_url(target):
+    return "delete_" + target.getModelName() + "_target"
