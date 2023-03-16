@@ -44,6 +44,6 @@ class QuizScoreModelTestCase(ModelTestCase):
         self.assertEqual(self.test_model.get_score(), 80)
 
     def test_valid_get_score_cannot_be_over_100(self):
-        self.test_model.correct_questions = 10
-        self.test_model.total_questions = 5
+        self.test_model.correct_questions: int = 10
+        self.test_model.total_questions: int = 5
         self.assertEqual(self.test_model.get_score(), 100)

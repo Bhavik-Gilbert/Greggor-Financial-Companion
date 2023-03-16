@@ -19,19 +19,19 @@ class RecurringTransactionTestCase(ModelTestCase):
         self._assert_model_is_valid()
 
     def test_valid_transaction_start_Date(self):
-        self.test_model.start_date = "2023-01-31"
+        self.test_model.start_date: str = "2023-01-31"
         self._assert_model_is_valid()
 
     def test_start_date_cannot_be_blank(self):
-        self.test_model.start_date = ""
+        self.test_model.start_date: str = ""
         self._assert_model_is_invalid()
 
     def test_end_date_cannot_be_blank(self):
-        self.test_model.end_date = ""
+        self.test_model.end_date: str = ""
         self._assert_model_is_invalid()
 
     def test_interval_valid(self):
-        self.test_model.interval = Timespan.MONTH
+        self.test_model.interval: Timespan = Timespan.MONTH
         self._assert_model_is_valid()
 
     def test_valid_add_transaction(self):

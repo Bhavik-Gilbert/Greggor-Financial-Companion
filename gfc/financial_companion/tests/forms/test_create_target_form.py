@@ -134,7 +134,7 @@ class CreateTargetFormTestCase(FormTestCase):
             form_type=CategoryTarget,
             foreign_key=self.test_category)
         before_count: int = CategoryTarget.objects.count()
-        current_category_target: CategoryTarger = form.save()
+        current_category_target: CategoryTarget = form.save()
         after_count: int = CategoryTarget.objects.count()
         self.assertEqual(current_category_target.timespan, 'month')
         self.assertEqual(current_category_target.target_type, 'income')

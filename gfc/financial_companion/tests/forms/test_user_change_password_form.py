@@ -24,8 +24,8 @@ class UserChangePasswordFormTestCase(FormTestCase):
             'password',
             'new_password'
         )
-        password_field: fields.CharField = form.fields['password']
-        new_password_field: fields.CharField = form.fields['new_password']
+        password_field: forms.Field.CharField = form.fields['password']
+        new_password_field: forms.Field.CharField = form.fields['new_password']
         self.assertTrue(isinstance(password_field.widget, forms.PasswordInput))
         self.assertTrue(
             isinstance(
