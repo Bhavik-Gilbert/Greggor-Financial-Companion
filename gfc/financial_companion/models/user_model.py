@@ -7,7 +7,7 @@ import financial_companion.models as fcmodels
 from ..helpers import TransactionType
 
 
-def change_filename(instance, filename):
+def change_filename(instance, filename) -> str:
     return os.path.join('user_profile', random_filename(filename))
 
 
@@ -43,7 +43,7 @@ class User(AbstractUser):
         transactions: list[fcmodels.Transaction] = []
 
         for account in user_accounts:
-            transactions = [
+            transactions: list = [
                 *transactions,
                 *account.get_account_transactions(filter_type)]
 
@@ -56,7 +56,7 @@ class User(AbstractUser):
         transactions: list[fcmodels.RecurringTransaction] = []
 
         for account in user_accounts:
-            transactions = [
+            transactions: list = [
                 *transactions,
                 *account.get_account_recurring_transactions()
             ]
@@ -69,88 +69,87 @@ class User(AbstractUser):
         )
         return max(user_scores, key=lambda quiz_score: quiz_score.get_score())
 
-    def get_all_targets(self):
-        user = self
-        user_targets = fcmodels.UserTarget.objects.filter(user=user)
-        user_account_targets = self.get_all_account_targets()
-        user_category_targets = self.get_all_category_targets()
-
+    def get_all_targets(self) -> list:
+        user: User = self
+        user_targets: fcmodels.UserTarget = fcmodels.UserTarget.objects.filter(user=user)
+        user_account_targets: fcmodels.AccountTarget = self.get_all_account_targets()
+        user_category_targets: fcmodels.CategoryTarget = self.get_all_category_targets()
         return [*user_targets, *user_account_targets, *user_category_targets]
 
-    def get_all_account_targets(self, accounts=None):
-        user = self
+    def get_all_account_targets(self, accounts=None) -> list:
+        user: User = self
         if not accounts:
-            accounts = fcmodels.PotAccount.objects.filter(user=user)
-        user_account_targets = fcmodels.AccountTarget.objects.filter(
+            accounts: fcmodels.PotAccount = fcmodels.PotAccount.objects.filter(user=user)
+        user_account_targets: fcmodels.AccountTarget = fcmodels.AccountTarget.objects.filter(
             account__in=accounts)
 
         return list(user_account_targets)
 
-    def get_all_category_targets(self, categories=None):
-        user = self
+    def get_all_category_targets(self, categories=None) -> list:
+        user: User = self
         if not categories:
-            categories = fcmodels.Category.objects.filter(user=user)
-        user_category_targets = fcmodels.CategoryTarget.objects.filter(
+            categories: list = fcmodels.Category.objects.filter(user=user)
+        user_category_targets: list = fcmodels.CategoryTarget.objects.filter(
             category__in=categories)
 
         return list(user_category_targets)
 
-    def get_completed_targets(self, targets):
-        filtered_targets = []
+    def get_completed_targets(self, targets) -> list:
+        filtered_targets: list = []
         for target in targets:
             if target.is_complete():
                 filtered_targets.append(target)
         return filtered_targets
 
-    def get_nearly_completed_targets(self, targets):
-        filtered_targets = []
+    def get_nearly_completed_targets(self, targets) -> list:
+        filtered_targets: list = []
         for target in targets:
             if target.is_nearly_complete():
                 filtered_targets.append(target)
         return filtered_targets
 
-    def get_number_of_nearly_completed_targets(self):
+    def get_number_of_nearly_completed_targets(self) -> int:
         return self.get_number_of_nearly_completed_spending_targets(
         ) + self.get_number_of_nearly_completed_saving_targets()
 
-    def get_number_of_nearly_completed_spending_targets(self):
-        total = 0
-        targets = self.get_all_targets()
+    def get_number_of_nearly_completed_spending_targets(self) -> int:
+        total: int = 0
+        targets: list = self.get_all_targets()
         for target in targets:
             if target.is_nearly_complete() and target.target_type == TransactionType.INCOME:
                 total += 1
         return total
 
-    def get_number_of_nearly_completed_saving_targets(self):
-        total = 0
-        targets = self.get_all_targets()
+    def get_number_of_nearly_completed_saving_targets(self) -> int:
+        total: int = 0
+        targets: list = self.get_all_targets()
         for target in targets:
             if target.is_nearly_complete() and target.target_type == TransactionType.EXPENSE:
                 total += 1
         return total
 
-    def get_number_of_completed_targets(self):
+    def get_number_of_completed_targets(self) -> int:
         return self.get_number_of_completed_spending_targets(
         ) + self.get_number_of_completed_saving_targets()
 
-    def get_number_of_completed_spending_targets(self):
-        total = 0
-        targets = self.get_all_targets()
+    def get_number_of_completed_spending_targets(self) -> int:
+        total: int = 0
+        targets: list = self.get_all_targets()
         for target in targets:
             if target.is_complete() and target.target_type == TransactionType.INCOME:
                 total += 1
         return total
 
-    def get_number_of_completed_saving_targets(self):
-        total = 0
-        targets = self.get_all_targets()
+    def get_number_of_completed_saving_targets(self) -> int:
+        total: int = 0
+        targets: list = self.get_all_targets()
         for target in targets:
             if target.is_complete() and target.target_type == TransactionType.EXPENSE:
                 total += 1
         return total
 
-    def get_leaderboard_score(self):
-        score = 0
+    def get_leaderboard_score(self) -> float:
+        score: float = 0
         score += -(0.5 * self.get_number_of_completed_spending_targets()) + self.get_number_of_completed_saving_targets() + \
             (0.5 * self.get_number_of_nearly_completed_saving_targets()
              ) + -(0.5 * self.get_number_of_nearly_completed_spending_targets())
