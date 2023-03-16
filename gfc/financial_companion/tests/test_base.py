@@ -47,6 +47,11 @@ class BaseTestCase(TestCase):
 
     def _get_image_upload_file(self, app_file_path: str,
                                img_type: str) -> SimpleUploadedFile:
+        """
+        Takes a local image file and returns a copy of it that can be uploaded into a form
+        USAGE
+        local_file_path = financial_companion/tests/data/filepath
+        """
         local_file_path: str = os.path.join(settings.BASE_DIR, app_file_path)
         self.assertTrue(os.path.exists(local_file_path))
         upload_file: SimpleUploadedFile = None
