@@ -41,7 +41,7 @@ class RegularAccountForm(forms.ModelForm):
             )
 
         else:
-            regular_account = instance
+            regular_account: Account = instance
             regular_account.name: str = self.cleaned_data.get("name")
             regular_account.description: str = self.cleaned_data.get(
                 "description")

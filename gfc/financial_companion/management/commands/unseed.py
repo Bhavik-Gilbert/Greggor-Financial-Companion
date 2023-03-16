@@ -9,11 +9,15 @@ from financial_companion.models import (
     Category,
     QuizQuestion,
     QuizSet,
+    UserGroup,
+    AbstractTarget,
     QuizScore,
     UserGroup
 )
 from django.db.models import QuerySet
 from django_q.models import Schedule
+from typing import Union
+from django.db import models
 
 
 class Command(BaseCommand):

@@ -12,6 +12,7 @@
   function setChart(chartDataset, chartLabels, y_axisLabel="", x_axisLabel="", chartType="line", y_beginsAtZero=false, x_beginsAtZero=false) {
     var chartName = "{{chart_name}}";
     const ctx = document.getElementById("chart"+ chartName);
+    console.log(chartName);
 
     if (ctx.attributes.length > 1) { // if there is a chart in the canvas.
           Chart.getChart(ctx).destroy(); // clear the canvas

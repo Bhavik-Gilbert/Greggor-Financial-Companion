@@ -1,8 +1,9 @@
 from .test_helper_base import HelperTestCase
 from financial_companion.helpers import get_warning_messages_for_targets
-from financial_companion.models import User
+from financial_companion.models import User, AbstractTarget
 from django.contrib.messages import get_messages
 from django.http import HttpRequest
+from django.contrib.messages.storage.base import Message
 from freezegun import freeze_time
 
 
@@ -12,8 +13,8 @@ class GetWarningMessagesForTargetsHelperFunctionTestCase(HelperTestCase):
     @freeze_time("2023-01-05 13:00:00")
     def setUp(self):
         self.request = self.client.get('dashboard').wsgi_request
-        self.request.user = User.objects.get(pk=1)
-        self.targets = self.request.user.get_all_targets()
+        self.request.user: User = User.objects.get(pk=1)
+        self.targets: list[AbstractTarget] = self.request.user.get_all_targets()
 
     @freeze_time("2023-01-05 13:00:00")
     def test_get_messages_no_show_numbers_no_targets(self):
@@ -41,7 +42,7 @@ class GetWarningMessagesForTargetsHelperFunctionTestCase(HelperTestCase):
 
     @freeze_time("2023-01-05 13:00:00")
     def _assert_message_request_as_valid(self, request: HttpRequest):
-        messages = list(get_messages(request))
+        messages: list[Message] = list(get_messages(request))
         self.assertEqual(len(messages), 3)
         self.assertLessEqual(len(messages), 3)
         self.assertTrue('Targets completed: ' in str(messages[0]))

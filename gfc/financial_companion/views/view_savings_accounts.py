@@ -7,6 +7,7 @@ from django.http import HttpRequest, HttpResponse
 
 @login_required
 def view_savings_accounts(request: HttpRequest) -> HttpResponse:
-    context = get_data_for_account_projection(request.user)
+    """View to see all the user's saving's accounts"""
+    context: dict[str, any] = get_data_for_account_projection(request.user)
 
     return render(request, "pages/view_savings_accounts.html", context)

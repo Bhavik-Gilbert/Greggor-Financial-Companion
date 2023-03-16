@@ -33,7 +33,7 @@
                 &nbsp
                 <div class="card bg-primary">
                     <p><strong>Money In vs Money Out</strong></p>
-                    {% include 'partials/dashboard/graph.html' with chart_name='in_out' %}
+                    {% include 'partials/dashboard/graph.html' with chart_name='in_vs_out' %}
                     <script>
                          var money_in = {{ money_in|safe }};
                     var money_out = {{money_out|safe}};

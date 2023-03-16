@@ -35,6 +35,13 @@
 {% block view_model_objects_text %}View All Recurring Transactions{% endblock %}
 
 {% block further_content %}
-  {% include 'partials/recurring_transaction_transactions_list.html'  with transactions=transactionslist %}
+  <h3 class="text-black">Associated Transactions:</h3>
+  <div class="row gy-3 gx-3">
+      {%include 'partials/recurring_transaction_transactions_list.html'  with transactions=transactionslist %}
+
+      <div class="col-12 text-black">
+        {% include 'partials/pagination.html'  with page_obj=transactionslist %}
+      </div>
+  </div>
 {% endblock %}
 

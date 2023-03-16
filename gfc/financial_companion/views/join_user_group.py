@@ -4,15 +4,17 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from financial_companion.forms import JoinUserGroupForm
 from django.contrib.auth.decorators import login_required
-from ..models import UserGroup
+from ..models import UserGroup, User
+from django.db.models import QuerySet
+from typing import Any, Union
 
 
 @login_required
 def join_user_group_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
-        form = JoinUserGroupForm(request.POST)
+        form: JoinUserGroupForm = JoinUserGroupForm(request.POST)
         if form.is_valid():
-            group_invite_code = form.cleaned_data.get('invite_code')
+            group_invite_code: str = form.cleaned_data.get('invite_code')
             try:
                 user_group: UserGroup = UserGroup.objects.get(
                     invite_code=group_invite_code)
@@ -22,7 +24,7 @@ def join_user_group_view(request: HttpRequest) -> HttpResponse:
                     messages.ERROR,
                     "A group is not associated with the invite code provided")
                 return redirect("all_groups_redirect")
-            user = request.user
+            user: User = request.user
             if user_group.members.contains(user):
                 messages.add_message(
                     request,
@@ -34,10 +36,10 @@ def join_user_group_view(request: HttpRequest) -> HttpResponse:
                 request,
                 messages.SUCCESS,
                 "You have successfully joined the group")
-            user = request.user
-            members = user_group.members.all()
-            is_owner = (user_group.owner_email == user.email)
-            count = user_group.members_count()
+            user: User = request.user
+            members: Union[QuerySet, list[User]] = user_group.members.all()
+            is_owner: bool = (user_group.owner_email == user.email)
+            count: int = user_group.members_count()
             return render(request, "pages/individual_group.html",
                           {"group": user_group, "members": members, "owner": is_owner, "count": count})
     else:
