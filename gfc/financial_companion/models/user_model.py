@@ -71,37 +71,37 @@ class User(AbstractUser):
 
     def get_all_targets(self) -> list:
         user: User = self
-        user_targets: fcmodels.UserTarget = fcmodels.UserTarget.objects.filter(user=user)
-        user_account_targets: fcmodels.AccountTarget = self.get_all_account_targets()
-        user_category_targets: fcmodels.CategoryTarget = self.get_all_category_targets()
+        user_targets: list[fcmodels.UserTarget] = fcmodels.UserTarget.objects.filter(user=user)
+        user_account_targets: list[fcmodels.AccountTarget] = self.get_all_account_targets()
+        user_category_targets: list[fcmodels.CategoryTarget] = self.get_all_category_targets()
         return [*user_targets, *user_account_targets, *user_category_targets]
 
-    def get_all_account_targets(self, accounts=None) -> list:
+    def get_all_account_targets(self, accounts: list=None) -> list:
         user: User = self
         if not accounts:
-            accounts: fcmodels.PotAccount = fcmodels.PotAccount.objects.filter(user=user)
-        user_account_targets: fcmodels.AccountTarget = fcmodels.AccountTarget.objects.filter(
+            accounts: list[fcmodels.PotAccount] = fcmodels.PotAccount.objects.filter(user=user)
+        user_account_targets: list = fcmodels.AccountTarget.objects.filter(
             account__in=accounts)
 
         return list(user_account_targets)
 
-    def get_all_category_targets(self, categories=None) -> list:
+    def get_all_category_targets(self, categories: list=None) -> list:
         user: User = self
         if not categories:
-            categories: list = fcmodels.Category.objects.filter(user=user)
+            categories: list[fcmodels.Category] = fcmodels.Category.objects.filter(user=user)
         user_category_targets: list = fcmodels.CategoryTarget.objects.filter(
             category__in=categories)
 
         return list(user_category_targets)
 
-    def get_completed_targets(self, targets) -> list:
+    def get_completed_targets(self, targets: list) -> list:
         filtered_targets: list = []
         for target in targets:
             if target.is_complete():
                 filtered_targets.append(target)
         return filtered_targets
 
-    def get_nearly_completed_targets(self, targets) -> list:
+    def get_nearly_completed_targets(self, targets: list) -> list:
         filtered_targets: list = []
         for target in targets:
             if target.is_nearly_complete():
