@@ -6,7 +6,8 @@ from django.http import HttpRequest, HttpResponse
 
 
 @login_required
-def view_user_pot_accounts(request: HttpRequest) -> HttpResponse:
+def view_user_accounts(request: HttpRequest) -> HttpResponse:
+    """View to view all the user's accounts"""
     all_user_accounts = Account.objects.filter(
         user_id=request.user)
     all_user_pot_accounts: list[PotAccount] = PotAccount.objects.filter(

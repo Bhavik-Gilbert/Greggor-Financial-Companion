@@ -6,7 +6,7 @@ from .dashboard import dashboard_view
 from .add_transaction import add_transaction_view, edit_transaction_view, delete_transaction_view, add_transactions_via_bank_statement
 from .monetary_account_view import add_monetary_account_view, edit_monetary_account_view, delete_monetary_account_view
 from .category_views import category_list_view
-from .view_accounts import view_user_pot_accounts
+from .view_accounts import view_user_accounts
 from .display_transactions import view_users_transactions, filter_transaction_request, filter_transaction_request_with_pk
 from .create_category import create_category_view, edit_category_view, delete_category_view
 from .individual_category import individual_category_view

@@ -9,7 +9,7 @@ from datetime import datetime
 
 
 class ParseStatementPDF:
-    def __init__(self):
+    def __init__(self) -> None:
         self.number_regex: str = r'[^-\d.]'
         self.ignore_in_description: list[str] = [
             "transfer",
@@ -18,13 +18,13 @@ class ParseStatementPDF:
         ]
         self.reset_object()
 
-    def reset_object(self):
+    def reset_object(self) -> None:
         """Sets all transaction data to none"""
         self.date: datetime = None
         self.balance: float = None
         self.reset_data()
 
-    def reset_data(self):
+    def reset_data(self) -> None:
         """Sets all transaction data except date to none"""
         self.amount: float = None
         self.transaction_type: str = None
@@ -46,7 +46,7 @@ class ParseStatementPDF:
             self, statement_dataframe_list: list[pd.DataFrame], indexes: dict[str, int], transactions: list[dict[str, Any]] = []) -> list[dict[str, Any]]:
         """Returns list of transaction data from list of dataframes"""
         for statement_dataframe in statement_dataframe_list:
-            transactions = self.get_transactions_from_dataframe(
+            transactions: list[dict[str, Any]] = self.get_transactions_from_dataframe(
                 statement_dataframe, indexes, transactions)
         return transactions
 
@@ -69,7 +69,7 @@ class ParseStatementPDF:
         return transactions
 
     def set_initial_balance_from_dataframe(
-            self, statement_dataframe: pd.DataFrame, indexes: dict[str, int]):
+            self, statement_dataframe: pd.DataFrame, indexes: dict[str, int]) -> None:
         """
         Sets object balance data if statement dataframe balance block is not empty
         or balance is already set
@@ -83,7 +83,7 @@ class ParseStatementPDF:
                 pass
 
     def set_date_from_datataframe_row(
-            self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
+            self, statement_dataframe_row: list[Any], indexes: dict[str, int]) -> None:
         """Updates object date data if statement dataframe row date block is understandable"""
         try:
             self.date: datetime = pd.to_datetime(dparser.parse(str(
@@ -92,14 +92,14 @@ class ParseStatementPDF:
             pass
 
     def set_balance_from_datataframe_row(
-            self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
+            self, statement_dataframe_row: list[Any], indexes: dict[str, int]) -> None:
         """Updates object balance data if statement dataframe row balance block is not empty"""
         if not pd.isna(statement_dataframe_row[indexes["balance"]]):
             self.balance = float(re.sub(self.number_regex, '', str(
                 statement_dataframe_row[indexes["balance"]])))
 
     def set_amount_and_transaction_type_from_datataframe_row(
-            self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
+            self, statement_dataframe_row: list[Any], indexes: dict[str, int]) -> None:
         """Updates amount and transaction type data if statement dataframe row income or expense block is valid"""
         if not pd.isna(statement_dataframe_row[indexes["income"]]) and float(re.sub(
                 self.number_regex, '', str(statement_dataframe_row[indexes["income"]]))) >= 0:
@@ -112,7 +112,7 @@ class ParseStatementPDF:
             self.transaction_type: str = TransactionType.EXPENSE
 
     def set_description_from_datataframe_row(
-            self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
+            self, statement_dataframe_row: list[Any], indexes: dict[str, int]) -> None:
         """Updates object description data if statement dataframe row descritiption block is not empty"""
         description: str = statement_dataframe_row[indexes["description"]]
         if not pd.isna(description) and description.lower(
@@ -124,7 +124,7 @@ class ParseStatementPDF:
                 self.description += [description]
 
     def set_all_data_from_dataframe_row(
-            self, statement_dataframe_row: list[Any], indexes: dict[str, int]):
+            self, statement_dataframe_row: list[Any], indexes: dict[str, int]) -> None:
         """Parses dataframe row and updates object data where rows aren't empty"""
         self.set_date_from_datataframe_row(statement_dataframe_row, indexes)
         self.set_balance_from_datataframe_row(statement_dataframe_row, indexes)
