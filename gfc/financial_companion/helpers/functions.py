@@ -14,6 +14,7 @@ import inflect
 import random
 import string
 from typing import Any
+from django.http import HttpRequest, HttpResponse
 
 
 def get_currency_symbol(currency_code: str) -> str:
@@ -57,6 +58,7 @@ def random_filename(filename: str) -> str:
 
 
 def calculate_percentages(spent_per_category: dict(), total: float) -> dict:
+    """calculate percentage of expenditure taken up by each category"""
     for key, value in spent_per_category.items():
         percentage: float = float((value / total) * 100)
         spent_per_category.update({key: percentage})
@@ -65,6 +67,7 @@ def calculate_percentages(spent_per_category: dict(), total: float) -> dict:
 
 def paginate(page: int, list_input: list[Any],
              number_per_page: int = settings.NUMBER_OF_ITEMS_PER_PAGE) -> Page:
+    """paginate lists and tables to be displayed to user"""
     list_of_items: list[Any] = []
     paginator: Paginator = Paginator(list_input, number_per_page)
     try:
@@ -77,7 +80,7 @@ def paginate(page: int, list_input: list[Any],
     return list_of_items
 
 
-def get_random_invite_code(length) -> str:
+def get_random_invite_code(length: int) -> str:
     """Generates a random invite code for User Groups"""
     letters: str = string.ascii_uppercase
     result_str: str = ''.join(random.choice(letters) for i in range(length))
@@ -85,7 +88,8 @@ def get_random_invite_code(length) -> str:
 
 
 def get_conversions_for_accounts(
-        bank_accounts, main_currency="GBP") -> dict[str, float]:
+        bank_accounts, main_currency: str ="GBP") -> dict[str, float]:
+    """get conversion rates for all currencies for all bank accounts"""
     conversions: dict[str, float] = {}
     conversions.update({str(main_currency): 1.0})
     for bank_account in bank_accounts:
@@ -99,14 +103,16 @@ def get_conversions_for_accounts(
 
 
 def get_projection_timescale_options() -> dict[int, str]:
+    """return the time scale options for targets"""
     return {6: "6 Months", 12: "1 Year", 24: "2 Years", 60: "5 Years"}
 
 
 def get_projections_balances(accounts, max_timescale_in_months: int = max(
         get_projection_timescale_options().keys())) -> dict[str, list[float]]:
-    account_dictionary = {}
+    """returns the projected balances for inputed accounts for the given time scale in months"""
+    account_dictionary: dict[int, dict[str,list[float]]] = {}
     for account in accounts:
-        interest_rate = float(account.interest_rate / 100)
+        interest_rate: float = float(account.interest_rate / 100)
         account_data: dict[str, Any] = {
             "name": account.name,
             "currency": account.currency,
@@ -116,7 +122,7 @@ def get_projections_balances(accounts, max_timescale_in_months: int = max(
         current_balance: float = float(account.balance)
         i = 1
         while i <= max_timescale_in_months:
-            temp_balance_total = current_balance * \
+            temp_balance_total: float = current_balance * \
                 ((1 + (interest_rate / 365))**get_number_of_days_in_prev_month(i))
             if temp_balance_total >= 0:
                 current_balance = temp_balance_total
@@ -130,11 +136,12 @@ def get_projections_balances(accounts, max_timescale_in_months: int = max(
 
 def get_short_month_names_for_timescale(
         max_timescale_in_months: int = max(get_projection_timescale_options().keys())) -> list[str]:
-    current_date = datetime.today()
+    """returns month names in the given time scale"""
+    current_date: datetime = datetime.today()
     i = 1
-    dates = []
+    dates: list[str] = []
     while i <= max_timescale_in_months:
-        next_date = current_date + relativedelta(months=i)
+        next_date: datetime = current_date + relativedelta(months=i)
         dates.append(str(next_date.strftime("%b").capitalize() +
                      " " + next_date.strftime("%y").capitalize()))
         i += 1
@@ -143,6 +150,7 @@ def get_short_month_names_for_timescale(
 
 
 def get_number_of_days_in_prev_month(offset_inMonths: int = 0) -> int:
+    """calculate the number of days in the previous month"""
     date: datetime = datetime.today() + relativedelta(months=offset_inMonths)
     no_of_days_in_prev_month: int = (
         date.replace(
@@ -154,6 +162,7 @@ def get_number_of_days_in_prev_month(offset_inMonths: int = 0) -> int:
 
 
 def get_data_for_account_projection(user) -> dict[str, Any]:
+    """return a dicationary contining all information for savings projections for all of the users accounts"""
     accounts = fcmodels.BankAccount.objects.filter(
         user_id=user, interest_rate__gt=0)
     mainCurrency: str = "GBP"
@@ -179,28 +188,30 @@ def get_data_for_account_projection(user) -> dict[str, Any]:
     }
 
 
-def get_sorted_members_based_on_completed_targets(members: Any) -> list:
-    member_completed_list: list = []
+def get_sorted_members_based_on_completed_targets(members: Any) -> list[tuple[Any, str]]:
+    """return a sorted list of users sorted based on complated targets"""
+    member_completed_list: list[tuple[Any, float]] = []
     for member in members:
         score: float = member.get_leaderboard_score()
-        member_completed_list: list[tuple] = [
+        member_completed_list = [
             *member_completed_list, (member, score)]
-    member_completed_list: list[tuple[Any, float]] = sorted(
+    member_completed_list = sorted(
         member_completed_list,
         key=lambda x: x[1],
         reverse=True
     )
     pos: int = 1
     p: inflect.engine = inflect.engine()  # used to convert a number into a position
-    member_completed_pos_list: list[tuple[Any, float]] = []
+    member_completed_pos_list: list[tuple[Any, str]]= []
     for member_completed in member_completed_list:
-        member_completed_pos_list: list[tuple[Any, float]] = [
+        member_completed_pos_list = [
             *member_completed_pos_list, (*member_completed, p.ordinal(pos))]
         pos += 1
     return member_completed_pos_list
 
 
 def generate_random_end_date() -> datetime:
+    """return a random end date"""
     start_date: datetime = datetime.now()
     end_date: datetime = start_date + timedelta(days=1000)
     random_date: datetime = start_date + \
@@ -209,11 +220,12 @@ def generate_random_end_date() -> datetime:
 
 
 def get_warning_messages_for_targets(
-        request, show_numbers_for_multiples: bool = True, targets=None):
+        request: HttpRequest, show_numbers_for_multiples: bool = True, targets=None) -> HttpRequest:
+    """Return a httprequest containing messages for nearly exceeded, exceeded and completed targets"""
     if not targets:
-        targets = request.user.get_all_targets()
-    completed_targets = request.user.get_completed_targets(targets)
-    nearly_completed_targets = request.user.get_nearly_completed_targets(
+        targets: list = request.user.get_all_targets()
+    completed_targets: list = request.user.get_completed_targets(targets)
+    nearly_completed_targets: list = request.user.get_nearly_completed_targets(
         targets)
 
     sorted_targets_dict: dict[str, dict] = {
@@ -228,20 +240,21 @@ def get_warning_messages_for_targets(
             dictionary_to_add: dict = sorted_targets_dict['exceeded']
 
         if dictionary_to_add is not None:
-            key = target.getModelName(True)
+            key: str = target.getModelName(True)
 
             if key:
                 if key in dictionary_to_add.keys():
-                    list_to_append = dictionary_to_add[key].copy()
+                    list_to_append: list = dictionary_to_add[key].copy()
+                    print(dictionary_to_add[key])
                 else:
-                    list_to_append = []
+                    list_to_append: list = []
                 list_to_append.append(target)
                 dictionary_to_add.update({key: list_to_append})
 
     for completion_type, target_types in sorted_targets_dict.items():
         if completion_type:
             for target_type, targets in target_types.items():
-                display_string = ''
+                display_string: str = ''
                 if len(targets) == 1:
                     display_string = (
                         str(targets[0]) + " (" + targets[0].getModelName() + ")").title()
@@ -286,6 +299,7 @@ def get_warning_messages_for_targets(
 
 
 def convert_list_to_string(list_in: list[any]) -> str:
+    """returns an inputed list as a string"""
     output: str = ""
     list_length: int = len(list_in)
     if list_length >= 1:
