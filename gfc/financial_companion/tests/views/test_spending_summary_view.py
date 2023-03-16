@@ -76,15 +76,8 @@ class SpendingSummaryViewTestCase(ViewTestCase):
             Transaction.get_transactions_from_time_period(
                 time, self.user, "received"))
         self.assertEqual(total_received, 0)
-
-
-<< << << < HEAD
         categories = Transaction.get_category_splits(transactions, self.user)
         self.assertEqual(len(categories), 0)
-== == == =
-        categories = Transaction.get_category_splits(transactions)
-        self.assertEqual(len(categories), 0)
->>>>>> > master
         percentages = functions.calculate_percentages(categories, total_spent)
         self.assertEqual(len(percentages), 0)
         percentages_list = list(percentages.values())

@@ -8,13 +8,13 @@ from django.contrib import messages
 
 @login_required
 def profile_view(request: HttpRequest) -> HttpResponse:
-    user = request.user
+    user: User = request.user
     return render(request, 'pages/profile.html')
 
 
 @login_required
 def delete_profile_view(request: HttpRequest) -> HttpResponse:
-    user = request.user
+    user: User = request.user
     user.delete()
     messages.add_message(
         request,

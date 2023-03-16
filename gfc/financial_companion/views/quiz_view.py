@@ -6,6 +6,7 @@ import random
 from ..models import QuizQuestion, QuizScore, QuizSet, User
 from ..helpers import paginate, ScoreListOrderType
 from ..forms import QuizQuestionForm
+from django.core.paginator import Page
 
 
 @login_required
@@ -20,10 +21,10 @@ def quiz_view(request: HttpRequest, sort_type: str = ScoreListOrderType.RECENT,
 
     if len(quiz_scores) > 0:
         if sort_type == ScoreListOrderType.HIGHEST:
-            pagenated_quiz_scores = paginate(request.GET.get('page', 1), sorted(
+            pagenated_quiz_scores: Page = paginate(request.GET.get('page', 1), sorted(
                 quiz_scores, key=lambda score: score.get_score(), reverse=True))
         else:
-            pagenated_quiz_scores = paginate(
+            pagenated_quiz_scores: Page = paginate(
                 request.GET.get('page', 1), quiz_scores)
 
     return render(request, "pages/quiz/quiz.html", {
@@ -39,7 +40,7 @@ def quiz_view(request: HttpRequest, sort_type: str = ScoreListOrderType.RECENT,
 def quiz_ready_view(request: HttpRequest,
                     question_total: int) -> HttpResponse:
     """View to generate quizzes"""
-    question_total = int(question_total)
+    question_total: int = int(question_total)
     if question_total <= 0:
         messages.add_message(
             request,
