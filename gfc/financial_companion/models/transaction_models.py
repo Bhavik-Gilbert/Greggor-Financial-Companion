@@ -74,7 +74,7 @@ class AbstractTransaction(Model):
     receiver_account: ForeignKey = ForeignKey(
         Account,
         on_delete=CASCADE,
-        related_name="reciever%(app_label)s_%(class)s_related")
+        related_name="receiver%(app_label)s_%(class)s_related")
 
     def clean(self):
         super().clean()
@@ -126,7 +126,7 @@ class Transaction(AbstractTransaction):
         return filtered_transactions
 
     @staticmethod
-    def get_category_splits(transactions: list) -> dict[str, float]:
+    def get_category_splits(transactions: list, user: User) -> dict[str, float]:
         spent_per_category: dict[str, float] = dict()
         for x in transactions:
             if ((x.category is None) or (x.category.user.id != user.id)):
