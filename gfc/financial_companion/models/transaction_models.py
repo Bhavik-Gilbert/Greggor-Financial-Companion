@@ -15,6 +15,7 @@ from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .accounts_model import Account, PotAccount
 from .category_model import Category
+from .user_model import User
 from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, TransactionType
 import datetime
 import os
@@ -128,17 +129,19 @@ class Transaction(AbstractTransaction):
     def get_category_splits(transactions: list) -> dict[str, float]:
         spent_per_category: dict[str, float] = dict()
         for x in transactions:
-            if (x.category is None):
+            if ((x.category is None) or (x.category.user.id != user.id)):
                 if (spent_per_category.get("Other") is None):
                     spent_per_category["Other"] = x.amount
                 else:
                     spent_per_category.update(
                         {"Other": spent_per_category.get("Other") + x.amount})
-            elif ((len(spent_per_category) == 0) | (spent_per_category.get(x.category.name) is None)):
-                spent_per_category[x.category.name] = x.amount
             else:
-                spent_per_category.update(
-                    {x.category.name: spent_per_category.get(x.category.name) + x.amount})
+                if ((len(spent_per_category) == 0) or (
+                        spent_per_category.get(x.category.name) is None)):
+                    spent_per_category[x.category.name] = x.amount
+                else:
+                    spent_per_category.update(
+                        {x.category.name: spent_per_category.get(x.category.name) + x.amount})
         return spent_per_category
 
     class Meta:

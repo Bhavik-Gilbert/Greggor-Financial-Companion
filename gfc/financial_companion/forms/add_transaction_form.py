@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import FileExtensionValidator
-from financial_companion.models import Transaction, Account, Category, PotAccount
+from financial_companion.models import Transaction, Account, Category, PotAccount, User
 from financial_companion.helpers import ParseStatementPDF, CurrencyType
 from datetime import datetime
 from django.utils.timezone import make_aware
@@ -28,8 +28,8 @@ class AddTransactionForm(forms.ModelForm):
         return obj.name
 
     class Meta:
-        model = Transaction
-        fields = [
+        model: Transaction = Transaction
+        fields: list[str] = [
             'title',
             'description',
             'image',
@@ -43,7 +43,7 @@ class AddTransactionForm(forms.ModelForm):
         """Create a new transaction."""
         super().save(commit=False)
         if instance is None:
-            transaction = Transaction.objects.create(
+            transaction: Transaction = Transaction.objects.create(
                 title=self.cleaned_data.get('title'),
                 description=self.cleaned_data.get('description'),
                 image=self.cleaned_data.get('image'),
@@ -54,18 +54,7 @@ class AddTransactionForm(forms.ModelForm):
                 receiver_account=self.cleaned_data.get('receiver_account')
             )
         else:
-            transaction: Transaction = instance
-            transaction.title = self.cleaned_data.get('title')
-            transaction.description = self.cleaned_data.get('description')
-            transaction.image = self.cleaned_data.get('image')
-            transaction.category = self.cleaned_data.get('category')
-            transaction.amount = self.cleaned_data.get('amount')
-            transaction.currency = self.cleaned_data.get('currency')
-            transaction.sender_account = self.cleaned_data.get(
-                'sender_account')
-            transaction.receiver_account = self.cleaned_data.get(
-                'receiver_account')
-            transaction.save()
+            transaction: Transaction = super().save(commit=True)
 
         return transaction
 
@@ -73,8 +62,8 @@ class AddTransactionForm(forms.ModelForm):
         """Clean the data and generate messages for any errors."""
 
         super().clean()
-        sender_account = self.cleaned_data.get('sender_account')
-        receiver_account = self.cleaned_data.get('receiver_account')
+        sender_account: Account = self.cleaned_data.get('sender_account')
+        receiver_account: Account = self.cleaned_data.get('receiver_account')
         users_accounts = PotAccount.objects.filter(user=self.user)
         ids = []
         for account in users_accounts:
@@ -86,10 +75,10 @@ class AddTransactionForm(forms.ModelForm):
         elif not ((sender_account.id in ids) or (receiver_account.id in ids)):
             self.add_error(
                 'sender_account',
-                'Neither the sender or reciever are one of your accounts')
+                'Neither the sender or reciever are accounts with a balance to track.')
             self.add_error(
                 'receiver_account',
-                'Neither the sender or reciever are one of your accounts')
+                'Neither the sender or reciever are accounts with a balance to track.')
 
 
 class AddTransactionsViaBankStatementForm(forms.Form):
@@ -110,8 +99,8 @@ class AddTransactionsViaBankStatementForm(forms.Form):
         )
     )
 
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop("user", None)
+    def __init__(self, *args, **kwargs) -> None:
+        self.user: User = kwargs.pop("user", None)
         super(
             AddTransactionsViaBankStatementForm,
             self).__init__(
@@ -122,7 +111,7 @@ class AddTransactionsViaBankStatementForm(forms.Form):
             queryset=PotAccount.objects.filter(user=self.user)
         )
 
-    def save(self):
+    def save(self) -> Transaction:
         super().full_clean()
 
         bank_statement: forms.FileInput = self.cleaned_data["bank_statement"]

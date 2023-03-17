@@ -6,15 +6,17 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from typing import Any
+from django.db.models import QuerySet
 
 
 @login_required
 def add_transaction_view(request: HttpRequest) -> HttpResponse:
     """View to record a transaction made"""
 
-    user = request.user
+    user: User = request.user
     if request.method == 'POST':
-        form = AddTransactionForm(user, request.POST, request.FILES)
+        form: AddTransactionForm = AddTransactionForm(
+            user, request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.add_message(
@@ -23,7 +25,7 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
                 "Your transaction has been successfully added!")
             return redirect('view_transactions', filter_type="all")
     else:
-        form = AddTransactionForm(user)
+        form: AddTransactionForm = AddTransactionForm(user)
     return render(request, "pages/add_transaction.html",
                   {'form': form, 'edit': False})
 
@@ -31,8 +33,8 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
 @login_required
 def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
     try:
-        transaction = Transaction.objects.get(id=pk)
-        user = request.user
+        transaction: Transaction = Transaction.objects.get(id=pk)
+        user: User = request.user
         if (transaction.receiver_account.user !=
                 user and transaction.sender_account.user != user):
             return redirect('view_transactions', filter_type="all")
@@ -44,7 +46,7 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         return redirect('view_transactions', filter_type="all")
     else:
         if request.method == 'POST':
-            form = AddTransactionForm(
+            form: AddTransactionForm = AddTransactionForm(
                 user, request.POST, request.FILES, instance=transaction)
             if form.is_valid():
                 form.save(instance=transaction)
@@ -53,7 +55,8 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
                     messages.SUCCESS,
                     "Your transaction has been successfully updated!")
                 return redirect('individual_transaction', pk=pk)
-        form = AddTransactionForm(user, instance=transaction)
+        form: AddTransactionForm = AddTransactionForm(
+            user, instance=transaction)
         return render(request, "pages/add_transaction.html",
                       {'form': form, 'edit': True, 'pk': pk})
 
@@ -61,7 +64,7 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
 @login_required
 def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
     try:
-        transaction = Transaction.objects.get(id=pk)
+        transaction: Transaction = Transaction.objects.get(id=pk)
     except ObjectDoesNotExist:
         return redirect('dashboard')
     else:
