@@ -21,11 +21,11 @@ def spending_summary(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             time = form.get_choice()
     total_spent = sum(transaction.amount for transaction in
-        Transaction.get_transactions_from_time_period(
-            time, request.user, "sent"))
+                      Transaction.get_transactions_from_time_period(
+                          time, request.user, "sent"))
     total_received = sum(transaction.amount for transaction in
-        Transaction.get_transactions_from_time_period(
-            time, request.user, "received"))
+                         Transaction.get_transactions_from_time_period(
+                             time, request.user, "received"))
     categories = Transaction.get_category_splits(
         Transaction.get_transactions_from_time_period(
             time, request.user, "sent"), user)

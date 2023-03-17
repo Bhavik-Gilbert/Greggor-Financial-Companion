@@ -64,7 +64,9 @@ class GetGreggorTemplateTagTestCase(TemplateTagTestCase):
         greggor_path: str = get_greggor(greggor_input)
         self.assertTrue(greggor_input in GreggorTypes)
         self.assertNotEqual(GreggorTypes.PARTY, greggor_input)
-        self.assertNotEqual(GreggorTypes.PARTY, self._get_filename(greggor_path))
+        self.assertNotEqual(
+            GreggorTypes.PARTY,
+            self._get_filename(greggor_path))
 
     @freeze_time("2012-01-14 22:00:00")
     def test_valid_sleepy_greggor_at_10pm_without_valid_input_and_not_holiday(
@@ -90,7 +92,9 @@ class GetGreggorTemplateTagTestCase(TemplateTagTestCase):
             datetime.datetime.now(), datetime.datetime(
                 2012, 1, 1, 22, 0, 0))
         greggor_path: str = get_greggor("not a greggor")
-        self.assertNotEqual(GreggorTypes.SLEEPY, self._get_filename(greggor_path))
+        self.assertNotEqual(
+            GreggorTypes.SLEEPY,
+            self._get_filename(greggor_path))
 
     @freeze_time("2012-01-1 4:00:00")
     def test_valid_sad_greggor_at_4am_with_holiday(self):
@@ -156,7 +160,9 @@ class GetGreggorTemplateTagTestCase(TemplateTagTestCase):
         greggor_path: str = get_greggor(greggor_input)
         self.assertTrue(greggor_input in GreggorTypes)
         self.assertNotEqual(GreggorTypes.NORMAL, greggor_input)
-        self.assertNotEqual(GreggorTypes.NORMAL, self._get_filename(greggor_path))
+        self.assertNotEqual(
+            GreggorTypes.NORMAL,
+            self._get_filename(greggor_path))
 
     @freeze_time("2012-01-14 4:00:00")
     def test_valid_not_normal_greggor_at_night(self):
@@ -164,7 +170,9 @@ class GetGreggorTemplateTagTestCase(TemplateTagTestCase):
             datetime.datetime.now(), datetime.datetime(
                 2012, 1, 14, 4, 0, 0))
         greggor_path: str = get_greggor("not a greggor")
-        self.assertNotEqual(GreggorTypes.NORMAL, self._get_filename(greggor_path))
+        self.assertNotEqual(
+            GreggorTypes.NORMAL,
+            self._get_filename(greggor_path))
 
     @freeze_time("2012-01-1 4:00:01")
     def test_valid_not_normal_greggor_on_holiday(self):
@@ -172,4 +180,6 @@ class GetGreggorTemplateTagTestCase(TemplateTagTestCase):
             datetime.datetime.now(), datetime.datetime(
                 2012, 1, 1, 4, 0, 1))
         greggor_path: str = get_greggor("not a greggor")
-        self.assertNotEqual(GreggorTypes.NORMAL, self._get_filename(greggor_path))
+        self.assertNotEqual(
+            GreggorTypes.NORMAL,
+            self._get_filename(greggor_path))
