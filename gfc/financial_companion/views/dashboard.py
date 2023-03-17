@@ -31,11 +31,11 @@ def dashboard_view(request: HttpRequest) -> HttpResponse:
                                list[Transaction]] = user_transactions[0:3]
 
     total_spent = sum(transaction.amount for transaction in
-        Transaction.get_transactions_from_time_period(
-            Timespan.MONTH, request.user, "sent"))
+                      Transaction.get_transactions_from_time_period(
+                          Timespan.MONTH, request.user, "sent"))
     total_received = sum(transaction.amount for transaction in
-        Transaction.get_transactions_from_time_period(
-            Timespan.MONTH, request.user, "received"))
+                         Transaction.get_transactions_from_time_period(
+                             Timespan.MONTH, request.user, "received"))
 
     context: dict[str, Any] = {
         'accounts': user_accounts,
