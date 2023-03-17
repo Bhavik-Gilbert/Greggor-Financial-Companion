@@ -4,7 +4,7 @@ from typing import Any
 
 
 class ConvertCurrencyHelperFunctionTestCase(HelperTestCase):
-    """Test for the convert_currency helpers function"""
+    """Test file for the convert_currency helpers function"""
 
     def _assert_convert_currency(
             self, before_amount: float, current_currency_code: str, target_currency_code: str, equal: bool):

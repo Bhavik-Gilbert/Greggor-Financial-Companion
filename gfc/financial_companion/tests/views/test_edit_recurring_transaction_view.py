@@ -3,17 +3,21 @@ from financial_companion.forms import AddRecurringTransactionForm
 from financial_companion.models import RecurringTransaction, User
 from django.urls import reverse
 from decimal import Decimal
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
-class EditTransactionViewTestCase(ViewTestCase):
-    """Unit tests of the edit transaction view"""
+class EditRecurringTransactionViewTestCase(ViewTestCase):
+    """Unit tests of the edit recurring transaction view"""
 
     def setUp(self):
         self.url = reverse('edit_recurring_transaction', kwargs={"pk": 2})
+        self.image_path = "financial_companion/tests/data/dragon.jpeg"
+        self.image_upload = self._get_image_upload_file(
+            self.image_path, "jpeg")
         self.form_input = {
             "title": "Test",
             "description": "This is a test transaction",
-            "image": "transaction_reciept.jpeg",
+            "image": self.image_upload,
             "category": 1,
             "amount": 152.95,
             "currency": "USD",
@@ -56,7 +60,9 @@ class EditTransactionViewTestCase(ViewTestCase):
         self.assertEqual(
             transaction.description,
             "Paying off hire car.")
-        # self.assertEqual(transaction.image, "transaction_reciept.jpeg")
+        self.assertFalse("transactions/" in transaction.image.name)
+        self.assertFalse(self.image_path.split(
+            "/")[-1].split(".")[-1] in transaction.image.name)
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("130.59"))
         self.assertEqual(transaction.currency, 'USD')
@@ -81,7 +87,9 @@ class EditTransactionViewTestCase(ViewTestCase):
         transaction.refresh_from_db()
         self.assertEqual(transaction.title, "Test")
         self.assertEqual(transaction.description, "This is a test transaction")
-        # self.assertEqual(transaction.image, "transaction_reciept.jpeg")
+        self.assertTrue("transactions/" in transaction.image.name)
+        self.assertTrue(self.image_path.split(
+            "/")[-1].split(".")[-1] in transaction.image.name)
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("152.95"))
         self.assertEqual(transaction.currency, 'USD')

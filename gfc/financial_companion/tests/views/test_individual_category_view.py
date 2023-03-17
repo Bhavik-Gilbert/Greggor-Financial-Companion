@@ -17,11 +17,33 @@ class IndividualCategoryViewTestCase(ViewTestCase):
             kwargs={
                 "pk": self.category.id,
                 "filter_type": "all"})
+        self.redirect_url: str = reverse(
+            "individual_category_redirect", kwargs={
+                "pk": self.category.id})
 
     def test_valid_individual_category_url(self):
         self.assertEqual(
             self.url,
             f"/individual_category/{self.category.id}/all/")
+
+    def test_valid_individual_category_redirect_url(self):
+        self.assertEqual(
+            self.redirect_url,
+            f"/individual_category/{self.category.id}/")
+
+    def test_valid_get_individual_category_redirect(self):
+        self._login(self.user)
+        response: HttpResponse = self.client.get(self.redirect_url)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "pages/individual_category.html")
+        category: Category = response.context["category"]
+        self.assertTrue(isinstance(category, Category))
+        category_targets: Category = response.context["category_targets"]
+        for target in category_targets:
+            self.assertTrue(isinstance(target, CategoryTarget))
+        transactions: list[Transaction] = response.context["transactions"]
+        for transaction in transactions:
+            self.assertTrue(isinstance(transaction, Transaction))
 
     def test_valid_get_view_individual_category(self):
         self._login(self.user)
@@ -87,7 +109,7 @@ class IndividualCategoryViewTestCase(ViewTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/individual_category.html")
         category_targets: Category = response.context["category_targets"]
-        self.assertEqual(len(category_targets), 0)
+        self.assertEqual(len(category_targets), 1)
 
     def test_invalid_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)

@@ -62,6 +62,17 @@ class ScoreListOrderType(models.TextChoices):
 
 class GreggorTypes(models.TextChoices):
     """ENUM for greggor logo types"""
-    SAD: str = "sad"
-    PARTY: str = "party"
     NORMAL: str = "normal"
+    DISTRAUGHT: str = "distraught"
+    SAD: str = "sad"
+    SLEEPY: str = "sleepy"
+    PARTY: str = "party"
+    CUPID: str = "cupid"
+    GRAD: str = "grad"
+
+
+class TargetType(models.TextChoices):
+    """ENUM for target types"""
+    USER: str = "user"
+    ACCOUNT: str = "account"
+    CATEGORY: str = "category"

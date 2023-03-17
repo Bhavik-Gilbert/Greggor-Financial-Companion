@@ -7,7 +7,7 @@ from ...models import BankAccount, User
 
 
 class BankAccountModelTestCase(ModelTestCase):
-    """test file for the bank accounts model"""
+    """Test file for the Bank Accounts model"""
 
     def setUp(self) -> None:
         super().setUp()
@@ -65,17 +65,17 @@ class BankAccountModelTestCase(ModelTestCase):
         self._assert_model_is_invalid()
 
     def test_account_number_cannot_contain_char(self):
-        self.test_model.account_number = "abcdefhg"
+        self.test_model.account_number: str = "abcdefhg"
         self.test_model.save()
         self._assert_model_is_invalid()
 
     def test_account_number_cannot_be_less_than_8_digits(self):
-        self.test_model.account_number = "9090909"
+        self.test_model.account_number: str = "9090909"
         self.test_model.save()
         self._assert_model_is_invalid()
 
     def test_sort_code_cannot_contain_char(self):
-        self.test_model.sort_code = "abcdef"
+        self.test_model.sort_code: str = "abcdef"
         self.test_model.save()
         self._assert_model_is_invalid()
 
@@ -85,12 +85,12 @@ class BankAccountModelTestCase(ModelTestCase):
         self._assert_model_is_valid()
 
     def test_sort_code_is_int(self):
-        self.test_model.sort_code = "123456"
+        self.test_model.sort_code: str = "123456"
         self.test_model.save()
         self._assert_model_is_valid()
 
     def test_sort_code_cannot_be_less_than_6_digits(self):
-        self.test_model.sort_code = "90909"
+        self.test_model.sort_code: str = "90909"
         self.test_model.save()
         self._assert_model_is_invalid()
 
@@ -111,12 +111,12 @@ class BankAccountModelTestCase(ModelTestCase):
         self._assert_model_is_invalid()
 
     def test_iban_cannot_be_less_than_15_digits(self):
-        self.test_model.iban = "GB123456789012"
+        self.test_model.iban: str = "GB123456789012"
         self.test_model.save()
         self._assert_model_is_invalid()
 
     def test_iban_cannot_start_with_numbers(self):
-        self.test_model.iban = "123456789012345"
+        self.test_model.iban: str = "123456789012345"
         self.test_model.save()
         self._assert_model_is_invalid()
 
@@ -142,7 +142,7 @@ class BankAccountModelTestCase(ModelTestCase):
         self._assert_model_is_invalid()
 
     def test_interest_rate_default_is_zero(self):
-        default_interest_zero_bank_model = BankAccount.objects.create(
+        default_interest_zero_bank_model: BankAccount = BankAccount.objects.create(
             name="bank account",
             description="my first bank account",
             user=User.objects.get(id=1),

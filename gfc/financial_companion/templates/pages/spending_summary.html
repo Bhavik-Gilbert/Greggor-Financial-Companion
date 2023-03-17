@@ -16,11 +16,11 @@
               </form>
         </div>
         <strong>Currently Selected: Last {{time}}</strong>
-        {% if dataset != None %}
-            <div class="col-12 col-md-4">
-                **Target Progress**
-            </div>
-            <div class="col-12 col-md-8">
+        <div class="col-12 col-md-4">
+            {%include 'partials/target_bar.html' with targets=targets %}
+        </div>
+        <div class="col-12 col-md-8">
+          {% if dataset != None %}
                 <div class="card bg-primary">
                     <p><strong>Your Spending:</strong></p>
                     {% include 'partials/dashboard/graph.html' with chart_name='categories' %}
@@ -30,23 +30,21 @@
                         setChart(dataset, keyset, '% of Spending', "", 'pie');
                     </script>
                 </div>
-            </div>
-            <div class="col-12 col-md-8">
+                &nbsp
                 <div class="card bg-primary">
                     <p><strong>Money In vs Money Out</strong></p>
-                    {% include 'partials/dashboard/graph.html' with chart_name='in_out' %}
+                    {% include 'partials/dashboard/graph.html' with chart_name='in_vs_out' %}
                     <script>
-                         var money_in = {{ money_in|safe }};
-                    var money_out = {{money_out|safe}};
-                    
-                    setChart([money_in, money_out], ['Money In', 'Money Out'], 'Amount', "Income vs Outcome", 'doughnut')
+                        var money_in = {{ money_in|safe }};
+                        var money_out = {{money_out|safe}};
+
+                        setChart([money_in, money_out], ['Money In', 'Money Out'], 'Amount', "Income vs Outcome", 'doughnut');
                     </script>
-                </div>
-            </div>
         {% else %}
             <div>No spending summary to show as there is no transaction data for the selected time period.</div>
             <div>Try selecting a new time period.</div>
         {% endif %}
+        </div>
     </div>
 </body>
 {%endblock%}

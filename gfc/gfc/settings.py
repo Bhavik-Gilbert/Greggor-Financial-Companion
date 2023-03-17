@@ -12,30 +12,33 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 from django.contrib.messages import constants as messages
+from typing import Any, Union, Literal
+from dotenv import load_dotenv
+
+# Load environment data
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR: Path = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-try:
-    with open(os.path.dirname(os.path.abspath(__file__)) + "\\hidden_keys\\secret_key.txt") as f:
-        SECRET_KEY = f.read().strip()
-except BaseException:
-    SECRET_KEY = 'django-insecure-)2rxjsa3d&2d83qxnyjyca(d(kl=tt6g*h&*et!-u$fa-w94_j'
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "django-insecure-)2rxjsa3d&2d83qxnyjyca(d(kl=tt6g*h&*et!-u$fa-w94_j'")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True  # TODO: set false before submission
+DEBUG: bool = True  # TODO: set false before submission
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS: list[str] = ["127.0.0.1", "localhost"]
 
 
 # Application definition
 
-INSTALLED_APPS = [
+INSTALLED_APPS: list[str] = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,7 +51,7 @@ INSTALLED_APPS = [
     'django_cleanup.apps.CleanupConfig',
 ]
 
-MIDDLEWARE = [
+MIDDLEWARE: list[str] = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django_session_timeout.middleware.SessionTimeoutMiddleware',
@@ -59,9 +62,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'gfc.urls'
+ROOT_URLCONF: str = 'gfc.urls'
 
-TEMPLATES = [
+TEMPLATES: list[dict[str, Any]] = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [],
@@ -77,28 +80,31 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'gfc.wsgi.application'
+WSGI_APPLICATION: str = 'gfc.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
+DATABASES: dict[dict[str, Any]] = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
-FIXTURE_DIRS = [os.path.join(BASE_DIR, "financial_companion/tests/fixtures")]
-TEXT_DATA_DIRS = {
+FIXTURE_DIRS: list[Path] = [
+    os.path.join(
+        BASE_DIR,
+        "financial_companion/tests/fixtures")]
+TEXT_DATA_DIRS: dict[str, Path] = {
     "financial_companion": os.path.join(BASE_DIR, "financial_companion/data")
 }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
+AUTH_PASSWORD_VALIDATORS: list[dict[str, str]] = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
@@ -114,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Message tags enum
-MESSAGE_TAGS = {
+MESSAGE_TAGS: dict[int, str] = {
     messages.DEBUG: 'alert-secondary',
     messages.INFO: 'alert-info',
     messages.SUCCESS: 'alert-success',
@@ -123,39 +129,39 @@ MESSAGE_TAGS = {
 }
 
 # Session timeout information
-SESSION_EXPIRE_SECONDS = 3600  # 1 hour
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+SESSION_EXPIRE_SECONDS: int = 3600  # 1 hour
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY: bool = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE: str = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE: str = 'UTC'
 
-USE_I18N = True
+USE_I18N: bool = True
 
-USE_TZ = True
+USE_TZ: bool = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
+STATIC_URL: str = '/static/'
+STATICFILES_DIRS: Path = [os.path.join(BASE_DIR, "static")]
 
 
 # Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL: str = '/media/'
+MEDIA_ROOT: Path = os.path.join(BASE_DIR, 'media')
 
 # File upload handler
-FILE_UPLOAD_HANDLERS = [
+FILE_UPLOAD_HANDLERS: list[str] = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler']
 
 
 # User model for authentication and login purposes
-AUTH_USER_MODEL = 'financial_companion.User'
+AUTH_USER_MODEL: str = 'financial_companion.User'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -164,32 +170,28 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # URL to redirect to and from on protected pages
 # TODO: Change pages when made
-LOGIN_URL = "log_in"
-LOGGED_IN_URL = "dashboard"
+LOGIN_URL: str = "log_in"
+LOGGED_IN_URL: str = "dashboard"
 
 # Number of items per pagniated page
-NUMBER_OF_ITEMS_PER_PAGE = 10
+NUMBER_OF_ITEMS_PER_PAGE: int = 10
 
 # salt for secure string
-try:
-    with open(os.path.dirname(os.path.abspath(__file__)) + "\\hidden_keys\\salt_key.txt") as f:
-        SALT_KEY = f.read().strip()
-except BaseException:
-    SALT_KEY = "temporarysalt"
+SALT_KEY = os.environ.get("SECURE_STRING_SALT", "temporarysalt")
 
 # Default language for Faker
-FAKER_LOCALE = "en_GB"
+FAKER_LOCALE: str = "en_GB"
 
 # Information for email password reset
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "greggorfinancialcompanion@gmail.com"
-EMAIL_HOST_PASSWORD = "ajoaavtgkujobzep"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+EMAIL_BACKEND: str = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST: str = "smtp.gmail.com"
+EMAIL_HOST_USER: str = "greggorfinancialcompanion@gmail.com"
+EMAIL_HOST_PASSWORD: str = "ajoaavtgkujobzep"
+EMAIL_PORT: int = 587
+EMAIL_USE_TL: bool = True
+EMAIL_USE_SSL: bool = False
 
-Q_CLUSTER = {
+Q_CLUSTER: dict[str, Any] = {
     'name': "financial_companion_schedulers",
     'retry': 60,
     'timeout': 30,
@@ -198,4 +200,4 @@ Q_CLUSTER = {
 }
 
 # Site url
-SITE_URL_SPENDING_PAGE = "http://localhost:8000/spending_summary"
+SITE_URL_SPENDING_PAGE: str = "http://localhost:8000/spending_summary"

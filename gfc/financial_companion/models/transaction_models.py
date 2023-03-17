@@ -15,7 +15,8 @@ from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .accounts_model import Account, PotAccount
 from .category_model import Category
-from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, TransactionType
+from .user_model import User
+from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, TransactionType, FilterTransactionType
 import datetime
 import os
 from django.db.models.signals import pre_delete
@@ -84,7 +85,8 @@ class AbstractTransaction(Model):
                 raise ValidationError(
                     "Both sender and receiver accounts cannot be non monetary accounts")
         except ObjectDoesNotExist:
-            return "either sender or receiver account does not exist"
+            raise ValidationError(
+                "either sender or receiver account does not exist")
 
     class Meta:
         abstract = True
@@ -100,15 +102,8 @@ class Transaction(AbstractTransaction):
     )
 
     @staticmethod
-    def calculate_total(transactions: list):
-        total = 0
-        for x in transactions:
-            total += x.amount
-        return total
-
-    @staticmethod
     def get_transactions_from_time_period(
-            time_choice, user, filter_type=str("all")):
+            time_choice, user, filter_type=FilterTransactionType.ALL):
         user_transactions = user.get_user_transactions(filter_type=filter_type)
 
         timespan_int = timespan_map[time_choice]
@@ -117,27 +112,28 @@ class Transaction(AbstractTransaction):
 
         filtered_transactions = []
         for transaction in user_transactions:
-            if transaction.time_of_transaction.timestamp(
-            ) >= start_of_timespan_period.timestamp():
+            if ((transaction.time_of_transaction.timestamp(
+            ) >= start_of_timespan_period.timestamp()) & (transaction.time_of_transaction.timestamp() <= datetime.datetime.today().timestamp())):
                 filtered_transactions = [*filtered_transactions, transaction]
         return filtered_transactions
 
     @staticmethod
-    def get_category_splits(transactions: list):
+    def get_category_splits(transactions: list, user: User):
         spent_per_category = dict()
-        no_of_categories = Category.objects.count()
         for x in transactions:
-            if (x.category is None):
+            if ((x.category is None) or (x.category.user.id != user.id)):
                 if (spent_per_category.get("Other") is None):
                     spent_per_category["Other"] = x.amount
                 else:
                     spent_per_category.update(
                         {"Other": spent_per_category.get("Other") + x.amount})
-            elif ((len(spent_per_category) == 0) | (spent_per_category.get(x.category.name) is None)):
-                spent_per_category[x.category.name] = x.amount
             else:
-                spent_per_category.update(
-                    {x.category.name: spent_per_category.get(x.category.name) + x.amount})
+                if ((len(spent_per_category) == 0) or (
+                        spent_per_category.get(x.category.name) is None)):
+                    spent_per_category[x.category.name] = x.amount
+                else:
+                    spent_per_category.update(
+                        {x.category.name: spent_per_category.get(x.category.name) + x.amount})
         return spent_per_category
 
     class Meta:
@@ -151,6 +147,11 @@ class Transaction(AbstractTransaction):
 
         if check_object_exists:
             database_transaction = Transaction.objects.get(id=self.id)
+
+            if (database_transaction.sender_account.id == self.sender_account.id and
+                database_transaction.receiver_account.id == self.receiver_account.id and
+                    database_transaction.amount == self.amount):
+                return
 
             if database_transaction.sender_account.id == self.sender_account.id:
                 send_amount = database_transaction.amount - \

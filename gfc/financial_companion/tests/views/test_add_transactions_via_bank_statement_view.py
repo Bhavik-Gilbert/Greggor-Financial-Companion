@@ -68,8 +68,7 @@ class AddTransactionsViaBankStatementViewTestCase(ViewTestCase):
             Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
         self.assertEqual(after_count, before_count + 29)
         response_url = reverse(
-            'view_transactions', kwargs={
-                "filter_type": "all"})
+            'view_transactions_redirect')
         self.assertRedirects(
             response,
             response_url,

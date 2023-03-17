@@ -3,6 +3,7 @@ from financial_companion.forms import AddTransactionForm
 from financial_companion.models import Transaction, User
 from django.urls import reverse
 from decimal import Decimal
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 class EditTransactionViewTestCase(ViewTestCase):
@@ -10,10 +11,13 @@ class EditTransactionViewTestCase(ViewTestCase):
 
     def setUp(self):
         self.url = reverse('edit_transaction', kwargs={"pk": 2})
+        self.image_path = "financial_companion/tests/data/dragon.jpeg"
+        self.image_upload = self._get_image_upload_file(
+            self.image_path, "jpeg")
         self.form_input = {
             "title": "Test",
             "description": "This is a test transaction",
-            "image": "transaction_reciept.jpeg",
+            "image": self.image_upload,
             "category": 1,
             "amount": 152.95,
             "currency": "USD",
@@ -45,13 +49,15 @@ class EditTransactionViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, 'pages/add_transaction.html')
         form = response.context['form']
         self.assertTrue(isinstance(form, AddTransactionForm))
-        # self.assertTrue(form.is_bound)
+        self.assertFalse(form.is_bound)
         transaction = Transaction.objects.get(id=2)
         transaction.refresh_from_db()
         self.assertEqual(
             transaction.description,
             "Bought a new phone from Apple")
-        # self.assertEqual(transaction.image, "transaction_reciept.jpeg")
+        self.assertTrue("transactions/" in transaction.image.name)
+        self.assertFalse(self.image_path.split(
+            "/")[-1].split(".")[-1] in transaction.image.name)
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("1499.99"))
         self.assertEqual(transaction.currency, 'USD')
@@ -75,7 +81,9 @@ class EditTransactionViewTestCase(ViewTestCase):
         transaction.refresh_from_db()
         self.assertEqual(transaction.title, "Test")
         self.assertEqual(transaction.description, "This is a test transaction")
-        # self.assertEqual(transaction.image, "transaction_reciept.jpeg")
+        self.assertTrue("transactions/" in transaction.image.name)
+        self.assertTrue(self.image_path.split(
+            "/")[-1].split(".")[-1] in transaction.image.name)
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("152.95"))
         self.assertEqual(transaction.currency, 'USD')
@@ -85,6 +93,20 @@ class EditTransactionViewTestCase(ViewTestCase):
     def test_invalid_transaction_id_given(self):
         self._login(self.user)
         invalid_url = reverse('edit_transaction', kwargs={'pk': 100000})
+        response = self.client.get(invalid_url, follow=True)
+        response_url = reverse(
+            'view_transactions', kwargs={
+                'filter_type': "all"})
+        self.assertRedirects(
+            response,
+            response_url,
+            status_code=302,
+            target_status_code=200)
+        self.assertTemplateUsed(response, 'pages/display_transactions.html')
+
+    def test_someone_elses_transaction_id_given(self):
+        self._login(self.user)
+        invalid_url = reverse('edit_transaction', kwargs={'pk': 9})
         response = self.client.get(invalid_url, follow=True)
         response_url = reverse(
             'view_transactions', kwargs={

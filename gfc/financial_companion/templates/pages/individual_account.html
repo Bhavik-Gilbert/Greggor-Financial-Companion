@@ -9,7 +9,10 @@
 {% block card_title %}Account Information:{% endblock %}
 
 {% block edit_delete_buttons %}
-    {% url 'create_account_target' pk=account.id as add_target %}
+    {% if account.get_type != "regular" %}
+        {% url 'create_account_target' pk=account.id as add_target %}
+    {% endif %}
+
     {% url 'edit_monetary_account' pk=account.id as edit_account %}
     {% url 'delete_monetary_account' pk=account.id as delete_account %}
     {% include "partials/view_models/edit_and_delete_models_buttons.html" with add_target_URL=add_target edit_URL=edit_account delete_URL=delete_account model_name="account"%}
@@ -30,7 +33,7 @@
     {% endif %}
     {% if account.account_number %}
         <li class="list-group-item"><strong>Account Number: </strong> {{account.account_number}}</li>
-    {% endif %}    
+    {% endif %}
     {% if account.iban %}
         <li class="list-group-item"><strong>IBAN: </strong> {{account.iban}}</li>
     {% endif %}

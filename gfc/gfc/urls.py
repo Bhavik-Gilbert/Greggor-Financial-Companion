@@ -16,12 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.conf import settings
-from django.urls import path, re_path
+from django.urls import path, re_path, URLPattern
 from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 
 from financial_companion import views
 
-urlpatterns = [
+urlpatterns: list[URLPattern] = [
     path('admin/', admin.site.urls),
     path('', views.home_view, name='home'),
     path('sign_up/', views.sign_up_view, name='sign_up'),
@@ -34,7 +34,7 @@ urlpatterns = [
         name='categories_list'),
     path(
         'categories/',
-        views.category_list_redirect,
+        views.category_list_view,
         name='categories_list_redirect'),
     path(
         'groups/<str:search_name>/',
@@ -42,7 +42,7 @@ urlpatterns = [
         name='all_groups'),
     path(
         'groups/',
-        views.all_groups_redirect,
+        views.all_groups_view,
         name='all_groups_redirect'),
     path(
         'add_monetary_account/',
@@ -50,7 +50,7 @@ urlpatterns = [
         name="add_monetary_account"),
     path(
         'view_accounts/',
-        views.view_user_pot_accounts,
+        views.view_user_accounts,
         name='view_accounts'),
     path(
         'create_category/',
@@ -80,7 +80,7 @@ urlpatterns = [
     path('delete_profile/', views.delete_profile_view, name="delete_profile"),
     path(
         'view_transactions/',
-        views.view_users_transactions_redirect,
+        views.view_users_transactions,
         name="view_transactions_redirect"),
     path(
         'change_password/',
@@ -199,7 +199,7 @@ urlpatterns = [
     ),
     re_path(
         'individual_account/(?P<pk>\\d+)/$',
-        views.individual_account_redirect,
+        views.individual_account_view,
         name="individual_account_redirect"
     ),
     re_path(
@@ -219,7 +219,7 @@ urlpatterns = [
     ),
     re_path(
         'individual_category/(?P<pk>\\d+)/$',
-        views.individual_category_redirect,
+        views.individual_category_view,
         name="individual_category_redirect"
     ),
     re_path(
@@ -250,7 +250,7 @@ urlpatterns = [
     ),
     re_path(
         'individual_group/(?P<pk>\\d+)/$',
-        views.individual_group_redirect,
+        views.individual_group_view,
         name="individual_group_redirect"
     ),
     re_path(
@@ -261,6 +261,9 @@ urlpatterns = [
     path('add_transactions_via_bank_statement/',
          views.add_transactions_via_bank_statement,
          name='add_transactions_via_bank_statement'),
+    path('view_targets/',
+         views.view_targets,
+         name='view_targets'),
     path('spending_summary/', views.spending_summary, name='spending_summary'),
     path('view_recurring_transactions/',
          views.view_users_recurring_transactions,

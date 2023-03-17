@@ -5,10 +5,10 @@ from django.core.validators import RegexValidator
 class UserChangePasswordForm(forms.Form):
     """Form for users to change their password"""
 
-    password = forms.CharField(
+    password: forms.CharField = forms.CharField(
         label="Current Password",
         widget=forms.PasswordInput())
-    new_password = forms.CharField(
+    new_password: forms.CharField = forms.CharField(
         label='New Password',
         widget=forms.PasswordInput(),
         validators=[RegexValidator(
@@ -18,7 +18,7 @@ class UserChangePasswordForm(forms.Form):
         )]
     )
 
-    def save(self, instance=None):
+    def save(self, instance=None) -> None:
         """Save the password"""
         if instance is not None:
             if self.is_valid():

@@ -1,4 +1,3 @@
-"""Unit tests of the log in form."""
 from django import forms
 from .test_form_base import FormTestCase
 from financial_companion.forms import QuizQuestionForm
