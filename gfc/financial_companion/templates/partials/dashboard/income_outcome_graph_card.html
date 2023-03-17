@@ -10,10 +10,10 @@
         {% else %}
                 {% include 'partials/dashboard/graph.html' with chart_name='in_out' %}
                 <script>
-                    var money_in = {{ money_in|safe }};
-                    var money_out = {{money_out|safe}};
+                    const moneyIn = {{ money_in|safe }};
+                    const moneyOut = {{money_out|safe}};
                     
-                    setChart([money_in, money_out], ['Money In', 'Money Out'], 'Amount', "Income vs Outcome", chartType='doughnut');
+                    setChart([moneyIn, moneyOut], ['Money In', 'Money Out'], 'Amount', "Income vs Outcome", chartType='doughnut');
                 </script>
 
         {% endif %}
