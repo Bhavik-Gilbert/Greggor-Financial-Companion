@@ -1,3 +1,6 @@
+/*
+    Creates a chart using the data provided
+*/
 function setChart(chartDataset, chartLabels, yAxisLabel="", xAxisLabel="", chartType="line", yBeginsAtZero=false, xBeginsAtZero=false) {
     const ctx = document.getElementById("chart"+ chartName);
 
@@ -14,6 +17,9 @@ function setChart(chartDataset, chartLabels, yAxisLabel="", xAxisLabel="", chart
     }
 }
 
+/*
+    Creates a line graph using the data provided
+*/
 function setLineChart(ctx, chartDataset, chartLabels, yAxisLabel="", xAxisLabel="", yBeginsAtZero=false, xBeginsAtZero=false) {
     new Chart(ctx, {
         type: "line",
@@ -43,6 +49,9 @@ function setLineChart(ctx, chartDataset, chartLabels, yAxisLabel="", xAxisLabel=
     });
 }
 
+/*
+    Creates a rounded chart using the data provided
+*/
 function setRoundChart(ctx, chartType, chartLabels, dataLabels, chartDataset) {
     new Chart(ctx, {
         type: chartType,
