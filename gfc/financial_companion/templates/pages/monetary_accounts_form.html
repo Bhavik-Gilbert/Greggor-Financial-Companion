@@ -8,11 +8,11 @@
     <h1>Monetary Accounts Form</h1>
 
     {% if form_toggle %}
-    <form method="POST" class="container-fluid row">
+    <form method="POST" class="row gy-2">
         {% csrf_token %}
         <h3 class="col-md-auto">Account Type</h3>
         {% for monetary_account_type in monetary_account_types %}
-            <div class="col-lg-1">
+            <div class="col-lg-2">
             {% if account_type == monetary_account_type %}
                 <button type="submit" name="account_type" value="{{monetary_account_type}}" class="btn btn-primary col-12">{{monetary_account_type.capitalize}}</button>
             {% else %}
@@ -25,6 +25,8 @@
     <h3>{{ account_type.title }}</h3>
     {% endif %}
 
+    <br>
+    
     <form method="post">
         {% csrf_token %}
         {% include 'partials/form.html' with form=form %}
