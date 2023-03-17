@@ -35,10 +35,10 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertTrue(isinstance(form, TimespanOptionsForm))
         time: Timespan = Timespan.WEEK
         self.assertTrue(isinstance(time, Timespan))
-        total_spent = Transaction.calculate_total(
+        total_spent = sum(transaction.amount for transaction in
             Transaction.get_transactions_from_time_period(
                 time, self.user, "sent"))
-        total_received = Transaction.calculate_total(
+        total_received = sum(transaction.amount for transaction in
             Transaction.get_transactions_from_time_period(
                 time, self.user, "received"))
         categories = Transaction.get_category_splits(
@@ -70,9 +70,9 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         transactions = Transaction.get_transactions_from_time_period(
             time, self.user, "sent")
         self.assertEqual(len(transactions), 0)
-        total_spent = Transaction.calculate_total(transactions)
+        total_spent = sum(transaction.amount for transaction in transactions)
         self.assertEqual(total_spent, 0)
-        total_received = Transaction.calculate_total(
+        total_received = sum(transaction.amount for transaction in
             Transaction.get_transactions_from_time_period(
                 time, self.user, "received"))
         self.assertEqual(total_received, 0)
@@ -106,10 +106,10 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/spending_summary.html")
         form: TimespanOptionsForm = response.context["form"]
         self.assertTrue(isinstance(form, TimespanOptionsForm))
-        total_spent = Transaction.calculate_total(
+        total_spent = sum(transaction.amount for transaction in
             Transaction.get_transactions_from_time_period(
                 time, self.user, "sent"))
-        total_received = Transaction.calculate_total(
+        total_received = sum(transaction.amount for transaction in
             Transaction.get_transactions_from_time_period(
                 time, self.user, "received"))
         categories = Transaction.get_category_splits(
