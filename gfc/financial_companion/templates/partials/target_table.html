@@ -1,5 +1,5 @@
 {% load targets %}
-<table class="table  table-bordered table-striped" style="width:100%" style="text-align:center" >
+<table class="table table-bordered table-striped text-center" >
   <thead class = "table-primary">
     <tr>
         <th scope="col" style="text-align:center">Target ID</th>
@@ -13,7 +13,7 @@
     </tr>
   </thead>
   {% for target in targets %}
-    <tr style="text-align:center">
+    <tr>
       <td>{{ target.id }}</td>
       <td>{{ target.target_type.title }}</td>
       <td>{{ target.timespan }}</td>

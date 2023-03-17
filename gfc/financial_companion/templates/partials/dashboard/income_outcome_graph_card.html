@@ -1,10 +1,10 @@
 {% extends "partials/dashboard/dashboard_card.html" %}
 
-{% block card_title %}Income and Outcome:{% endblock %}
+{% block card_title %}Net Spend:{% endblock %}
 
 {% block card_content %}
     <div>
-        <p><strong>Income and Expenditure in the last month:</strong></p>
+        <p>Income and Expenditure in the last month</p>
         {% if money_in == 0 and money_out == 0 %}
             {% include "partials/dashboard/no_content.html" with content_type_plural="transaction data" %}
         {% else %}

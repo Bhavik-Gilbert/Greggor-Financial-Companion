@@ -2,6 +2,7 @@
     Creates a chart using the data provided
 */
 function setChart(chartDataset, chartLabels, yAxisLabel="", xAxisLabel="", chartType="line", yBeginsAtZero=false, xBeginsAtZero=false) {
+    chartName = "{{chart_name}}";
     const ctx = document.getElementById("chart"+ chartName);
 
     if (ctx.attributes.length > 1) { // if there is a chart in the canvas.
@@ -9,11 +10,11 @@ function setChart(chartDataset, chartLabels, yAxisLabel="", xAxisLabel="", chart
     }
 
     Chart.defaults.color = '{{primary}} !IMPORTANT';
-    if (chartType == "line"| chartType == "bar") {
-      setLineChart(ctx, chartDataset, chartLabels, yAxisLabel, xAxisLabel, yBeginsAtZero, xBeginsAtZero)
+    if (chartType == "line" || chartType == "bar") {
+        setLineChart(ctx, chartDataset, chartLabels, yAxisLabel, xAxisLabel, yBeginsAtZero, xBeginsAtZero);
     }
     else if (chartType == "pie" || chartType == "doughnut") {
-        setRoundChart(ctx, chartType, chartLabels, yAxisLabel, chartDataset)
+        setRoundChart(ctx, chartType, chartLabels, yAxisLabel, chartDataset);
     }
 }
 
