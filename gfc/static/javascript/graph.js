@@ -10,7 +10,7 @@ function setChart(chartDataset, chartLabels, yAxisLabel="", xAxisLabel="", chart
 
     Chart.defaults.color = '{{primary}} !IMPORTANT';
     if (chartType == "line" || chartType == "bar") {
-        setLineChart(ctx, chartDataset, chartLabels, yAxisLabel, xAxisLabel, yBeginsAtZero, xBeginsAtZero);
+        setLineChart(ctx, chartType, chartDataset, chartLabels, yAxisLabel, xAxisLabel, yBeginsAtZero, xBeginsAtZero);
     }
     else if (chartType == "pie" || chartType == "doughnut") {
         setRoundChart(ctx, chartType, chartLabels, yAxisLabel, chartDataset);
@@ -20,9 +20,9 @@ function setChart(chartDataset, chartLabels, yAxisLabel="", xAxisLabel="", chart
 /*
     Creates a line graph using the data provided
 */
-function setLineChart(ctx, chartDataset, chartLabels, yAxisLabel="", xAxisLabel="", yBeginsAtZero=false, xBeginsAtZero=false) {
+function setLineChart(ctx, chartType, chartDataset, chartLabels, yAxisLabel="", xAxisLabel="", yBeginsAtZero=false, xBeginsAtZero=false) {
     new Chart(ctx, {
-        type: "line",
+        type: chartType,
         data: {
             labels: chartLabels,
             datasets: chartDataset
