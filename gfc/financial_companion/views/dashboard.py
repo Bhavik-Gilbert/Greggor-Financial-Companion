@@ -30,12 +30,12 @@ def dashboard_view(request: HttpRequest) -> HttpResponse:
     recent_transactions: Union[QuerySet,
                                list[Transaction]] = user_transactions[0:3]
 
-    total_spent = Transaction.calculate_total(
-        Transaction.get_transactions_from_time_period(
-            Timespan.MONTH, request.user, "sent"))
-    total_received = Transaction.calculate_total(
-        Transaction.get_transactions_from_time_period(
-            Timespan.MONTH, request.user, "received"))
+    total_spent = sum(transaction.amount for transaction in
+                      Transaction.get_transactions_from_time_period(
+                          Timespan.MONTH, request.user, "sent"))
+    total_received = sum(transaction.amount for transaction in
+                         Transaction.get_transactions_from_time_period(
+                             Timespan.MONTH, request.user, "received"))
 
     context: dict[str, Any] = {
         'accounts': user_accounts,

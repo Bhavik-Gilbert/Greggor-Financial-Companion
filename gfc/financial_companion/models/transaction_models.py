@@ -16,7 +16,7 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .accounts_model import Account, PotAccount
 from .category_model import Category
 from .user_model import User
-from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, TransactionType
+from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, TransactionType, FilterTransactionType
 import datetime
 import os
 from django.db.models.signals import pre_delete
@@ -102,15 +102,8 @@ class Transaction(AbstractTransaction):
     )
 
     @staticmethod
-    def calculate_total(transactions: list):
-        total = 0
-        for x in transactions:
-            total += x.amount
-        return total
-
-    @staticmethod
     def get_transactions_from_time_period(
-            time_choice, user, filter_type=str("all")):
+            time_choice, user, filter_type=FilterTransactionType.ALL):
         user_transactions = user.get_user_transactions(filter_type=filter_type)
 
         timespan_int = timespan_map[time_choice]

@@ -9,14 +9,14 @@
     <div class="row">
       <div class="col-12">
         <div>
-          {% if targets%}
-            <form class="row" method="post">
-                {% csrf_token %}
-                <div class="col-3">
-                    {% include 'partials/form.html' with form=form %}
-                </div>
-                <input type="submit" value="Apply" class="btn btn-primary col-1 col-md-1 my-1">
-              </form>
+          <form class="row" method="post">
+            {% csrf_token %}
+            <div class="col-3">
+                {% include 'partials/form.html' with form=form %}
+            </div>
+            <input type="submit" value="Apply" class="btn btn-primary col-1 col-md-1 my-1">
+          </form>
+          {% if targets %}
         </div>
           &nbsp;
             {% include 'partials/target_table.html' with targets=targets %}

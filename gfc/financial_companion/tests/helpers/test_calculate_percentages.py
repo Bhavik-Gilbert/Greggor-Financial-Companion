@@ -16,9 +16,9 @@ class CalculatePercentagesFunctionTestCase(HelperTestCase):
 
     @freeze_time("2023-01-07 22:00:00")
     def test_valid_percentage_function(self):
-        total: Decimal = Transaction.calculate_total(
-            Transaction.get_transactions_from_time_period(
-                Timespan.WEEK, self.user))
+        total: Decimal = sum(transaction.amount for transaction in
+                             Transaction.get_transactions_from_time_period(
+                                 Timespan.WEEK, self.user))
         categories: dict[str, Decimal] = Transaction.get_category_splits(
             Transaction.get_transactions_from_time_period(
                 Timespan.WEEK, self.user), self.user)
@@ -28,9 +28,9 @@ class CalculatePercentagesFunctionTestCase(HelperTestCase):
 
     @freeze_time("1999-01-07 22:00:00")
     def test_percentages_with_no_data(self):
-        total = Transaction.calculate_total(
-            Transaction.get_transactions_from_time_period(
-                Timespan.WEEK, self.user))
+        total = sum(transaction.amount for transaction in
+                    Transaction.get_transactions_from_time_period(
+                        Timespan.WEEK, self.user))
         categories = Transaction.get_category_splits(
             Transaction.get_transactions_from_time_period(
                 Timespan.WEEK, self.user), self.user)
