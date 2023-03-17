@@ -2,7 +2,6 @@
     Creates a chart using the data provided
 */
 function setChart(chartDataset, chartLabels, yAxisLabel="", xAxisLabel="", chartType="line", yBeginsAtZero=false, xBeginsAtZero=false) {
-    chartName = "{{chart_name}}";
     const ctx = document.getElementById("chart"+ chartName);
 
     if (ctx.attributes.length > 1) { // if there is a chart in the canvas.
