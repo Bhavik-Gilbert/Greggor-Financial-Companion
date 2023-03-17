@@ -9,7 +9,7 @@
 {% block card_title %}Account Information:{% endblock %}
 
 {% block edit_delete_buttons %}
-    {% if account.get_type != "regular" %}
+    {% if account.get_type != "merchant" %}
         {% url 'create_account_target' pk=account.id as add_target %}
     {% endif %}
 
