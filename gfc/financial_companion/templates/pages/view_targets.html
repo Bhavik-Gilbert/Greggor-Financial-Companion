@@ -16,10 +16,10 @@
       <div>
         <form class="row" method="post">
           {% csrf_token %}
-          <div class="col-12 col-md-3">
+          <div class="col-12 col-lg-4">
               {% include 'partials/form.html' with form=form %}
           </div>
-          <input type="submit" value="Apply" class="btn btn-primary col-12 col-md-3">
+          <input type="submit" value="Apply" class="btn btn-primary col-12 col-lg-1">
         </form>
       </div>
     </div>
