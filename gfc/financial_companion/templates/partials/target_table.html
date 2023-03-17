@@ -1,4 +1,5 @@
 {% load targets %}
+<div class="container container-scrollableX p-0 mb-2">
 <table class="table  table-bordered table-striped text-center" style="width:100%">
   <thead class = "table-primary">
     <tr class="text-center">
@@ -29,6 +30,6 @@
         {% include "partials/view_models/edit_and_delete_models_buttons.html" with size="xs" edit_URL=edit_target delete_URL=delete_target model_name="target"%}
       </td>
     </tr>
-  </form>
   {% endfor %}
 </table>
+</div>
