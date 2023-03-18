@@ -2,28 +2,30 @@ from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.models import User, Category
 from financial_companion.forms import UserLogInForm
-
+from typing import Any, Union
+from django.contrib.messages.storage.base import Message
+from django.http import HttpRequest, HttpResponse
 
 class CategoryListViewCase(ViewTestCase):
     """Tests of the user view categories view."""
 
-    def setUp(self):
-        self.url = reverse('categories_list', kwargs={'search_name': "all"})
-        self.redirect_url = reverse('categories_list_redirect')
-        self.user = User.objects.get(username='@johndoe')
+    def setUp(self) -> None:
+        self.url: str = reverse('categories_list', kwargs={'search_name': "all"})
+        self.redirect_url: str = reverse('categories_list_redirect')
+        self.user: User = User.objects.get(username='@johndoe')
 
-    def test_category_list_view_url(self):
+    def test_category_list_view_url(self) -> None:
         self.assertEqual(self.url, '/categories/all/')
 
-    def test_valid_categories_list_redirect_url(self):
+    def test_valid_categories_list_redirect_url(self) -> None:
         self.assertEqual(self.redirect_url, "/categories/")
 
-    def test_valid_get_categories_list_redirect(self):
+    def test_valid_get_categories_list_redirect(self) -> None:
         self._login(self.user)
-        response = self.client.post(self.redirect_url)
+        response: HttpResponse= self.client.post(self.redirect_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/category_list.html')
-        messages_list = list(response.context['messages'])
+        messages_list: list[Message] = list(response.context['messages'])
         self.assertEqual(len(messages_list), 2)
         self.assertTrue('Targets completed: ' in str(messages_list[0]))
         self.assertTrue('Targets nearly exceeded: ' in str(messages_list[1]))
@@ -34,12 +36,12 @@ class CategoryListViewCase(ViewTestCase):
         self.assertContains(response, 'Entertainment')
         self.assertContains(response, 'Going out and having fun')
 
-    def test_post_when_search_is_empty(self):
+    def test_post_when_search_is_empty(self) -> None:
         self._login(self.user)
-        response = self.client.post(self.url)
+        response: HttpResponse = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/category_list.html')
-        messages_list = list(response.context['messages'])
+        messages_list: list[Message] = list(response.context['messages'])
         self.assertEqual(len(messages_list), 2)
         self.assertTrue('Targets completed: ' in str(messages_list[0]))
         self.assertTrue('Targets nearly exceeded: ' in str(messages_list[1]))
@@ -50,26 +52,26 @@ class CategoryListViewCase(ViewTestCase):
         self.assertContains(response, 'Entertainment')
         self.assertContains(response, 'Going out and having fun')
 
-    def test_post_when_full_category_name_is_applied(self):
+    def test_post_when_full_category_name_is_applied(self) -> None:
         self._login(self.user)
-        self.url = reverse('categories_list', kwargs={'search_name': "Food"})
-        response = self.client.post(self.url)
+        self.url: str = reverse('categories_list', kwargs={'search_name': "Food"})
+        response: HttpResponse = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/category_list.html')
-        messages_list = list(response.context['messages'])
+        messages_list: list[Message] = list(response.context['messages'])
         self.assertTrue('Targets completed: ' in str(messages_list[0]))
         self.assertTrue('Targets nearly exceeded: ' in str(messages_list[1]))
         self.assertEqual(len(messages_list), 2)
         self.assertContains(response, 'Food')
         self.assertContains(response, "Eating out expenses")
 
-    def test_post_when_partial_category_name_is_applied(self):
+    def test_post_when_partial_category_name_is_applied(self) -> None:
         self._login(self.user)
-        self.url = reverse('categories_list', kwargs={'search_name': "e"})
-        response = self.client.post(self.url)
+        self.url: str = reverse('categories_list', kwargs={'search_name': "e"})
+        response: HttpResponse = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/category_list.html')
-        messages_list = list(response.context['messages'])
+        messages_list: list[Message] = list(response.context['messages'])
         self.assertTrue('Targets completed: ' in str(messages_list[0]))
         self.assertTrue('Targets nearly exceeded: ' in str(messages_list[1]))
         self.assertEqual(len(messages_list), 2)
@@ -86,7 +88,7 @@ class CategoryListViewCase(ViewTestCase):
         response = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/category_list.html')
-        messages_list = list(response.context['messages'])
+        messages_list: list[Message] = list(response.context['messages'])
         self.assertTrue('Targets completed: ' in str(messages_list[0]))
         self.assertTrue('Targets nearly exceeded: ' in str(messages_list[1]))
         self.assertEqual(len(messages_list), 2)
@@ -101,24 +103,24 @@ class CategoryListViewCase(ViewTestCase):
         self.assertContains(response, "You have no categories yet")
 
     def test_view_redirects_when_search_button_pressed_for_valid_search_name(
-            self):
-        self.form_data = {
+            self) -> None:
+        self.form_data: dict[str, bool] = {
             'search': True
         }
         self._login(self.user)
-        self.url = reverse('categories_list', kwargs={'search_name': "Food"})
-        response = self.client.post(self.url, self.form_data)
+        self.url: str = reverse('categories_list', kwargs={'search_name': "Food"})
+        response: HttpResponse = self.client.post(self.url, self.form_data)
         self.assertEqual(response.status_code, 302)
 
     def test_view_redirects_when_search_button_pressed_for_invalid_search_name(
-            self):
-        self.form_data = {
+            self) -> None:
+        self.form_data: dict[str, str] = {
             'search': ""
         }
         self._login(self.user)
-        self.url = reverse('categories_list', kwargs={'search_name': None})
-        response = self.client.post(self.url, self.form_data)
+        self.url: str = reverse('categories_list', kwargs={'search_name': None})
+        response: HttpResponse = self.client.post(self.url, self.form_data)
         self.assertEqual(response.status_code, 302)
 
-    def test_get_view_redirects_when_not_logged_in(self):
+    def test_get_view_redirects_when_not_logged_in(self) -> None:
         self._assert_require_login(self.url)
