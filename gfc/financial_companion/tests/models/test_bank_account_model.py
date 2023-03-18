@@ -7,7 +7,7 @@ from ...models import BankAccount, User
 
 
 class BankAccountModelTestCase(ModelTestCase):
-    """test file for the bank accounts model"""
+    """Test file for the Bank Accounts model"""
 
     def setUp(self) -> None:
         super().setUp()

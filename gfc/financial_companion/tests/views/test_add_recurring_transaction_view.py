@@ -3,12 +3,13 @@ from financial_companion.forms import AddRecurringTransactionForm
 from financial_companion.models import RecurringTransaction, Transaction, User
 from django.urls import reverse
 from decimal import Decimal
+from typing import Any, Union
 
 
 class AddRecurringTransactionViewTestCase(ViewTestCase):
-    """Unit tests of the add transaction view"""
+    """Unit tests of the add recurring transaction view"""
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.url = reverse('add_recurring_transaction')
         self.form_input = {
             "title": "Test",
@@ -25,7 +26,7 @@ class AddRecurringTransactionViewTestCase(ViewTestCase):
         }
         self.user = User.objects.get(username='@johndoe')
 
-    def test_add_recurring_transaction_url(self):
+    def test_add_recurring_transaction_url(self) -> None:
         self.assertEqual(self.url, '/add_recurring_transaction/')
 
     def test_get_add_recurring_transaction(self):

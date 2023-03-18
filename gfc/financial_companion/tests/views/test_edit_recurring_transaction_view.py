@@ -5,8 +5,8 @@ from django.urls import reverse
 from decimal import Decimal
 
 
-class EditTransactionViewTestCase(ViewTestCase):
-    """Unit tests of the edit transaction view"""
+class EditRecurringTransactionViewTestCase(ViewTestCase):
+    """Unit tests of the edit recurring transaction view"""
 
     def setUp(self):
         self.url = reverse('edit_recurring_transaction', kwargs={"pk": 2})

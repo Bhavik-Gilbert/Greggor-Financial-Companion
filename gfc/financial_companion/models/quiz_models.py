@@ -105,4 +105,5 @@ class QuizScore(models.Model):
 
     def get_score(self):
         """Returns score as a percentage"""
-        return min(1, self.correct_questions / self.total_questions) * 100
+        return round(min(1, self.correct_questions /
+                     self.total_questions) * 100)

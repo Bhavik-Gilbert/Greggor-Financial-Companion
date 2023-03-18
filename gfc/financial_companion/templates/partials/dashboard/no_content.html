@@ -3,11 +3,11 @@
     <div class="card-body">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-9">
-                    <h2 class="card-text text-muted">You have no {{content_type_plural}}</h2>
+                <div class="col">
+                    <h2 class="card-text text-muted">You have no {{content_type_plural}}.</h2>
                 </div>
-                <div class="col-2">
-                    <img src="{% static 'greggor/greggor-sad.png' %}" alt="Greggor" style="max-width: 100%;" class="d-inline-block align-text-top"></img>
+                <div class="col-3 me-2">
+                    {% include 'partials/greggor_logo.html' with greggor_type="sad" style="max-width: 100%;" %}
                 </div>
             </div>
         </div>

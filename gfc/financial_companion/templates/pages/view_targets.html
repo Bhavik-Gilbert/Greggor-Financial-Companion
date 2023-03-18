@@ -1,0 +1,29 @@
+{% extends 'page.html' %}
+{% block title %}View Targets{% endblock %}
+
+{% block content %}
+  <div class="text-center">
+  <h1>Targets</h1>
+    </div>
+  <hr class="hr col-12"/>
+    <div class="row">
+      <div class="col-12">
+        <div>
+          {% if targets%}
+            <form class="row" method="post">
+                {% csrf_token %}
+                <div class="col-3">
+                    {% include 'partials/form.html' with form=form %}
+                </div>
+                <input type="submit" value="Apply" class="btn btn-primary col-1 col-md-1 my-1">
+              </form>
+        </div>
+          &nbsp;
+            {% include 'partials/target_table.html' with targets=targets %}
+            {% include 'partials/pagination.html'  with page_obj=targets %}
+          {% else %}
+            {% include 'partials/dashboard/no_content.html' with content_type_plural='targets'%}
+          {% endif %}
+      </div>
+    </div>
+{% endblock %}

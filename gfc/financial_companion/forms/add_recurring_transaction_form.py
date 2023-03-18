@@ -1,5 +1,5 @@
 from django import forms
-from financial_companion.models import PotAccount, RecurringTransaction, Account
+from financial_companion.models import PotAccount, RecurringTransaction, User, Category, Account
 from datetime import datetime
 from django.utils.timezone import make_aware
 from typing import Any
@@ -33,7 +33,7 @@ class AddRecurringTransactionForm(forms.ModelForm):
             'interval',
             'start_date',
             'end_date']
-        widgets: dict[str: DateInput] = {
+        widgets: dict[str, DateInput] = {
             'start_date': DateInput(attrs={'type': 'date', 'placeholder': 'yyyy-mm-dd', 'class': 'form-control'}),
             'end_date': DateInput(attrs={'type': 'date', 'placeholder': 'yyyy-mm-dd', 'class': 'form-control'}),
         }
@@ -61,12 +61,15 @@ class AddRecurringTransactionForm(forms.ModelForm):
             recurring_transaction.description: str = self.cleaned_data.get(
                 'description')
             recurring_transaction.image = self.cleaned_data.get('image')
-            recurring_transaction.category: int = self.cleaned_data.get('category')
-            recurring_transaction.amount: float = self.cleaned_data.get('amount')
-            recurring_transaction.currency: str = self.cleaned_data.get('currency')
-            recurring_transaction.sender_account: int = self.cleaned_data.get(
+            recurring_transaction.category: Category = self.cleaned_data.get(
+                'category')
+            recurring_transaction.amount: float = self.cleaned_data.get(
+                'amount')
+            recurring_transaction.currency: str = self.cleaned_data.get(
+                'currency')
+            recurring_transaction.sender_account: Account = self.cleaned_data.get(
                 'sender_account')
-            recurring_transaction.receiver_account: int = self.cleaned_data.get(
+            recurring_transaction.receiver_account: Account = self.cleaned_data.get(
                 'receiver_account')
             recurring_transaction.save()
         return recurring_transaction
@@ -80,7 +83,7 @@ class AddRecurringTransactionForm(forms.ModelForm):
         start_date = self.cleaned_data.get('start_date')
         end_date = self.cleaned_data.get('end_date')
         users_accounts: PotAccount = PotAccount.objects.filter(user=self.user)
-        ids: list[int] = []
+        ids: list[Account] = []
         for account in users_accounts:
             ids.append(account.id)
         if sender_account == receiver_account:

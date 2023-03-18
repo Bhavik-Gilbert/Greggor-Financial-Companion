@@ -6,6 +6,8 @@ from django.contrib import messages
 from ..helpers import AccountType
 from ..forms import MonetaryAccountForm
 from ..models import PotAccount, User, Account, BankAccount
+from django.contrib import messages
+from django import forms
 
 
 @login_required
@@ -20,12 +22,13 @@ def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         if "account_type" in request.POST:
             # set form to account type
-            account_type = request.POST["account_type"]
-            form = MonetaryAccountForm(form_type=account_type, user=user)
+            account_type: str = request.POST["account_type"]
+            form: forms.ModelForm = MonetaryAccountForm(
+                form_type=account_type, user=user)
         elif "submit_type" in request.POST:
             # get form from request and check form
-            account_type = request.POST["submit_type"]
-            form = MonetaryAccountForm(
+            account_type: str = request.POST["submit_type"]
+            form: forms.ModelForm = MonetaryAccountForm(
                 request.POST, form_type=account_type, user=user)
             if form.is_valid():
                 form.save()
@@ -47,7 +50,11 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
         this_account: Account = Account.objects.get_subclass(
             id=pk, user=request.user.id)
     except Exception:
-        return redirect("dashboard")
+        messages.add_message(
+            request,
+            messages.ERROR,
+            "This account can not be edited")
+        return redirect("view_accounts")
 
     this_bank_account_list: list[BankAccount] = BankAccount.objects.filter(
         id=pk, user=request.user.id)

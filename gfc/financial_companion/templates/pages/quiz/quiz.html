@@ -5,57 +5,55 @@
 
 <!-- Content -->
 {% block content %}
-  <div align="center">
+  <div class="text-center">
     <h1>Quiz</h1>
 
     <br>
 
-    <div class="container-fluid row gy-3">
-        <h3 class="col-12">How many questions do you want?</h3>
-        <div class="col-12">
-            {% for quiz_total in quiz_total_choices %}
-                {% if quiz_total == question_total %}
-                    <a href="{% url 'quiz_with_params' question_total=quiz_total sort_type=score_order_type %}" class="btn btn-secondary">{{quiz_total}}</a>
-                {% else %}
-                    <a href="{% url 'quiz_with_params' question_total=quiz_total sort_type=score_order_type %}" class="btn btn-outline-secondary">{{quiz_total}}</a>
-                {% endif %}
-            {% endfor %}
+    {% include 'partials/quiz/quiz_about_info.html' with text_style="text-muted"%}
+
+    <br><br>
+
+    <div class="card">
+        <div class="card-body row justify-content-center">
+            <h3 class="card-title">How many questions do you want?</h3>
+            <div>
+                {% for quiz_total in quiz_total_choices %}
+                    {% if quiz_total == question_total %}
+                        <a href="{% url 'quiz_with_params' question_total=quiz_total sort_type=score_order_type %}" class="btn btn-secondary">{{quiz_total}}</a>
+                    {% else %}
+                        <a href="{% url 'quiz_with_params' question_total=quiz_total sort_type=score_order_type %}" class="btn btn-outline-secondary">{{quiz_total}}</a>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-auto mt-4">
+                <a href="{% url 'quiz_ready' question_total=question_total %}" class="btn btn-lg btn-primary col-12">Generate Quiz</a>
+            </div>
         </div>
-        
-        <a href="{% url 'quiz_ready' question_total=question_total %}" class="btn btn-primary col-12">Generate Quiz</a>
     </div>
 
     <br><br>
 
-    {% include 'partials/quiz/quiz_about_info.html' %}
-
-    <br><br>
-
-    <form method="POST" class="container-fluid row justify-content-center">
+    <form method="POST" class="col-12 text-center mb-3">
         {% csrf_token %}
         <h3 class="col-md-auto">Scores</h3>
-        {% for score_list_order_type in score_list_order_types %}
-            <div class="col-lg-1">
-            {% if score_order_type == score_list_order_type %}
-                <a href="{% url 'quiz_with_params' question_total=question_total sort_type=score_list_order_type %}" class="btn btn-primary col-12">{{score_list_order_type.capitalize}}</a>
-            {% else %}
-                <a href="{% url 'quiz_with_params' question_total=question_total sort_type=score_list_order_type %}" class="btn btn-outline-secondary col-12">{{score_list_order_type.capitalize}}</a>
-            {% endif %}
+        <div class="row justify-content-center g-5">
+            <div class="col-auto">
+            {% for score_list_order_type in score_list_order_types %}
+                {% if score_order_type == score_list_order_type %}
+                    <a href="{% url 'quiz_with_params' question_total=question_total sort_type=score_list_order_type %}" class="btn btn-sm btn-secondary">{{score_list_order_type.capitalize}}</a>
+                {% else %}
+                    <a href="{% url 'quiz_with_params' question_total=question_total sort_type=score_list_order_type %}" class="btn btn-sm btn-outline-secondary">{{score_list_order_type.capitalize}}</a>
+                {% endif %}
+            {% endfor %}
             </div>
-        {% endfor %}
+        </div>
     </form>
     
-    <br>
-
     {% if quiz_scores %}
-        {% if score_order_type == score_list_order_types.HIGHEST %}
-            <h4>Highest</h4>
-        {% elif score_order_type == score_list_order_types.RECENT %}
-            <h4>Recent</h4>
-        {% endif %}
-        {% include 'partials/quiz/quiz_scores_table.html'  with quiz_scores=quiz_scores %}
+        {% include 'partials/quiz/quiz_scores_table.html' with quiz_scores=quiz_scores %}
     {% else %}
-        <h4>You haven't taken part in a quiz yet</h4>
+        {% include "partials/dashboard/no_content.html" with content_type_plural="quiz results" %}
     {% endif %}
   </div>
 {% endblock %}

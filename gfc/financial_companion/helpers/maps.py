@@ -1,6 +1,6 @@
 from .enums import Timespan
 
-timespan_map = {
+timespan_map: dict[str, int] = {
     Timespan.DAY: 1,
     Timespan.WEEK: 7,
     Timespan.MONTH: 30,

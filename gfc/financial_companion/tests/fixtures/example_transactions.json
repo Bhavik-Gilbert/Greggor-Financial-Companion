@@ -171,5 +171,20 @@
             "receiver_account" : 7,
             "time_of_transaction" : "2023-01-05T12:00:00+00:00"
         }
+    },
+    {
+        "model": "financial_companion.Transaction",
+        "pk": 13,
+        "fields": {
+            "title": "Manchester City Season Tickets",
+            "description": "Bought reasonably priced season tickets",
+            "image": "transactions/2.jpg",
+            "category" : 4,
+            "amount" : 499.99,
+            "currency" : "GBP",
+            "sender_account" : 7,
+            "receiver_account" : 9,
+            "time_of_transaction" : "2023-01-01 12:00:00+00:00"
+        }
     }
 ]

@@ -3,12 +3,13 @@ from django.core.validators import RegexValidator
 from financial_companion.models import User
 from typing import Any
 
+
 class UserSignUpForm(forms.ModelForm):
     """Form to register users"""
 
     class Meta:
         model: User = User
-        fields: list[str]= [
+        fields: list[str] = [
             'first_name',
             'last_name',
             'username',
@@ -35,34 +36,23 @@ class UserSignUpForm(forms.ModelForm):
 
         super().clean()
         new_password: str = self.cleaned_data.get('new_password')
-        password_confirmation: str = self.cleaned_data.get('password_confirmation')
+        password_confirmation: str = self.cleaned_data.get(
+            'password_confirmation')
         if new_password != password_confirmation:
             self.add_error(
                 'password_confirmation',
                 'Confirmation does not match password.')
 
-    def save(self, instance=None) -> User:
+    def save(self):
         """Create a new user."""
-
         super().save(commit=False)
-
-        if instance is None:
-            user = User.objects.create_user(
-                self.cleaned_data.get('username'),
-                first_name=self.cleaned_data.get('first_name'),
-                last_name=self.cleaned_data.get('last_name'),
-                email=self.cleaned_data.get('email'),
-                bio=self.cleaned_data.get('bio'),
-                password=self.cleaned_data.get('new_password'),
-                profile_picture=self.cleaned_data.get('profile_picture')
-            )
-        else:
-            user: User = instance
-            user.username: str = self.cleaned_data.get('username'),
-            user.first_name: str = self.cleaned_data.get('first_name'),
-            user.last_name: str = self.cleaned_data.get('last_name'),
-            user.email: str = self.cleaned_data.get('email'),
-            user.bio: str = self.cleaned_data.get('bio'),
-            # user.password=self.cleaned_data.get('new_password'),
-            user.profile_picture = self.cleaned_data.get('profile_picture')
+        user = User.objects.create_user(
+            self.cleaned_data.get('username'),
+            first_name=self.cleaned_data.get('first_name'),
+            last_name=self.cleaned_data.get('last_name'),
+            email=self.cleaned_data.get('email'),
+            bio=self.cleaned_data.get('bio'),
+            password=self.cleaned_data.get('new_password'),
+            profile_picture=self.cleaned_data.get('profile_picture')
+        )
         return user

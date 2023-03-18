@@ -3,7 +3,7 @@ from financial_companion.helpers import get_currency_symbol, CurrencyType
 
 
 class GetCurrencySymbolHelperFunctionTestCase(HelperTestCase):
-    """Test for the get_currency_symbol helpers function"""
+    """Test file for the get_currency_symbol helpers function"""
 
     def test_valid_return_symbol_valid_currency_code(self):
         for currency_code in CurrencyType:

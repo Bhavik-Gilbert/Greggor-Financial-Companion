@@ -8,7 +8,7 @@ from decimal import Decimal
 
 
 class CreateTargetFormTestCase(FormTestCase):
-    """Test of the create target form"""
+    """Unit tests of the create target form"""
 
     def setUp(self):
         self.test_user = User.objects.get(username='@johndoe')

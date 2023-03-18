@@ -3,7 +3,7 @@
 <div class="card text-bg-primary">
   <div class="row g-0 text-center">
     <div class="col-lg-4 col-md-12 my-auto">
-      <img src="{% static 'greggor/greggor-party.png' %}" alt="Greggor" style="max-height:180px; max-width: 100%;"></img>
+      {% include 'partials/greggor_logo.html' with greggor_type="party" style="max-height:180px; max-width: 100%;"%}
     </div>
     <div class="col-lg col-md-12 my-auto ">
       <div class="card-body">

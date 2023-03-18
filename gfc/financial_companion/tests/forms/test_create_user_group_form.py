@@ -7,7 +7,7 @@ from financial_companion.models import UserGroup, User
 
 
 class CreateUserGroupFormTestCase(FormTestCase):
-    """Test of the create user group form"""
+    """Unit tests of the create user group form"""
 
     def setUp(self):
         self.test_user = User.objects.get(username='@johndoe')
@@ -15,9 +15,10 @@ class CreateUserGroupFormTestCase(FormTestCase):
         self.form_input = {
             'name': 'Financial Club',
             'description': 'We are the best financial club',
+            'group_picture': ''
         }
 
-    def test_valid_sign_up_form(self):
+    def test_valid_create_user_group_form(self):
         form = UserGroupForm(data=self.form_input)
         self.assertTrue(form.is_valid())
 
@@ -27,6 +28,7 @@ class CreateUserGroupFormTestCase(FormTestCase):
             form,
             'name',
             'description',
+            'group_picture'
         )
         description_widget = form.fields['description'].widget
         self.assertTrue(isinstance(description_widget, forms.Textarea))
@@ -45,7 +47,7 @@ class CreateUserGroupFormTestCase(FormTestCase):
 
     def test_form_updates_correctly(self):
         user_group = UserGroup.objects.get(id=1)
-        form = UserGroupForm(data=self.form_input)
+        form = UserGroupForm(data=self.form_input, instance=user_group)
         before_count = UserGroup.objects.count()
         current_user_group = form.save(
             current_user=self.test_user,

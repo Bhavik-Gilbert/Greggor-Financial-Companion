@@ -1,6 +1,6 @@
 from django import forms
 from django.core.validators import FileExtensionValidator
-from financial_companion.models import Transaction, Account, Category, PotAccount
+from financial_companion.models import Transaction, Account, Category, PotAccount, User
 from financial_companion.helpers import ParseStatementPDF, CurrencyType
 from datetime import datetime
 from django.utils.timezone import make_aware
@@ -14,6 +14,10 @@ class AddTransactionForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(AddTransactionForm, self).__init__(*args, **kwargs)
         self.fields['category'].queryset = Category.objects.filter(
+            user=user.id)
+        self.fields['sender_account'].queryset = Account.objects.filter(
+            user=user.id)
+        self.fields['receiver_account'].queryset = Account.objects.filter(
             user=user.id)
         self.fields['category'].label_from_instance = self.label_from_instance
         self.fields['sender_account'].label_from_instance = self.label_from_instance
@@ -107,7 +111,7 @@ class AddTransactionsViaBankStatementForm(forms.Form):
     )
 
     def __init__(self, *args, **kwargs) -> None:
-        self.user = kwargs.pop("user", None)
+        self.user: User = kwargs.pop("user", None)
         super(
             AddTransactionsViaBankStatementForm,
             self).__init__(
