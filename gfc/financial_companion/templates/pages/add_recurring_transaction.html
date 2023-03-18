@@ -6,11 +6,20 @@
 <!-- Content -->
 {% block content %}
     <h1>Recurring Transaction</h1>
-    
-    <form method="post" enctype='multipart/form-data'>
+
+    {% if edit %}
+      <form action='{% url 'edit_recurring_transaction' pk %}' method="post" enctype='multipart/form-data'>
+    {% else %}
+      <form action='{% url 'add_recurring_transaction'%}' method="post" enctype='multipart/form-data'>
+    {% endif %}
       {% csrf_token %}
 
       {% include 'partials/form.html' with form=form %}
-      <input type="submit" value="Add Recurring Transaction" class="btn btn-primary">
+      <button type="submit" name="submit_type" value="Submit" class="btn btn-primary">
+    {% if edit %}
+        Edit Recurring Transaction
+        {% else %}
+            Create Recurring Transaction
+        {% endif %}
     </form>
 {% endblock %}
