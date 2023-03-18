@@ -25,9 +25,11 @@
       <td>{{ target }}</td>
       <td>{{ target|get_completeness }}</td>
       <td>
-        {% url target|get_edit_url pk=target.id as edit_target %}
-        {% url target|get_delete_url pk=target.id as delete_target %}
-        {% include "partials/view_models/edit_and_delete_models_buttons.html" with size="xs" edit_URL=edit_target delete_URL=delete_target model_name="target"%}
+        <div class="row justify-content-center">
+          {% url target|get_edit_url pk=target.id as edit_target %}
+          {% url target|get_delete_url pk=target.id as delete_target %}
+          {% include "partials/view_models/edit_and_delete_models_buttons.html" with size="xs" edit_URL=edit_target delete_URL=delete_target model_name="target" class="d-flex justify-content-center" %}
+        </div>
       </td>
     </tr>
   {% endfor %}
