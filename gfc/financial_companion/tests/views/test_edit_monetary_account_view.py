@@ -12,7 +12,7 @@ from decimal import Decimal
 class EditMonetaryAccountViewTestCase(ViewTestCase):
     """Unit tests of the edit monetary account view"""
 
-    def setUp(self):
+    def setUp(self) -> None:
         self.pot_account: PotAccount = PotAccount.objects.get(id=4)
         self.bank_account: BankAccount = BankAccount.objects.get(id=5)
         self.regular_account: Account = Account.objects.get(id=1)
@@ -30,22 +30,22 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             "edit_monetary_account", kwargs={
                 "pk": self.regular_account.id})
 
-    def test_valid_pot_page_url(self):
+    def test_valid_pot_page_url(self) -> None:
         self.assertEqual(
             self.pot_url,
             f"/edit_monetary_account/{self.pot_account.id}/")
 
-    def test_valid_bank_page_url(self):
+    def test_valid_bank_page_url(self) -> None:
         self.assertEqual(
             self.bank_url,
             f"/edit_monetary_account/{self.bank_account.id}/")
 
-    def test_valid_regular_page_url(self):
+    def test_valid_regular_page_url(self) -> None:
         self.assertEqual(
             self.regular_url,
             f"/edit_monetary_account/{self.regular_account.id}/")
 
-    def test_valid_get_pot_page(self):
+    def test_valid_get_pot_page(self) -> None:
         self._login(self.pot_user)
         response: HttpResponse = self.client.get(self.pot_url)
         self.assertEqual(response.status_code, 200)
@@ -60,7 +60,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
         self.assertEqual(monetary_account_types, AccountType)
         self.assertFalse(form.is_bound)
 
-    def test_valid_get_bank_page(self):
+    def test_valid_get_bank_page(self) -> None:
         self._login(self.bank_user)
         response: HttpResponse = self.client.get(self.bank_url)
         self.assertEqual(response.status_code, 200)
@@ -75,7 +75,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
         self.assertEqual(monetary_account_types, AccountType)
         self.assertFalse(form.is_bound)
 
-    def test_valid_get_regular_page(self):
+    def test_valid_get_regular_page(self) -> None:
         self._login(self.account_user)
         response: HttpResponse = self.client.get(self.regular_url)
         self.assertEqual(response.status_code, 200)
@@ -90,7 +90,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
         self.assertEqual(monetary_account_types, AccountType)
         self.assertFalse(form.is_bound)
 
-    def test_valid_pot_account_form_input(self):
+    def test_valid_pot_account_form_input(self) -> None:
         self._login(self.pot_user)
         pot_account_count_before: int = PotAccount.objects.count()
         bank_account_count_before: int = BankAccount.objects.count()
@@ -124,7 +124,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             regular_account_count_before,
             regular_account_count_after)
 
-    def test_valid_bank_account_form_input(self):
+    def test_valid_bank_account_form_input(self) -> None:
         self._login(self.bank_user)
         pot_account_count_before: int = PotAccount.objects.count()
         bank_account_count_before: int = BankAccount.objects.count()
@@ -163,7 +163,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             regular_account_count_before,
             regular_account_count_after)
 
-    def test_valid_regular_account_form_input(self):
+    def test_valid_regular_account_form_input(self) -> None:
         self._login(self.account_user)
         pot_account_count_before: int = PotAccount.objects.count()
         bank_account_count_before: int = BankAccount.objects.count()
@@ -195,7 +195,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             regular_account_count_before,
             regular_account_count_after)
 
-    def test_invalid_pot_account_form_input(self):
+    def test_invalid_pot_account_form_input(self) -> None:
         self._login(self.pot_user)
         pot_account_count_before: int = PotAccount.objects.count()
         bank_account_count_before: int = BankAccount.objects.count()
@@ -219,7 +219,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             regular_account_count_before,
             regular_account_count_after)
 
-    def test_invalid_bank_account_form_input(self):
+    def test_invalid_bank_account_form_input(self) -> None:
         self._login(self.bank_user)
         pot_account_count_before: int = PotAccount.objects.count()
         bank_account_count_before: int = BankAccount.objects.count()
@@ -248,7 +248,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             regular_account_count_before,
             regular_account_count_after)
 
-    def test_invalid_regular_account_form_input(self):
+    def test_invalid_regular_account_form_input(self) -> None:
         self._login(self.bank_user)
         pot_account_count_before: int = PotAccount.objects.count()
         bank_account_count_before: int = BankAccount.objects.count()
@@ -271,37 +271,37 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             regular_account_count_before,
             regular_account_count_after)
 
-    def test_valid_post_pot_page_redirects_when_logged_out(self):
+    def test_valid_post_pot_page_redirects_when_logged_out(self) -> None:
         form_input: dict[str, Any] = {"account_type": "Random"}
         response: HttpResponse = self.client.get(
             self.pot_url, form_input, follow=True)
         self._assert_require_login(self.pot_url)
 
-    def test_valid_post_bank_page_redirects_when_logged_out(self):
+    def test_valid_post_bank_page_redirects_when_logged_out(self) -> None:
         form_input: dict[str, Any] = {"account_type": "Random"}
         response: HttpResponse = self.client.get(
             self.bank_url, form_input, follow=True)
         self._assert_require_login(self.bank_url)
 
-    def test_valid_post_regular_page_redirects_when_logged_out(self):
+    def test_valid_post_regular_page_redirects_when_logged_out(self) -> None:
         form_input: dict[str, Any] = {"account_type": "Random"}
         response: HttpResponse = self.client.get(
             self.regular_url, form_input, follow=True)
         self._assert_require_login(self.regular_url)
 
-    def test_valid_get_pot_page_redirects_when_logged_out(self):
+    def test_valid_get_pot_page_redirects_when_logged_out(self) -> None:
         response: HttpResponse = self.client.get(self.pot_url, follow=True)
         self._assert_require_login(self.pot_url)
 
-    def test_valid_get_bank_page_redirects_when_logged_out(self):
+    def test_valid_get_bank_page_redirects_when_logged_out(self) -> None:
         response: HttpResponse = self.client.get(self.bank_url, follow=True)
         self._assert_require_login(self.bank_url)
 
-    def test_valid_get_regular_page_redirects_when_logged_out(self):
+    def test_valid_get_regular_page_redirects_when_logged_out(self) -> None:
         response: HttpResponse = self.client.get(self.regular_url, follow=True)
         self._assert_require_login(self.regular_url)
 
-    def test_invalid_post_pot_page_logged_in_user_must_be_account_holder(self):
+    def test_invalid_post_pot_page_logged_in_user_must_be_account_holder(self) -> None:
         self._login(self.bank_user)
         self.assertNotEqual(self.pot_account.user.id, self.bank_user.id)
         form_input: dict[str, Any] = {
@@ -320,7 +320,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             target_status_code=200)
         self.assertTemplateUsed(response, "pages/view_accounts.html")
 
-    def test_invalid_get_pot_page_logged_in_user_must_be_account_holder(self):
+    def test_invalid_get_pot_page_logged_in_user_must_be_account_holder(self) -> None:
         self._login(self.bank_user)
         self.assertNotEqual(self.pot_account.user.id, self.bank_user.id)
         response: HttpResponse = self.client.post(self.pot_url, follow=True)
@@ -333,7 +333,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/view_accounts.html")
 
     def test_invalid_post_bank_page_logged_in_user_must_be_account_holder(
-            self):
+            self) -> None:
         self._login(self.pot_user)
         self.assertNotEqual(self.bank_account.user.id, self.pot_user.id)
         form_input: dict[str, Any] = {
@@ -358,7 +358,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/view_accounts.html")
 
     def test_invalid_get_bank_page_loggeed_in_user_must_be_account_holder(
-            self):
+            self) -> None:
         self._login(self.pot_user)
         self.assertNotEqual(self.bank_account.user.id, self.pot_user.id)
         response: HttpResponse = self.client.post(self.bank_url, follow=True)
@@ -371,7 +371,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/view_accounts.html")
 
     def test_invalid_post_regular_page_logged_in_user_must_be_account_holder(
-            self):
+            self) -> None:
         self._login(self.pot_user)
         self.assertNotEqual(self.regular_account.user.id, self.pot_user.id)
         form_input: dict[str, Any] = {
@@ -390,7 +390,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/view_accounts.html")
 
     def test_invalid_get_regular_page_loggeed_in_user_must_be_account_holder(
-            self):
+            self) -> None:
         self._login(self.pot_user)
         self.assertNotEqual(self.regular_account.user.id, self.pot_user.id)
         response: HttpResponse = self.client.post(
