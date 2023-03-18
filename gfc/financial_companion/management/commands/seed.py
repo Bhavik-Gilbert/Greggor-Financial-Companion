@@ -128,7 +128,7 @@ class Command(BaseCommand):
                 categories: Category = self.create_categories(user)
                 if (float(randint(0, 100)) / 100 <
                         self.OBJECT_HAS_TARGET_PROBABILITY) or (UserTarget.objects.count() == 0):
-                    UserTarget.objects.create(
+                        UserTarget.objects.create(
                         target_type=self._choose_random_enum(
                             TransactionType),
                         timespan=self._choose_random_enum(Timespan),
