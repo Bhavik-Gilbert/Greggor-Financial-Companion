@@ -301,7 +301,8 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
         response: HttpResponse = self.client.get(self.regular_url, follow=True)
         self._assert_require_login(self.regular_url)
 
-    def test_invalid_post_pot_page_logged_in_user_must_be_account_holder(self) -> None:
+    def test_invalid_post_pot_page_logged_in_user_must_be_account_holder(
+            self) -> None:
         self._login(self.bank_user)
         self.assertNotEqual(self.pot_account.user.id, self.bank_user.id)
         form_input: dict[str, Any] = {
@@ -320,7 +321,8 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
             target_status_code=200)
         self.assertTemplateUsed(response, "pages/view_accounts.html")
 
-    def test_invalid_get_pot_page_logged_in_user_must_be_account_holder(self) -> None:
+    def test_invalid_get_pot_page_logged_in_user_must_be_account_holder(
+            self) -> None:
         self._login(self.bank_user)
         self.assertNotEqual(self.pot_account.user.id, self.bank_user.id)
         response: HttpResponse = self.client.post(self.pot_url, follow=True)

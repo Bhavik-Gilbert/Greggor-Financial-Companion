@@ -7,10 +7,11 @@ from django.http import HttpRequest, HttpResponse
 from django.contrib.messages.storage.base import Message
 from typing import Any
 
+
 class EditAccountTargetViewTestCase(ViewTestCase):
     """Tests of the edit account target view."""
 
-    def setUp(self) -> None: 
+    def setUp(self) -> None:
         self.url: str = reverse('edit_account_target', kwargs={'pk': 1})
         self.test_user = User.objects.get(username='@johndoe')
         self.form_input: dict[str, Any] = {
@@ -20,10 +21,10 @@ class EditAccountTargetViewTestCase(ViewTestCase):
             'currency': 'USD'
         }
 
-    def test_edit_account_target_url(self) -> None: 
+    def test_edit_account_target_url(self) -> None:
         self.assertEqual(self.url, '/edit_target/account/1')
 
-    def test_invalid_pk_entered(self) -> None: 
+    def test_invalid_pk_entered(self) -> None:
         self._login(self.test_user)
         url: str = reverse(
             "edit_account_target", kwargs={
@@ -37,7 +38,7 @@ class EditAccountTargetViewTestCase(ViewTestCase):
             target_status_code=200)
         self.assertTemplateUsed(response, "pages/dashboard.html")
 
-    def test_other_users_account_pk_entered(self) -> None: 
+    def test_other_users_account_pk_entered(self) -> None:
         self._login(self.test_user)
         url: str = reverse(
             "edit_account_target", kwargs={
@@ -51,22 +52,24 @@ class EditAccountTargetViewTestCase(ViewTestCase):
             target_status_code=200)
         self.assertTemplateUsed(response, "pages/view_accounts.html")
 
-    def test_successful_edit_account_target_form_submission(self) -> None: 
+    def test_successful_edit_account_target_form_submission(self) -> None:
         self._login(self.test_user)
         before_count = AccountTarget.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count = AccountTarget.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/individual_account.html')
 
-    def test_invalid_account_target_form_submission(self) -> None: 
+    def test_invalid_account_target_form_submission(self) -> None:
         self._login(self.test_user)
         self.form_input['target_type'] = ''
         before_count = AccountTarget.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count = AccountTarget.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/create_targets.html')
 
-    def test_get_view_redirects_when_not_logged_in(self) -> None: 
+    def test_get_view_redirects_when_not_logged_in(self) -> None:
         self._assert_require_login(self.url)

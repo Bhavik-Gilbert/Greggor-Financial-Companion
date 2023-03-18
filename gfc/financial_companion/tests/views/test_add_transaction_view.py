@@ -7,6 +7,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpRequest, HttpResponse
 from typing import Union, Any
 
+
 class AddTransactionViewTestCase(ViewTestCase):
     """Unit tests of the add transaction view"""
 
@@ -55,7 +56,8 @@ class AddTransactionViewTestCase(ViewTestCase):
     def test_succesfully_add_transaction(self) -> None:
         self._login(self.user)
         before_count: int = Transaction.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = Transaction.objects.count()
         self.assertEqual(after_count, before_count + 1)
         response_url: str = reverse(

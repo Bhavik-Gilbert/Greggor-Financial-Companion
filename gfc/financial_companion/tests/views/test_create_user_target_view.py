@@ -6,6 +6,7 @@ from financial_companion.models import User, UserTarget
 from typing import Any
 from django.http import HttpRequest, HttpResponse
 
+
 class CreateUserTargetViewTestCase(ViewTestCase):
     """Tests of the create user target view."""
 
@@ -25,7 +26,8 @@ class CreateUserTargetViewTestCase(ViewTestCase):
     def test_successful_user_target_form_submission(self) -> None:
         self._login(self.test_user)
         before_count: int = UserTarget.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = UserTarget.objects.count()
         self.assertEqual(after_count, before_count + 1)
         self.assertTemplateUsed(response, 'pages/view_targets.html')
@@ -34,7 +36,8 @@ class CreateUserTargetViewTestCase(ViewTestCase):
         self._login(self.test_user)
         self.form_input['target_type']: str = ''
         before_count: int = UserTarget.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = UserTarget.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/create_targets.html')

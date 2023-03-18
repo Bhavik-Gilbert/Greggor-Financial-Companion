@@ -7,6 +7,7 @@ from django.http import HttpRequest, HttpResponse
 from typing import Any
 from django.contrib.messages.storage.base import Message
 
+
 class CreateCategoryTargetViewTestCase(ViewTestCase):
     """Tests of the create category target view."""
 
@@ -14,7 +15,8 @@ class CreateCategoryTargetViewTestCase(ViewTestCase):
         self.url: str = reverse('create_category_target', kwargs={'pk': 1})
         self.test_user: User = User.objects.get(username='@johndoe')
         self.test_category: Category = Category.objects.get(id=1)
-        self.test_category_target: CategoryTarget = CategoryTarget.objects.get(id=1)
+        self.test_category_target: CategoryTarget = CategoryTarget.objects.get(
+            id=1)
         self.form_input: dict[str, Any] = {
             'target_type': 'income',
             'timespan': 'month',
@@ -76,7 +78,8 @@ class CreateCategoryTargetViewTestCase(ViewTestCase):
         self._login(self.test_user)
         self.form_input['target_type']: str = ''
         before_count: int = CategoryTarget.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = CategoryTarget.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/create_targets.html')
@@ -91,7 +94,8 @@ class CreateCategoryTargetViewTestCase(ViewTestCase):
         }
         self._login(self.test_user)
         before_count: int = CategoryTarget.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         self.assertTemplateUsed(response, 'pages/create_targets.html')
         messages_list: list[Message] = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)

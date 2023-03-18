@@ -36,11 +36,13 @@ class ChangePasswordViewTestCase(ViewTestCase):
 
     def test_change_password_success(self) -> None:
         self.assertTrue(self._login(self.user))
-        form: UserChangePasswordForm = UserChangePasswordForm(data=self.form_input)
+        form: UserChangePasswordForm = UserChangePasswordForm(
+            data=self.form_input)
         self.assertTrue(form.is_valid())
         self.assertEqual(self.user.username, '@johndoe')
         old_password: str = self.user.password
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/log_in.html")
         self.user.refresh_from_db()
@@ -54,7 +56,8 @@ class ChangePasswordViewTestCase(ViewTestCase):
             "password": "Password123",
             "new_password": "dd"
         }
-        response: HttpResponse = self.client.post(self.url, invalid_form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, invalid_form_input, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/change_password.html')
         form: UserChangePasswordForm = response.context['form']

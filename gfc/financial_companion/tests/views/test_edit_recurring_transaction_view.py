@@ -8,6 +8,7 @@ from django.http import HttpRequest, HttpResponse
 from django.contrib.messages.storage.base import Message
 from typing import Any
 
+
 class EditRecurringTransactionViewTestCase(ViewTestCase):
     """Unit tests of the edit recurring transaction view"""
 
@@ -57,7 +58,8 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
         form: AddRecurringTransactionForm = response.context['form']
         self.assertTrue(isinstance(form, AddRecurringTransactionForm))
         self.assertFalse(form.is_bound)
-        transaction: RecurringTransaction = RecurringTransaction.objects.get(id=2)
+        transaction: RecurringTransaction = RecurringTransaction.objects.get(
+            id=2)
         transaction.refresh_from_db()
         self.assertEqual(
             transaction.description,
@@ -74,7 +76,8 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
     def test_succesfully_edit_recurring_transaction(self) -> None:
         self._login(self.user)
         before_count: int = RecurringTransaction.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = RecurringTransaction.objects.count()
         self.assertEqual(after_count, before_count)
         response_url = reverse('view_recurring_transactions')
@@ -85,10 +88,13 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
             target_status_code=200)
         self.assertTemplateUsed(
             response, 'pages/view_recurring_transactions.html')
-        recurring_transaction: RecurringTransaction = RecurringTransaction.objects.get(id=2)
+        recurring_transaction: RecurringTransaction = RecurringTransaction.objects.get(
+            id=2)
         recurring_transaction.refresh_from_db()
         self.assertEqual(recurring_transaction.title, "Test")
-        self.assertEqual(recurring_transaction.description, "This is a test transaction")
+        self.assertEqual(
+            recurring_transaction.description,
+            "This is a test transaction")
         self.assertTrue("transactions/" in recurring_transaction.image.name)
         self.assertTrue(self.image_path.split(
             "/")[-1].split(".")[-1] in recurring_transaction.image.name)

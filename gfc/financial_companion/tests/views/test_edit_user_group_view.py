@@ -7,6 +7,7 @@ from financial_companion.models import User, UserGroup
 from django.http import HttpRequest, HttpResponse
 from django.contrib.messages.storage.base import Message
 
+
 class EditUserGroupViewTestCase(ViewTestCase):
     """Tests of the edit user group view."""
 
@@ -50,7 +51,8 @@ class EditUserGroupViewTestCase(ViewTestCase):
     def test_successful_edit_user_group_form_submission(self) -> None:
         self._login(self.user)
         before_count: int = UserGroup.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = UserGroup.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/individual_group.html')
@@ -60,7 +62,8 @@ class EditUserGroupViewTestCase(ViewTestCase):
         self._login(self.user)
         before_count: int = UserGroup.objects.count()
         self.form_input['group_picture']: bool = False
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = UserGroup.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/individual_group.html')
@@ -70,7 +73,8 @@ class EditUserGroupViewTestCase(ViewTestCase):
         self.url: str = reverse('edit_user_group', kwargs={"pk": 2})
         response_url: str = reverse(
             "all_groups_redirect")
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         self.assertRedirects(
             response,
             response_url,
@@ -83,7 +87,8 @@ class EditUserGroupViewTestCase(ViewTestCase):
         self.url: str = reverse('edit_user_group', kwargs={"pk": 300})
         response_url: str = reverse(
             "all_groups_redirect")
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         self.assertRedirects(
             response,
             response_url,

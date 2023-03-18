@@ -6,11 +6,14 @@ from typing import Any, Union
 from django.contrib.messages.storage.base import Message
 from django.http import HttpRequest, HttpResponse
 
+
 class CategoryListViewCase(ViewTestCase):
     """Tests of the user view categories view."""
 
     def setUp(self) -> None:
-        self.url: str = reverse('categories_list', kwargs={'search_name': "all"})
+        self.url: str = reverse(
+            'categories_list', kwargs={
+                'search_name': "all"})
         self.redirect_url: str = reverse('categories_list_redirect')
         self.user: User = User.objects.get(username='@johndoe')
 
@@ -22,7 +25,7 @@ class CategoryListViewCase(ViewTestCase):
 
     def test_valid_get_categories_list_redirect(self) -> None:
         self._login(self.user)
-        response: HttpResponse= self.client.post(self.redirect_url)
+        response: HttpResponse = self.client.post(self.redirect_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/category_list.html')
         messages_list: list[Message] = list(response.context['messages'])
@@ -54,7 +57,9 @@ class CategoryListViewCase(ViewTestCase):
 
     def test_post_when_full_category_name_is_applied(self) -> None:
         self._login(self.user)
-        self.url: str = reverse('categories_list', kwargs={'search_name': "Food"})
+        self.url: str = reverse(
+            'categories_list', kwargs={
+                'search_name': "Food"})
         response: HttpResponse = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/category_list.html')
@@ -108,7 +113,9 @@ class CategoryListViewCase(ViewTestCase):
             'search': True
         }
         self._login(self.user)
-        self.url: str = reverse('categories_list', kwargs={'search_name': "Food"})
+        self.url: str = reverse(
+            'categories_list', kwargs={
+                'search_name': "Food"})
         response: HttpResponse = self.client.post(self.url, self.form_data)
         self.assertEqual(response.status_code, 302)
 
@@ -118,7 +125,9 @@ class CategoryListViewCase(ViewTestCase):
             'search': ""
         }
         self._login(self.user)
-        self.url: str = reverse('categories_list', kwargs={'search_name': None})
+        self.url: str = reverse(
+            'categories_list', kwargs={
+                'search_name': None})
         response: HttpResponse = self.client.post(self.url, self.form_data)
         self.assertEqual(response.status_code, 302)
 

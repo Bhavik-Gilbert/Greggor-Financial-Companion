@@ -7,7 +7,6 @@ from financial_companion.models import User, UserGroup
 from django.http import HttpRequest, HttpResponse
 
 
-
 class CreateUserGroupViewTestCase(ViewTestCase):
     """Tests of the create user group view."""
 
@@ -47,7 +46,8 @@ class CreateUserGroupViewTestCase(ViewTestCase):
     def test_successful_create_user_group_form_submission(self) -> None:
         self._login(self.user)
         before_count: int = UserGroup.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = UserGroup.objects.count()
         self.assertEqual(after_count, before_count + 1)
         self.assertTemplateUsed(response, 'pages/all_groups.html')

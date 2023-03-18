@@ -7,6 +7,7 @@ from django.http import HttpRequest, HttpResponse
 from django.contrib.messages.storage.base import Message
 from typing import Any
 
+
 class EditCategoryTargetViewTestCase(ViewTestCase):
     """Tests of the edit category target view."""
 
@@ -68,7 +69,8 @@ class EditCategoryTargetViewTestCase(ViewTestCase):
     def test_successful_edit_category_target_form_submission(self) -> None:
         self._login(self.test_user)
         before_count: int = CategoryTarget.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = CategoryTarget.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/individual_category.html')
@@ -77,7 +79,8 @@ class EditCategoryTargetViewTestCase(ViewTestCase):
         self._login(self.test_user)
         self.form_input['target_type'] = ''
         before_count: int = CategoryTarget.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = CategoryTarget.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/create_targets.html')
@@ -93,7 +96,8 @@ class EditCategoryTargetViewTestCase(ViewTestCase):
         }
         self._login(self.test_user)
         before_count: int = CategoryTarget.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         self.assertTemplateUsed(response, 'pages/create_targets.html')
         messages_list: list[Message] = list(response.context['messages'])
         self.assertEqual(len(messages_list), 0)

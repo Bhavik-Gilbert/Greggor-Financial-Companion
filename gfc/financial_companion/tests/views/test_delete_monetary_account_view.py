@@ -7,6 +7,7 @@ from financial_companion.models import User, Account
 from django.http import HttpRequest, HttpResponse
 from django.contrib.messages.storage.base import Message
 
+
 class DeleteMonetaryAccountViewTestCase(ViewTestCase):
     """Tests of the delete monetary account view."""
 

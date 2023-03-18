@@ -7,6 +7,7 @@ from financial_companion.models import User, Category
 from django.http import HttpRequest, HttpResponse
 from django.contrib.messages.storage.base import Message
 
+
 class DeleteCategoryViewTestCase(ViewTestCase):
     """Tests of the delete category view."""
 

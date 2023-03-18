@@ -6,6 +6,7 @@ from financial_companion.models import User, UserGroup
 from django.http import HttpRequest, HttpResponse
 from django.contrib.messages.storage.base import Message
 
+
 class DeleteUserGroupViewTestCase(ViewTestCase):
     """Tests of the delete user group view."""
 

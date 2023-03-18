@@ -48,7 +48,8 @@ class EditCategoryViewTestCase(ViewTestCase):
     def test_successful_edit_category_form_submission(self) -> None:
         self._login(self.user)
         before_count: int = Category.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = Category.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/individual_category.html')
@@ -57,7 +58,8 @@ class EditCategoryViewTestCase(ViewTestCase):
         self._login(self.user)
         self.url: str = reverse('edit_category', kwargs={"pk": 3})
         response_url: str = reverse("dashboard")
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         self.assertRedirects(
             response,
             response_url,
@@ -69,7 +71,8 @@ class EditCategoryViewTestCase(ViewTestCase):
         self._login(self.user)
         self.url: str = reverse('edit_category', kwargs={"pk": 300})
         response_url: str = reverse("dashboard")
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         self.assertRedirects(
             response,
             response_url,

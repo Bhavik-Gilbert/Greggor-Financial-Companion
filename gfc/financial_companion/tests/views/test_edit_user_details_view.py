@@ -5,6 +5,7 @@ from financial_companion.forms import EditUserDetailsForm
 from financial_companion.models import User
 from django.http import HttpRequest, HttpResponse
 
+
 class EditUserDetailsViewTestCase(ViewTestCase):
     """Unit tests of the edit user details view"""
 
@@ -40,7 +41,8 @@ class EditUserDetailsViewTestCase(ViewTestCase):
         form: EditUserDetailsForm = EditUserDetailsForm(data=self.form_input)
         self.assertTrue(form.is_valid())
         self.assertEqual(self.user.username, '@johndoe')
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/profile.html")
         self.user.refresh_from_db()
@@ -54,7 +56,8 @@ class EditUserDetailsViewTestCase(ViewTestCase):
     def test_edit_user_details_unsuccessful_invalid_input(self) -> None:
         self._login(self.user)
         invalid_form_input: dict = {}
-        response: HttpResponse = self.client.post(self.url, invalid_form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, invalid_form_input, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/edit_user_details.html')
         form: EditUserDetailsForm = response.context['form']

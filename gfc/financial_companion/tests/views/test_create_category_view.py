@@ -8,6 +8,7 @@ from django.http import HttpRequest, HttpResponse
 from typing import Any
 from django.contrib.messages.storage.base import Message
 
+
 class CreateCategoryViewTestCase(ViewTestCase):
     """Tests of the create category view."""
 
@@ -49,7 +50,8 @@ class CreateCategoryViewTestCase(ViewTestCase):
     def test_successful_category_form_submission(self) -> None:
         self._login(self.user)
         before_count: int = Category.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = Category.objects.count()
         self.assertEqual(after_count, before_count + 1)
         self.assertTemplateUsed(response, 'pages/category_list.html')

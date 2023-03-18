@@ -7,6 +7,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from typing import Any
 from django.http import HttpRequest, HttpResponse
 
+
 class EditTransactionViewTestCase(ViewTestCase):
     """Unit tests of the edit transaction view"""
 
@@ -68,7 +69,8 @@ class EditTransactionViewTestCase(ViewTestCase):
     def test_succesfully_edit_transaction(self) -> None:
         self._login(self.user)
         before_count: int = Transaction.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = Transaction.objects.count()
         self.assertEqual(after_count, before_count)
         response_url = reverse('individual_transaction', kwargs={'pk': 2})

@@ -4,6 +4,7 @@ from financial_companion.models import User, AccountTarget
 from django.http import HttpRequest, HttpResponse
 from django.contrib.messages.storage.base import Message
 
+
 class DeleteAccountTargetViewTestCase(ViewTestCase):
     """Tests of the delete account target view."""
 

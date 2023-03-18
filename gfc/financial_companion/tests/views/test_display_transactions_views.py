@@ -5,11 +5,14 @@ from django.urls import reverse
 from django.http import HttpRequest, HttpResponse
 from django.contrib.messages.storage.base import Message
 
+
 class DisplayTransactionsViewTestCase(ViewTestCase):
     """Unit tests of the display transactions view"""
 
     def setUp(self) -> None:
-        self.url: str = reverse('view_transactions', kwargs={'filter_type': "all"})
+        self.url: str = reverse(
+            'view_transactions', kwargs={
+                'filter_type': "all"})
         self.url_redirect: str = reverse('view_transactions_redirect')
         self.user: User = User.objects.get(username='@johndoe')
 
@@ -49,7 +52,9 @@ class DisplayTransactionsViewTestCase(ViewTestCase):
 
     def test_get_when_sent_filter_is_applied(self) -> None:
         self._login(self.user)
-        self.url: str = reverse('view_transactions', kwargs={'filter_type': "sent"})
+        self.url: str = reverse(
+            'view_transactions', kwargs={
+                'filter_type': "sent"})
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/display_transactions.html')

@@ -7,6 +7,7 @@ from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.contrib.messages.storage.base import Message
 
+
 class DashboardViewTestCase(ViewTestCase):
     """Tests of the user dashboard view."""
 

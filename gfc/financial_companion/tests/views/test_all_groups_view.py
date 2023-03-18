@@ -5,6 +5,7 @@ from financial_companion.forms import UserLogInForm
 from django.http import HttpRequest, HttpResponse
 from django.contrib.messages.storage.base import Message
 
+
 class AllGroupsViewCase(ViewTestCase):
     """Tests of the user view all groups view."""
 
@@ -43,7 +44,9 @@ class AllGroupsViewCase(ViewTestCase):
 
     def test_post_when_full_group_name_is_applied(self) -> None:
         self._login(self.user)
-        self.url: str = reverse('all_groups', kwargs={'search_name': "Saving Club"})
+        self.url: str = reverse(
+            'all_groups', kwargs={
+                'search_name': "Saving Club"})
         response: HttpResponse = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/all_groups.html')

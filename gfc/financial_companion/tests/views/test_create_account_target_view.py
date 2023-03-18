@@ -55,7 +55,8 @@ class CreateAccountTargetViewTestCase(ViewTestCase):
     def test_successful_account_target_form_submission(self) -> None:
         self._login(self.test_user)
         before_count: int = AccountTarget.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = AccountTarget.objects.count()
         self.assertEqual(after_count, before_count + 1)
         self.assertTemplateUsed(response, 'pages/individual_account.html')
@@ -64,7 +65,8 @@ class CreateAccountTargetViewTestCase(ViewTestCase):
         self._login(self.test_user)
         self.form_input['target_type']: str = ''
         before_count: int = AccountTarget.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = AccountTarget.objects.count()
         self.assertEqual(after_count, before_count)
         self.assertTemplateUsed(response, 'pages/create_targets.html')

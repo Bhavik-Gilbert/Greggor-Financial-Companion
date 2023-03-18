@@ -11,7 +11,6 @@ from typing import Any
 from django.http import HttpRequest, HttpResponse
 
 
-
 class AddTransactionsViaBankStatementViewTestCase(ViewTestCase):
     """Unit tests of the add transactions via bank statement view"""
 
@@ -45,7 +44,8 @@ class AddTransactionsViaBankStatementViewTestCase(ViewTestCase):
         self.assertTrue(isinstance(form, AddTransactionsViaBankStatementForm))
         self.assertFalse(form.is_bound)
 
-    def test_valid_unsuccesfully_add_transaction_via_bank_statement(self) -> None:
+    def test_valid_unsuccesfully_add_transaction_via_bank_statement(
+            self) -> None:
         self._login(self.user)
         self.form_input.pop('bank_statement')
         before_count: int = Transaction.objects.filter(
@@ -61,11 +61,13 @@ class AddTransactionsViaBankStatementViewTestCase(ViewTestCase):
         self.assertTrue(isinstance(form, AddTransactionsViaBankStatementForm))
         self.assertTrue(form.is_bound)
 
-    def test_valid_succesfully_add_transaction_via_bank_statement(self) -> None:
+    def test_valid_succesfully_add_transaction_via_bank_statement(
+            self) -> None:
         self._login(self.user)
         before_count: int = Transaction.objects.filter(
             Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = Transaction.objects.filter(
             Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
         self.assertEqual(after_count, before_count + 33)
@@ -91,7 +93,8 @@ class AddTransactionsViaBankStatementViewTestCase(ViewTestCase):
         self._login(self.user)
         before_count: int = Transaction.objects.filter(
             Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = Transaction.objects.filter(
             Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
         self.assertEqual(after_count, before_count)
