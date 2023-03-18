@@ -6,14 +6,14 @@ from financial_companion.models import User, UserTarget
 class DeleteUserTargetViewTestCase(ViewTestCase):
     """Tests of the delete user target view."""
 
-    def setUp(self):
-        self.url = reverse('delete_user_target', kwargs={"pk": 1})
-        self.user = User.objects.get(username='@johndoe')
+    def setUp(self) -> None:
+        self.url: str = reverse('delete_user_target', kwargs={"pk": 1})
+        self.user: User = User.objects.get(username='@johndoe')
 
-    def test_delete_user_target_url(self):
+    def test_delete_user_target_url(self) -> None:
         self.assertEqual(self.url, '/delete_target/user/1')
 
-    def test_successful_deletion(self):
+    def test_successful_deletion(self) -> None:
         self._login(self.user)
         before_count = UserTarget.objects.count()
         response = self.client.get(self.url, follow=True)

@@ -1,25 +1,26 @@
 from .test_view_base import ViewTestCase
 from financial_companion.models import User
 from django.urls import reverse
+from django.http import HttpRequest, HttpResponse
 
 
 class DeleteProfileViewTestCase(ViewTestCase):
     """Unit tests of the delete profile view"""
 
-    def setUp(self):
-        self.user = User.objects.get(username='@johndoe')
-        self.url = reverse('delete_profile')
+    def setUp(self) -> None:
+        self.user: User = User.objects.get(username='@johndoe')
+        self.url: str = reverse('delete_profile')
 
-    def test_delete_profile_url(self):
+    def test_delete_profile_url(self) -> None:
         self.assertEqual(self.url, '/delete_profile/')
 
     def test_get_delete_profile(self):
         self._login(self.user)
-        before_count = User.objects.count()
-        response = self.client.get(self.url)
-        after_count = User.objects.count()
+        before_count: int = User.objects.count()
+        response: HttpResponse = self.client.get(self.url)
+        after_count: int = User.objects.count()
         self.assertEqual(before_count - 1, after_count)
-        response_url = reverse('home')
+        response_url: str = reverse('home')
         self.assertRedirects(
             response,
             response_url,
