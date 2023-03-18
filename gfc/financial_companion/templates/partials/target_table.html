@@ -1,19 +1,21 @@
 {% load targets %}
-<table class="table table-bordered table-striped text-center" >
+<div class="container container-scrollableX p-0 mb-2">
+<table class="table  table-bordered table-striped text-center" style="width:100%">
   <thead class = "table-primary">
-    <tr>
-        <th scope="col" style="text-align:center">Target ID</th>
-        <th scope="col" style="text-align:center">Income/Expense</th>
-        <th scope="col" style="text-align:center">Timespan</th>
-        <th scope="col" style="text-align:center">Amount</th>
-        <th scope="col" style="text-align:center">Currency</th>
-        <th scope="col" style="text-align:center">Target Type</th>
-        <th scope="col" style="text-align:center">Applied To</th>
-        <th scope="col" style="text-align:center">Progress %</th>
+    <tr class="text-center">
+        <th scope="col">Target ID</th>
+        <th scope="col">Income/Expense</th>
+        <th scope="col">Timespan</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Currency</th>
+        <th scope="col">Target Type</th>
+        <th scope="col">Applied To</th>
+        <th scope="col">Progress %</th>
+        <th scope="col">Action</th>
     </tr>
   </thead>
   {% for target in targets %}
-    <tr>
+    <tr class="text-center">
       <td>{{ target.id }}</td>
       <td>{{ target.target_type.title }}</td>
       <td>{{ target.timespan }}</td>
@@ -22,7 +24,14 @@
       <td>{{ target.getModelName }}</td>
       <td>{{ target }}</td>
       <td>{{ target|get_completeness }}</td>
+      <td>
+        <div class="row justify-content-center">
+          {% url target|get_edit_url pk=target.id as edit_target %}
+          {% url target|get_delete_url pk=target.id as delete_target %}
+          {% include "partials/view_models/edit_and_delete_models_buttons.html" with size="xs" edit_URL=edit_target delete_URL=delete_target model_name="target" class="d-flex justify-content-center" %}
+        </div>
+      </td>
     </tr>
-  </form>
   {% endfor %}
 </table>
+</div>
