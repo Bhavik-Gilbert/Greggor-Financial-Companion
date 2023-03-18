@@ -83,7 +83,7 @@ def create_user_target_view(request: HttpRequest) -> HttpResponse:
     to_return: HttpResponse = create_target(request, UserTarget, request.user)
 
     if to_return is None:
-        return redirect('dashboard')
+        return redirect('view_targets')
     else:
         return to_return
 
@@ -99,11 +99,9 @@ def edit_target(request: HttpRequest, Target, current_item,
             instance=current_item,
             form_type=Target)
         if form.is_valid():
-
             form.save()
             return None
     else:
-
         form = TargetForm(
             foreign_key=foreign_key,
             instance=current_item,
@@ -179,7 +177,7 @@ def edit_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
         request.user)
 
     if to_return is None:
-        return redirect("dashboard")
+        return redirect('view_targets')
     else:
         return to_return
 

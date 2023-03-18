@@ -28,7 +28,7 @@ class CreateUserTargetViewTestCase(ViewTestCase):
         response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
         after_count: int = UserTarget.objects.count()
         self.assertEqual(after_count, before_count + 1)
-        self.assertTemplateUsed(response, 'pages/dashboard.html')
+        self.assertTemplateUsed(response, 'pages/view_targets.html')
 
     def test_invalid_account_target_form_submission(self) -> None:
         self._login(self.test_user)

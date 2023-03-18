@@ -14,7 +14,7 @@ def edit_user_details_view(request):
         form = EditUserDetailsForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
-            return redirect('dashboard')
+            return redirect('profile')
         else:
             return redirect('edit_user_details')
     else:

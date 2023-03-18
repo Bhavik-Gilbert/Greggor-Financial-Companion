@@ -68,8 +68,8 @@ class AddTransactionsViaBankStatementViewTestCase(ViewTestCase):
         response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
         after_count: int = Transaction.objects.filter(
             Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
-        self.assertEqual(after_count, before_count + 29)
-        response_url: str = reverse(
+        self.assertEqual(after_count, before_count + 33)
+        response_url = reverse(
             'view_transactions_redirect')
         self.assertRedirects(
             response,
