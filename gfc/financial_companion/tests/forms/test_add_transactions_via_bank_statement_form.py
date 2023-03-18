@@ -130,21 +130,12 @@ class AddTransactionsViaBankStatementFormTestCase(FormTestCase):
         after_transaction_count: int = Transaction.objects.filter(
             Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
         self.assertEqual(
-            before_transaction_count + 29,
+            before_transaction_count + 33,
             after_transaction_count)
 
     def test_form_must_save_correctly_update_balance(self):
         self.form_input["update_balance"]: str = "True"
-        before_transaction_count: int = Transaction.objects.filter(
-            Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
-        form: AddTransactionsViaBankStatementForm = AddTransactionsViaBankStatementForm(
-            self.form_input, self.form_input, user=self.user)
-        transactions: list[Transaction] = form.save()
-        after_transaction_count: int = Transaction.objects.filter(
-            Q(sender_account=self.account) | Q(receiver_account=self.account)).count()
-        self.assertEqual(
-            before_transaction_count + 29,
-            after_transaction_count)
+        self.test_form_must_save_correctly()
         self.assertEqual(self.form_input["update_balance"], "True")
         self.account.refresh_from_db()
         self.assertEqual(Decimal("32.66"), self.account.balance)
