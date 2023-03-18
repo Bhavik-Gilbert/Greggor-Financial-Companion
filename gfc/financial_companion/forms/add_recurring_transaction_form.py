@@ -4,6 +4,7 @@ from datetime import datetime
 from django.utils.timezone import make_aware
 from typing import Any
 from django.forms.widgets import DateInput
+from django.db.models import QuerySet
 
 
 class AddRecurringTransactionForm(forms.ModelForm):
@@ -11,10 +12,16 @@ class AddRecurringTransactionForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(AddRecurringTransactionForm, self).__init__(*args, **kwargs)
-        self.fields['category'].label_from_instance = self.label_from_instance
-        self.fields['sender_account'].label_from_instance = self.label_from_instance
-        self.fields['receiver_account'].label_from_instance = self.label_from_instance
-        self.user: int = user
+        self.fields['category'].queryset: QuerySet[Account] = Category.objects.filter(
+            user=user.id)
+        self.fields['sender_account'].queryset: QuerySet[Account] = Account.objects.filter(
+            user=user.id)
+        self.fields['receiver_account'].queryset: QuerySet[Account] = Account.objects.filter(
+            user=user.id)
+        self.fields['category'].label_from_instance: Any = self.label_from_instance
+        self.fields['sender_account'].label_from_instance: Any = self.label_from_instance
+        self.fields['receiver_account'].label_from_instance: Any = self.label_from_instance
+        self.user: User = user
 
     def label_from_instance(self, obj) -> str:
         return obj.name
