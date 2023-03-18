@@ -17,14 +17,14 @@
 {% block confirmation_model_name %}recurring transaction{% endblock %}
 
 {% block table_content %}
-    <li class="list-group-item"><p><strong>Description: </strong>{{transaction.description}}</p></li>
-    <li class="list-group-item"><p><strong>Category: </strong>{{transaction.category.name}}</p></li>
-    <li class="list-group-item"><p><strong>Amount: </strong>{{transaction.currency.upper}} {{transaction.amount}}</p></li>
-    <li class="list-group-item"><p><strong>Sender Account: </strong>{{transaction.sender_account.name}}</p></li>
-    <li class="list-group-item"><p><strong>Receiver Account: </strong>{{transaction.receiver_account.name}}</p></li>
-    <li class="list-group-item"><p><strong>Frequency: </strong>{{transaction.interval.title}}</p></li>
-    <li class="list-group-item"><p><strong>Start Date: </strong>{{transaction.start_date}}</p></li>
-    <li class="list-group-item"><p><strong>End Date: </strong>{{transaction.end_date}}</p></li>
+    <li class="list-group-item"><strong>Description: </strong>{{transaction.description}}</li>
+    <li class="list-group-item"><strong>Category: </strong>{{transaction.category.name}}</li>
+    <li class="list-group-item"><strong>Amount: </strong>{{transaction.currency.upper}} {{transaction.amount}}</li>
+    <li class="list-group-item"><strong>Sender Account: </strong>{{transaction.sender_account.name}}</li>
+    <li class="list-group-item"><strong>Receiver Account: </strong>{{transaction.receiver_account.name}}</li>
+    <li class="list-group-item"><strong>Frequency: </strong>{{transaction.interval.title}}</li>
+    <li class="list-group-item"><strong>Start Date: </strong>{{transaction.start_date}}</li>
+    <li class="list-group-item"><strong>End Date: </strong>{{transaction.end_date}}</li>
 {% endblock %}
 
 {% block additional_items %}
