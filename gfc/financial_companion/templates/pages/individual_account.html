@@ -24,7 +24,9 @@
     {% if account.description %}
         <li class="list-group-item"><strong>Description: </strong> {{account.description}}</li>
     {% endif %}
+    {% if account.balance %}
         <li class="list-group-item"><strong>Balance: </strong> {{account.currency.upper}} {{account.balance}}</li>
+    {% endif %}
     {% if account.bank_name %}
         <li class="list-group-item"><strong>Bank Name: </strong> {{account.bank_name}}</li>
     {% endif %}

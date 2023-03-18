@@ -1,16 +1,16 @@
 <div class="row">
-  <div class="col-12">
+  <div class="container container-scrollableX">
     <table class="table table-bordered table-striped text-center" >
       <thead class="table-primary">
         <tr>
-          <th scope="col" class="col-1 text-center">User ID</th>
-          <th scope="col" class="col-4 text-center">Name</th>
-          <th scope="col" class="col-4 text-center">Username</th>
-          <th scope="col" class="col-3 text-center">Action</th>
+          <th scope="col" class="col-1">User ID</th>
+          <th scope="col" class="col-4">Name</th>
+          <th scope="col" class="col-4">Username</th>
+          <th scope="col" class="col-3">Action</th>
         </tr>
       </thead>
       {% for member in members %}
-        <tr class="text-center">
+        <tr class="text-center align-items-center">
           <td>{{ member.id }}</td>
           <td>{{ member.full_name }}</td>
           <td>{{ member.username }}</td>
@@ -18,8 +18,8 @@
             {% if member.email == owners_email %}
               <strong>(owner)</strong>
             {% else %}
-              <a href="{% url 'remove_user_from_user_group' group_pk=group.id user_pk=member.id %}" class="btn btn-sm btn-danger justify-content-center" onclick="return confirm('Are you sure you want to remove this member from this group?')">Remove Member</a>
-              <a href="{% url 'make_owner_of_user_group' group_pk=group.id user_pk=member.id %}" class="btn btn-sm btn-danger justify-content-center" onclick="return confirm('Are you sure you want to make this user the owner of the user group?')">Transfer Ownership</a>
+              <a href="{% url 'remove_user_from_user_group' group_pk=group.id user_pk=member.id %}" class="btn btn-sm btn-danger justify-content-center mb-1" onclick="return confirm('Are you sure you want to remove this member from this group?')">Remove Member</a>
+              <a href="{% url 'make_owner_of_user_group' group_pk=group.id user_pk=member.id %}" class="btn btn-sm btn-danger justify-content-center mb-1" onclick="return confirm('Are you sure you want to make this user the owner of the user group?')">Transfer Ownership</a>
             {% endif %}
           </td>
         </tr>

@@ -5,25 +5,26 @@
   <div class="text-center">
     <h1>Targets</h1>
     <div class="col-12">
-      <a class="btn btn-primary mb-3" href="{% url 'create_user_target' %}">Add New User Target</a>
+      <a class="btn btn-primary mb-3" href="{% url 'create_user_target' %}">Add New</a>
     </div>
   </div>
 
   <hr class="hr col-12"/>
 
-  <div class="row gy-4">
+  <div class="row">
     <div class="col-12">
-      <div>
-        <form class="row" method="post">
-          {% csrf_token %}
-          <div class="col-12 col-lg-4">
-              {% include 'partials/form.html' with form=form %}
-          </div>
-          <input type="submit" value="Apply" class="btn btn-primary col-12 col-lg-1">
-        </form>
-      </div>
+      <form class="row" method="post">
+        {% csrf_token %}
+        <div class="col-12 col-lg-4">
+            {% include 'partials/form.html' with form=form %}
+        </div>
+        <div class="col-12">
+          <input type="submit" value="Apply" class="btn btn-primary col-12 col-lg-2">
+        <div>
+      </form>
     </div>
 
+    <br>
     <div class="col-12">
       {% if targets %}
           {% include 'partials/target_table.html' with targets=targets %}

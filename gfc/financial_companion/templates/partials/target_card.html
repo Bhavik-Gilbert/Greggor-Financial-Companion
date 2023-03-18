@@ -8,14 +8,10 @@
         <div class="card">
           <div class="card-body p-0">
               <div class="card-header py-1">
-                <div class="align-content-center p-0">
+                <div class="row align-content-center justify-content-center p-0">
                   <div class="col">
                     <h5 class="pt-2">{{target.target_type.title}}</h5>
-                    <span style="float:left;">
-                      {% include 'partials/greggor_logo.html' with height=50 greggor_type=type_of_greggor%}
-                    </span>
                   </div>
-                  &nbsp
                   {% url target|get_edit_url pk=target.id as edit_target %}
                   {% url target|get_delete_url pk=target.id as delete_target %}
                   {% include "partials/view_models/edit_and_delete_models_buttons.html" with size="xs" edit_URL=edit_target delete_URL=delete_target model_name="target"%}
@@ -25,7 +21,7 @@
                 <li class="list-group-item"><strong>Timespan:</strong> {{target.timespan.title}}</li>
                 <li class="list-group-item">
                   <div class="progress" role="progressbar" aria-label="Default striped example" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar {%if completeness >= 100%}{%if target.target_type == "income"%}bg-success{% else %}bg-danger{% endif %}{% endif %} progress-bar-striped progress-bar-animated" style="width: {{completeness}}%">{{completeness}}%</div>
+                    <div class="progress-bar {%if completeness >= 100%}{%if target.target_type == 'income'%}bg-success{% else %}bg-danger{% endif %}{% endif %} progress-bar-striped progress-bar-animated" style="width: {{completeness}}%">{{completeness}}%</div>
                   </div>
                 </li>
                 <li class="list-group-item"><strong>Goal Amount:</strong> {{target.currency.upper}} {{target.amount}}</li>
