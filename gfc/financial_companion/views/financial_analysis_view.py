@@ -15,19 +15,20 @@ from json import dumps
 @login_required
 def spending_summary(request: HttpRequest) -> HttpResponse:
     time = Timespan.DAY
+    user = request.user
     if request.method == "POST":
         form = TimespanOptionsForm(request.POST)
         if form.is_valid():
             time = form.get_choice()
-    total_spent = Transaction.calculate_total(
-        Transaction.get_transactions_from_time_period(
-            time, request.user, "sent"))
-    total_received = Transaction.calculate_total(
-        Transaction.get_transactions_from_time_period(
-            time, request.user, "received"))
+    total_spent = sum(transaction.amount for transaction in
+                      Transaction.get_transactions_from_time_period(
+                          time, request.user, "sent"))
+    total_received = sum(transaction.amount for transaction in
+                         Transaction.get_transactions_from_time_period(
+                             time, request.user, "received"))
     categories = Transaction.get_category_splits(
         Transaction.get_transactions_from_time_period(
-            time, request.user, "sent"))
+            time, request.user, "sent"), user)
     percentages = functions.calculate_percentages(categories, total_spent)
     percentages_list: list[float] = list(percentages.values())
     labels = list(percentages.keys())

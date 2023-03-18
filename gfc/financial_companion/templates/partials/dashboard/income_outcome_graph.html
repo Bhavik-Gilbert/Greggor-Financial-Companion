@@ -1,0 +1,10 @@
+{% load static %}
+
+<head>
+    <script src="{% static 'javascript/load_colours.js' %}"></script>
+</head>
+
+
+<body>
+    {% include "partials/dashboard/graph.html" with chart_name="income_outcome" %}
+</body>

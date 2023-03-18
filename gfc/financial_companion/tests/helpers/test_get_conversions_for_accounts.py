@@ -1,6 +1,8 @@
 from .test_helper_base import HelperTestCase
 from financial_companion.helpers import get_conversions_for_accounts, CurrencyType
 from financial_companion.models import BankAccount
+from typing import Union
+from django.db.models import QuerySet
 from typing import Any
 
 
@@ -10,7 +12,7 @@ class GetConversionsForAccountsHelperFunctionTestCase(HelperTestCase):
     def _assert_get_conversions_for_accounts(
             self, bank_accounts: list[BankAccount], currency_code: str):
         """Assert get_conversions_for_accounts function working with parameters given"""
-        conversions = get_conversions_for_accounts(
+        conversions: dict[str, float] = get_conversions_for_accounts(
             bank_accounts, currency_code)
         self.assertTrue(currency_code in conversions)
         self.assertEqual(conversions.get(currency_code), 1.0)
@@ -33,9 +35,10 @@ class GetConversionsForAccountsHelperFunctionTestCase(HelperTestCase):
             assert_get_conversions_for_accounts_args)
 
     def setUp(self):
-        self.valid_bank_accounts = BankAccount.objects.filter(
+        self.valid_bank_accounts: Union[QuerySet, list[BankAccount]] = BankAccount.objects.filter(
             interest_rate__gt=0)
-        self.no_valid_bank_accounts = BankAccount.objects.filter(id__lt=0)
+        self.no_valid_bank_accounts: Union[QuerySet,
+                                           list[BankAccount]] = BankAccount.objects.filter(id__lt=0)
 
     def test_valid_bank_accounts_valid_currency_code(self):
         for currency_code in CurrencyType:
@@ -45,7 +48,7 @@ class GetConversionsForAccountsHelperFunctionTestCase(HelperTestCase):
             )
 
     def test_valid_bank_accounts_invalid_currency_code(self):
-        conversions = get_conversions_for_accounts(
+        conversions: dict[str, float] = get_conversions_for_accounts(
             self.valid_bank_accounts, "AAA")
         self.assertTrue("AAA" in conversions)
         self.assertEqual(conversions.get("AAA"), 1.0)

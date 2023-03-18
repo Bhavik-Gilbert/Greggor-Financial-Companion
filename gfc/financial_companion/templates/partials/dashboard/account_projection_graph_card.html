@@ -3,7 +3,7 @@
 {% block card_title %}Projection:{% endblock %}
 
 {% block card_content %}
-    {% if not bank_accounts %}
+    {% if bank_accounts %}
         <div>
             {% include "partials/dashboard/account_projection_graph.html" %}
         </div>

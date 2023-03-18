@@ -4,6 +4,7 @@ from financial_companion.models import RecurringTransaction, Transaction, User
 from django.urls import reverse
 from decimal import Decimal
 from typing import Any, Union
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 class AddRecurringTransactionViewTestCase(ViewTestCase):
@@ -11,10 +12,13 @@ class AddRecurringTransactionViewTestCase(ViewTestCase):
 
     def setUp(self) -> None:
         self.url = reverse('add_recurring_transaction')
+        self.image_path = "financial_companion/tests/data/dragon.jpeg"
+        self.image_upload = self._get_image_upload_file(
+            self.image_path, "jpeg")
         self.form_input = {
             "title": "Test",
             "description": "This is a test transaction",
-            "image": "transaction_reciept.jpeg",
+            "image": self.image_upload,
             "category": 1,
             "amount": 152.95,
             "currency": "USD",
@@ -70,6 +74,9 @@ class AddRecurringTransactionViewTestCase(ViewTestCase):
         transaction = RecurringTransaction.objects.get(title='Test')
         self.assertEqual(transaction.description, 'This is a test transaction')
         self.assertEqual(transaction.category.id, 1)
+        self.assertTrue("transactions/" in transaction.image.name)
+        self.assertTrue(self.image_path.split(
+            "/")[-1].split(".")[-1] in transaction.image.name)
         self.assertEqual(transaction.amount, Decimal("152.95"))
         self.assertEqual(transaction.currency, 'USD')
         self.assertEqual(transaction.sender_account.id, 1)

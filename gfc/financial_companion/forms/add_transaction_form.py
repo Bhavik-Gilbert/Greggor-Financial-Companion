@@ -54,18 +54,7 @@ class AddTransactionForm(forms.ModelForm):
                 receiver_account=self.cleaned_data.get('receiver_account')
             )
         else:
-            transaction: Transaction = instance
-            transaction.title: str = self.cleaned_data.get('title')
-            transaction.description: str = self.cleaned_data.get('description')
-            transaction.image = self.cleaned_data.get('image')
-            transaction.category: str = self.cleaned_data.get('category')
-            transaction.amount: float = self.cleaned_data.get('amount')
-            transaction.currency: str = self.cleaned_data.get('currency')
-            transaction.sender_account: Account = self.cleaned_data.get(
-                'sender_account')
-            transaction.receiver_account: Account = self.cleaned_data.get(
-                'receiver_account')
-            transaction.save()
+            transaction: Transaction = super().save(commit=True)
 
         return transaction
 
@@ -86,10 +75,10 @@ class AddTransactionForm(forms.ModelForm):
         elif not ((sender_account.id in ids) or (receiver_account.id in ids)):
             self.add_error(
                 'sender_account',
-                'Neither the sender or reciever are one of your accounts')
+                'Neither the sender or reciever are accounts with a balance to track.')
             self.add_error(
                 'receiver_account',
-                'Neither the sender or reciever are one of your accounts')
+                'Neither the sender or reciever are accounts with a balance to track.')
 
 
 class AddTransactionsViaBankStatementForm(forms.Form):

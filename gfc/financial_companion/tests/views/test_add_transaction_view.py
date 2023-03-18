@@ -3,6 +3,7 @@ from financial_companion.forms import AddTransactionForm
 from financial_companion.models import Transaction, User
 from django.urls import reverse
 from decimal import Decimal
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 class AddTransactionViewTestCase(ViewTestCase):
@@ -10,10 +11,13 @@ class AddTransactionViewTestCase(ViewTestCase):
 
     def setUp(self):
         self.url = reverse('add_transaction')
+        self.image_path = "financial_companion/tests/data/dragon.jpeg"
+        self.image_upload = self._get_image_upload_file(
+            self.image_path, "jpeg")
         self.form_input = {
             "title": "Test",
             "description": "This is a test transaction",
-            "image": "transaction_reciept.jpeg",
+            "image": self.image_upload,
             "category": 1,
             "amount": 152.95,
             "currency": "USD",
@@ -64,7 +68,9 @@ class AddTransactionViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, 'pages/display_transactions.html')
         transaction = Transaction.objects.get(title='Test')
         self.assertEqual(transaction.description, 'This is a test transaction')
-        # self.assertEqual(transaction.image, "transaction_reciept.jpeg")
+        self.assertTrue("transactions/" in transaction.image.name)
+        self.assertTrue(self.image_path.split(
+            "/")[-1].split(".")[-1] in transaction.image.name)
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("152.95"))
         self.assertEqual(transaction.currency, 'USD')

@@ -5,6 +5,7 @@
     <script src="{% static 'javascript/account_projection_graph.js' %}"></script>
 </head>
 
-<body onload="loadInitialGraph({{bank_account_infos}},{{timescales_strings|safe}},{{conversion_to_main_currency_JSON}},'{{main_currency}}')">
-    {% include "partials/dashboard/graph.html" %}
-</body>
+<div>
+    {% include "partials/dashboard/graph.html" with chart_name='savings_accounts' %}
+    <script> loadInitialGraph({{bank_account_infos|safe}},{{timescales_strings|safe}},{{conversion_to_main_currency_JSON|safe}},'{{main_currency}}')</script>
+</div>

@@ -212,7 +212,7 @@ def get_sorted_members_based_on_completed_targets(
 
 
 def get_warning_messages_for_targets(
-        request: HttpRequest, show_numbers_for_multiples: bool = True, targets=None) -> HttpRequest:
+        request: HttpRequest, show_numbers_for_multiples: bool = True, targets: list = None) -> HttpRequest:
     """Return a httprequest containing messages for nearly exceeded, exceeded and completed targets"""
     if not targets:
         targets: list = request.user.get_all_targets()
@@ -225,11 +225,11 @@ def get_warning_messages_for_targets(
     for target in targets:
         dictionary_to_add: dict = None
         if target.target_type == 'income' and target in completed_targets:
-            dictionary_to_add: dict = sorted_targets_dict['completed']
+            dictionary_to_add = sorted_targets_dict['completed']
         elif target.target_type == 'expense' and target in nearly_completed_targets:
-            dictionary_to_add: dict = sorted_targets_dict['nearlyExceeded']
+            dictionary_to_add = sorted_targets_dict['nearlyExceeded']
         elif target.target_type == 'expense' and target in completed_targets:
-            dictionary_to_add: dict = sorted_targets_dict['exceeded']
+            dictionary_to_add = sorted_targets_dict['exceeded']
 
         if dictionary_to_add is not None:
             key: str = target.getModelName(True)
@@ -237,7 +237,6 @@ def get_warning_messages_for_targets(
             if key:
                 if key in dictionary_to_add.keys():
                     list_to_append: list = dictionary_to_add[key].copy()
-                    print(dictionary_to_add[key])
                 else:
                     list_to_append: list = []
                 list_to_append.append(target)
@@ -290,7 +289,7 @@ def get_warning_messages_for_targets(
     return request
 
 
-def convert_list_to_string(list_in: list[any]) -> str:
+def convert_list_to_string(list_in: list[Any]) -> str:
     """returns an inputed list as a string"""
     output: str = ""
     list_length: int = len(list_in)

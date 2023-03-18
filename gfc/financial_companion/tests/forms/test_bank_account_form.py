@@ -1,16 +1,16 @@
-"""Unit tests of the bank account form."""
 from .test_form_base import FormTestCase
 from financial_companion.forms import BankAccountForm, MonetaryAccountForm
 from financial_companion.helpers import CurrencyType, AccountType
 from financial_companion.models import User
 from decimal import Decimal
+from typing import Any
 
 
 class BankAccountFormTestCase(FormTestCase):
     """Unit tests of the bank account form."""
 
     def setUp(self):
-        self.form_input = {
+        self.form_input: dict[str, Any] = {
             "name": "Test Bank",
             "description": "This is a test bank",
             "balance": Decimal("99.99"),

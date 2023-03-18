@@ -1,8 +1,9 @@
 from .test_model_base import ModelTestCase
 from django.db.backends.sqlite3.base import IntegrityError
-from ...models import UserTarget
+from ...models import UserTarget, User
 from freezegun import freeze_time
 import datetime
+from ...helpers import Timespan, TransactionType
 
 
 class UserTargetModelTestCase(ModelTestCase):
@@ -17,29 +18,29 @@ class UserTargetModelTestCase(ModelTestCase):
         self._assert_model_is_valid()
 
     def test_valid_duplicate_user_duplicate_timespan(self):
-        self.second_model.user = self.test_model.user
-        self.second_model.timespan = self.test_model.timespan
+        self.second_model.user: User = self.test_model.user
+        self.second_model.timespan: Timespan = self.test_model.timespan
         self.second_model.save()
         self._assert_model_is_valid()
 
     def test_valid_duplicate_user_duplicate_target_type(self):
-        self.second_model.user = self.test_model.user
-        self.second_model.target_type = self.test_model.target_type
+        self.second_model.user: User = self.test_model.user
+        self.second_model.target_type: TransactionType = self.test_model.target_type
         self.second_model.save()
         self._assert_model_is_valid()
 
     def test_valid_duplicate_timespan_duplicate_target_type(self):
-        self.second_model.timespan = self.test_model.timespan
-        self.second_model.target_type = self.test_model.target_type
+        self.second_model.timespan: Timespan = self.test_model.timespan
+        self.second_model.target_type: TransactionType = self.test_model.target_type
         self.second_model.save()
         self._assert_model_is_valid()
 
     def test_invalid_duplicate_user_duplicate_target_type_duplicate_timespan(
             self):
         with self.assertRaises(Exception) as raised:
-            self.second_model.user = self.test_model.user
-            self.second_model.timespan = self.test_model.timespan
-            self.second_model.target_type = self.test_model.target_type
+            self.second_model.user: User = self.test_model.user
+            self.second_model.timespan: Timespan = self.test_model.timespan
+            self.second_model.target_type: TransactionType = self.test_model.target_type
             self.second_model.save()
             self._assert_model_is_invalid()
         self.assertEqual(IntegrityError, type(raised.exception))
