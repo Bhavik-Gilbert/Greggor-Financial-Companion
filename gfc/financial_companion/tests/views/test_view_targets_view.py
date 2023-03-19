@@ -25,7 +25,6 @@ class ViewTargetsViewTestCase(ViewTestCase):
             url_inputs[key]: str = 'all'
             self.assertEqual(reverse('view_targets', kwargs=url_inputs), url)
 
-
     def test_get_view_targets(self):
         self._login(self.user)
         response = self.client.get(self.url)

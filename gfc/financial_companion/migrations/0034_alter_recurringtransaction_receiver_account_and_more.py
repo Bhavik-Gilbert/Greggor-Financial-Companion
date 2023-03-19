@@ -14,11 +14,17 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='recurringtransaction',
             name='receiver_account',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='receiver%(app_label)s_%(class)s_related', to='financial_companion.account'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='receiver%(app_label)s_%(class)s_related',
+                to='financial_companion.account'),
         ),
         migrations.AlterField(
             model_name='transaction',
             name='receiver_account',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='receiver%(app_label)s_%(class)s_related', to='financial_companion.account'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='receiver%(app_label)s_%(class)s_related',
+                to='financial_companion.account'),
         ),
     ]
