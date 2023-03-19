@@ -5,7 +5,7 @@ from django.urls import reverse
 from decimal import Decimal
 from django.core.files.uploadedfile import SimpleUploadedFile
 from typing import Any
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 
 
 class EditTransactionViewTestCase(ViewTestCase):

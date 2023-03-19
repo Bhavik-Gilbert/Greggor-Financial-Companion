@@ -3,7 +3,7 @@ from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.forms import EditUserDetailsForm
 from financial_companion.models import User
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 
 
 class EditUserDetailsViewTestCase(ViewTestCase):

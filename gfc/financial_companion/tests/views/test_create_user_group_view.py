@@ -4,7 +4,7 @@ from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.forms import UserGroupForm
 from financial_companion.models import User, UserGroup
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 
 
 class CreateUserGroupViewTestCase(ViewTestCase):

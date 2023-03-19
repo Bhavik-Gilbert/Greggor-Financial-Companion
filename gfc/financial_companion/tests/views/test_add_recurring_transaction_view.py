@@ -1,10 +1,8 @@
 from .test_view_base import ViewTestCase
 from financial_companion.forms import AddRecurringTransactionForm
-from financial_companion.models import RecurringTransaction, Transaction, User
+from financial_companion.models import RecurringTransaction, User
 from django.urls import reverse
 from decimal import Decimal
-from typing import Any, Union
-from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 class AddRecurringTransactionViewTestCase(ViewTestCase):

@@ -4,7 +4,7 @@ from django.contrib.messages import get_messages
 from django.urls import reverse
 from typing import Union, Any
 from django.db.models import QuerySet
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 from django.contrib.messages.storage.base import Message
 
 

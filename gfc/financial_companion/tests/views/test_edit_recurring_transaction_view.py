@@ -4,8 +4,7 @@ from financial_companion.models import RecurringTransaction, User
 from django.urls import reverse
 from decimal import Decimal
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.http import HttpRequest, HttpResponse
-from django.contrib.messages.storage.base import Message
+from django.http import HttpResponse
 from typing import Any
 
 

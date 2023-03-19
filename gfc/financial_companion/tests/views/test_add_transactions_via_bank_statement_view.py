@@ -8,7 +8,7 @@ from django.db.models import Q
 import os
 from django.contrib.messages import get_messages
 from typing import Any
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 
 
 class AddTransactionsViaBankStatementViewTestCase(ViewTestCase):

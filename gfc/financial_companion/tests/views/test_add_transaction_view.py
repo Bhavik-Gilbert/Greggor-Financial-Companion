@@ -4,8 +4,8 @@ from financial_companion.models import Transaction, User
 from django.urls import reverse
 from decimal import Decimal
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.http import HttpRequest, HttpResponse
-from typing import Union, Any
+from django.http import HttpResponse
+from typing import Any
 
 
 class AddTransactionViewTestCase(ViewTestCase):

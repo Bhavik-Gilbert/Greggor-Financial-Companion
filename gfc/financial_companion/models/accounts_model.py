@@ -13,7 +13,7 @@ from model_utils.managers import InheritanceManager
 from decimal import Decimal
 from financial_companion.models import User
 import financial_companion.models as fcmodels
-from ..helpers import CurrencyType, AccountType, FilterTransactionType, CurrencyConverter, convert_currency
+from ..helpers import CurrencyType, AccountType, FilterTransactionType, convert_currency
 
 
 class Account(Model):

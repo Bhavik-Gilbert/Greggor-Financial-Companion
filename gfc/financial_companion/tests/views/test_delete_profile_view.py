@@ -1,7 +1,7 @@
 from .test_view_base import ViewTestCase
 from financial_companion.models import User
 from django.urls import reverse
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 
 
 class DeleteProfileViewTestCase(ViewTestCase):

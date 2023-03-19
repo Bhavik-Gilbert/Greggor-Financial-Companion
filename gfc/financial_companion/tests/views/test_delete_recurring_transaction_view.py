@@ -1,8 +1,7 @@
 from .test_view_base import ViewTestCase
-from financial_companion.forms import AddRecurringTransactionForm
 from financial_companion.models import RecurringTransaction, User, Transaction
 from django.urls import reverse
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 
 
 class DeleteRecurringTransactionViewTestCase(ViewTestCase):
