@@ -8,6 +8,7 @@ from django.db.models import (
 from encrypted_fields.fields import EncryptedCharField
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
+from django.db.models import Q
 from model_utils.managers import InheritanceManager
 from decimal import Decimal
 from financial_companion.models import User
@@ -91,11 +92,10 @@ class Account(Model):
     def get_account_recurring_transactions(self) -> list:
         """Returns filtered list of all this accounts RECURRING transactions"""
         transactions: list[fcmodels.RecurringTransaction] = []
-
         transactions: list = [
             *transactions,
             *fcmodels.RecurringTransaction.objects.filter(
-                sender_account=self)]
+                Q(sender_account=self) | Q(receiver_account=self))]
         return transactions
 
     def __str__(self) -> str:

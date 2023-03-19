@@ -2,10 +2,14 @@
 {% load get_logo %}
 
 <div class="row g-2">
-  <div class="card">
-  <h4 class="card-title">Overall Greggor Mood:</h4>
-  {% with overall_greggor=targets|get_greggor_type_for_overall_completeness %}
-    {% include 'partials/greggor_logo.html' with greggor_type=overall_greggor%}
+  <div class="card text-bg-primary">
+    <div class="card-body">
+      <h4 class="card-title pb-0">Overall Greggor Mood:</h4>
+      {% with overall_greggor=targets|get_greggor_type_for_overall_completeness %}
+        <div class="card">
+          {% include 'partials/greggor_logo.html' with greggor_type=overall_greggor%}
+        </div>
+    </div>
   </div>
   {% for target in targets %}
   <div class="row-12 row-md-12">

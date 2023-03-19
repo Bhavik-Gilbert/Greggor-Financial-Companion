@@ -1,5 +1,5 @@
 /*
- Loads boostrap colours into a js dictionary 
+    Loads boostrap colours into a js dictionary 
 */
 
 const style = window.getComputedStyle(document.documentElement);
