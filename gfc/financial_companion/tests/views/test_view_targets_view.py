@@ -17,7 +17,14 @@ class ViewTargetsViewTestCase(ViewTestCase):
         self.user = User.objects.get(username='@johndoe')
 
     def test_view_targets_url(self):
-        self.assertEqual(self.url, '/view_targets/')
+        url: str = '/view_targets/'
+        url_inputs: dict[str, str] = {}
+        self.assertEqual(self.url, url)
+        for key in self.form_input:
+            url += 'all/'
+            url_inputs[key]: str = 'all'
+            self.assertEqual(reverse('view_targets', kwargs=url_inputs), url)
+
 
     def test_get_view_targets(self):
         self._login(self.user)

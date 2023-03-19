@@ -248,33 +248,41 @@ def delete_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
 
 
 @login_required
-def view_targets(request: HttpRequest) -> HttpResponse:
+def view_targets(request: HttpRequest, time: str = "all", income_or_expense: str = "all", target_type: str= "all") -> HttpResponse:
     """View to allow users to view all their targets"""
-    time = None
-    income_or_expense = None
-    target_type = None
     targets = request.user.get_all_targets()
     if request.method == "POST":
         form = TargetFilterForm(request.POST)
         if form.is_valid():
-            time = form.get_time()
-            income_or_expense = form.get_income_or_expense()
-            target_type = form.get_target_type()
-            if time != "":
-                targets = list(
-                    filter(
-                        lambda target: time == target.timespan,
-                        targets))
-            if target_type != "":
-                targets = list(
-                    filter(
-                        lambda target: target_type == target.getModelName(),
-                        targets))
-            if income_or_expense != "":
-                targets = list(
-                    filter(
-                        lambda target: income_or_expense == target.target_type,
-                        targets))
+            form_output: dict[str, str] = {
+                "time": form.get_time(),
+                "income_or_expense": form.get_income_or_expense(),
+                "target_type": form.get_target_type()
+            }
+            if len({k: v for k, v in form_output.items() if v}) == 0:
+                return redirect("view_targets")
+        
+            for key in form_output:
+                if form_output[key] == "":
+                    form_output[key]: str = "all"
+            return redirect("view_targets", **form_output)
+
+    if time != "all":
+        targets = list(
+            filter(
+                lambda target: time == target.timespan,
+                targets))
+    if target_type != "all":
+        targets = list(
+            filter(
+                lambda target: target_type == target.getModelName(),
+                targets))
+    if income_or_expense != "all":
+        targets = list(
+            filter(
+                lambda target: income_or_expense == target.target_type,
+                targets))
+        
     form = TargetFilterForm()
     list_of_targets = paginate(request.GET.get('page', 1), targets)
 

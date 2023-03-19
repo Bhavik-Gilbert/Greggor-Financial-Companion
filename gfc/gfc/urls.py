@@ -261,7 +261,7 @@ urlpatterns: list[URLPattern] = [
     path('add_transactions_via_bank_statement/',
          views.add_transactions_via_bank_statement,
          name='add_transactions_via_bank_statement'),
-    path('view_targets/',
+    re_path(r'^view_targets(?:/(?P<time>[a-zA-Z]+))?(?:/(?P<income_or_expense>[a-zA-Z]+))?(?:/(?P<target_type>[a-zA-Z]+))?/$',
          views.view_targets,
          name='view_targets'),
     path('spending_summary/', views.spending_summary, name='spending_summary'),
