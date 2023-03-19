@@ -25,7 +25,7 @@ def create_target(request, Target, current_item) -> Any:
             messages.add_message(
                 request,
                 messages.SUCCESS,
-                "Target created successfully!")
+                "Target successfully created")
             return None
     else:
         form: TargetForm = TargetForm(
@@ -99,6 +99,10 @@ def edit_target(request: HttpRequest, Target, current_item,
             instance=current_item,
             form_type=Target)
         if form.is_valid():
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                "This target has been successfully updated")
             form.save()
             return None
     else:

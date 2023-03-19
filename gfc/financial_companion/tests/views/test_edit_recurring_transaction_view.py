@@ -75,14 +75,14 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
         response = self.client.post(self.url, self.form_input, follow=True)
         after_count = RecurringTransaction.objects.count()
         self.assertEqual(after_count, before_count)
-        response_url = reverse('view_recurring_transactions')
+        response_url = reverse('individual_recurring_transaction', kwargs={'pk': 2})
         self.assertRedirects(
             response,
             response_url,
             status_code=302,
             target_status_code=200)
         self.assertTemplateUsed(
-            response, 'pages/view_recurring_transactions.html')
+            response, 'pages/individual_recurring_transaction.html')
         transaction = RecurringTransaction.objects.get(id=2)
         transaction.refresh_from_db()
         self.assertEqual(transaction.title, "Test")
