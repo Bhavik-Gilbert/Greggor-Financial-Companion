@@ -104,13 +104,6 @@ class Transaction(AbstractTransaction):
     )
 
     @staticmethod
-    def calculate_total(transactions: list) -> int:
-        total: int = 0
-        for x in transactions:
-            total += x.amount
-        return total
-
-    @staticmethod
     def get_transactions_from_time_period(
             time_choice: Timespan, user: User, filter_type: str = str("all")) -> list:
         user_transactions: list[Transaction] = user.get_user_transactions(
