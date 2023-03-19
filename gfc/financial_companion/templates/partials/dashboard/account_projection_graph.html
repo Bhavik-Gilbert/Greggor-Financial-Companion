@@ -6,6 +6,6 @@
 </head>
 
 <div>
-    {% include "partials/dashboard/graph.html" with chart_name="savings_accounts" %}
+    {% include "partials/dashboard/graph.html" with chart_name='savings_accounts' %}
     <script> loadInitialGraph({{bank_account_infos|safe}},{{timescales_strings|safe}},{{conversion_to_main_currency_JSON|safe}},'{{main_currency}}')</script>
 </div>

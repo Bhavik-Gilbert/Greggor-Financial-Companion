@@ -48,10 +48,10 @@ class CurrencyType(models.TextChoices):
 
 
 class AccountType(models.TextChoices):
-    """ENUM for transaction types"""
+    """ENUM for account types"""
     POT: str = "pot"
     BANK: str = "bank"
-    REGULAR: str = "regular"
+    REGULAR: str = "merchant"
 
 
 class ScoreListOrderType(models.TextChoices):

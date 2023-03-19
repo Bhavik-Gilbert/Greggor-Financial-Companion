@@ -38,10 +38,13 @@
       {% endif %}
 
       {% if accounts %}
-        <h3 class="col-12">Non Monetary Accounts</h3>
+        <h3 class="col-12">Merchant Accounts</h3>
         {% for account in accounts %}
           {% include 'partials/card_account.html' with account=account%}
         {% endfor %}
+        <div class="col-12 d-flex justify-content-center">
+          {% include 'partials/pagination.html'  with page_obj=accounts %}
+        </div>
       {% endif %}
     {% else %}
       <div class="col-12">

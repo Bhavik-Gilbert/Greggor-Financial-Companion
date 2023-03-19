@@ -18,7 +18,8 @@ def edit_user_details_view(request):
                 request,
                 messages.SUCCESS,
                 "Your profile has been successfully updated!")
-            return redirect('dashboard')
+            return redirect('profile')
+
         else:
             return redirect('edit_user_details')
     else:

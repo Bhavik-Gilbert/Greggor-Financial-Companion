@@ -16,7 +16,7 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .accounts_model import Account, PotAccount
 from .category_model import Category
 from .user_model import User
-from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, TransactionType
+from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, TransactionType, FilterTransactionType
 import datetime
 import os
 from django.db.models.signals import pre_delete
@@ -113,7 +113,6 @@ class Transaction(AbstractTransaction):
     def get_transactions_from_time_period(
             time_choice: Timespan, user: User, filter_type: str=str("all")) -> list:
         user_transactions: list[Transaction] = user.get_user_transactions(filter_type=filter_type)
-
         timespan_int: int = timespan_map[time_choice]
         start_of_timespan_period: datetime = datetime.datetime.today(
         ) - datetime.timedelta(days=timespan_int)

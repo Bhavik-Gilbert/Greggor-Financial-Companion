@@ -42,7 +42,7 @@ class EditUserDetailsViewTestCase(ViewTestCase):
         self.assertEqual(self.user.username, '@johndoe')
         response = self.client.post(self.url, self.form_input, follow=True)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, "pages/dashboard.html")
+        self.assertTemplateUsed(response, "pages/profile.html")
         self.user.refresh_from_db()
         self.assertNotEqual(self.user.username, '@johndoe')
         self.assertEqual(self.user.first_name, 'Bob')

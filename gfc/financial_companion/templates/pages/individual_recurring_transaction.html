@@ -17,14 +17,31 @@
 {% block confirmation_model_name %}recurring transaction{% endblock %}
 
 {% block table_content %}
-    <li class="list-group-item"><p><strong>Description: </strong>{{transaction.description}}</p></li>
-    <li class="list-group-item"><p><strong>Category: </strong>{{transaction.category.name}}</p></li>
-    <li class="list-group-item"><p><strong>Amount: </strong>{{transaction.currency.upper}} {{transaction.amount}}</p></li>
-    <li class="list-group-item"><p><strong>Sender Account: </strong>{{transaction.sender_account.name}}</p></li>
-    <li class="list-group-item"><p><strong>Receiver Account: </strong>{{transaction.receiver_account.name}}</p></li>
-    <li class="list-group-item"><p><strong>Frequency: </strong>{{transaction.interval.title}}</p></li>
-    <li class="list-group-item"><p><strong>Start Date: </strong>{{transaction.start_date}}</p></li>
-    <li class="list-group-item"><p><strong>End Date: </strong>{{transaction.end_date}}</p></li>
+    {% if transaction.description %}
+      <li class="list-group-item"><p><strong>Description: </strong>{{transaction.description}}</p></li>
+    {% endif %}
+    {% if transaction.category %}
+      <li class="list-group-item"><p><strong>Category: </strong>{{transaction.category.name}}</p></li>
+    {% endif %}
+    {% if transaction.currency %}
+      <li class="list-group-item"><p><strong>Amount: </strong>{{transaction.currency.upper}} {{transaction.amount}}</p></li>
+    {% endif %}
+    {% if transaction.sender_account %}
+      <li class="list-group-item"><p><strong>Sender Account: </strong>{{transaction.sender_account.name}}</p></li>
+    {% endif %}
+    {% if transaction.receiver_account %}
+      <li class="list-group-item"><p><strong>Receiver Account: </strong>{{transaction.receiver_account.name}}</p></li>
+    {% endif %}
+    {% if transaction.interval %}
+      <li class="list-group-item"><p><strong>Frequency: </strong>{{transaction.interval.title}}</p></li>
+    {% endif %}
+    {% if transaction.start_date %}
+      <li class="list-group-item"><p><strong>Start Date: </strong>{{transaction.start_date}}</p></li>
+    {% endif %}
+    {% if transaction.end_date %}
+      <li class="list-group-item"><p><strong>End Date: </strong>{{transaction.end_date}}</p></li>
+    {% endif %}
+
 {% endblock %}
 
 {% block additional_items %}
@@ -37,10 +54,10 @@
 {% block further_content %}
   <h3 class="text-black">Associated Transactions:</h3>
   <div class="row gy-3 gx-3">
-      {%include 'partials/recurring_transaction_transactions_list.html'  with transactions=transactionslist %}
+      {%include 'partials/recurring_transaction_transactions_list.html'  with transactions=transactions_list %}
 
       <div class="col-12 text-black">
-        {% include 'partials/pagination.html'  with page_obj=transactionslist %}
+        {% include 'partials/pagination.html'  with page_obj=transactions_list %}
       </div>
   </div>
 {% endblock %}

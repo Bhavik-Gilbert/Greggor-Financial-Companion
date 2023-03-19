@@ -1,3 +1,6 @@
+/*
+    Load interest rate account projections graph
+*/
 function loadInitialGraph(bankAccountsInfo, timeBands, conversions, mainCurrency) {
     try {
         getUserChoices(bankAccountsInfo, timeBands, conversions, mainCurrency);
@@ -8,6 +11,9 @@ function loadInitialGraph(bankAccountsInfo, timeBands, conversions, mainCurrency
 }
 
 
+/*
+    Calculate dataset for line graph for interest rate account projections
+*/
 function calculateDataset(accountsInfo, projectionTimescaleInMonths, timeBands, mainCurrency, selectedCurrency = "", conversionsDict = {}) {
     lineColours = [theme.primary, theme.secondary, theme.success, theme.warning, theme.danger, theme.dark]
     $(document).ready(() => {
@@ -21,7 +27,9 @@ function calculateDataset(accountsInfo, projectionTimescaleInMonths, timeBands, 
     });
 }
     
-
+/*
+    Calculate dataset for line graph for interest rate account projections for a given account
+*/
 function getDatasetForAccount(account, selectedCurrency, timeBands, lineColour, conversionsDict, mainCurrency) {
 
     const conversion = getConversionForAccount(account, selectedCurrency, mainCurrency, conversionsDict);
@@ -40,6 +48,9 @@ function getDatasetForAccount(account, selectedCurrency, timeBands, lineColour, 
 }
 
 
+/*
+    Calculate set of conversions for a given account
+*/
 function getConversionForAccount(account, selectedCurrency, mainCurrency, conversionsDict) {
     var conversion = 1;
     if (account.currency != selectedCurrency) {
@@ -55,14 +66,9 @@ function getConversionForAccount(account, selectedCurrency, mainCurrency, conver
 }
 
 
-function roundToDecimalPlaces(element, dp) {
-    element.value = parseFloat(element.value).toFixed(dp);
-    if (dp == 0) {
-      element.value = parseInt(element.value);
-    }
-}
-
-
+/* 
+    Gets form input and updates interest rate graph
+*/
 function getUserChoices(accountsInfo, timeBands, conversionsDict, mainCurrency) {
     // Retrieves the user selection for the account and the projection timescale (in months)
     accountIDs = JSON.parse(document.getElementById('accountDropdown').value);
@@ -94,12 +100,18 @@ function getUserChoices(accountsInfo, timeBands, conversionsDict, mainCurrency) 
 }
 
 
+/*
+    Clear income figures
+*/
 function clearFiguresIncomeBalance() {
     document.getElementById('projectedIncomeNum').innerText = 0.00;
     document.getElementById('projectedTotalNum').innerText = 0.00;
 }
 
 
+/*
+    Set income figures
+*/
 function setFiguresIncomeBalance(balances, timescale, conversion, selectedCurrency) {
     timescale -= 1;
     const projectedIncomeNumText = document.getElementById('projectedIncomeNum');
