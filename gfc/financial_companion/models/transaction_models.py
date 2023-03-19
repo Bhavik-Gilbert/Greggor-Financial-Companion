@@ -51,7 +51,8 @@ class AbstractTransaction(Model):
         upload_to=change_filename
     )
 
-    category: ForeignKey = ForeignKey(Category, on_delete=SET_NULL, null=True, blank=True)
+    category: ForeignKey = ForeignKey(
+        Category, on_delete=SET_NULL, null=True, blank=True)
 
     amount: DecimalField = DecimalField(
         blank=False,
@@ -111,8 +112,9 @@ class Transaction(AbstractTransaction):
 
     @staticmethod
     def get_transactions_from_time_period(
-            time_choice: Timespan, user: User, filter_type: str=str("all")) -> list:
-        user_transactions: list[Transaction] = user.get_user_transactions(filter_type=filter_type)
+            time_choice: Timespan, user: User, filter_type: str = str("all")) -> list:
+        user_transactions: list[Transaction] = user.get_user_transactions(
+            filter_type=filter_type)
 
         timespan_int: int = timespan_map[time_choice]
         start_of_timespan_period: datetime = datetime.datetime.today(
@@ -126,7 +128,8 @@ class Transaction(AbstractTransaction):
         return filtered_transactions
 
     @staticmethod
-    def get_category_splits(transactions: list, user: User) -> dict[str, float]:
+    def get_category_splits(
+            transactions: list, user: User) -> dict[str, float]:
         spent_per_category: dict[str, float] = dict()
         for x in transactions:
             if ((x.category is None) or (x.category.user.id != user.id)):
@@ -154,7 +157,8 @@ class Transaction(AbstractTransaction):
         receive_amount: float = self.amount
 
         if check_object_exists:
-            database_transaction: list[Transaction] = Transaction.objects.get(id=self.id)
+            database_transaction: list[Transaction] = Transaction.objects.get(
+                id=self.id)
 
             if (database_transaction.sender_account.id == self.sender_account.id and
                 database_transaction.receiver_account.id == self.receiver_account.id and

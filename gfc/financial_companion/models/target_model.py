@@ -50,7 +50,7 @@ class AbstractTarget(Model):
         else:
             return False
 
-    def getModelName(self, plural: bool=False) -> str:
+    def getModelName(self, plural: bool = False) -> str:
         if plural:
             return "targets"
         else:
@@ -68,7 +68,7 @@ class CategoryTarget(AbstractTarget):
     class Meta:
         unique_together: list = ["target_type", "timespan", "category"]
 
-    def getModelName(self, plural: bool=False) -> str:
+    def getModelName(self, plural: bool = False) -> str:
         if plural:
             return "categories"
         else:
@@ -86,7 +86,7 @@ class UserTarget(AbstractTarget):
     class Meta:
         unique_together: list = ["target_type", "timespan", "user"]
 
-    def getModelName(self, plural: bool=False) -> str:
+    def getModelName(self, plural: bool = False) -> str:
         if plural:
             return "users"
         else:
@@ -104,7 +104,7 @@ class AccountTarget(AbstractTarget):
     class Meta:
         unique_together: list = ["target_type", "timespan", "account"]
 
-    def getModelName(self, plural: bool=False):
+    def getModelName(self, plural: bool = False):
         if plural:
             return "accounts"
         else:

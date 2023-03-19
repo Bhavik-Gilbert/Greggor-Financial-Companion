@@ -71,24 +71,29 @@ class User(AbstractUser):
 
     def get_all_targets(self) -> list:
         user: User = self
-        user_targets: list[fcmodels.UserTarget] = fcmodels.UserTarget.objects.filter(user=user)
-        user_account_targets: list[fcmodels.AccountTarget] = self.get_all_account_targets()
-        user_category_targets: list[fcmodels.CategoryTarget] = self.get_all_category_targets()
+        user_targets: list[fcmodels.UserTarget] = fcmodels.UserTarget.objects.filter(
+            user=user)
+        user_account_targets: list[fcmodels.AccountTarget] = self.get_all_account_targets(
+        )
+        user_category_targets: list[fcmodels.CategoryTarget] = self.get_all_category_targets(
+        )
         return [*user_targets, *user_account_targets, *user_category_targets]
 
-    def get_all_account_targets(self, accounts: list=None) -> list:
+    def get_all_account_targets(self, accounts: list = None) -> list:
         user: User = self
         if not accounts:
-            accounts: list[fcmodels.PotAccount] = fcmodels.PotAccount.objects.filter(user=user)
+            accounts: list[fcmodels.PotAccount] = fcmodels.PotAccount.objects.filter(
+                user=user)
         user_account_targets: list = fcmodels.AccountTarget.objects.filter(
             account__in=accounts)
 
         return list(user_account_targets)
 
-    def get_all_category_targets(self, categories: list=None) -> list:
+    def get_all_category_targets(self, categories: list = None) -> list:
         user: User = self
         if not categories:
-            categories: list[fcmodels.Category] = fcmodels.Category.objects.filter(user=user)
+            categories: list[fcmodels.Category] = fcmodels.Category.objects.filter(
+                user=user)
         user_category_targets: list = fcmodels.CategoryTarget.objects.filter(
             category__in=categories)
 
