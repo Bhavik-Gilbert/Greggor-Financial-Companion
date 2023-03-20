@@ -37,7 +37,7 @@ def join_user_group_view(request: HttpRequest) -> HttpResponse:
                 messages.SUCCESS,
                 "You have successfully joined the group")
             user: User = request.user
-            members: Union[QuerySet, list[User]] = user_group.members.all()
+            members: QuerySet[User] = user_group.members.all()
             is_owner: bool = (user_group.owner_email == user.email)
             count: int = user_group.members_count()
             return render(request, "pages/individual_group.html",

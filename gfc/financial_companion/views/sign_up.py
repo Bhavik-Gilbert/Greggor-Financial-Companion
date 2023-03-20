@@ -11,7 +11,7 @@ from django.contrib import messages
 def sign_up_view(request: HttpRequest) -> HttpResponse:
     """View for the user to create an account on the Financial Companion"""
     if request.method == 'POST':
-        form = UserSignUpForm(request.POST, request.FILES)
+        form: UserSignUpForm = UserSignUpForm(request.POST, request.FILES)
         if form.is_valid():
             user: User = form.save()
             login(request, user)
@@ -21,5 +21,5 @@ def sign_up_view(request: HttpRequest) -> HttpResponse:
                 "You have successfully created an account")
             return redirect('dashboard')
     else:
-        form = UserSignUpForm()
+        form: UserSignUpForm = UserSignUpForm()
     return render(request, "pages/sign_up.html", {'form': form})

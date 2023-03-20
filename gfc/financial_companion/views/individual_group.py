@@ -25,7 +25,7 @@ def individual_group_view(request: HttpRequest, pk: int,
         members_list: list[User] = list(members)
         sorted_members_list: list[User] = sorted(
             members_list, key=lambda x: x.id)
-        is_owner = (group.owner_email == user.email)
+        is_owner: bool = (group.owner_email == user.email)
         owners_email: str = group.owner_email
         count: int = group.members_count()
         form: AddUserToUserGroupForm = AddUserToUserGroupForm()

@@ -9,9 +9,9 @@ from ..models import User
 
 @login_required
 def edit_user_details_view(request):
-    user = User.objects.get(id=request.user.id)
+    user: User = User.objects.get(id=request.user.id)
     if request.method == "POST":
-        form = EditUserDetailsForm(request.POST, request.FILES, instance=user)
+        form: EditUserDetailsForm = EditUserDetailsForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             messages.add_message(

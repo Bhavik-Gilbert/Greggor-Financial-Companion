@@ -10,6 +10,7 @@ from financial_companion.helpers import paginate, get_warning_messages_for_targe
 from django.db.models import QuerySet
 import re
 from typing import Any
+from django.core.paginator import Page
 
 
 def create_target(request, Target, current_item) -> Any:
@@ -90,10 +91,10 @@ def create_user_target_view(request: HttpRequest) -> HttpResponse:
 
 def edit_target(request: HttpRequest, Target, current_item,
                 foreign_key) -> HttpResponse:
-    title_first_word = re.split(r"\B([A-Z])", Target.__name__)[0]
-    title = f'{title_first_word} Target'
+    title_first_word: str = re.split(r"\B([A-Z])", Target.__name__)[0]
+    title: str = f'{title_first_word} Target'
     if request.method == "POST":
-        form = TargetForm(
+        form: TargetForm = TargetForm(
             request.POST,
             foreign_key=foreign_key,
             instance=current_item,
@@ -106,7 +107,7 @@ def edit_target(request: HttpRequest, Target, current_item,
             form.save()
             return None
     else:
-        form = TargetForm(
+        form: TargetForm = TargetForm(
             foreign_key=foreign_key,
             instance=current_item,
             form_type=Target)
@@ -126,7 +127,7 @@ def edit_category_target_view(request: HttpRequest, pk: int) -> HttpResponse:
     except Exception:
         return redirect("dashboard")
 
-    to_return = edit_target(
+    to_return: HttpResponse = edit_target(
         request,
         CategoryTarget,
         current_category_target,
@@ -150,7 +151,7 @@ def edit_account_target_view(request: HttpRequest, pk: int) -> HttpResponse:
             return redirect("view_accounts")
     except Exception:
         return redirect("dashboard")
-    to_return = edit_target(
+    to_return: HttpResponse = edit_target(
         request,
         AccountTarget,
         current_account_target,
@@ -174,7 +175,7 @@ def edit_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
             return redirect("dashboard")
     except Exception:
         return redirect("dashboard")
-    to_return = edit_target(
+    to_return: HttpResponse = edit_target(
         request,
         UserTarget,
         current_user_target,
@@ -214,7 +215,7 @@ def delete_account_target_view(request: HttpRequest, pk: int) -> HttpResponse:
     try:
         current_account_target: AccountTarget = AccountTarget.objects.get(
             id=pk)
-        account_id = current_account_target.account.id
+        account_id: int = current_account_target.account.id
         if current_account_target.account.user != request.user:
             return redirect("view_accounts")
     except Exception:
@@ -252,7 +253,7 @@ def view_targets(request: HttpRequest, time: str = "all",
                  income_or_expense: str = "all", target_type: str = "all") -> HttpResponse:
     """View to allow users to view all their targets"""
     if request.method == "POST":
-        form = TargetFilterForm(request.POST)
+        form: TargetFilterForm = TargetFilterForm(request.POST)
         if form.is_valid():
             form_output: dict[str, str] = {
                 "time": form.get_time(),
@@ -274,7 +275,7 @@ def view_targets(request: HttpRequest, time: str = "all",
     )]
 
     form = TargetFilterForm()
-    list_of_targets = paginate(request.GET.get('page', 1), targets)
+    list_of_targets: Page = paginate(request.GET.get('page', 1), targets)
 
     targets_for_messages: QuerySet[UserTarget] = UserTarget.objects.filter(
         user=request.user)

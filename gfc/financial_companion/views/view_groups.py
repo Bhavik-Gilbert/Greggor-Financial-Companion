@@ -16,15 +16,15 @@ def all_groups_view(request: HttpRequest,
     user_groups: list[UserGroup] = []
     user: User = request.user
     user_email: str = user.email
-    all_groups: Union[QuerySet, list[UserGroup]] = UserGroup.objects.all()
+    all_groups: QuerySet[UserGroup] = UserGroup.objects.all()
     form: JoinUserGroupForm = JoinUserGroupForm()
 
     # need to get all the groups the user is in
     for group in all_groups:
         if group.owner_email == user_email:
-            user_groups = [*user_groups, group]
+            user_groups: list[UserGroup] = [*user_groups, group]
         elif group.is_member(user):
-            user_groups = [*user_groups, group]
+            user_groups: list[UserGroup] = [*user_groups, group]
 
     # handling the search
     if request.method == "POST" and "search" in request.POST:
@@ -39,7 +39,7 @@ def all_groups_view(request: HttpRequest,
         filter_groups: list[UserGroup] = []
         for group in user_groups:
             if search_name in group.name:
-                filter_groups = [*filter_groups, group]
+                filter_groups: list[UserGroup] = [*filter_groups, group]
         return render(request, "pages/all_groups.html",
                       {"groups": filter_groups, "form": form})
 
