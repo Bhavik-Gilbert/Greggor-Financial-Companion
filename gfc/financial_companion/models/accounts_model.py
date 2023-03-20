@@ -107,7 +107,7 @@ class Account(Model):
         return f"{AccountType.REGULAR}"
 
     @staticmethod
-    def create_basic_account(account_name: str, user: User) -> Account:
+    def create_basic_account(account_name: str, user: User):
         """Creates and returns an account object with only a name"""
         return Account.objects.create(
             name=account_name,
