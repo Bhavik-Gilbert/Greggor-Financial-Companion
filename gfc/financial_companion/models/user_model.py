@@ -43,7 +43,7 @@ class User(AbstractUser):
         transactions: list[fcmodels.Transaction] = []
 
         for account in user_accounts:
-            transactions: list = [
+            transactions: list[fcmodels.Transaction] = [
                 *transactions,
                 *account.get_account_transactions(filter_type)]
 
@@ -56,7 +56,7 @@ class User(AbstractUser):
         transactions: list[fcmodels.RecurringTransaction] = []
 
         for account in user_accounts:
-            transactions: list = [
+            transactions: list[fcmodels.RecurringTransaction] = [
                 *transactions,
                 *account.get_account_recurring_transactions()
             ]
@@ -94,20 +94,20 @@ class User(AbstractUser):
         if not categories:
             categories: list[fcmodels.Category] = fcmodels.Category.objects.filter(
                 user=user)
-        user_category_targets: list = fcmodels.CategoryTarget.objects.filter(
+        user_category_targets: list[fcmodels.CategoryTarget] = fcmodels.CategoryTarget.objects.filter(
             category__in=categories)
 
         return list(user_category_targets)
 
     def get_completed_targets(self, targets: list) -> list:
-        filtered_targets: list = []
+        filtered_targets: list[AbstractTarget] = []
         for target in targets:
             if target.is_complete():
                 filtered_targets.append(target)
         return filtered_targets
 
     def get_nearly_completed_targets(self, targets: list) -> list:
-        filtered_targets: list = []
+        filtered_targets: list[AbstractTarget] = []
         for target in targets:
             if target.is_nearly_complete():
                 filtered_targets.append(target)
@@ -119,7 +119,7 @@ class User(AbstractUser):
 
     def get_number_of_nearly_completed_spending_targets(self) -> int:
         total: int = 0
-        targets: list = self.get_all_targets()
+        targets: list[AbstractTarget] = self.get_all_targets()
         for target in targets:
             if target.is_nearly_complete() and target.target_type == TransactionType.INCOME:
                 total += 1
@@ -127,7 +127,7 @@ class User(AbstractUser):
 
     def get_number_of_nearly_completed_saving_targets(self) -> int:
         total: int = 0
-        targets: list = self.get_all_targets()
+        targets: list[AbstractTarget] = self.get_all_targets()
         for target in targets:
             if target.is_nearly_complete() and target.target_type == TransactionType.EXPENSE:
                 total += 1
@@ -139,7 +139,7 @@ class User(AbstractUser):
 
     def get_number_of_completed_spending_targets(self) -> int:
         total: int = 0
-        targets: list = self.get_all_targets()
+        targets: list[AbstractTarget] = self.get_all_targets()
         for target in targets:
             if target.is_complete() and target.target_type == TransactionType.INCOME:
                 total += 1
@@ -147,7 +147,7 @@ class User(AbstractUser):
 
     def get_number_of_completed_saving_targets(self) -> int:
         total: int = 0
-        targets: list = self.get_all_targets()
+        targets: list[AbstractTarget] = self.get_all_targets()
         for target in targets:
             if target.is_complete() and target.target_type == TransactionType.EXPENSE:
                 total += 1

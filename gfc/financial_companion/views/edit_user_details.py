@@ -8,7 +8,7 @@ from ..models import User
 
 
 @login_required
-def edit_user_details_view(request):
+def edit_user_details_view(request) -> HttpResponse:
     user: User = User.objects.get(id=request.user.id)
     if request.method == "POST":
         form: EditUserDetailsForm = EditUserDetailsForm(

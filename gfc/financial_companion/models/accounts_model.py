@@ -30,7 +30,7 @@ class Account(Model):
 
     user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
 
-    objects = InheritanceManager()
+    objects: InheritanceManager = InheritanceManager()
 
     def _get_transactions_filter_account_type(
             self, new_transactions: list, account_type: str, allow_accounts) -> list:
@@ -44,7 +44,7 @@ class Account(Model):
             true if allow accounts
             false if use pot accounts
         """
-        transactions: list[Account] = []
+        transactions: list[fcmodels.Transaction] = []
 
         if account_type in ["sender", "receiver"]:
             for new_transaction in new_transactions:
@@ -52,9 +52,11 @@ class Account(Model):
                     new_transaction, f"{account_type}_account")
                 if allow_accounts and Account.objects.filter(
                         id=account.id).count() == 1:
-                    transactions = [*transactions, new_transaction]
+                    transactions: list[fcmodels.Transaction] = [
+                        *transactions, new_transaction]
                 elif PotAccount.objects.filter(id=account.id).count() == 1:
-                    transactions = [*transactions, new_transaction]
+                    transactions: list[fcmodels.Transaction] = [
+                        *transactions, new_transaction]
 
         return list(set(transactions))
 
@@ -66,7 +68,7 @@ class Account(Model):
         if filter_type in FilterTransactionType.get_send_list():
             new_transactions: list[fcmodels.Transaction] = fcmodels.Transaction.objects.filter(
                 sender_account=self)
-            transactions: list = [
+            transactions: list[fcmodels.Transaction] = [
                 *
                 transactions,
                 *
@@ -77,7 +79,7 @@ class Account(Model):
         if filter_type in FilterTransactionType.get_received_list():
             new_transactions: list[fcmodels.Transaction] = fcmodels.Transaction.objects.filter(
                 receiver_account=self)
-            transactions: list = [
+            transactions: list[fcmodels.Transaction] = [
                 *
                 transactions,
                 *
@@ -92,7 +94,7 @@ class Account(Model):
     def get_account_recurring_transactions(self) -> list:
         """Returns filtered list of all this accounts RECURRING transactions"""
         transactions: list[fcmodels.RecurringTransaction] = []
-        transactions: list = [
+        transactions: list[fcmodels.RecurringTransaction] = [
             *transactions,
             *fcmodels.RecurringTransaction.objects.filter(
                 Q(sender_account=self) | Q(receiver_account=self))]
@@ -105,7 +107,7 @@ class Account(Model):
         return f"{AccountType.REGULAR}"
 
     @staticmethod
-    def create_basic_account(account_name: str, user: User):
+    def create_basic_account(account_name: str, user: User) -> Account:
         """Creates and returns an account object with only a name"""
         return Account.objects.create(
             name=account_name,
@@ -119,7 +121,7 @@ class Account(Model):
             account: list[Account] = Account.objects.get_subclass(
                 name=account_name, user=user)
         except Exception:
-            account = Account.create_basic_account(account_name, user)
+            account: Account = Account.create_basic_account(account_name, user)
 
         return account
 

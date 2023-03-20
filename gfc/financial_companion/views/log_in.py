@@ -30,7 +30,7 @@ def log_in_view(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def log_out_view(request):
+def log_out_view(request) -> HttpResponse:
     logout(request)
     messages.add_message(
         request,
