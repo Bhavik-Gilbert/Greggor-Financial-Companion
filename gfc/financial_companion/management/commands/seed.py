@@ -1,5 +1,5 @@
 """ Seeder CLass to add objects to Database"""
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from faker import Faker
 from financial_companion.models import (
     User, UserGroup,
@@ -9,7 +9,6 @@ from financial_companion.models import (
     Category,
     QuizQuestion, QuizScore, QuizSet
 )
-from django.db.utils import IntegrityError
 from django.db.models import Q
 from django.conf import settings
 from django.db.models import QuerySet

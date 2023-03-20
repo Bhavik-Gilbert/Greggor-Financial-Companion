@@ -1,6 +1,5 @@
 from django import forms
 from financial_companion.models import RecurringTransaction
-from typing import Any
 
 
 class RecurringTransactionForm(forms.ModelForm):

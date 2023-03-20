@@ -1,6 +1,6 @@
 from .test_view_base import ViewTestCase
 from financial_companion.forms import TargetFilterForm
-from financial_companion.models import User, AccountTarget
+from financial_companion.models import User
 from django.urls import reverse
 
 
@@ -45,7 +45,6 @@ class ViewTargetsViewTestCase(ViewTestCase):
         self._login(self.user)
         self.form_input['time'] = 'day'
         response = self.client.post(self.url, self.form_input, follow=True)
-        response_url = reverse('view_targets')
         self.assertTemplateUsed(response, 'pages/view_targets.html')
         self.assertEqual(len(response.context['page_obj']), 3)
 
@@ -53,7 +52,6 @@ class ViewTargetsViewTestCase(ViewTestCase):
         self._login(self.user)
         self.form_input['income_or_expense'] = 'income'
         response = self.client.post(self.url, self.form_input, follow=True)
-        response_url = reverse('view_targets')
         self.assertTemplateUsed(response, 'pages/view_targets.html')
         self.assertEqual(len(response.context['page_obj']), 6)
 
@@ -61,7 +59,6 @@ class ViewTargetsViewTestCase(ViewTestCase):
         self._login(self.user)
         self.form_input['target_type'] = 'account'
         response = self.client.post(self.url, self.form_input, follow=True)
-        response_url = reverse('view_targets')
         self.assertTemplateUsed(response, 'pages/view_targets.html')
         self.assertEqual(len(response.context['page_obj']), 3)
 

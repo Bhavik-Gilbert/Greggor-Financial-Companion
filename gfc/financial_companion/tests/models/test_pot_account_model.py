@@ -1,5 +1,4 @@
 from .test_model_base import ModelTestCase
-from django.db.models.base import ModelBase
 from decimal import Decimal
 
 from ...helpers import CurrencyType
@@ -11,7 +10,7 @@ class PotAccountModelTestCase(ModelTestCase):
 
     def setUp(self) -> None:
         super().setUp()
-        self.test_model: ModelBase = PotAccount.objects.get(id=3)
+        self.test_model: PotAccount = PotAccount.objects.get(id=3)
 
     def test_valid_target(self):
         self._assert_model_is_valid()

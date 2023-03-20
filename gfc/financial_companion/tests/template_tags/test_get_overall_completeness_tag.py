@@ -1,6 +1,6 @@
 from .test_template_tag_base import TemplateTagTestCase
 from financial_companion.templatetags import get_overall_completeness, get_completeness, check_completeness_if_expense
-from financial_companion.models import CategoryTarget, Transaction, Category
+from financial_companion.models import CategoryTarget
 from freezegun import freeze_time
 
 

@@ -1,5 +1,5 @@
 from .test_view_base import ViewTestCase
-from financial_companion.models import User, Account, PotAccount, Transaction, AbstractTransaction
+from financial_companion.models import User, PotAccount, Transaction
 from django.contrib.messages import get_messages
 from django.urls import reverse
 from typing import Union, Any

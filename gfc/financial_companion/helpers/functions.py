@@ -9,12 +9,11 @@ from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger, Page
 from django.contrib import messages
 import financial_companion.models as fcmodels
-import calendar
 import inflect
 import random
 import string
 from typing import Any
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpRequest
 
 
 def get_currency_symbol(currency_code: str) -> str:

@@ -1,5 +1,4 @@
 from .test_view_base import ViewTestCase
-from financial_companion.forms import AddTransactionForm
 from financial_companion.models import Transaction, User
 from django.urls import reverse
 from django.http import HttpResponse

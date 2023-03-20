@@ -3,7 +3,6 @@ from financial_companion.forms import AddRecurringTransactionForm
 from financial_companion.models import RecurringTransaction, User
 from django.urls import reverse
 from decimal import Decimal
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
 from typing import Any
 

@@ -1,10 +1,6 @@
 from .test_model_base import ModelTestCase
-from django.db.models.base import ModelBase
-from django.utils import timezone
-from decimal import Decimal
-
 from ...helpers import Timespan
-from ...models import AbstractTransaction, RecurringTransaction, Transaction
+from ...models import RecurringTransaction, Transaction
 
 
 class RecurringTransactionTestCase(ModelTestCase):
