@@ -19,7 +19,7 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
         self.form_input = {
             "title": "Test",
             "description": "This is a test transaction",
-            "image": self.image_upload,
+            "file": self.image_upload,
             "category": 1,
             "amount": 152.95,
             "currency": "USD",
@@ -63,9 +63,9 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
         self.assertEqual(
             transaction.description,
             "Paying off hire car.")
-        self.assertFalse("transactions/" in transaction.image.name)
+        self.assertFalse("transactions/" in transaction.file.name)
         self.assertFalse(self.image_path.split(
-            "/")[-1].split(".")[-1] in transaction.image.name)
+            "/")[-1].split(".")[-1] in transaction.file.name)
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("130.59"))
         self.assertEqual(transaction.currency, 'USD')
@@ -97,9 +97,9 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
         self.assertEqual(
             recurring_transaction.description,
             "This is a test transaction")
-        self.assertTrue("transactions/" in recurring_transaction.image.name)
+        self.assertTrue("transactions/" in recurring_transaction.file.name)
         self.assertTrue(self.image_path.split(
-            "/")[-1].split(".")[-1] in recurring_transaction.image.name)
+            "/")[-1].split(".")[-1] in recurring_transaction.file.name)
         self.assertEqual(recurring_transaction.category.id, 1)
         self.assertEqual(recurring_transaction.amount, Decimal("152.95"))
         self.assertEqual(recurring_transaction.currency, 'USD')

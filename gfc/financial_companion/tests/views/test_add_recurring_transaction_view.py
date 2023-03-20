@@ -16,7 +16,7 @@ class AddRecurringTransactionViewTestCase(ViewTestCase):
         self.form_input = {
             "title": "Test",
             "description": "This is a test transaction",
-            "image": self.image_upload,
+            "file": self.image_upload,
             "category": 1,
             "amount": 152.95,
             "currency": "USD",
@@ -72,9 +72,9 @@ class AddRecurringTransactionViewTestCase(ViewTestCase):
         transaction = RecurringTransaction.objects.get(title='Test')
         self.assertEqual(transaction.description, 'This is a test transaction')
         self.assertEqual(transaction.category.id, 1)
-        self.assertTrue("transactions/" in transaction.image.name)
+        self.assertTrue("transactions/" in transaction.file.name)
         self.assertTrue(self.image_path.split(
-            "/")[-1].split(".")[-1] in transaction.image.name)
+            "/")[-1].split(".")[-1] in transaction.file.name)
         self.assertEqual(transaction.amount, Decimal("152.95"))
         self.assertEqual(transaction.currency, 'USD')
         self.assertEqual(transaction.sender_account.id, 1)
