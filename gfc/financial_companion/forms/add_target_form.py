@@ -37,6 +37,7 @@ class TargetForm(forms.Form):
         choices=CurrencyType.choices)
 
     def clean(self):
+        """Clean the data and generate messages for any errors."""
         super().clean()
         filter_type_dict: dict[str, models.Model] = {
             self.foreign_key_name.lower(): self.foreign_key}
@@ -63,6 +64,7 @@ class TargetForm(forms.Form):
                     f"This target can not be created as a target with the same timespan, transaction type and {self.foreign_key.__class__.__name__.lower()} exists"))
 
     def save(self) -> AbstractTarget:
+        """Create a new target."""
         self.full_clean()
         if self.instance is None:
             target: AbstractTarget = self.form_type()

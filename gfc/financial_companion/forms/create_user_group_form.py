@@ -16,7 +16,8 @@ class UserGroupForm(forms.ModelForm):
         widgets: dict[str: Any] = {'description': forms.Textarea()}
 
     def get_invite_code(self) -> str:
-        generated_invite_code = get_random_invite_code(8)
+        """Return random invite code for a group"""
+        generated_invite_code: str = get_random_invite_code(8)
         try:
             user_group: UserGroup = UserGroup.objects.get(
                 invite_code=generated_invite_code)
@@ -38,5 +39,5 @@ class UserGroupForm(forms.ModelForm):
                 group_picture=self.cleaned_data.get('group_picture'),
             )
         else:
-            user_group = super().save()
+            user_group: UserGroup = super().save()
         return user_group
