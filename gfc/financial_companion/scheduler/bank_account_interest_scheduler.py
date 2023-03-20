@@ -7,13 +7,13 @@ from django_q.models import Schedule
 
 
 def create_bank_account_interest_scheduler():
-    date_time_str = f'{timezone.now().month + 1}-01-{timezone.now().year}'
-    date_object = datetime.strptime(
+    date_time_str: str = f'{timezone.now().month + 1}-01-{timezone.now().year}'
+    date_object: datetime = datetime.strptime(
         date_time_str, '%m-%d-%Y').replace(tzinfo=pytz.timezone(settings.TIME_ZONE))
 
     name = "Bank Account Interest"
     if Schedule.objects.filter(name=name).count() == 0:
-        scheduler = Schedule.objects.create(
+        scheduler: Schedule = Schedule.objects.create(
             name=name,
             func='financial_companion.helpers.tasks.add_interest_to_bank_accounts',
             minutes=1,

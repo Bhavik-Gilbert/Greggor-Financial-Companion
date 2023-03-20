@@ -1,5 +1,4 @@
 from django import forms
-from django.core.validators import RegexValidator
 from financial_companion.models import RecurringTransaction
 from typing import Any
 
@@ -29,6 +28,6 @@ class RecurringTransactionForm(forms.ModelForm):
         if self.end_date < self.start_date:
             self.add_error("End date must be after start date.")
 
-    def save(self, instance=None) -> RecurringTransaction:
+    def save(self, instance: RecurringTransaction = None) -> RecurringTransaction:
         """Record the inputted transaction"""
         super.save()

@@ -4,7 +4,7 @@ import os
 from financial_companion.helpers import random_filename
 
 
-def change_filename(instance, filename):
+def change_filename(instance, filename) -> str:
     return os.path.join('group_profile', random_filename(filename))
 
 
@@ -24,23 +24,23 @@ class UserGroup(models.Model):
         max_length=100,
         blank=True)
 
-    def add_member(self, user):
+    def add_member(self, user: User):
         self.members.add(user)
 
-    def remove_member(self, user):
+    def remove_member(self, user: User):
         self.members.remove(user)
 
-    def is_member(self, user):
+    def is_member(self, user: User) -> bool:
         """Returns whether user is in the group"""
         return user in self.members.all()
 
-    def members_count(self):
+    def members_count(self) -> int:
         return self.members.count()
 
-    def get_members(self):
-        members_of_group = self.members.all()
+    def get_members(self) -> str:
+        members_of_group: list[User] = self.members.all()
         return ",".join([str(p) for p in members_of_group])
 
-    def make_owner(self, user):
+    def make_owner(self, user: User):
         self.owner_email = user.email
         self.save()

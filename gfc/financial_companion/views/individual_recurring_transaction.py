@@ -20,7 +20,7 @@ def individual_recurring_transaction_view(
     except RecurringTransaction.DoesNotExist:
         return redirect("dashboard")
     else:
-        transactionslist: Page = paginate(request.GET.get(
+        transactions_list: Page = paginate(request.GET.get(
             'page', 1), transaction.transactions.all(), 9)
         return render(request, "pages/individual_recurring_transaction.html",
-                      {"transaction": transaction, "transactionslist": transactionslist})
+                      {"transaction": transaction, "transactions_list": transactions_list})
