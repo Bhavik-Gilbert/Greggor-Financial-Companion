@@ -1,5 +1,5 @@
 from .test_view_base import ViewTestCase
-from financial_companion.models import User, Account, PotAccount, BankAccount, AccountTarget
+from financial_companion.models import User, Account, PotAccount, AccountTarget
 from django.http import HttpResponse
 from django.urls import reverse
 from django.db.models import Q

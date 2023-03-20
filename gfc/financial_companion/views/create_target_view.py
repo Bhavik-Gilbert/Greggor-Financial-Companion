@@ -4,8 +4,7 @@ from financial_companion.forms import TargetForm, TargetFilterForm
 from django.contrib.auth.decorators import login_required
 from ..models import Category, CategoryTarget, PotAccount, AccountTarget, UserTarget
 from django.contrib import messages
-from financial_companion.models import CategoryTarget, Category, User, UserTarget, AbstractTarget
-from financial_companion.helpers.enums import Timespan, TransactionType, TargetType
+from financial_companion.models import CategoryTarget, Category, UserTarget, AbstractTarget
 from financial_companion.helpers import paginate, get_warning_messages_for_targets
 from django.db.models import QuerySet
 import re

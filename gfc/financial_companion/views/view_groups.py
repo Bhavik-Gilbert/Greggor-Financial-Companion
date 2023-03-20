@@ -2,9 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from ..models import UserGroup, User
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
 from financial_companion.forms import JoinUserGroupForm
-from typing import Union, Any
 from django.core.paginator import Page
 from django.db.models import QuerySet
 
@@ -16,7 +14,7 @@ def all_groups_view(request: HttpRequest,
     user_groups: list[UserGroup] = []
     user: User = request.user
     user_email: str = user.email
-    all_groups: Union[QuerySet, list[UserGroup]] = UserGroup.objects.all()
+    all_groups: QuerySet[UserGroup] = UserGroup.objects.all()
     form: JoinUserGroupForm = JoinUserGroupForm()
 
     # need to get all the groups the user is in

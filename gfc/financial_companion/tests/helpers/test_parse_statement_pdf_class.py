@@ -7,7 +7,7 @@ import numpy as np
 from datetime import datetime
 from .test_helper_base import HelperTestCase
 from financial_companion.helpers import ParseStatementPDF, TransactionType
-from financial_companion.models import User, PotAccount, Account
+from financial_companion.models import User, PotAccount
 
 
 class ParseStatementPDFClassTestCase(HelperTestCase):

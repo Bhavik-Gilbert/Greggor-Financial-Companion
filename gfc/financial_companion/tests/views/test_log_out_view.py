@@ -1,8 +1,5 @@
-from django.contrib.auth.hashers import check_password
 from django.urls import reverse
-
 from .test_view_base import ViewTestCase
-from financial_companion.forms import UserLogInForm
 from financial_companion.models import User
 
 
@@ -30,5 +27,4 @@ class LogOutViewTestCase(ViewTestCase):
         self.assertFalse(self._is_logged_in())
 
     def test_get_logout_redirects_when_logged_out(self):
-        response = self.client.post(self.url, follow=True)
         self._assert_require_login(self.url)

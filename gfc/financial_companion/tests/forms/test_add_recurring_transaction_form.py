@@ -1,11 +1,7 @@
-from django import forms
 from financial_companion.forms import AddRecurringTransactionForm
-from financial_companion.models import RecurringTransaction, Transaction, Category, Account, User
+from financial_companion.models import RecurringTransaction, Category, Account, User
 from .test_form_base import FormTestCase
-from django.test import TestCase
-from financial_companion.models import Transaction
 from decimal import Decimal
-from django.core.files.uploadedfile import SimpleUploadedFile
 from typing import Any
 
 
@@ -14,7 +10,6 @@ class AddRecurringTransactionFormTestCase(FormTestCase):
 
     def setUp(self):
         self.user: User = User.objects.get(username='@johndoe')
-        image_path: str = "financial_companion/tests/data/dragon.jpeg"
         self.form_input: dict[str, Any] = {
             "title": "Test",
             "description": "This is a test transaction",

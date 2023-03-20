@@ -15,7 +15,7 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .accounts_model import Account, PotAccount
 from .category_model import Category
 from .user_model import User
-from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, TransactionType, FilterTransactionType
+from ..helpers import CurrencyType, Timespan, random_filename, timespan_map
 import datetime
 import os
 from django.db.models.signals import pre_delete

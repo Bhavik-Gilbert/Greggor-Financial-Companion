@@ -1,4 +1,3 @@
-from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.forms import TargetForm

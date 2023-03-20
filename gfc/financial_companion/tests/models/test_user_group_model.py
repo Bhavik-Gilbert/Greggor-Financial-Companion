@@ -1,5 +1,4 @@
 from .test_model_base import ModelTestCase
-from django.db.models.base import ModelBase
 from financial_companion.models.user_model import User
 from financial_companion.models.user_group_model import UserGroup, change_filename
 

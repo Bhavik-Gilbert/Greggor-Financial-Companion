@@ -2,7 +2,6 @@ from .test_helper_base import HelperTestCase
 from financial_companion.helpers import get_sorted_members_based_on_completed_targets
 from financial_companion.models import UserGroup, User
 from freezegun import freeze_time
-import datetime
 from typing import Union
 from django.db.models import QuerySet
 

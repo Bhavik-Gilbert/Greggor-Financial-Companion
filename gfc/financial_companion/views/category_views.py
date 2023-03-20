@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from ..models import Category
 from ..helpers import get_warning_messages_for_targets
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
 
 
 @login_required

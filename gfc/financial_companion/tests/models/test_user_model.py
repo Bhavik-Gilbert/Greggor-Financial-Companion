@@ -1,11 +1,8 @@
 from .test_model_base import ModelTestCase
-from django.db.models.base import ModelBase
 from financial_companion.models.user_model import User, change_filename
 from freezegun import freeze_time
 from ...models import AbstractTarget
-import datetime
 
-from financial_companion.templatetags import get_completeness
 
 
 class UserModelTestCase(ModelTestCase):
