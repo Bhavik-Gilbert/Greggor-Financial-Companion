@@ -12,6 +12,7 @@ from ..models import Transaction
 from json import dumps
 from django.core.paginator import Page
 
+
 @login_required
 def spending_summary(request: HttpRequest) -> HttpResponse:
     time: Timespan = Timespan.DAY
@@ -21,15 +22,16 @@ def spending_summary(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             time: str = form.get_choice()
     total_spent: int = sum(transaction.amount for transaction in
-                      Transaction.get_transactions_from_time_period(
-                          time, request.user, "sent"))
+                           Transaction.get_transactions_from_time_period(
+                               time, request.user, "sent"))
     total_received: int = sum(transaction.amount for transaction in
-                         Transaction.get_transactions_from_time_period(
-                             time, request.user, "received"))
+                              Transaction.get_transactions_from_time_period(
+                                  time, request.user, "received"))
     categories: dict[str, float] = Transaction.get_category_splits(
         Transaction.get_transactions_from_time_period(
             time, request.user, "sent"), user)
-    percentages: dict[str, float] = functions.calculate_percentages(categories, total_spent)
+    percentages: dict[str, float] = functions.calculate_percentages(
+        categories, total_spent)
     percentages_list: list[float] = list(percentages.values())
     labels: list[str] = list(percentages.keys())
     form: TimespanOptionsForm = TimespanOptionsForm()

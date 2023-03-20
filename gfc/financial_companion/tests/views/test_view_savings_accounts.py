@@ -29,7 +29,8 @@ class ViewSavingsAccountsViewTestCase(ViewTestCase):
         self.assertTemplateUsed(self.response,
                                 'partials/dashboard/account_projection_graph.html'
                                 )
-        accountsProjections: dict[str, Any] = get_data_for_account_projection(self.user)
+        accountsProjections: dict[str,
+                                  Any] = get_data_for_account_projection(self.user)
         self._assert_context_is_passed_in(accountsProjections)
 
     def _assert_context_is_passed_in(self, accountsProjections):

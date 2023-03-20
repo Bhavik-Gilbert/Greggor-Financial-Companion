@@ -25,7 +25,8 @@ def view_users_transactions(request: HttpRequest,
         key=lambda x: x.time_of_transaction,
         reverse=True)
 
-    list_of_transactions: Page = paginate(request.GET.get('page', 1), transactions)
+    list_of_transactions: Page = paginate(
+        request.GET.get('page', 1), transactions)
 
     return render(request, "pages/display_transactions.html",
                   {'transactions': list_of_transactions})

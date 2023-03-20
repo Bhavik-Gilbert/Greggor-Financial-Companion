@@ -25,8 +25,10 @@ class LogInViewTestCase(ViewTestCase):
         self.assertFalse(form.is_bound)
 
     def test_successful_log_in(self):
-        form_input: dict[str, str] = {'username': '@johndoe', 'password': 'Password123'}
-        response: HttpResponse = self.client.post(self.url, form_input, follow=True)
+        form_input: dict[str, str] = {
+            'username': '@johndoe', 'password': 'Password123'}
+        response: HttpResponse = self.client.post(
+            self.url, form_input, follow=True)
         self.assertTrue(self._is_logged_in())
         response_url: str = reverse('dashboard')
         self.assertRedirects(
@@ -37,7 +39,8 @@ class LogInViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, 'pages/dashboard.html')
 
     def test_unsuccessful_log_in(self):
-        form_input: dict[str, str] = {'username': '@johndoe', 'password': 'WrongPassword123'}
+        form_input: dict[str, str] = {
+            'username': '@johndoe', 'password': 'WrongPassword123'}
         response: HttpResponse = self.client.post(self.url, form_input)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/log_in.html')

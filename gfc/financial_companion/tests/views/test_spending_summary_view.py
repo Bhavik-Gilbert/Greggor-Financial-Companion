@@ -37,15 +37,16 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         time: Timespan = Timespan.WEEK
         self.assertTrue(isinstance(time, Timespan))
         total_spent: Decimal = sum(transaction.amount for transaction in
-                          Transaction.get_transactions_from_time_period(
-                              time, self.user, "sent"))
+                                   Transaction.get_transactions_from_time_period(
+                                       time, self.user, "sent"))
         total_received: Decimal = sum(transaction.amount for transaction in
-                             Transaction.get_transactions_from_time_period(
-                                 time, self.user, "received"))
+                                      Transaction.get_transactions_from_time_period(
+                                          time, self.user, "received"))
         categories: dict[str, Decimal] = Transaction.get_category_splits(
             Transaction.get_transactions_from_time_period(
                 time, self.user, "sent"), self.user)
-        percentages: dict[str, float] = functions.calculate_percentages(categories, total_spent)
+        percentages: dict[str, float] = functions.calculate_percentages(
+            categories, total_spent)
         percentages_list: list[float] = list(percentages.values())
         labels: list[str] = list(percentages.keys())
 

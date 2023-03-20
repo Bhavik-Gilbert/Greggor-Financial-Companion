@@ -63,7 +63,8 @@ class QuizQuestionsViewTestCase(ViewTestCase):
             response_url,
             status_code=302,
             target_status_code=200)
-        messages_list: list[Message] = list(get_messages(response.wsgi_request))
+        messages_list: list[Message] = list(
+            get_messages(response.wsgi_request))
         self.assertTrue(any(
             message.message == 'The quiz specified does not exit' for message in messages_list))
 

@@ -53,7 +53,8 @@ class SignUpViewTestCase(ViewTestCase):
 
     def test_successful_sign_up(self):
         before_count: int = User.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = User.objects.count()
         self.assertEqual(after_count, before_count + 1)
         response_url: str = reverse('dashboard')
@@ -74,7 +75,8 @@ class SignUpViewTestCase(ViewTestCase):
     def test_post_sign_up_redirects_when_logged_in(self):
         self._login(self.user)
         before_count: int = User.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = User.objects.count()
         self.assertEqual(after_count, before_count)
         self._assert_require_logout(self.url)

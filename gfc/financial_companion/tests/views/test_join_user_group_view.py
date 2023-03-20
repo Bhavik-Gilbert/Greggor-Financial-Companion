@@ -37,7 +37,8 @@ class JoinUserGroupViewTestCase(ViewTestCase):
         self._login(self.user)
         self.assertFalse(self.group.members.contains(self.user))
         before_count: int = self.group.members_count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = self.group.members_count()
         self.assertEqual(after_count, before_count + 1)
         self.assertTrue(self.group.members.contains(self.user))
@@ -47,7 +48,8 @@ class JoinUserGroupViewTestCase(ViewTestCase):
         self.form_input['invite_code']: str = "AAAAAAAA"
         self.assertFalse(self.group.members.contains(self.user))
         before_count: int = self.group.members_count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = self.group.members_count()
         self.assertEqual(after_count, before_count)
         self.assertFalse(self.group.members.contains(self.user))
@@ -56,7 +58,8 @@ class JoinUserGroupViewTestCase(ViewTestCase):
         self._login(self.user)
         self.group.add_member(self.user)
         before_count: int = self.group.members_count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = self.group.members_count()
         self.assertEqual(after_count, before_count)
         self.assertTrue(self.group.members.contains(self.user))

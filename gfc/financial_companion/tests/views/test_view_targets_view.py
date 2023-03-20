@@ -36,7 +36,8 @@ class ViewTargetsViewTestCase(ViewTestCase):
 
     def test_get_all_targets(self):
         self._login(self.user)
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         response_url: str = reverse('view_targets')
         self.assertTemplateUsed(response, 'pages/view_targets.html')
         self.assertEqual(len(response.context['page_obj']), 10)
@@ -44,7 +45,8 @@ class ViewTargetsViewTestCase(ViewTestCase):
     def test_filter_targets_by_day(self):
         self._login(self.user)
         self.form_input['time']: str = 'day'
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         response_url: str = reverse('view_targets')
         self.assertTemplateUsed(response, 'pages/view_targets.html')
         self.assertEqual(len(response.context['page_obj']), 3)
@@ -52,7 +54,8 @@ class ViewTargetsViewTestCase(ViewTestCase):
     def test_filter_targets_by_income_or_expense(self):
         self._login(self.user)
         self.form_input['income_or_expense']: str = 'income'
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         response_url: str = reverse('view_targets')
         self.assertTemplateUsed(response, 'pages/view_targets.html')
         self.assertEqual(len(response.context['page_obj']), 6)
@@ -60,7 +63,8 @@ class ViewTargetsViewTestCase(ViewTestCase):
     def test_filter_targets_by_target_type(self):
         self._login(self.user)
         self.form_input['target_type']: str = 'account'
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         response_url: str = reverse('view_targets')
         self.assertTemplateUsed(response, 'pages/view_targets.html')
         self.assertEqual(len(response.context['page_obj']), 3)

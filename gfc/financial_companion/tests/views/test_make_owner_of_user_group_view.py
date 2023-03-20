@@ -14,7 +14,8 @@ class MakeUserOwnerOfGroupViewTestCase(ViewTestCase):
                 "group_pk": 1, "user_pk": 2})
         self.user: User = User.objects.get(username='@johndoe')
         self.user_two: User = User.objects.get(username='@janedoe')
-        self.user_group: UserGroup = UserGroup.objects.get(invite_code="ABCDEFGH")
+        self.user_group: UserGroup = UserGroup.objects.get(
+            invite_code="ABCDEFGH")
         self.user_group.add_member(self.user)
         self.user_group.add_member(self.user_two)
 
@@ -32,7 +33,7 @@ class MakeUserOwnerOfGroupViewTestCase(ViewTestCase):
         self.assertNotEqual(self.user_group.owner_email, self.user.email)
         self.assertEqual(self.user_group.owner_email, self.user_two.email)
         self.assertTemplateUsed(response, 'pages/individual_group.html')
-        messages_list: list[Message]= list(response.context['messages'])
+        messages_list: list[Message] = list(response.context['messages'])
         self.assertEqual(len(messages_list), 1)
 
     def test_unsuccessful_make_user_owner_of_user_group_due_to_invalid_group_pk(

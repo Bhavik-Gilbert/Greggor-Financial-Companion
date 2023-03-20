@@ -31,7 +31,8 @@ def individual_account_view(
     transactions: list[Transaction] = account.get_account_transactions(
         filter_type)
 
-    list_of_transactions: Page = paginate(request.GET.get('page', 1), transactions)
+    list_of_transactions: Page = paginate(
+        request.GET.get('page', 1), transactions)
 
     return render(request, "pages/individual_account.html",
                   {"account": account, "account_targets": account_targets, 'transactions': list_of_transactions})

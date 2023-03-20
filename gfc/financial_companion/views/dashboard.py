@@ -13,7 +13,8 @@ from django.db.models import QuerySet
 @login_required
 def dashboard_view(request: HttpRequest) -> HttpResponse:
     user: User = request.user
-    user_accounts: QuerySet[PotAccount] = PotAccount.objects.filter(user=user.id)
+    user_accounts: QuerySet[PotAccount] = PotAccount.objects.filter(
+        user=user.id)
     user_transactions: QuerySet[Transaction] = []
     for account in user_accounts:
         user_transactions: Union[Transaction] = [
@@ -29,11 +30,11 @@ def dashboard_view(request: HttpRequest) -> HttpResponse:
     recent_transactions: QuerySet[Transaction] = user_transactions[0:3]
 
     total_spent: int = sum(transaction.amount for transaction in
-                      Transaction.get_transactions_from_time_period(
-                          Timespan.MONTH, request.user, "sent"))
+                           Transaction.get_transactions_from_time_period(
+                               Timespan.MONTH, request.user, "sent"))
     total_received: int = sum(transaction.amount for transaction in
-                         Transaction.get_transactions_from_time_period(
-                             Timespan.MONTH, request.user, "received"))
+                              Transaction.get_transactions_from_time_period(
+                                  Timespan.MONTH, request.user, "received"))
 
     context: dict[str, Any] = {
         'accounts': user_accounts,

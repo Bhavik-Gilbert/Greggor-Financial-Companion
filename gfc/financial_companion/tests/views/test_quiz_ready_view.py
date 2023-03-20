@@ -6,6 +6,7 @@ from django.contrib.messages import get_messages
 from typing import Any
 from django.contrib.messages.storage.base import Message
 
+
 class QuizReadyViewTestCase(ViewTestCase):
     """Unit tests of the quiz ready view"""
 
@@ -40,7 +41,8 @@ class QuizReadyViewTestCase(ViewTestCase):
             response_url,
             status_code=302,
             target_status_code=200)
-        messages_list: list[Message] = list(get_messages(response.wsgi_request))
+        messages_list: list[Message] = list(
+            get_messages(response.wsgi_request))
         self.assertTrue(any(
             message.message == 'Invalid number of questions specified to create quiz' for message in messages_list))
 
@@ -55,7 +57,8 @@ class QuizReadyViewTestCase(ViewTestCase):
             response_url,
             status_code=302,
             target_status_code=200)
-        messages_list: list[Message] = list(get_messages(response.wsgi_request))
+        messages_list: list[Message] = list(
+            get_messages(response.wsgi_request))
         self.assertTrue(any(
             message.message == 'Not enough questions in database to start quiz' for message in messages_list))
 
