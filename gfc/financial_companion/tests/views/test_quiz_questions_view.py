@@ -5,6 +5,7 @@ from financial_companion.models import User, QuizQuestion, QuizSet, QuizScore
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from typing import Any
+from django.contrib.messages.storage.base import Message
 
 
 class QuizQuestionsViewTestCase(ViewTestCase):
@@ -33,7 +34,7 @@ class QuizQuestionsViewTestCase(ViewTestCase):
     def setUp(self):
         self.user: User = User.objects.get(username='@johndoe')
         self.quiz_set: QuizSet = QuizSet.objects.get(id=1)
-        self.base_url = '/quiz_questions/'
+        self.base_url: str = '/quiz_questions/'
         self.url: str = reverse(
             'quiz_questions', kwargs={
                 "pk": self.quiz_set.id})
@@ -62,7 +63,8 @@ class QuizQuestionsViewTestCase(ViewTestCase):
             response_url,
             status_code=302,
             target_status_code=200)
-        messages_list: list[Any] = list(get_messages(response.wsgi_request))
+        messages_list: list[Message] = list(
+            get_messages(response.wsgi_request))
         self.assertTrue(any(
             message.message == 'The quiz specified does not exit' for message in messages_list))
 

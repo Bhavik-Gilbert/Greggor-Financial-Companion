@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from financial_companion.forms import UserLogInForm
 from django.contrib.auth.decorators import login_required
-
+from ..models import User
 from ..helpers import offline_required
 
 
@@ -15,7 +15,7 @@ def log_in_view(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             username: str = form.cleaned_data.get('username')
             password: str = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user: User = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
                 redirect_url: str = request.POST.get('next') or 'dashboard'
@@ -30,7 +30,7 @@ def log_in_view(request: HttpRequest) -> HttpResponse:
 
 
 @login_required
-def log_out_view(request):
+def log_out_view(request) -> HttpResponse:
     logout(request)
     messages.add_message(
         request,

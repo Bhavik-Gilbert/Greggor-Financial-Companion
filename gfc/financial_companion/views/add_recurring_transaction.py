@@ -47,7 +47,8 @@ def edit_recurring_transaction_view(
         if request.method == 'POST':
             form: AddRecurringTransactionForm = AddRecurringTransactionForm(
                 user, request.POST, request.FILES, instance=transaction)
-            form.fields['category'].queryset = categories
+            form.fields['category'].queryset: Union[QuerySet,
+                                                    list[Category]] = categories
             if form.is_valid():
                 form.save(instance=transaction)
                 messages.add_message(

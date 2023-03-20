@@ -1,6 +1,7 @@
 from .test_view_base import ViewTestCase
 from financial_companion.models import User, PotAccount
 from django.urls import reverse
+from django.contrib.messages.storage.base import Message
 
 
 class FilterTransactionsWithPKViewTestCase(ViewTestCase):
@@ -9,7 +10,7 @@ class FilterTransactionsWithPKViewTestCase(ViewTestCase):
     def setUp(self):
         self.user: User = User.objects.get(username="@johndoe")
         self.account: PotAccount = PotAccount.objects.filter(user=self.user)[0]
-        self.url = reverse(
+        self.url: str = reverse(
             "filter_transaction_request_with_pk", kwargs={
                 "redirect_name": "individual_account",
                 "pk": self.account.id
@@ -22,23 +23,23 @@ class FilterTransactionsWithPKViewTestCase(ViewTestCase):
 
     def test_post_when_all_button_is_clicked(self):
         self._login(self.user)
-        self.form_data = {
+        self.form_data: dict[str, bool] = {
             "all": True
         }
-        response_url = reverse(
+        response_url: str = reverse(
             "individual_account", kwargs={
                 "pk": self.account.id,
                 "filter_type": "all"
             })
-        response = self.client.post(self.url, self.form_data)
+        response: HttpResponse = self.client.post(self.url, self.form_data)
         self.assertRedirects(
             response,
             response_url,
             status_code=302,
             target_status_code=200)
-        response = self.client.post(response_url)
+        response: HttpResponse = self.client.post(response_url)
         self.assertTemplateUsed(response, "pages/individual_account.html")
-        messages_list = list(response.context["messages"])
+        messages_list: list[Message] = list(response.context["messages"])
         self.assertEqual(len(messages_list), 0)
         self.assertContains(response, "New Car")
         self.assertContains(response, 4)
@@ -49,23 +50,23 @@ class FilterTransactionsWithPKViewTestCase(ViewTestCase):
 
     def test_post_when_sent_button_is_clicked(self):
         self._login(self.user)
-        self.form_data = {
+        self.form_data: dict[str, bool] = {
             "sent": True
         }
-        response_url = reverse(
+        response_url: str = reverse(
             "individual_account", kwargs={
                 "pk": self.account.id,
                 "filter_type": "sent"
             })
-        response = self.client.post(self.url, self.form_data)
+        response: HttpResponse = self.client.post(self.url, self.form_data)
         self.assertRedirects(
             response,
             response_url,
             status_code=302,
             target_status_code=200)
-        response = self.client.post(response_url)
+        response: HttpResponse = self.client.post(response_url)
         self.assertTemplateUsed(response, "pages/individual_account.html")
-        messages_list = list(response.context["messages"])
+        messages_list: list[Message] = list(response.context["messages"])
         self.assertEqual(len(messages_list), 0)
         self.assertContains(response, "New Car")
         self.assertContains(response, 4)
@@ -73,23 +74,23 @@ class FilterTransactionsWithPKViewTestCase(ViewTestCase):
 
     def test_post_when_received_button_is_clicked(self):
         self._login(self.user)
-        self.form_data = {
+        self.form_data: dict[str, bool] = {
             "received": True
         }
-        response_url = reverse(
+        response_url: str = reverse(
             "individual_account", kwargs={
                 "pk": self.account.id,
                 "filter_type": "received"
             })
-        response = self.client.post(self.url, self.form_data)
+        response: HttpResponse = self.client.post(self.url, self.form_data)
         self.assertRedirects(
             response,
             response_url,
             status_code=302,
             target_status_code=200)
-        response = self.client.post(response_url)
+        response: HttpResponse = self.client.post(response_url)
         self.assertTemplateUsed(response, "pages/individual_account.html")
-        messages_list = list(response.context["messages"])
+        messages_list: list[Message] = list(response.context["messages"])
         self.assertEqual(len(messages_list), 0)
         self.assertContains(response, "New Bike")
         self.assertContains(response, 5)
@@ -97,19 +98,19 @@ class FilterTransactionsWithPKViewTestCase(ViewTestCase):
 
     def test_post_when_random_input_is_given(self):
         self._login(self.user)
-        self.form_data = {
+        self.form_data: dict[str, bool] = {
             "other": True
         }
-        response_url = reverse("dashboard")
-        response = self.client.post(self.url, self.form_data)
+        response_url: str = reverse("dashboard")
+        response: HttpResponse = self.client.post(self.url, self.form_data)
         self.assertRedirects(
             response,
             response_url,
             status_code=302,
             target_status_code=200)
-        response = self.client.post(response_url)
+        response: HttpResponse = self.client.post(response_url)
         self.assertTemplateUsed(response, "pages/dashboard.html")
-        messages_list = list(response.context["messages"])
+        messages_list: list[Message] = list(response.context["messages"])
         self.assertEqual(len(messages_list), 2)
         self.assertTrue('Targets completed: ' in str(messages_list[0]))
         self.assertTrue('Targets nearly exceeded: ' in str(messages_list[1]))
