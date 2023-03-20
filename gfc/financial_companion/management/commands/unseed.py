@@ -25,10 +25,11 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options) -> None:
         """Unseed Database"""
-        print(f"UNSEEDING IN PROGRESS",end='\r')
-        
+        print(f"UNSEEDING IN PROGRESS", end='\r')
+
         users: QuerySet[User] = User.objects.filter(email__endswith='@gfc.org')
-        quiz_scores: QuerySet[QuizScore] = QuizScore.objects.filter(user__in=user)
+        quiz_scores: QuerySet[QuizScore] = QuizScore.objects.filter(
+            user__in=user)
 
         users.delete()
         quiz_scores.delete()
@@ -37,5 +38,4 @@ class Command(BaseCommand):
         QuizSet.objects.filter(seeded=True).delete()
         QuizQuestion.objects.filter(seeded=True).delete()
 
-        print(f"UNSEEDING COMPLETE",end='\r')
-        
+        print(f"UNSEEDING COMPLETE", end='\r')
