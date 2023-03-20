@@ -1,7 +1,6 @@
+from datetime import date
 from django import forms
 from financial_companion.models import PotAccount, RecurringTransaction, User, Category, Account
-from datetime import datetime
-from django.utils.timezone import make_aware
 from typing import Any
 from django.forms.widgets import DateInput
 from django.db.models import QuerySet
@@ -70,10 +69,10 @@ class AddRecurringTransactionForm(forms.ModelForm):
         """Clean the data and generate messages for any errors."""
 
         super().clean()
-        sender_account = self.cleaned_data.get('sender_account')
-        receiver_account = self.cleaned_data.get('receiver_account')
-        start_date = self.cleaned_data.get('start_date')
-        end_date = self.cleaned_data.get('end_date')
+        sender_account: Account = self.cleaned_data.get('sender_account')
+        receiver_account: Account = self.cleaned_data.get('receiver_account')
+        start_date: date = self.cleaned_data.get('start_date')
+        end_date: date = self.cleaned_data.get('end_date')
         users_accounts: PotAccount = PotAccount.objects.filter(user=self.user)
         ids: list[Account] = []
         for account in users_accounts:

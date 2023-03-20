@@ -2,11 +2,9 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import calendar
-from django.core.mail import EmailMessage
-from django.utils import timezone
 from datetime import datetime, date
 from django.conf import settings
-from datetime import date, timedelta
+from datetime import date
 from financial_companion.helpers.enums import Timespan
 import financial_companion.models as fcmodels
 from financial_companion.helpers import (
@@ -14,13 +12,12 @@ from financial_companion.helpers import (
     check_date_on_interval,
     check_within_date_range
 )
-from typing import Union, Any
 from django.db.models import QuerySet
 
 
 def send_monthly_newsletter_email() -> None:
     """sends emails to all users containing the monthly newsletter"""
-    users: Union[QuerySet, list[fcmodels.User]] = fcmodels.User.objects.all()
+    users: QuerySet[fcmodels.User] = fcmodels.User.objects.all()
     for user in users:
         transactions: list[fcmodels.Transaction] = fcmodels.Transaction.get_transactions_from_time_period(
             Timespan.MONTH, user)

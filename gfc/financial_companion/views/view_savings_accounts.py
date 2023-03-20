@@ -1,7 +1,6 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from ..helpers import get_data_for_account_projection
-from ..models import BankAccount
 from django.http import HttpRequest, HttpResponse
 
 

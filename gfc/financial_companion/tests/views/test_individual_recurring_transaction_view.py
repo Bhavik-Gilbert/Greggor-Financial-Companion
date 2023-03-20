@@ -1,5 +1,5 @@
 from .test_view_base import ViewTestCase
-from financial_companion.models import User, RecurringTransaction, Transaction
+from financial_companion.models import User, RecurringTransaction
 from django.http import HttpResponse
 from django.urls import reverse
 

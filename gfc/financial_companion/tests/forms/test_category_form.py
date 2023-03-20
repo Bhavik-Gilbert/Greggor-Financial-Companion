@@ -1,10 +1,7 @@
-
-from django import forms
 from .test_form_base import FormTestCase
 from financial_companion.forms import CategoryForm
 from financial_companion.models.user_model import User
 from financial_companion.models.category_model import Category
-from financial_companion.models.target_model import CategoryTarget
 from typing import Any
 
 

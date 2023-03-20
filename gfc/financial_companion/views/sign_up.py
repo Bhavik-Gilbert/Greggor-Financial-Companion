@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from ..helpers import offline_required
 from financial_companion.forms import UserSignUpForm
-from ..models import UserGroup, User
+from ..models import User
 from django.contrib import messages
 
 

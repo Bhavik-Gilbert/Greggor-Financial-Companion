@@ -1,6 +1,5 @@
 from django import forms
 from financial_companion.models import Category
-from ..helpers import Timespan
 from typing import Any
 
 

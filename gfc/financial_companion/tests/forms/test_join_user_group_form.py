@@ -1,9 +1,7 @@
-from django import forms
 from django.urls import reverse
 from typing import Any
 from .test_form_base import FormTestCase
 from financial_companion.forms import JoinUserGroupForm
-from financial_companion.models import User
 
 
 class JoinUserGroupFormTestCase(FormTestCase):

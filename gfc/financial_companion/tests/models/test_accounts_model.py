@@ -1,6 +1,4 @@
 from .test_model_base import ModelTestCase
-from django.db.models.base import ModelBase
-
 from ...models import Account, Transaction
 from ...helpers import FilterTransactionType
 

@@ -1,8 +1,6 @@
 from .test_helper_base import HelperTestCase
 from financial_companion.helpers import get_number_of_days_in_prev_month
 from freezegun import freeze_time
-from datetime import datetime
-import sys
 
 
 class GetNumberOfDaysInPrevMonthHelperFunctionTestCase(HelperTestCase):

@@ -4,9 +4,8 @@ from financial_companion.models import User, Transaction
 from financial_companion.helpers.enums import Timespan
 from financial_companion.helpers import functions
 from django.urls import reverse
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
 from freezegun import freeze_time
-from datetime import datetime
 
 
 class SpendingSummaryViewTestCase(ViewTestCase):
