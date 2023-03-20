@@ -1,6 +1,5 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.contrib import messages
 from financial_companion.models import PotAccount, Transaction, User
 from financial_companion.helpers.enums import Timespan
 from ..helpers import get_data_for_account_projection, get_warning_messages_for_targets
@@ -13,11 +12,10 @@ from django.db.models import QuerySet
 @login_required
 def dashboard_view(request: HttpRequest) -> HttpResponse:
     user: User = request.user
-    user_accounts: Union[QuerySet, list[PotAccount]
-                         ] = PotAccount.objects.filter(user=user.id)
-    user_transactions: Union[QuerySet, list[Transaction]] = []
+    user_accounts: QuerySet[PotAccount] = PotAccount.objects.filter(user=user.id)
+    user_transactions: QuerySet[Transaction] = []
     for account in user_accounts:
-        user_transactions: Union[QuerySet, list[Transaction]] = [
+        user_transactions: QuerySet[Transaction] = [
             *
             user_transactions,
             *

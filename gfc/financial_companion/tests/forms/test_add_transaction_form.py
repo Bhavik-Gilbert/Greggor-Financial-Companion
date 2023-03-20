@@ -1,7 +1,6 @@
 from financial_companion.forms import AddTransactionForm
 from financial_companion.models import Transaction, Category, Account, User
 from .test_form_base import FormTestCase
-from django.test import TestCase
 from financial_companion.models import Transaction
 from decimal import Decimal
 from typing import Any

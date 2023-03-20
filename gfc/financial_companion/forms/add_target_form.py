@@ -5,7 +5,6 @@ from ..helpers import Timespan, TransactionType, CurrencyType
 from django.core.exceptions import ValidationError
 import re
 from decimal import Decimal
-from typing import Union
 
 
 class TargetForm(forms.Form):
@@ -40,7 +39,7 @@ class TargetForm(forms.Form):
         super().clean()
         filter_type_dict: dict[str, models.Model] = {
             self.foreign_key_name.lower(): self.foreign_key}
-        check_unique_together: Union[models.QuerySet, list[AbstractTarget]] = self.form_type.objects.filter(
+        check_unique_together: models.QuerySet[AbstractTarget] = self.form_type.objects.filter(
             timespan=self.cleaned_data.get('timespan'),
             **filter_type_dict,
             target_type=self.cleaned_data.get('target_type')

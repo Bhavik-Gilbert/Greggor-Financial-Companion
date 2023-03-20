@@ -1,7 +1,6 @@
 from financial_companion.forms import AddRecurringTransactionForm
 from financial_companion.models import RecurringTransaction, Category, Account, User
 from .test_form_base import FormTestCase
-from django.test import TestCase
 from decimal import Decimal
 from typing import Any
 
