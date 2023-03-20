@@ -3,14 +3,15 @@ from .test_view_base import ViewTestCase
 from financial_companion.models import User, Account, PotAccount, Transaction, AbstractTransaction
 from financial_companion.helpers import get_data_for_account_projection
 from django.urls import reverse
+from typing import Any
 
 
 class ViewSavingsAccountsViewTestCase(ViewTestCase):
     """Tests of the Savings Accounts Projection view."""
 
     def setUp(self):
-        self.url = reverse('view_savings_accounts')
-        self.user = User.objects.get(username='@johndoe')
+        self.url: str = reverse('view_savings_accounts')
+        self.user: User = User.objects.get(username='@johndoe')
 
     def test_view_savings_accounts_url(self):
         self.assertEqual(self.url, '/view_savings_accounts/')
@@ -20,7 +21,7 @@ class ViewSavingsAccountsViewTestCase(ViewTestCase):
 
     def test_get_view_savings_accounts(self):
         self._login(self.user)
-        self.response = self.client.get(self.url)
+        self.response: HttpResponse = self.client.get(self.url)
         self.assertEqual(self.response.status_code, 200)
         self.assertTemplateUsed(
             self.response,
@@ -28,7 +29,7 @@ class ViewSavingsAccountsViewTestCase(ViewTestCase):
         self.assertTemplateUsed(self.response,
                                 'partials/dashboard/account_projection_graph.html'
                                 )
-        accountsProjections = get_data_for_account_projection(self.user)
+        accountsProjections: dict[str, Any] = get_data_for_account_projection(self.user)
         self._assert_context_is_passed_in(accountsProjections)
 
     def _assert_context_is_passed_in(self, accountsProjections):

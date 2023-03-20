@@ -7,15 +7,16 @@ from django.urls import reverse
 from django.http import HttpRequest, HttpResponse
 from freezegun import freeze_time
 from datetime import datetime
+from typing import Any
 
 
 class SpendingSummaryViewTestCase(ViewTestCase):
     """Test Case for user spending summary page."""
 
     def setUp(self):
-        self.url = reverse('spending_summary')
+        self.url: str = reverse('spending_summary')
         self.test_model: Transaction = Transaction.objects.get(id=4)
-        self.user = User.objects.get(id=1)
+        self.user: User = User.objects.get(id=1)
 
     def test_spending_summary_url(self):
         self.assertEqual(self.url, '/spending_summary/')
@@ -35,26 +36,26 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertTrue(isinstance(form, TimespanOptionsForm))
         time: Timespan = Timespan.WEEK
         self.assertTrue(isinstance(time, Timespan))
-        total_spent = sum(transaction.amount for transaction in
+        total_spent: Decimal = sum(transaction.amount for transaction in
                           Transaction.get_transactions_from_time_period(
                               time, self.user, "sent"))
-        total_received = sum(transaction.amount for transaction in
+        total_received: Decimal = sum(transaction.amount for transaction in
                              Transaction.get_transactions_from_time_period(
                                  time, self.user, "received"))
-        categories = Transaction.get_category_splits(
+        categories: dict[str, Decimal] = Transaction.get_category_splits(
             Transaction.get_transactions_from_time_period(
                 time, self.user, "sent"), self.user)
-        percentages = functions.calculate_percentages(categories, total_spent)
-        percentages_list = list(percentages.values())
-        labels = list(percentages.keys())
+        percentages: dict[str, float] = functions.calculate_percentages(categories, total_spent)
+        percentages_list: list[float] = list(percentages.values())
+        labels: list[str] = list(percentages.keys())
 
         keyset: list[str] = response.context["keyset"]
         self.assertEqual(keyset, labels)
         dataset: list[float] = response.context["dataset"]
         self.assertEqual(dataset, percentages_list)
-        money_in: float = response.context["money_in"]
+        money_in: Decimal = response.context["money_in"]
         self.assertEqual(money_in, total_received)
-        money_out: float = response.context["money_out"]
+        money_out: Decimal = response.context["money_out"]
         self.assertEqual(money_out, total_spent)
 
     @freeze_time("1998-01-07 22:00:00")
@@ -91,9 +92,9 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertEqual(keyset, labels)
         dataset: list[float] = response.context["dataset"]
         self.assertEqual(dataset, percentages_list)
-        money_in: float = response.context["money_in"]
+        money_in: Decimal = response.context["money_in"]
         self.assertEqual(money_in, total_received)
-        money_out: float = response.context["money_out"]
+        money_out: Decimal = response.context["money_out"]
         self.assertEqual(money_out, total_spent)
 
     @freeze_time("2023-01-01 22:00:00")
@@ -118,12 +119,11 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         percentages = functions.calculate_percentages(categories, total_spent)
         percentages_list = list(percentages.values())
         labels = list(percentages.keys())
-
         keyset: list[str] = response.context["keyset"]
         self.assertEqual(keyset, labels)
         dataset: list[float] = response.context["dataset"]
         self.assertEqual(dataset, percentages_list)
-        money_in: float = response.context["money_in"]
+        money_in: Decimal = response.context["money_in"]
         self.assertEqual(money_in, total_received)
-        money_out: float = response.context["money_out"]
+        money_out: Decimal = response.context["money_out"]
         self.assertEqual(money_out, total_spent)
