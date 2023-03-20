@@ -7,7 +7,6 @@ import re
 from decimal import Decimal
 
 
-
 class TargetForm(forms.Form):
     """Form to add a target"""
 

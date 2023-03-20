@@ -6,7 +6,6 @@ from django.forms.widgets import DateInput
 from django.db.models import QuerySet
 
 
-
 class AddRecurringTransactionForm(forms.ModelForm):
     """Form to add a new recurring transaction"""
 
@@ -72,7 +71,7 @@ class AddRecurringTransactionForm(forms.ModelForm):
         super().clean()
         sender_account: Account = self.cleaned_data.get('sender_account')
         receiver_account: Account = self.cleaned_data.get('receiver_account')
-        start_date: date  = self.cleaned_data.get('start_date')
+        start_date: date = self.cleaned_data.get('start_date')
         end_date: date = self.cleaned_data.get('end_date')
         users_accounts: PotAccount = PotAccount.objects.filter(user=self.user)
         ids: list[Account] = []

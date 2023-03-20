@@ -10,7 +10,8 @@ class GetShortMonthNamesForTimescaleHelperFunctionTestCase(HelperTestCase):
     def setUp(self):
         self.valid_bank_accounts: QuerySet[BankAccount] = BankAccount.objects.filter(
             interest_rate__gt=0)
-        self.no_bank_accounts: QuerySet[BankAccount] = BankAccount.objects.filter(id__lt=0)
+        self.no_bank_accounts: QuerySet[BankAccount] = BankAccount.objects.filter(
+            id__lt=0)
         self.max_timescale_in_months: int = max(
             get_projection_timescale_options().keys())
 

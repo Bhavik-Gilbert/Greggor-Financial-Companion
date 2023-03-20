@@ -2,6 +2,7 @@ from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.models import User, PotAccount, BankAccount
 
+
 class ViewAccountsViewTestCase(ViewTestCase):
     """Tests of the user view pot accounts view."""
 

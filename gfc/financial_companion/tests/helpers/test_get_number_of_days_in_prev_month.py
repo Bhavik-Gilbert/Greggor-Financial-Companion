@@ -3,7 +3,6 @@ from financial_companion.helpers import get_number_of_days_in_prev_month
 from freezegun import freeze_time
 
 
-
 class GetNumberOfDaysInPrevMonthHelperFunctionTestCase(HelperTestCase):
     """Test file for the get_number_of_days_in_prev_month helpers function"""
 

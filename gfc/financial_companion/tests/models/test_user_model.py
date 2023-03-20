@@ -4,7 +4,6 @@ from freezegun import freeze_time
 from ...models import AbstractTarget
 
 
-
 class UserModelTestCase(ModelTestCase):
     """Test file for user model class"""
 

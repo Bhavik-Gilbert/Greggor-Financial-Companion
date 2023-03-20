@@ -7,7 +7,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 
 
-
 @login_required
 def add_transaction_view(request: HttpRequest) -> HttpResponse:
     """View to record a transaction made"""

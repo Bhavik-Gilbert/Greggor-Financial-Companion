@@ -12,7 +12,8 @@ from django.db.models import QuerySet
 @login_required
 def dashboard_view(request: HttpRequest) -> HttpResponse:
     user: User = request.user
-    user_accounts: QuerySet[PotAccount] = PotAccount.objects.filter(user=user.id)
+    user_accounts: QuerySet[PotAccount] = PotAccount.objects.filter(
+        user=user.id)
     user_transactions: QuerySet[Transaction] = []
     for account in user_accounts:
         user_transactions: QuerySet[Transaction] = [
