@@ -2,7 +2,7 @@ from django.db.models import (
     Model,
     CharField,
     DecimalField,
-    ImageField,
+    FileField,
     DateTimeField,
     DateField,
     ForeignKey,
@@ -15,7 +15,7 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .accounts_model import Account, PotAccount
 from .category_model import Category
 from .user_model import User
-from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, TransactionType, FilterTransactionType
+from ..helpers import CurrencyType, Timespan, random_filename, timespan_map
 import datetime
 import os
 from django.db.models.signals import pre_delete
@@ -42,11 +42,8 @@ class AbstractTransaction(Model):
         max_length=200
     )
 
-    image: ImageField = ImageField(
+    file: FileField = FileField(
         blank=True,
-        height_field=None,
-        width_field=None,
-        max_length=100,
         upload_to=change_filename
     )
 

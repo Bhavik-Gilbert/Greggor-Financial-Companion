@@ -33,7 +33,7 @@
   }
 }
 
-.limit img {
+.limit img, .limit embed {
   background: url(path-to-image) 50% 50%;
   width: 100%;
   height: 100%;

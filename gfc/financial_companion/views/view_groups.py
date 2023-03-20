@@ -2,9 +2,7 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from ..models import UserGroup, User
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse
 from financial_companion.forms import JoinUserGroupForm
-from typing import Union, Any
 from django.core.paginator import Page
 from django.db.models import QuerySet
 

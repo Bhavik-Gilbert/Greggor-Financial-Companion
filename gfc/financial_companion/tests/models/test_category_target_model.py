@@ -2,7 +2,6 @@ from .test_model_base import ModelTestCase
 from django.db.backends.sqlite3.base import IntegrityError
 from ...models import CategoryTarget
 from freezegun import freeze_time
-import datetime
 
 
 class CategoryTargetModelTestCase(ModelTestCase):

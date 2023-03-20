@@ -1,6 +1,6 @@
 
 from .test_view_base import ViewTestCase
-from financial_companion.models import User, Account, PotAccount, Transaction, AbstractTransaction
+from financial_companion.models import User
 from financial_companion.helpers import get_data_for_account_projection
 from django.urls import reverse
 

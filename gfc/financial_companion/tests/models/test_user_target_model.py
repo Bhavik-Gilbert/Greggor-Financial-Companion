@@ -2,7 +2,6 @@ from .test_model_base import ModelTestCase
 from django.db.backends.sqlite3.base import IntegrityError
 from ...models import UserTarget, User
 from freezegun import freeze_time
-import datetime
 from ...helpers import Timespan, TransactionType
 
 

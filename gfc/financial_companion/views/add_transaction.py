@@ -1,12 +1,10 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from financial_companion.forms import AddTransactionForm, AddTransactionsViaBankStatementForm
-from financial_companion.models import Transaction, PotAccount, BankAccount, Account, Category, User
+from financial_companion.models import Transaction, User
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from typing import Any
-from django.db.models import QuerySet
 
 
 @login_required

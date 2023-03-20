@@ -1,10 +1,9 @@
-from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django import forms
 from django.contrib import messages
 from ..forms import EditUserDetailsForm
 from ..models import User
+from django.http import HttpResponse
 
 
 @login_required

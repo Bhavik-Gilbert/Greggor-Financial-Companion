@@ -7,5 +7,6 @@ class TimespanOptionsForm(forms.Form):
         choices=Timespan.choices)
 
     def get_choice(self):
+        """Returns chosen time span"""
         self.full_clean()
         return self.cleaned_data["time_choice"]

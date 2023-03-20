@@ -51,6 +51,8 @@ INSTALLED_APPS: list[str] = [
     'django_cleanup.apps.CleanupConfig',
 ]
 
+X_FRAME_OPTIONS: str = 'SAMEORIGIN'
+
 MIDDLEWARE: list[str] = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',

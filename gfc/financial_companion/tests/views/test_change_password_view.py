@@ -1,6 +1,5 @@
 from django.contrib.auth.hashers import check_password
 from django.urls import reverse
-
 from .test_view_base import ViewTestCase
 from financial_companion.forms import UserChangePasswordForm
 from financial_companion.models import User
@@ -31,7 +30,6 @@ class ChangePasswordViewTestCase(ViewTestCase):
         self.assertFalse(form.is_bound)
 
     def test_get_change_password_redirects_when_not_logged_in(self) -> None:
-        response: HttpResponse = self.client.get(self.url, follow=True)
         self._assert_require_login(self.url)
 
     def test_change_password_success(self) -> None:

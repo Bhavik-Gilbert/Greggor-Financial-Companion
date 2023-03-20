@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from django.urls import reverse
 from typing import Any
-
 from .test_view_base import ViewTestCase
 from financial_companion.forms import PotAccountForm, BankAccountForm, RegularAccountForm
 from financial_companion.models import User, PotAccount, BankAccount, Account

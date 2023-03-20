@@ -1,13 +1,10 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from financial_companion.helpers import functions, paginate
-from financial_companion.helpers import TransactionType
 from financial_companion.helpers.enums import Timespan
-from financial_companion.models import Transaction, Category, User, AbstractTarget
+from financial_companion.models import Transaction
 from financial_companion.forms import TimespanOptionsForm
-from decimal import Decimal
-from datetime import datetime
 from ..models import Transaction
 from json import dumps
 from django.core.paginator import Page

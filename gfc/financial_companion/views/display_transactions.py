@@ -5,8 +5,6 @@ from financial_companion.helpers import FilterTransactionType
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse
 from financial_companion.helpers import paginate
-from django.db.models import QuerySet
-from django.core.paginator import Page
 
 
 @login_required

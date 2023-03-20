@@ -1,11 +1,7 @@
-from django import forms
 from financial_companion.forms import AddRecurringTransactionForm
-from financial_companion.models import RecurringTransaction, Transaction, Category, Account, User
+from financial_companion.models import RecurringTransaction, Category, Account, User
 from .test_form_base import FormTestCase
-from django.test import TestCase
-from financial_companion.models import Transaction
 from decimal import Decimal
-from django.core.files.uploadedfile import SimpleUploadedFile
 from typing import Any
 
 
@@ -14,11 +10,10 @@ class AddRecurringTransactionFormTestCase(FormTestCase):
 
     def setUp(self):
         self.user: User = User.objects.get(username='@johndoe')
-        image_path: str = "financial_companion/tests/data/dragon.jpeg"
         self.form_input: dict[str, Any] = {
             "title": "Test",
             "description": "This is a test transaction",
-            "image": "transaction_reciept.jpeg",
+            "file": "transaction_reciept.jpeg",
             "category": 1,
             "amount": 152.95,
             "currency": "USD",
@@ -36,7 +31,7 @@ class AddRecurringTransactionFormTestCase(FormTestCase):
             form,
             'title',
             'description',
-            'image',
+            'file',
             'category',
             'amount',
             'currency',
@@ -82,8 +77,8 @@ class AddRecurringTransactionFormTestCase(FormTestCase):
             self.user, data=self.form_input)
         self.assertTrue(form.is_valid())
 
-    def test_form_accepts_blank_image(self):
-        self.form_input['image']: str = ''
+    def test_form_accepts_blank_file(self):
+        self.form_input['file']: str = ''
         form: AddRecurringTransactionForm = AddRecurringTransactionForm(
             self.user, data=self.form_input)
         self.assertTrue(form.is_valid())
@@ -174,7 +169,6 @@ class AddRecurringTransactionFormTestCase(FormTestCase):
         self.assertEqual(
             new_rec_transaction.description,
             'This is a test transaction')
-        # self.assertEqual(new_rec_transaction.image, self.new_image)
         self.assertTrue(isinstance(new_rec_transaction.category, Category))
         self.assertEqual(new_rec_transaction.category.id, 1)
         self.assertEqual(new_rec_transaction.amount, Decimal("152.95"))

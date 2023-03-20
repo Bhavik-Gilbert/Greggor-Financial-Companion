@@ -19,7 +19,7 @@ class EditTransactionViewTestCase(ViewTestCase):
         self.form_input: dict[str, Any] = {
             "title": "Test",
             "description": "This is a test transaction",
-            "image": self.image_upload,
+            "file": self.image_upload,
             "category": 1,
             "amount": 152.95,
             "currency": "USD",
@@ -57,9 +57,9 @@ class EditTransactionViewTestCase(ViewTestCase):
         self.assertEqual(
             transaction.description,
             "Bought a new phone from Apple")
-        self.assertTrue("transactions/" in transaction.image.name)
+        self.assertTrue("transactions/" in transaction.file.name)
         self.assertFalse(self.image_path.split(
-            "/")[-1].split(".")[-1] in transaction.image.name)
+            "/")[-1].split(".")[-1] in transaction.file.name)
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("1499.99"))
         self.assertEqual(transaction.currency, 'USD')
@@ -84,9 +84,9 @@ class EditTransactionViewTestCase(ViewTestCase):
         transaction.refresh_from_db()
         self.assertEqual(transaction.title, "Test")
         self.assertEqual(transaction.description, "This is a test transaction")
-        self.assertTrue("transactions/" in transaction.image.name)
+        self.assertTrue("transactions/" in transaction.file.name)
         self.assertTrue(self.image_path.split(
-            "/")[-1].split(".")[-1] in transaction.image.name)
+            "/")[-1].split(".")[-1] in transaction.file.name)
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("152.95"))
         self.assertEqual(transaction.currency, 'USD')

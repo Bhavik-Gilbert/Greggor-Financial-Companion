@@ -2,7 +2,6 @@ from django.contrib import auth
 from django.http import HttpResponse
 from django.urls import reverse
 from typing import Any
-
 from ..test_base import BaseTestCase
 from ...models import User
 

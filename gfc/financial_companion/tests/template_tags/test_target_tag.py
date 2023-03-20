@@ -1,8 +1,7 @@
 from .test_template_tag_base import TemplateTagTestCase
-from financial_companion.models import Transaction, CategoryTarget, AccountTarget, UserTarget
+from financial_companion.models import CategoryTarget, AccountTarget, UserTarget
 from financial_companion.helpers import timespan_map, TransactionType
 from financial_companion.templatetags import get_completeness
-import os
 from freezegun import freeze_time
 import datetime
 

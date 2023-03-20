@@ -1,6 +1,4 @@
 from .test_model_base import ModelTestCase
-from django.db.backends.sqlite3.base import IntegrityError
-
 from financial_companion.models import QuizSet, QuizQuestion
 
 

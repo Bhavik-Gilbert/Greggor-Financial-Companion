@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from ..models import PotAccount, BankAccount, Account, AccountTarget
 from ..helpers import get_warning_messages_for_targets, paginate

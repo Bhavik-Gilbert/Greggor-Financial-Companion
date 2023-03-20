@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 from ..helpers import AccountType
 from ..forms import MonetaryAccountForm
-from ..models import PotAccount, User, Account, BankAccount
+from ..models import User, Account, BankAccount
 from django.contrib import messages
 from django import forms
 
