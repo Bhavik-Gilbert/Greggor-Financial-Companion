@@ -19,7 +19,8 @@
             {% include 'partials/form.html' with form=form %}
         </div>
         <div class="col-12">
-          <input type="submit" value="Apply" class="btn btn-primary col-12 col-lg-2">
+          <input type="submit" value="Apply" class="btn btn-primary col-12 col-lg-2 m-lg-1 my-1">
+          <a href="{% url 'view_targets' %"><button type="submit" class="btn btn-primary col-12 col-lg-2 m-lg-1 my-1">Reset</button></a>
         <div>
       </form>
     </div>

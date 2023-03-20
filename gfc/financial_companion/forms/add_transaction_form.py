@@ -6,6 +6,7 @@ from datetime import datetime
 from django.utils.timezone import make_aware
 from typing import Any
 from decimal import Decimal
+from django.db.models import QuerySet
 
 
 class AddTransactionForm(forms.ModelForm):
@@ -13,16 +14,16 @@ class AddTransactionForm(forms.ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(AddTransactionForm, self).__init__(*args, **kwargs)
-        self.fields['category'].queryset = Category.objects.filter(
+        self.fields['category'].queryset: QuerySet[Category] = Category.objects.filter(
             user=user.id)
-        self.fields['sender_account'].queryset = Account.objects.filter(
+        self.fields['sender_account'].queryset: QuerySet[Account] = Account.objects.filter(
             user=user.id)
-        self.fields['receiver_account'].queryset = Account.objects.filter(
+        self.fields['receiver_account'].queryset: QuerySet[Account] = Account.objects.filter(
             user=user.id)
         self.fields['category'].label_from_instance = self.label_from_instance
         self.fields['sender_account'].label_from_instance = self.label_from_instance
         self.fields['receiver_account'].label_from_instance = self.label_from_instance
-        self.user = user
+        self.user: User = user
 
     def label_from_instance(self, obj):
         return obj.name

@@ -1,6 +1,5 @@
 from django import forms
 from financial_companion.models import QuizQuestion, QuizSet, QuizScore
-from typing import Any
 
 
 class QuizQuestionForm(forms.Form):

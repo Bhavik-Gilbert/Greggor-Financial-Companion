@@ -130,7 +130,7 @@ class ParseStatementPDFClassTestCase(HelperTestCase):
     def test_valid_get_transactions_from_pdf_statement(self):
         transaction_list: list[dict[str, Any]] = self.bank_statement_parser.get_transactions_from_pdf_statement(
             self.uploaded_bank_statement.temporary_file_path())
-        self.assertEqual(len(transaction_list), 29)
+        self.assertEqual(len(transaction_list), 33)
         for transaction in transaction_list:
             self.assertTrue(all(transaction.values()))
             self.assertTrue("date" in transaction.keys())

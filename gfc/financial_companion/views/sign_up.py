@@ -4,6 +4,7 @@ from django.contrib.auth import login
 from ..helpers import offline_required
 from financial_companion.forms import UserSignUpForm
 from ..models import UserGroup, User
+from django.contrib import messages
 
 
 @offline_required
@@ -14,6 +15,10 @@ def sign_up_view(request: HttpRequest) -> HttpResponse:
         if form.is_valid():
             user: User = form.save()
             login(request, user)
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                "You have successfully created an account")
             return redirect('dashboard')
     else:
         form = UserSignUpForm()

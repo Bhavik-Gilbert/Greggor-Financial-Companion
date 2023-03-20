@@ -8,11 +8,12 @@ from django.db.models import (
 from encrypted_fields.fields import EncryptedCharField
 from django.core.exceptions import ValidationError
 from django.core.validators import MinLengthValidator
+from django.db.models import Q
 from model_utils.managers import InheritanceManager
 from decimal import Decimal
 from financial_companion.models import User
 import financial_companion.models as fcmodels
-from ..helpers import CurrencyType, AccountType, FilterTransactionType, CurrencyConverter, convert_currency
+from ..helpers import CurrencyType, AccountType, FilterTransactionType, convert_currency
 
 
 class Account(Model):
@@ -63,9 +64,9 @@ class Account(Model):
         transactions: list[fcmodels.Transaction] = []
 
         if filter_type in FilterTransactionType.get_send_list():
-            new_transactions = fcmodels.Transaction.objects.filter(
+            new_transactions: list[fcmodels.Transaction] = fcmodels.Transaction.objects.filter(
                 sender_account=self)
-            transactions = [
+            transactions: list = [
                 *
                 transactions,
                 *
@@ -74,9 +75,9 @@ class Account(Model):
                     "sender",
                     allow_accounts)]
         if filter_type in FilterTransactionType.get_received_list():
-            new_transactions = fcmodels.Transaction.objects.filter(
+            new_transactions: list[fcmodels.Transaction] = fcmodels.Transaction.objects.filter(
                 receiver_account=self)
-            transactions = [
+            transactions: list = [
                 *
                 transactions,
                 *
@@ -91,17 +92,16 @@ class Account(Model):
     def get_account_recurring_transactions(self) -> list:
         """Returns filtered list of all this accounts RECURRING transactions"""
         transactions: list[fcmodels.RecurringTransaction] = []
-
-        transactions = [
+        transactions: list = [
             *transactions,
             *fcmodels.RecurringTransaction.objects.filter(
-                sender_account=self)]
+                Q(sender_account=self) | Q(receiver_account=self))]
         return transactions
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.name)
 
-    def get_type(self):
+    def get_type(self) -> str:
         return f"{AccountType.REGULAR}"
 
     @staticmethod
@@ -113,7 +113,7 @@ class Account(Model):
         )
 
     @staticmethod
-    def get_or_create_account(account_name: str, user: User):
+    def get_or_create_account(account_name: str, user: User) -> list:
         """Returns account if it exists or creates a new one"""
         try:
             account: list[Account] = Account.objects.get_subclass(
@@ -132,22 +132,22 @@ class PotAccount(Account):
         max_length=3
     )
 
-    def get_type(self):
+    def get_type(self) -> str:
         return f"{AccountType.POT}"
 
-    def update_balance(self, amount, currency):
-        amount = convert_currency(amount, currency, self.currency)
+    def update_balance(self, amount: float, currency: str):
+        amount: float = convert_currency(amount, currency, self.currency)
         self.balance += Decimal(amount)
         self.save()
 
 
-def only_int(value):
+def only_int(value: str):
     if (not value.isnumeric()):
         raise ValidationError("value contains characters")
 
 
-def iban_valid(value):
-    s1 = value[0:2]
+def iban_valid(value: str):
+    s1: str = value[0:2]
     if (not s1.isalpha()):
         raise ValidationError(
             "IBAN does not start with a iso-3166 country codes")
@@ -183,5 +183,5 @@ class BankAccount(PotAccount):
         default=0.0,
     )
 
-    def get_type(self):
+    def get_type(self) -> str:
         return f"{AccountType.BANK}"
