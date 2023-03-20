@@ -10,7 +10,7 @@ class RecurringTransactionForm(forms.ModelForm):
         model: RecurringTransaction = RecurringTransaction
         fields: list[str] = [
             'title',
-            'image',
+            'file',
             'category',
             'amount',
             'currency',

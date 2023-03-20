@@ -60,8 +60,8 @@ class AbstractTransactionModelTestCase(AbstractModelTestCase):
         self.test_model.description: float = "x" * 201
         self._assert_model_is_invalid()
 
-    def test_image_may_be_blank(self):
-        self.test_model.image = ''
+    def test_file_may_be_blank(self):
+        self.test_model.file = ''
         self._assert_model_is_valid()
 
     def test_valid_amount_integer(self):
