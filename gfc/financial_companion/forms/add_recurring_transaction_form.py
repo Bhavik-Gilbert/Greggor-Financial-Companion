@@ -30,7 +30,7 @@ class AddRecurringTransactionForm(forms.ModelForm):
         fields: list[str] = [
             'title',
             'description',
-            'image',
+            'file',
             'category',
             'amount',
             'currency',
@@ -51,7 +51,7 @@ class AddRecurringTransactionForm(forms.ModelForm):
             recurring_transaction: RecurringTransaction = RecurringTransaction.objects.create(
                 title=self.cleaned_data.get('title'),
                 description=self.cleaned_data.get('description'),
-                image=self.cleaned_data.get('image'),
+                file=self.cleaned_data.get('file'),
                 category=self.cleaned_data.get('category'),
                 amount=self.cleaned_data.get('amount'),
                 currency=self.cleaned_data.get('currency'),
