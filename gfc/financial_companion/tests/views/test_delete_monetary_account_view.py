@@ -1,6 +1,5 @@
 from django.urls import reverse
 from .test_view_base import ViewTestCase
-from financial_companion.forms import CategoryForm
 from financial_companion.models import User, Account
 from django.http import HttpResponse
 from django.contrib.messages.storage.base import Message
