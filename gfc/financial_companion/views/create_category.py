@@ -20,7 +20,7 @@ def delete_category_view(request: HttpRequest, pk: int) -> HttpResponse:
     messages.add_message(
         request,
         messages.WARNING,
-        "This category has been deleted")
+        "The category has been deleted")
     return redirect("categories_list", search_name="all")
 
 
@@ -30,7 +30,11 @@ def create_category_view(request: HttpRequest) -> HttpResponse:
     if request.method == 'POST':
         form: CategoryForm = CategoryForm(request.POST)
         if form.is_valid():
-            user = form.save(request.user)
+            form.save(request.user)
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                "This category has been successfully created")
             return redirect("categories_list", search_name="all")
     else:
         form: CategoryForm = CategoryForm()
@@ -52,6 +56,10 @@ def edit_category_view(request: HttpRequest, pk: int) -> HttpResponse:
         form = CategoryForm(request.POST, instance=current_category)
         if form.is_valid():
             form.save(current_user=request.user, instance=current_category)
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                "This category has been successfully updated")
             return redirect('individual_category_redirect',
                             pk=current_category.id)
     else:

@@ -56,7 +56,7 @@ class QuizSet(models.Model):
 
     @staticmethod
     def set_exists(quiz_questions: list[QuizQuestion]) -> bool:
-        exists = False
+        exists: bool = False
         for quiz_set in QuizSet.objects.all():
             if sorted(quiz_questions, key=lambda question: question.id) == sorted(
                     list(quiz_set.questions.all()), key=lambda question: question.id):
@@ -103,7 +103,7 @@ class QuizScore(models.Model):
             raise IntegrityError({'correct questions': (
                 f'there cannot be more correct questions than total questions total questions : {self.total_questions}, correct questions : {self.correct_questions}')})
 
-    def get_score(self):
+    def get_score(self) -> int:
         """Returns score as a percentage"""
         return round(min(1, self.correct_questions /
                      self.total_questions) * 100)

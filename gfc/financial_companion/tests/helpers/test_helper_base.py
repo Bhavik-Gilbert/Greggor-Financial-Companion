@@ -30,7 +30,7 @@ class HelperTestCase(BaseTestCase):
             if settings.DEBUG:
                 warnings.warn(f"Warning: {warning_message}")
                 if not (isinstance(error, Exception)
-                        and expected_error_message in str(error).lower()):
+                        and (expected_error_message in str(error).lower() or expected_error_message == "")):
                     raise Exception(error)
             else:
                 raise Exception(error)
