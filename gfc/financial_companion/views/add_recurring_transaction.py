@@ -8,6 +8,7 @@ from django.contrib import messages
 from typing import Any
 from django.db.models import QuerySet
 
+
 @login_required
 def add_recurring_transaction_view(request: HttpRequest) -> HttpResponse:
     """View to record a recurring transaction"""

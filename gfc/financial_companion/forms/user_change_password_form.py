@@ -2,6 +2,7 @@ from django import forms
 from django.core.validators import RegexValidator
 from financial_companion.models import User
 
+
 class UserChangePasswordForm(forms.Form):
     """Form for users to change their password"""
 
