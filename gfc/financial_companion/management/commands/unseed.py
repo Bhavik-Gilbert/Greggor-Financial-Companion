@@ -28,11 +28,8 @@ class Command(BaseCommand):
         print(f"UNSEEDING IN PROGRESS", end='\r')
 
         users: QuerySet[User] = User.objects.filter(email__endswith='@gfc.org')
-        quiz_scores: QuerySet[QuizScore] = QuizScore.objects.filter(
-            user__in=user)
 
         users.delete()
-        quiz_scores.delete()
         Schedule.objects.all().delete()
 
         QuizSet.objects.filter(seeded=True).delete()
