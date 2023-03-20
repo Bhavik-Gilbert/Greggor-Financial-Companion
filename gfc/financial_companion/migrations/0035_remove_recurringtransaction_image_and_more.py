@@ -7,7 +7,8 @@ import financial_companion.models.transaction_models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('financial_companion', '0034_alter_recurringtransaction_receiver_account_and_more'),
+        ('financial_companion',
+         '0034_alter_recurringtransaction_receiver_account_and_more'),
     ]
 
     operations = [
@@ -22,11 +23,15 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='recurringtransaction',
             name='file',
-            field=models.FileField(blank=True, upload_to=financial_companion.models.transaction_models.change_filename),
+            field=models.FileField(
+                blank=True,
+                upload_to=financial_companion.models.transaction_models.change_filename),
         ),
         migrations.AddField(
             model_name='transaction',
             name='file',
-            field=models.FileField(blank=True, upload_to=financial_companion.models.transaction_models.change_filename),
+            field=models.FileField(
+                blank=True,
+                upload_to=financial_companion.models.transaction_models.change_filename),
         ),
     ]
