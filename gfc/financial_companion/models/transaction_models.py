@@ -2,7 +2,7 @@ from django.db.models import (
     Model,
     CharField,
     DecimalField,
-    ImageField,
+    FileField,
     DateTimeField,
     DateField,
     ForeignKey,
@@ -42,11 +42,8 @@ class AbstractTransaction(Model):
         max_length=200
     )
 
-    image: ImageField = ImageField(
+    file: FileField = FileField(
         blank=True,
-        height_field=None,
-        width_field=None,
-        max_length=100,
         upload_to=change_filename
     )
 

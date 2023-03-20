@@ -41,11 +41,10 @@
     {% if transaction.end_date %}
       <li class="list-group-item"><p><strong>End Date: </strong>{{transaction.end_date}}</p></li>
     {% endif %}
-
 {% endblock %}
 
 {% block additional_items %}
-  {% include "partials/view_models/model_photo.html" with picture=transaction.image name=transaction%}
+  {% include "partials/view_models/model_photo.html" with picture=transaction.file name=transaction%}
 {% endblock %}
 
 {% block view_model_objects_URL %}{% url 'view_recurring_transactions' %}{% endblock %}

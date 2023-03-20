@@ -64,7 +64,7 @@ def create_transaction_via_recurring_transactions() -> None:
         if check_current_in_date_range and check_current_on_interval:
             transaction: fcmodels.Transaction = fcmodels.Transaction.objects.create(
                 title=recurring_transaction.title,
-                image=recurring_transaction.image,
+                file=recurring_transaction.file,
                 description=recurring_transaction.description,
                 category=recurring_transaction.category,
                 amount=recurring_transaction.amount,
