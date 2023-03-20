@@ -20,7 +20,7 @@ class ViewAccountsViewTestCase(ViewTestCase):
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/view_accounts.html')
-        pot_accounts: Union[QuerySet, list[PotAccount]
+        pot_accounts: QuerySet[PotAccount]
                             ] = response.context["pot_accounts"]
         for pot_account in pot_accounts:
             self.assertTrue(isinstance(pot_account, PotAccount))

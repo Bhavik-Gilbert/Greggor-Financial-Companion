@@ -7,7 +7,6 @@ from django.urls import reverse
 from django.http import HttpRequest, HttpResponse
 from freezegun import freeze_time
 from datetime import datetime
-from typing import Any
 
 
 class SpendingSummaryViewTestCase(ViewTestCase):
