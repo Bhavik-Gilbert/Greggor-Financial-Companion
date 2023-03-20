@@ -25,7 +25,7 @@ class DeleteRecurringTransactionViewTestCase(ViewTestCase):
         response: HttpResponse = self.client.get(self.url)
         after_count: int = RecurringTransaction.objects.count()
         self.assertEqual(before_count - 1, after_count)
-        response_url: str = reverse('dashboard')
+        response_url: str = reverse('view_recurring_transactions')
         self.assertRedirects(
             response,
             response_url,
@@ -61,7 +61,7 @@ class DeleteRecurringTransactionViewTestCase(ViewTestCase):
         after_count: int = Transaction.objects.count()
         self.assertEqual(before_rec_count - 1, after_rec_count)
         self.assertEqual(before_count, after_count)
-        response_url: str = reverse('dashboard')
+        response_url: str = reverse('view_recurring_transactions')
         self.assertRedirects(
             response,
             response_url,

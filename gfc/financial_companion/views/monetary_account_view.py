@@ -2,7 +2,6 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django import forms
-from django.contrib import messages
 from ..helpers import AccountType
 from ..forms import MonetaryAccountForm
 from ..models import PotAccount, User, Account, BankAccount
@@ -32,6 +31,10 @@ def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
                 request.POST, form_type=account_type, user=user)
             if form.is_valid():
                 form.save()
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    "You have successfully created a new account!")
                 return redirect("view_accounts")
     return render(request, "pages/monetary_accounts_form.html", {
         "form_toggle": True,
@@ -74,6 +77,10 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
             instance=this_account)
         if form.is_valid():
             form.save(instance=this_account)
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                "This account has been successfully updated!")
             return redirect(
                 "individual_account", pk=pk, filter_type="all")
 

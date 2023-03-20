@@ -22,7 +22,7 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
             messages.add_message(
                 request,
                 messages.SUCCESS,
-                "Your transaction has been successfully added!")
+                "Your transaction has been successfully added")
             return redirect('view_transactions', filter_type="all")
     else:
         form: AddTransactionForm = AddTransactionForm(user)
@@ -42,7 +42,7 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         messages.add_message(
             request,
             messages.ERROR,
-            "The transaction can not be edited.")
+            "This transaction cannot be edited.")
         return redirect('view_transactions', filter_type="all")
     else:
         if request.method == 'POST':
@@ -53,7 +53,7 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
                 messages.add_message(
                     request,
                     messages.SUCCESS,
-                    "Your transaction has been successfully updated!")
+                    "This transaction has been successfully updated")
                 return redirect('individual_transaction', pk=pk)
         form: AddTransactionForm = AddTransactionForm(
             user, instance=transaction)
@@ -71,7 +71,7 @@ def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
         transaction.delete()
         messages.add_message(
             request,
-            messages.ERROR,
+            messages.WARNING,
             "The transaction has been deleted")
         return redirect('view_transactions', filter_type="all")
 

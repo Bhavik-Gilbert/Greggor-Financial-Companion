@@ -79,7 +79,10 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
             self.url, self.form_input, follow=True)
         after_count: int = RecurringTransaction.objects.count()
         self.assertEqual(after_count, before_count)
-        response_url = reverse('view_recurring_transactions')
+        response_url = reverse(
+            'individual_recurring_transaction',
+            kwargs={
+                'pk': 2})
         self.assertRedirects(
             response,
             response_url,

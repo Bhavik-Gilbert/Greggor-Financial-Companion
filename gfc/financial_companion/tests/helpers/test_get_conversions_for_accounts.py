@@ -26,7 +26,7 @@ class GetConversionsForAccountsHelperFunctionTestCase(HelperTestCase):
             "bank_accounts": bank_accounts,
             "currency_code": currency_code
         }
-        error_message: str = "converter not working"
+        error_message: str = ""
         warning_message: str = "A package in helpers convert_currency is not working"
         self._assert_valid_or_error(
             self._assert_get_conversions_for_accounts,

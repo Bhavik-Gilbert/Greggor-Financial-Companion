@@ -59,7 +59,7 @@ def edit_recurring_transaction_view(
                     request,
                     messages.WARNING,
                     "The recurring transaction has been updated")
-                return redirect('view_recurring_transactions')
+                return redirect('individual_recurring_transaction', pk=pk)
         form: AddRecurringTransactionForm = AddRecurringTransactionForm(
             user, instance=transaction)
         form.fields['category'].queryset: Union[QuerySet,
@@ -82,4 +82,4 @@ def delete_recurring_transaction_view(
             request,
             messages.WARNING,
             "The recurring transaction has been deleted")
-        return redirect('dashboard')
+        return redirect('view_recurring_transactions')
