@@ -36,13 +36,10 @@ def convert_currency(amount: float, current_currency_code: str,
     if current_currency_code == target_currency_code or current_currency_code not in CurrencyType or target_currency_code not in CurrencyType:
         return amount
 
-    try:
-        c: CurrencyConverter = CurrencyConverter(
-            fallback_on_missing_rate=True,
-            fallback_on_wrong_date=True)
-        return c.convert(amount, current_currency_code, target_currency_code)
-    except Exception:
-        raise Exception("Converter not working")
+    c: CurrencyConverter = CurrencyConverter(
+        fallback_on_missing_rate=True,
+        fallback_on_wrong_date=True)
+    return c.convert(amount, current_currency_code, target_currency_code)
 
 
 def random_filename(filename: str) -> str:

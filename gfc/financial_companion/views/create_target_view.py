@@ -4,7 +4,7 @@ from financial_companion.forms import TargetForm, TargetFilterForm
 from django.contrib.auth.decorators import login_required
 from ..models import Category, CategoryTarget, PotAccount, AccountTarget, UserTarget
 from django.contrib import messages
-from financial_companion.models import CategoryTarget, Category, User, UserTarget
+from financial_companion.models import CategoryTarget, Category, User, UserTarget, AbstractTarget
 from financial_companion.helpers.enums import Timespan, TransactionType, TargetType
 from financial_companion.helpers import paginate, get_warning_messages_for_targets
 from django.db.models import QuerySet
@@ -248,33 +248,31 @@ def delete_user_target_view(request: HttpRequest, pk: int) -> HttpResponse:
 
 
 @login_required
-def view_targets(request: HttpRequest) -> HttpResponse:
+def view_targets(request: HttpRequest, time: str = "all",
+                 income_or_expense: str = "all", target_type: str = "all") -> HttpResponse:
     """View to allow users to view all their targets"""
-    time = None
-    income_or_expense = None
-    target_type = None
-    targets = request.user.get_all_targets()
     if request.method == "POST":
         form = TargetFilterForm(request.POST)
         if form.is_valid():
-            time = form.get_time()
-            income_or_expense = form.get_income_or_expense()
-            target_type = form.get_target_type()
-            if time != "":
-                targets = list(
-                    filter(
-                        lambda target: time == target.timespan,
-                        targets))
-            if target_type != "":
-                targets = list(
-                    filter(
-                        lambda target: target_type == target.getModelName(),
-                        targets))
-            if income_or_expense != "":
-                targets = list(
-                    filter(
-                        lambda target: income_or_expense == target.target_type,
-                        targets))
+            form_output: dict[str, str] = {
+                "time": form.get_time(),
+                "income_or_expense": form.get_income_or_expense(),
+                "target_type": form.get_target_type()
+            }
+            if len({k: v for k, v in form_output.items() if v}) == 0:
+                return redirect("view_targets")
+
+            for key in form_output:
+                if form_output[key] == "":
+                    form_output[key]: str = "all"
+            return redirect("view_targets", **form_output)
+
+    targets: list[AbstractTarget] = [target for target in request.user.get_all_targets() if (
+        (time == target.timespan or time == "all") and
+        (target_type == target.getModelName() or target_type == "all") and
+        (income_or_expense == target.target_type or income_or_expense == "all")
+    )]
+
     form = TargetFilterForm()
     list_of_targets = paginate(request.GET.get('page', 1), targets)
 
