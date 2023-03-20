@@ -89,7 +89,7 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
             status_code=302,
             target_status_code=200)
         self.assertTemplateUsed(
-            response, 'pages/view_recurring_transactions.html')
+            response, 'pages/individual_recurring_transaction.html')
         recurring_transaction: RecurringTransaction = RecurringTransaction.objects.get(
             id=2)
         recurring_transaction.refresh_from_db()
