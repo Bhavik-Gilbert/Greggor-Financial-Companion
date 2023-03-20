@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -47,7 +48,7 @@ def add_interest_to_bank_accounts() -> None:
     """Adds interest rates to bank accounts"""
     no_of_days_in_prev_month: int = get_number_of_days_in_prev_month()
     for account in fcmodels.BankAccount.objects.all():
-        account.balance = account.balance * \
+        account.balance: Decimal = account.balance * \
             ((1 + (account.interest_rate / 365))**no_of_days_in_prev_month)
         account.save()
 
