@@ -3,44 +3,46 @@ from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.forms import EditUserDetailsForm
 from financial_companion.models import User
+from django.http import HttpResponse
 
 
 class EditUserDetailsViewTestCase(ViewTestCase):
     """Unit tests of the edit user details view"""
 
-    def setUp(self):
-        self.url = reverse('edit_user_details')
-        self.form_input = {
+    def setUp(self) -> None:
+        self.url: str = reverse('edit_user_details')
+        self.form_input: dict[str, str] = {
             "first_name": "Bob",
             "last_name": "Lee",
             "username": "@boblee",
             "email": "boblee@example.org",
             "bio": "Bob Lee's Personal Spending Tracker"
         }
-        self.user = User.objects.get(username='@johndoe')
+        self.user: User = User.objects.get(username='@johndoe')
 
-    def test_edit_user_details_url(self):
+    def test_edit_user_details_url(self) -> None:
         self.assertEqual(self.url, '/edit_user_details/')
 
-    def test_get_edit_user_details(self):
+    def test_get_edit_user_details(self) -> None:
         self._login(self.user)
-        response = self.client.get(self.url)
+        response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/edit_user_details.html")
-        form = response.context['form']
+        form: EditUserDetailsForm = response.context['form']
         self.assertTrue(isinstance(form, EditUserDetailsForm))
         self.assertFalse(form.is_bound)
 
-    def test_get_edit_user_details_redirects_when_not_logged_in(self):
-        response = self.client.get(self.url, follow=True)
+    def test_get_edit_user_details_redirects_when_not_logged_in(self) -> None:
+        response: HttpResponse = self.client.get(self.url, follow=True)
         self._assert_require_login(self.url)
 
-    def test_edit_user_details_success(self):
+    def test_edit_user_details_success(self) -> None:
         self._login(self.user)
-        form = EditUserDetailsForm(data=self.form_input)
+        form: EditUserDetailsForm = EditUserDetailsForm(data=self.form_input)
         self.assertTrue(form.is_valid())
         self.assertEqual(self.user.username, '@johndoe')
-        response = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/profile.html")
         self.user.refresh_from_db()
@@ -51,13 +53,14 @@ class EditUserDetailsViewTestCase(ViewTestCase):
         self.assertEqual(self.user.email, 'boblee@example.org')
         self.assertEqual(self.user.bio, "Bob Lee's Personal Spending Tracker")
 
-    def test_edit_user_details_unsuccessful_invalid_input(self):
+    def test_edit_user_details_unsuccessful_invalid_input(self) -> None:
         self._login(self.user)
-        invalid_form_input = {}
-        response = self.client.post(self.url, invalid_form_input, follow=True)
+        invalid_form_input: dict = {}
+        response: HttpResponse = self.client.post(
+            self.url, invalid_form_input, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/edit_user_details.html')
-        form = response.context['form']
+        form: EditUserDetailsForm = response.context['form']
         self.assertTrue(isinstance(form, EditUserDetailsForm))
         self.user.refresh_from_db()
         self.assertEqual(self.user.username, '@johndoe')
