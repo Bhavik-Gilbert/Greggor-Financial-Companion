@@ -7,6 +7,7 @@ import re
 from decimal import Decimal
 
 
+
 class TargetForm(forms.Form):
     """Form to add a target"""
 
@@ -22,10 +23,10 @@ class TargetForm(forms.Form):
         super(TargetForm, self).__init__(*args, **kwargs)
 
         if (self.instance):
-            self.fields['target_type'].initial = self.instance.target_type
-            self.fields['timespan'].initial = self.instance.timespan
-            self.fields['amount'].initial = self.instance.amount
-            self.fields['currency'].initial = self.instance.currency
+            self.fields['target_type'].initial: str = self.instance.target_type
+            self.fields['timespan'].initial: str = self.instance.timespan
+            self.fields['amount'].initial: Decimal = self.instance.amount
+            self.fields['currency'].initial: str = self.instance.currency
 
     target_type: forms.ChoiceField = forms.ChoiceField(
         choices=TransactionType.choices)
@@ -64,7 +65,7 @@ class TargetForm(forms.Form):
     def save(self) -> AbstractTarget:
         self.full_clean()
         if self.instance is None:
-            target = self.form_type()
+            target: AbstractTarget = self.form_type()
             setattr(target, self.foreign_key_name.lower(), self.foreign_key)
         else:
             target: AbstractTarget = self.instance
