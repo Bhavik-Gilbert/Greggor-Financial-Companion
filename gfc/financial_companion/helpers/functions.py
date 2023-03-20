@@ -30,7 +30,7 @@ def convert_currency(amount: float, current_currency_code: str,
                      target_currency_code: str) -> float:
     """Converts balance from one currency to another"""
     current_currency_code: str = current_currency_code.upper()
-    target_currency_code : str = target_currency_code.upper()
+    target_currency_code: str = target_currency_code.upper()
 
     if current_currency_code == target_currency_code or current_currency_code not in CurrencyType or target_currency_code not in CurrencyType:
         return amount
@@ -198,7 +198,8 @@ def get_sorted_members_based_on_completed_targets(
         reverse=True
     )
     pos: int = 1
-    inflector: inflect.engine = inflect.engine()  # used to convert a number into a position
+    # used to convert a number into a position
+    inflector: inflect.engine = inflect.engine()
     member_completed_pos_list: list[tuple[Any, str]] = []
     for member_completed in member_completed_list:
         member_completed_pos_list = [
@@ -232,7 +233,8 @@ def get_warning_messages_for_targets(
 
             if key:
                 if key in dictionary_to_add.keys():
-                    list_to_append: list[fcmodels.AbstractTarget] = dictionary_to_add[key].copy()
+                    list_to_append: list[fcmodels.AbstractTarget] = dictionary_to_add[key].copy(
+                    )
                 else:
                     list_to_append: list[fcmodels.AbstractTarget] = []
                 list_to_append.append(target)

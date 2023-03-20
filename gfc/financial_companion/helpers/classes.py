@@ -189,10 +189,10 @@ class ParseStatementPDF:
 
         indexes: dict[str, int] = {}
         indexes["date"]: int = 0
-        indexes["balance"]:int = -1
+        indexes["balance"]: int = -1
         indexes["income"], indexes["expense"], fail = self.get_dataframe_list_statement_column_expense_indexes(
             statement_dataframe_list)
-        indexes["description"]: int  = indexes["income"] - 1
+        indexes["description"]: int = indexes["income"] - 1
 
         self.reset_object()
         transactions: list[dict[str, Any]] = []
