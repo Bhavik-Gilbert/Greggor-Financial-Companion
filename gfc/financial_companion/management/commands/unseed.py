@@ -29,7 +29,7 @@ class Command(BaseCommand):
 
         users: QuerySet[User] = User.objects.filter(email__endswith='@gfc.org')
         quiz_scores: QuerySet[QuizScore] = QuizScore.objects.filter(
-            user__in=user)
+            user__in=users)
 
         users.delete()
         quiz_scores.delete()
