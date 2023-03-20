@@ -14,7 +14,7 @@ def create_recurring_transactions_scheduler():
 
     name: str = "Recurring Transactions"
     if Schedule.objects.filter(name=name).count() == 0:
-        scheduler = Schedule.objects.create(
+        scheduler: Schedule = Schedule.objects.create(
             name=name,
             func='financial_companion.helpers.tasks.create_transaction_via_recurring_transactions',
             minutes=1,
