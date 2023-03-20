@@ -12,7 +12,7 @@ class GetSortedMembersBasedOnCompletedTargetsHelperFunctionTestCase(
 
     def setUp(self):
         self.group: UserGroup = UserGroup.objects.get(id=3)
-        self.members: Union[QuerySet, list[User]] = self.group.members.all()
+        self.members: QuerySet[User] = self.group.members.all()
         self.member_1: User = self.members[0]
         self.member_2: User = self.members[1]
 

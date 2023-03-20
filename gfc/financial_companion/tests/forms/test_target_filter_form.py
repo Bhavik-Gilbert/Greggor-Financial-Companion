@@ -1,7 +1,6 @@
 from financial_companion.forms import TargetFilterForm
 from financial_companion.models import User
 from .test_form_base import FormTestCase
-from django.test import TestCase
 
 
 class TargetFilterFormTestCase(FormTestCase):

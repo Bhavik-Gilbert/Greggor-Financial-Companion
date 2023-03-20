@@ -5,7 +5,6 @@ from financial_companion.models import Category, User, RecurringTransaction
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
-from typing import Any
 from django.db.models import QuerySet
 
 

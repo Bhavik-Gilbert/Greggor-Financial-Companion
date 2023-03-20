@@ -1,6 +1,5 @@
 from .test_scheduler_base import SchedulerTestCase
 from financial_companion.scheduler import create_recurring_transactions_scheduler
-from financial_companion.models import Transaction
 from django_q.models import Schedule
 
 
