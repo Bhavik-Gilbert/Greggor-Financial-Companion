@@ -17,7 +17,9 @@ from ..helpers import CurrencyType, AccountType, FilterTransactionType, convert_
 
 
 class Account(Model):
-    """Account model used to send money to"""
+    """
+    Account model used to represent merchants that you can send money to
+    """
 
     name: CharField = CharField(
         max_length=50,
@@ -128,7 +130,10 @@ class Account(Model):
 
 
 class PotAccount(Account):
-    """PotAccount model used to send or take money"""
+    """
+    PotAccount model used to represent your own account 
+    that you can send to or take money from
+    """
 
     balance: DecimalField = DecimalField(max_digits=15, decimal_places=2)
     currency: CharField = CharField(
@@ -169,8 +174,9 @@ def iban_valid(value: str) -> None:
 
 class BankAccount(PotAccount):
     """
-    BankAccount model used to send or take money
-    And take on interest
+    BankAccount model used to represent your own account 
+    that you can send to or take money from
+    and be affected by interest
     """
 
     bank_name: CharField = CharField(
