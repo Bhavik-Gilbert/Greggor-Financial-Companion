@@ -28,7 +28,7 @@ def individual_account_view(
         return redirect('dashboard')
 
     transactions: list[Transaction] = account.get_account_transactions(
-        filter_type)
+        filter_type, True)
 
     list_of_transactions = paginate(request.GET.get('page', 1), transactions)
 
