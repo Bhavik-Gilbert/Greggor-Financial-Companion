@@ -56,8 +56,9 @@ def edit_recurring_transaction_view(
                     messages.WARNING,
                     "The recurring transaction has been updated")
                 return redirect('individual_recurring_transaction', pk=pk)
-        form: AddRecurringTransactionForm = AddRecurringTransactionForm(
-            user, instance=transaction)
+        else:
+            form: AddRecurringTransactionForm = AddRecurringTransactionForm(
+                user, instance=transaction)
         form.fields['category'].queryset: QuerySet[Category] = categories
         return render(request, "pages/add_recurring_transaction.html",
                       {'form': form, 'edit': True, 'pk': pk})
