@@ -101,7 +101,7 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self._login(self.user)
         time: Timespan = Timespan.WEEK
         self.assertTrue(isinstance(time, Timespan))
-        response = self.client.post(self.url, {"time_choice": "day"})
+        response = self.client.post(self.url, {"time_choice": "day"}, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/spending_summary.html")
         form: TimespanOptionsForm = response.context["form"]
