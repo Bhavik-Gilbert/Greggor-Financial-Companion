@@ -33,7 +33,7 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG: bool = True  # TODO: set false before submission
 
-ALLOWED_HOSTS: list[str] = ["http://greggorfinancialcompanion.pythonanywhere.com/spending_summary", "127.0.0.1", "localhost"]
+ALLOWED_HOSTS: list[str] = ["greggorfinancialcompanion.pythonanywhere.com", "127.0.0.1", "localhost"]
 
 
 # Application definition
