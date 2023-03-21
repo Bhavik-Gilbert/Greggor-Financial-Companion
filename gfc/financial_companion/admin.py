@@ -17,7 +17,7 @@ from .models import (
 class User(admin.ModelAdmin):
     """Configuration of the admin interface for users."""
 
-    list_display = [
+    list_display: list[str] = [
         'id', 'username', 'first_name', 'last_name', 'email', 'is_staff', 'profile_picture'
     ]
 
@@ -26,7 +26,7 @@ class User(admin.ModelAdmin):
 class Category(admin.ModelAdmin):
     """Configuration of the admin interface for users."""
 
-    list_display = [
+    list_display: list[str] = [
         'id', 'name', 'description'
     ]
 
@@ -35,7 +35,7 @@ class Category(admin.ModelAdmin):
 class Account(admin.ModelAdmin):
     """Configuration of the admin interface for account."""
 
-    list_display = [
+    list_display: list[str] = [
         'id', 'name', 'description'
     ]
 
@@ -44,7 +44,7 @@ class Account(admin.ModelAdmin):
 class PotAccount(admin.ModelAdmin):
     """Configuration of the admin interface for pot account."""
 
-    list_display = [
+    list_display: list[str] = [
         'id', 'name', 'description', 'user', 'balance', 'currency'
     ]
 
@@ -53,7 +53,7 @@ class PotAccount(admin.ModelAdmin):
 class BankAccount(admin.ModelAdmin):
     """Configuration of the admin interface for bank account."""
 
-    list_display = [
+    list_display: list[str] = [
         'id', 'name', 'description', 'user', 'balance', 'currency',
         'bank_name', 'account_number', 'sort_code', 'iban', 'interest_rate'
     ]
@@ -61,42 +61,48 @@ class BankAccount(admin.ModelAdmin):
 
 @admin.register(Transaction)
 class Transaction(admin.ModelAdmin):
-    list_display = [
+    """Configuration of the admin interface for transactions"""
+    list_display: list[str] = [
         'id', 'title', 'amount', 'currency', 'sender_account', 'receiver_account', 'category', 'description', 'time_of_transaction'
     ]
 
 
 @admin.register(CategoryTarget)
 class CategoryTarget(admin.ModelAdmin):
-    list_display = [
+    """Configuration of the admin interface for Category Targets"""
+    list_display: list[str] = [
         'id', 'target_type', 'timespan', 'amount', 'currency', 'category_id'
     ]
 
 
 @admin.register(UserTarget)
 class UserTarget(admin.ModelAdmin):
-    list_display = [
+    """Configuration of the admin interface for User Targets"""
+    list_display: list[str] = [
         'id', 'target_type', 'timespan', 'amount', 'currency', 'user'
     ]
 
 
 @admin.register(AccountTarget)
 class AccountTarget(admin.ModelAdmin):
-    list_display = [
+    """Configuration of the admin interface for Account Targets"""
+    list_display: list[str] = [
         'id', 'target_type', 'timespan', 'amount', 'currency', 'account_id'
     ]
 
 
 @admin.register(UserGroup)
 class UserGroup(admin.ModelAdmin):
-    list_display = [
+    """Configuration of the admin interface for User Groups"""
+    list_display: list[str] = [
         'id', 'name', 'description', 'owner_email', 'invite_code', 'get_members', 'group_picture'
     ]
 
 
 @admin.register(RecurringTransaction)
 class RecurringTransaction(admin.ModelAdmin):
-    list_display = [
+    """Configuration of the admin interface for Reccuring Transactions"""
+    list_display: list[str] = [
         'id', 'title', 'amount', 'currency', 'sender_account', 'receiver_account', 'category', 'description',
         'start_date', 'interval', 'end_date'
     ]
