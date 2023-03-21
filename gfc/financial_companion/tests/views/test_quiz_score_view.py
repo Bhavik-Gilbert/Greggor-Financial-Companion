@@ -4,6 +4,7 @@ from financial_companion.models import User, QuizScore
 from django.urls import reverse
 from django.contrib.messages import get_messages
 from typing import Any
+from django.contrib.messages.storage.base import Message
 
 
 class QuizscoreViewTestCase(ViewTestCase):
@@ -53,7 +54,8 @@ class QuizscoreViewTestCase(ViewTestCase):
             response_url,
             status_code=302,
             target_status_code=200)
-        messages_list: list[Any] = list(get_messages(response.wsgi_request))
+        messages_list: list[Message] = list(
+            get_messages(response.wsgi_request))
         self.assertTrue(any(
             message.message == 'The score specified does not exist' for message in messages_list))
 

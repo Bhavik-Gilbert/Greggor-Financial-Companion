@@ -66,7 +66,7 @@ class CategoryTarget(AbstractTarget):
     category: ForeignKey = ForeignKey(Category, on_delete=CASCADE)
 
     class Meta:
-        unique_together: list = ["target_type", "timespan", "category"]
+        unique_together: list[str] = ["target_type", "timespan", "category"]
 
     def getModelName(self, plural: bool = False) -> str:
         if plural:
@@ -84,7 +84,7 @@ class UserTarget(AbstractTarget):
     user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
 
     class Meta:
-        unique_together: list = ["target_type", "timespan", "user"]
+        unique_together: list[str] = ["target_type", "timespan", "user"]
 
     def getModelName(self, plural: bool = False) -> str:
         if plural:
@@ -102,9 +102,9 @@ class AccountTarget(AbstractTarget):
     account: ForeignKey = ForeignKey(PotAccount, on_delete=CASCADE)
 
     class Meta:
-        unique_together: list = ["target_type", "timespan", "account"]
+        unique_together: list[str] = ["target_type", "timespan", "account"]
 
-    def getModelName(self, plural: bool = False):
+    def getModelName(self, plural: bool = False) -> str:
         if plural:
             return "accounts"
         else:

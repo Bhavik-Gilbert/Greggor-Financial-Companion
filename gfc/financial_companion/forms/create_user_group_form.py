@@ -38,5 +38,5 @@ class UserGroupForm(forms.ModelForm):
                 group_picture=self.cleaned_data.get('group_picture'),
             )
         else:
-            user_group = super().save()
+            user_group: UserGroup = super().save()
         return user_group

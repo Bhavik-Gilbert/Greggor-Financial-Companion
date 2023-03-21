@@ -1,5 +1,6 @@
 from django import forms
 from django.core.validators import RegexValidator
+from financial_companion.models import User
 
 
 class UserChangePasswordForm(forms.Form):
@@ -22,7 +23,7 @@ class UserChangePasswordForm(forms.Form):
         """Save the password"""
         if instance is not None:
             if self.is_valid():
-                new_password = self.cleaned_data.get('new_password')
-                user = instance
+                new_password: str = self.cleaned_data.get('new_password')
+                user: User = instance
                 user.set_password(new_password)
                 user.save()

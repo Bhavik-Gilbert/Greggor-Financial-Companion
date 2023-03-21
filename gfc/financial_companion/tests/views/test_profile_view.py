@@ -7,15 +7,15 @@ class ProfileViewTestCase(ViewTestCase):
     """Unit tests of the profile view"""
 
     def setUp(self):
-        self.url = reverse('profile')
-        self.user = User.objects.get(username='@michaelkolling')
+        self.url: str = reverse('profile')
+        self.user: User = User.objects.get(username='@michaelkolling')
 
     def test_profile_url(self):
         self.assertEqual(self.url, '/profile/')
 
     def test_get_profile(self):
         self._login(self.user)
-        response = self.client.get(self.url)
+        response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/profile.html')
         self.assertContains(response, "Profile")

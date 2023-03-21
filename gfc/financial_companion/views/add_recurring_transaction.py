@@ -39,6 +39,10 @@ def edit_recurring_transaction_view(
     try:
         transaction: RecurringTransaction = RecurringTransaction.objects.get(
             id=pk)
+        user: User = request.user
+        if (transaction.receiver_account.user !=
+                user and transaction.sender_account.user != user):
+            return redirect('view_recurring_transactions')
     except ObjectDoesNotExist:
         return redirect('view_recurring_transactions')
     else:
@@ -47,7 +51,8 @@ def edit_recurring_transaction_view(
         if request.method == 'POST':
             form: AddRecurringTransactionForm = AddRecurringTransactionForm(
                 user, request.POST, request.FILES, instance=transaction)
-            form.fields['category'].queryset = categories
+            form.fields['category'].queryset: Union[QuerySet,
+                                                    list[Category]] = categories
             if form.is_valid():
                 form.save(instance=transaction)
                 messages.add_message(
@@ -55,8 +60,9 @@ def edit_recurring_transaction_view(
                     messages.WARNING,
                     "The recurring transaction has been updated")
                 return redirect('individual_recurring_transaction', pk=pk)
-        form: AddRecurringTransactionForm = AddRecurringTransactionForm(
-            user, instance=transaction)
+        else:
+            form: AddRecurringTransactionForm = AddRecurringTransactionForm(
+                user, instance=transaction)
         form.fields['category'].queryset: QuerySet[Category] = categories
         return render(request, "pages/add_recurring_transaction.html",
                       {'form': form, 'edit': True, 'pk': pk})

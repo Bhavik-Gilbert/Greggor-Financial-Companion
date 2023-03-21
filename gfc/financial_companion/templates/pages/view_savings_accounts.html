@@ -8,6 +8,7 @@
 
 <!-- Content -->
 {% block content %}
+<body onload="loadInitialGraph({{bank_account_infos}},{{timescales_strings|safe}},{{conversion_to_main_currency_JSON}},'{{main_currency}}')">
   <h1>Savings Accounts</h1>
   <div>
     <div class="container mt-3"></div>
@@ -87,4 +88,5 @@
     {% endif %}
     </div>
   </div>
+</body>
 {% endblock %}

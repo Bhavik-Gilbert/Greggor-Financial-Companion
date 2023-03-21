@@ -26,6 +26,7 @@ class AddTransactionForm(forms.ModelForm):
         self.user: User = user
 
     def label_from_instance(self, obj):
+        """ Return objects name"""
         return obj.name
 
     class Meta:
@@ -113,6 +114,7 @@ class AddTransactionsViaBankStatementForm(forms.Form):
         )
 
     def save(self) -> Transaction:
+        """Create a new transaction via bank statement."""
         super().full_clean()
 
         bank_statement: forms.FileInput = self.cleaned_data["bank_statement"]

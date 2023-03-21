@@ -26,15 +26,14 @@ def dashboard_view(request: HttpRequest) -> HttpResponse:
             Transaction.objects.filter(
                 receiver_account=account)]
 
-    recent_transactions: Union[QuerySet,
-                               list[Transaction]] = user_transactions[0:3]
+    recent_transactions: QuerySet[Transaction] = user_transactions[0:3]
 
-    total_spent = sum(transaction.amount for transaction in
-                      Transaction.get_transactions_from_time_period(
-                          Timespan.MONTH, request.user, "sent"))
-    total_received = sum(transaction.amount for transaction in
-                         Transaction.get_transactions_from_time_period(
-                             Timespan.MONTH, request.user, "received"))
+    total_spent: int = sum(transaction.amount for transaction in
+                           Transaction.get_transactions_from_time_period(
+                               Timespan.MONTH, request.user, "sent"))
+    total_received: int = sum(transaction.amount for transaction in
+                              Transaction.get_transactions_from_time_period(
+                                  Timespan.MONTH, request.user, "received"))
 
     context: dict[str, Any] = {
         'accounts': user_accounts,
@@ -43,7 +42,7 @@ def dashboard_view(request: HttpRequest) -> HttpResponse:
         'money_out': total_spent,
     }
 
-    request = get_warning_messages_for_targets(request)
+    request: HttpRequest = get_warning_messages_for_targets(request)
 
     context.update(get_data_for_account_projection(user))
 

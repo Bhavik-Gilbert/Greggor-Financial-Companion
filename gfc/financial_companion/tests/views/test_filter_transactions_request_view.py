@@ -3,6 +3,7 @@ from financial_companion.models import User
 from django.urls import reverse
 from django.http import HttpResponse
 from typing import Any
+from django.contrib.messages.storage.base import Message
 
 
 class FilterTransactionsViewTestCase(ViewTestCase):
@@ -21,7 +22,7 @@ class FilterTransactionsViewTestCase(ViewTestCase):
 
     def test_post_when_all_button_is_clicked(self):
         self._login(self.user)
-        self.form_data: dict[str, Any] = {
+        self.form_data: dict[str, bool] = {
             "all": True
         }
         response_url: str = reverse(
@@ -35,7 +36,7 @@ class FilterTransactionsViewTestCase(ViewTestCase):
             target_status_code=200)
         response: HttpResponse = self.client.post(response_url)
         self.assertTemplateUsed(response, "pages/display_transactions.html")
-        messages_list: list[Any] = list(response.context["messages"])
+        messages_list: list[Message] = list(response.context["messages"])
         self.assertEqual(len(messages_list), 0)
         self.assertContains(response, "New Car")
         self.assertContains(response, 4)
@@ -46,7 +47,7 @@ class FilterTransactionsViewTestCase(ViewTestCase):
 
     def test_post_when_sent_button_is_clicked(self):
         self._login(self.user)
-        self.form_data: dict[str, Any] = {
+        self.form_data: dict[str, bool] = {
             "sent": True
         }
         response_url: str = reverse(
@@ -60,7 +61,7 @@ class FilterTransactionsViewTestCase(ViewTestCase):
             target_status_code=200)
         response: HttpResponse = self.client.post(response_url)
         self.assertTemplateUsed(response, "pages/display_transactions.html")
-        messages_list: list[Any] = list(response.context["messages"])
+        messages_list: list[Message] = list(response.context["messages"])
         self.assertEqual(len(messages_list), 0)
         self.assertContains(response, "New Car")
         self.assertContains(response, 4)
@@ -68,7 +69,7 @@ class FilterTransactionsViewTestCase(ViewTestCase):
 
     def test_post_when_received_button_is_clicked(self):
         self._login(self.user)
-        self.form_data: dict[str, Any] = {
+        self.form_data: dict[str, bool] = {
             "received": True
         }
         response_url: str = reverse(
@@ -82,7 +83,7 @@ class FilterTransactionsViewTestCase(ViewTestCase):
             target_status_code=200)
         response: HttpResponse = self.client.post(response_url)
         self.assertTemplateUsed(response, "pages/display_transactions.html")
-        messages_list: list[Any] = list(response.context["messages"])
+        messages_list: list[Message] = list(response.context["messages"])
         self.assertEqual(len(messages_list), 0)
         self.assertContains(response, "New Bike")
         self.assertContains(response, 5)
@@ -90,7 +91,7 @@ class FilterTransactionsViewTestCase(ViewTestCase):
 
     def test_post_when_random_input_is_given(self):
         self._login(self.user)
-        self.form_data: dict[str, Any] = {
+        self.form_data: dict[str, bool] = {
             "other": True
         }
         response_url: str = reverse("dashboard")
@@ -102,7 +103,7 @@ class FilterTransactionsViewTestCase(ViewTestCase):
             target_status_code=200)
         response: HttpResponse = self.client.post(response_url)
         self.assertTemplateUsed(response, "pages/dashboard.html")
-        messages_list: list[Any] = list(response.context["messages"])
+        messages_list: list[Message] = list(response.context["messages"])
         self.assertEqual(len(messages_list), 2)
         self.assertTrue('Targets completed: ' in str(messages_list[0]))
         self.assertTrue('Targets nearly exceeded: ' in str(messages_list[1]))

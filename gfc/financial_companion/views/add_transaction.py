@@ -42,21 +42,22 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
             messages.ERROR,
             "This transaction cannot be edited.")
         return redirect('view_transactions', filter_type="all")
+
+    if request.method == 'POST':
+        form: AddTransactionForm = AddTransactionForm(
+            user, request.POST, request.FILES, instance=transaction)
+        if form.is_valid():
+            form.save(instance=transaction)
+            messages.add_message(
+                request,
+                messages.SUCCESS,
+                "This transaction has been successfully updated")
+            return redirect('individual_transaction', pk=pk)
     else:
-        if request.method == 'POST':
-            form: AddTransactionForm = AddTransactionForm(
-                user, request.POST, request.FILES, instance=transaction)
-            if form.is_valid():
-                form.save(instance=transaction)
-                messages.add_message(
-                    request,
-                    messages.SUCCESS,
-                    "This transaction has been successfully updated")
-                return redirect('individual_transaction', pk=pk)
         form: AddTransactionForm = AddTransactionForm(
             user, instance=transaction)
-        return render(request, "pages/add_transaction.html",
-                      {'form': form, 'edit': True, 'pk': pk})
+    return render(request, "pages/add_transaction.html",
+                  {'form': form, 'edit': True, 'pk': pk})
 
 
 @login_required

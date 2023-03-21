@@ -8,9 +8,9 @@ class IndividualGroupViewTestCase(ViewTestCase):
     """Unit tests of the individual group view"""
 
     def setUp(self):
-        self.owner = User.objects.get(username='@johndoe')
-        self.member = User.objects.get(username='@janedoe')
-        self.group = UserGroup.objects.get(id=3)
+        self.owner: User = User.objects.get(username='@johndoe')
+        self.member: User = User.objects.get(username='@janedoe')
+        self.group: UserGroup = UserGroup.objects.get(id=3)
         self.url: str = reverse(
             "individual_group", kwargs={
                 "pk": self.group.id, "leaderboard": "False"})
