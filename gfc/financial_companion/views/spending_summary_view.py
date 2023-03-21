@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from financial_companion.helpers import functions, paginate
@@ -11,13 +11,16 @@ from django.core.paginator import Page
 
 
 @login_required
-def spending_summary(request: HttpRequest) -> HttpResponse:
-    time: Timespan = Timespan.DAY
+def spending_summary(request: HttpRequest, time: Timespan = Timespan.DAY) -> HttpResponse:
+    if time not in Timespan:
+        return redirect("spending_summary")
     user: User = request.user
     if request.method == "POST":
         form: TimespanOptionsForm = TimespanOptionsForm(request.POST)
         if form.is_valid():
             time: str = form.get_choice()
+            return redirect("spending_summary", time=time)
+            
     total_spent: int = sum(transaction.amount for transaction in
                            Transaction.get_transactions_from_time_period(
                                time, request.user, "sent"))
