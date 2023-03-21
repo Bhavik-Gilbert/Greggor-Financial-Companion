@@ -35,8 +35,6 @@ DEBUG: bool = True  # TODO: set false before submission
 
 ALLOWED_HOSTS: list[str] = ["greggorfinancialcompanion.pythonanywhere.com", "127.0.0.1", "localhost"]
 
-
-
 # Application definition
 
 INSTALLED_APPS: list[str] = [
@@ -84,7 +82,6 @@ TEMPLATES: list[dict[str, Any]] = [
 ]
 
 WSGI_APPLICATION: str = 'gfc.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -146,13 +143,11 @@ USE_I18N: bool = True
 
 USE_TZ: bool = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL: str = '/static/'
 STATICFILES_DIRS: Path = [os.path.join(BASE_DIR, "static")]
-
 
 # Media files
 MEDIA_URL: str = '/media/'
@@ -161,7 +156,6 @@ MEDIA_ROOT: Path = os.path.join(BASE_DIR, 'media')
 # File upload handler
 FILE_UPLOAD_HANDLERS: list[str] = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler']
-
 
 # User model for authentication and login purposes
 AUTH_USER_MODEL: str = 'financial_companion.User'
