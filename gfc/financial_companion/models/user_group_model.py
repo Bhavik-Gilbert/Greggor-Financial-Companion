@@ -29,7 +29,7 @@ class UserGroup(models.Model):
         """Adds user to group list"""
         self.members.add(user)
 
-    def remove_member(self, user: User -> None):
+    def remove_member(self, user: User) -> None:
         """Removes user from group list"""
         self.members.remove(user)
 
