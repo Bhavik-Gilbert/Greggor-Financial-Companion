@@ -53,10 +53,10 @@ class UserTargetModelTestCase(ModelTestCase):
         self.assertEqual(self.test_model.is_complete(), False)
 
     def test_get_model_name_function_when_plural_is_false(self) -> None:
-        self.assertEquals(self.test_model.getModelName(), "user")
+        self.assertEquals(self.test_model.get_model_name(), "user")
 
     def test_get_model_name_function_when_plural_is_true(self) -> None:
-        self.assertEquals(self.test_model.getModelName(plural=True), "users")
+        self.assertEquals(self.test_model.get_model_name(plural=True), "users")
 
     def test_get_str_function(self) -> None:
         self.assertEquals(self.test_model.__str__(), "personal target")

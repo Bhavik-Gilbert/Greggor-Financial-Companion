@@ -235,7 +235,7 @@ def get_warning_messages_for_targets(
             dictionary_to_add = sorted_targets_dict['exceeded']
 
         if dictionary_to_add is not None:
-            key: str = target.getModelName(True)
+            key: str = target.get_model_name(True)
 
             if key:
                 if key in dictionary_to_add.keys():
@@ -252,7 +252,7 @@ def get_warning_messages_for_targets(
                 display_string: str = ''
                 if len(targets) == 1:
                     display_string = (
-                        str(targets[0]) + " (" + targets[0].getModelName() + ")").title()
+                        str(targets[0]) + " (" + targets[0].get_model_name() + ")").title()
                 else:
                     display_string = target_type.title() + " ("
                     if show_numbers_for_multiples:

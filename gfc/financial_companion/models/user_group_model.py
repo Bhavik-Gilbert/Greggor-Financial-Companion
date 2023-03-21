@@ -5,6 +5,7 @@ from financial_companion.helpers import random_filename
 
 
 def change_filename(instance, filename) -> str:
+    """Returns filepath with random filename for file to be stored"""
     return os.path.join('group_profile', random_filename(filename))
 
 
@@ -24,10 +25,12 @@ class UserGroup(models.Model):
         max_length=100,
         blank=True)
 
-    def add_member(self, user: User):
+    def add_member(self, user: User) -> None:
+        """Adds user to group list"""
         self.members.add(user)
 
-    def remove_member(self, user: User):
+    def remove_member(self, user: User -> None):
+        """Removes user from group list"""
         self.members.remove(user)
 
     def is_member(self, user: User) -> bool:
@@ -35,12 +38,15 @@ class UserGroup(models.Model):
         return user in self.members.all()
 
     def members_count(self) -> int:
+        """Returns number of members in the group"""
         return self.members.count()
 
     def get_members(self) -> str:
+        """Returns string list of members in the group"""
         members_of_group: list[User] = self.members.all()
         return ",".join([str(p) for p in members_of_group])
 
-    def make_owner(self, user: User):
+    def make_owner(self, user: User) -> None:
+        """Sets input user as group owner"""
         self.owner_email = user.email
         self.save()
