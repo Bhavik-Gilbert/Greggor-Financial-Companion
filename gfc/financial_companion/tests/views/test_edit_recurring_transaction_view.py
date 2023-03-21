@@ -120,7 +120,8 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
         self.assertTemplateUsed(
             response, 'pages/view_recurring_transactions.html')
 
-    def test_invalid_user_cannot_edit_others_recurring_transactions(self) -> None:
+    def test_invalid_user_cannot_edit_others_recurring_transactions(
+            self) -> None:
         self._login(self.user)
         invalid_url: str = reverse(
             'edit_recurring_transaction', kwargs={

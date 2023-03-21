@@ -268,7 +268,7 @@ def view_targets(request: HttpRequest, time: str = "all",
             return redirect("view_targets", **form_output)
     else:
         form = TargetFilterForm()
-        
+
     targets: list[AbstractTarget] = [target for target in request.user.get_all_targets() if (
         (time == target.timespan or time == "all") and
         (target_type == target.getModelName() or target_type == "all") and

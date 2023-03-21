@@ -152,7 +152,7 @@ class Transaction(AbstractTransaction):
             if (database_transaction.sender_account.id == self.sender_account.id and
                 database_transaction.receiver_account.id == self.receiver_account.id and
                 database_transaction.amount == self.amount and
-                database_transaction.currency == self.currency):
+                    database_transaction.currency == self.currency):
                 return
 
             if database_transaction.sender_account.id == self.sender_account.id:
