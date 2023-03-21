@@ -6,8 +6,8 @@
         <th scope="col">Target ID</th>
         <th scope="col">Income/Expense</th>
         <th scope="col">Timespan</th>
-        <th scope="col">Amount</th>
         <th scope="col">Currency</th>
+        <th scope="col">Amount</th>
         <th scope="col">Target Type</th>
         <th scope="col">Applied To</th>
         <th scope="col">Progress %</th>
@@ -18,10 +18,10 @@
     <tr class="text-center">
       <td>{{ target.id }}</td>
       <td>{{ target.target_type.title }}</td>
-      <td>{{ target.timespan }}</td>
+      <td>{{ target.timespan.title }}</td>
+      <td>{{ target.currency.upper }}</td>
       <td>{{ target.amount }}</td>
-      <td>{{ target.currency }}</td>
-      <td>{{ target.getModelName }}</td>
+      <td>{{ target.getModelName.title }}</td>
       <td>{{ target }}</td>
       <td>{{ target|get_completeness }}</td>
       <td>
