@@ -4,7 +4,6 @@ from django.http import HttpRequest, HttpResponse
 from ..models import User, UserGroup
 from ..forms import AddUserToUserGroupForm
 from ..helpers import paginate, get_sorted_members_based_on_completed_targets
-from typing import Union
 from django.db.models import QuerySet
 from django.core.paginator import Page
 

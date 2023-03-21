@@ -7,7 +7,6 @@ from django.contrib import messages
 
 @login_required
 def profile_view(request: HttpRequest) -> HttpResponse:
-    user: User = request.user
     return render(request, 'pages/profile.html')
 
 
