@@ -28,7 +28,8 @@ This project aims to produce an application that allows users to track their exp
 The project is called `gfc` (Greggor Financial Companion).  It currently consists of a single app `financial_companion` where all functionality resides.
 
 ## Deployed application
-This application has yet to be deployed
+This application is deployed using python anywhere
+### [Live Site](http://greggorfinancialcompanion.pythonanywhere.com/) - http://greggorfinancialcompanion.pythonanywhere.com/
 
 ## Installation instructions
 To install the software and use it in your local development environment, you must first set up and activate a local development environment.  From the root of the project:
