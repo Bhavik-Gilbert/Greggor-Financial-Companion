@@ -39,6 +39,10 @@ def edit_recurring_transaction_view(
     try:
         transaction: RecurringTransaction = RecurringTransaction.objects.get(
             id=pk)
+        user: User = request.user
+        if (transaction.receiver_account.user !=
+                user and transaction.sender_account.user != user):
+            return redirect('view_recurring_transactions')
     except ObjectDoesNotExist:
         return redirect('view_recurring_transactions')
     else:
