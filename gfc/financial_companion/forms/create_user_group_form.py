@@ -16,6 +16,7 @@ class UserGroupForm(forms.ModelForm):
         widgets: dict[str: Any] = {'description': forms.Textarea()}
 
     def generate_invite_code(self) -> str:
+        """Generates unqiue random invite code"""
         while True:
             generated_invite_code: str = get_random_invite_code(8)
             user_group_count: int = UserGroup.objects.filter(

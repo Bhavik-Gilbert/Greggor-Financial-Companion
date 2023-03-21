@@ -6,7 +6,8 @@ from financial_companion.helpers import send_monthly_newsletter_email
 from django_q.models import Schedule
 
 
-def create_monthly_newsletter_scheduler():
+def create_monthly_newsletter_scheduler() -> None:
+    """Creates a scheduler object for the monthly newsletter"""
     schedulers: Schedule = Schedule.objects.filter(name="Monthly Newsletter")
     if (len(schedulers) == 0):
         date_time_str: str = f'{timezone.now().month + 1}-01-{timezone.now().year}'

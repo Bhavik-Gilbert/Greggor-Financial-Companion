@@ -24,8 +24,9 @@ class RecurringTransactionForm(forms.ModelForm):
         """Generate messages for any errors"""
         super.clean()
 
-        if self.end_date < self.start_date:
-            self.add_error("End date must be after start date.")
+        if self.end_date is not None and self.start_date is not None:
+            if self.end_date < self.start_date:
+                self.add_error("End date must be after start date.")
 
     def save(self, instance: RecurringTransaction = None) -> RecurringTransaction:
         """Record the inputted transaction"""

@@ -26,6 +26,7 @@ from financial_companion.models import User
 
 
 def change_filename(instance, filename: str) -> str:
+    """Returns filepath with random filename for file to be stored"""
     return os.path.join('transactions', random_filename(filename))
 
 
@@ -73,7 +74,7 @@ class AbstractTransaction(Model):
         on_delete=CASCADE,
         related_name="receiver%(app_label)s_%(class)s_related")
 
-    def clean(self):
+    def clean(self) -> None:
         super().clean()
         try:
             self.sender_account and self.receiver_account
@@ -92,7 +93,7 @@ class AbstractTransaction(Model):
 
 
 class Transaction(AbstractTransaction):
-    """ Concrete model for a generic transaction """
+    """Concrete model for a generic transaction"""
 
     time_of_transaction: DateTimeField = DateTimeField(
         blank=False,
@@ -102,9 +103,9 @@ class Transaction(AbstractTransaction):
     @staticmethod
     def get_transactions_from_time_period(
             time_choice: Timespan, user: User, filter_type: str = str("all")) -> list:
+        """Gets transactions for a given user within a time period specified"""
         user_transactions: list[Transaction] = user.get_user_transactions(
             filter_type=filter_type)
-
         timespan_int: int = timespan_map[time_choice]
         start_of_timespan_period: datetime = datetime.datetime.today(
         ) - datetime.timedelta(days=timespan_int)
@@ -119,6 +120,7 @@ class Transaction(AbstractTransaction):
     @staticmethod
     def get_category_splits(
             transactions: list, user: User) -> dict[str, float]:
+        """Splits list by category spending amounts for a given list of transactions"""
         spent_per_category: dict[str, float] = dict()
         for x in transactions:
             if ((x.category is None) or (x.category.user.id != user.id)):
@@ -139,7 +141,8 @@ class Transaction(AbstractTransaction):
     class Meta:
         ordering: list[str] = ['-time_of_transaction']
 
-    def _update_account_balances(self):
+    def _update_account_balances(self) -> None:
+        """Updates account balances based on object and database data"""
         check_object_exists: list[Transaction] = Transaction.objects.filter(
             id=self.id).count() > 0
         send_amount: float = -self.amount
@@ -185,7 +188,7 @@ class Transaction(AbstractTransaction):
         if isinstance(receiver_account, PotAccount):
             receiver_account.update_balance(receive_amount, self.currency)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         self._update_account_balances()
         super().save(*args, **kwargs)
 
@@ -193,12 +196,16 @@ class Transaction(AbstractTransaction):
 @receiver(pre_delete, sender=Transaction,
           dispatch_uid='delete_transaction_signal')
 def delete_transaction(sender, instance: Transaction, **kwargs):
+    """
+    Signal that removes transaction amount from account balances
+    Occurs on transaction object deletion
+    """
     instance.amount = 0
     instance._update_account_balances()
 
 
 class RecurringTransaction(AbstractTransaction):
-
+    """RecurringTransaction model used for transactions that occur multiple times"""
     start_date: DateField = DateField(
         blank=False,
     )
@@ -217,7 +224,7 @@ class RecurringTransaction(AbstractTransaction):
     class Meta:
         ordering: list[str] = ['-interval']
 
-    def add_transaction(self, transaction: Transaction):
+    def add_transaction(self, transaction: Transaction) -> None:
         """Add transaction to transaction in recurring transaction"""
         self.transactions.add(transaction)
         self.save()

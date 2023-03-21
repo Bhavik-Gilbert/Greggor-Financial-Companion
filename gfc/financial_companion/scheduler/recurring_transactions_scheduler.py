@@ -6,7 +6,7 @@ from financial_companion.helpers import create_transaction_via_recurring_transac
 from django_q.models import Schedule
 
 
-def create_recurring_transactions_scheduler():
+def create_recurring_transactions_scheduler() -> None:
     """Creates a scheduler object for recurring transactions"""
     date_time_str: str = f'{timezone.now().month}-{timezone.now().day + 1}-{timezone.now().year}'
     date_object: datetime.strptime = datetime.strptime(

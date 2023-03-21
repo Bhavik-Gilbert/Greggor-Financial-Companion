@@ -80,9 +80,9 @@ def check_completeness_if_expense(completeness, target):
 
 @register.filter
 def get_edit_url(target):
-    return "edit_" + target.getModelName() + "_target"
+    return "edit_" + target.get_model_name() + "_target"
 
 
 @register.filter
 def get_delete_url(target):
-    return "delete_" + target.getModelName() + "_target"
+    return "delete_" + target.get_model_name() + "_target"

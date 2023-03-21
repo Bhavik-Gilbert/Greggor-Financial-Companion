@@ -271,7 +271,7 @@ def view_targets(request: HttpRequest, time: str = "all",
 
     targets: list[AbstractTarget] = [target for target in request.user.get_all_targets() if (
         (time == target.timespan or time == "all") and
-        (target_type == target.getModelName() or target_type == "all") and
+        (target_type == target.get_model_name() or target_type == "all") and
         (income_or_expense == target.target_type or income_or_expense == "all")
     )]
 

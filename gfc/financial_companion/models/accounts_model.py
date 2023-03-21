@@ -17,7 +17,9 @@ from ..helpers import CurrencyType, AccountType, FilterTransactionType, convert_
 
 
 class Account(Model):
-    """model for all accounts"""
+    """
+    Account model used to represent merchants that you can send money to
+    """
 
     name: CharField = CharField(
         max_length=50,
@@ -33,7 +35,7 @@ class Account(Model):
     objects: InheritanceManager = InheritanceManager()
 
     def _get_transactions_filter_account_type(
-            self, new_transactions: list, account_type: str, allow_accounts) -> list:
+            self, new_transactions: list, account_type: str, allow_accounts: bool) -> list:
         """
         Return filtered list of transactions based on account_type
 
@@ -104,10 +106,11 @@ class Account(Model):
         return str(self.name)
 
     def get_type(self) -> str:
+        """Returns account type"""
         return f"{AccountType.REGULAR}"
 
     @staticmethod
-    def create_basic_account(account_name: str, user: User):
+    def create_basic_account(account_name: str, user: User) -> None:
         """Creates and returns an account object with only a name"""
         return Account.objects.create(
             name=account_name,
@@ -115,11 +118,11 @@ class Account(Model):
         )
 
     @staticmethod
-    def get_or_create_account(account_name: str, user: User) -> list:
+    def get_or_create_account(account_name: str, user: User):
         """Returns account if it exists or creates a new one"""
         try:
             account: list[Account] = Account.objects.get_subclass(
-                name=account_name, user=user)
+                name=account_name, user=user).first()
         except Exception:
             account: Account = Account.create_basic_account(account_name, user)
 
@@ -127,6 +130,11 @@ class Account(Model):
 
 
 class PotAccount(Account):
+    """
+    PotAccount model used to represent your own account
+    that you can send to or take money from
+    """
+
     balance: DecimalField = DecimalField(max_digits=15, decimal_places=2)
     currency: CharField = CharField(
         choices=CurrencyType.choices,
@@ -135,20 +143,29 @@ class PotAccount(Account):
     )
 
     def get_type(self) -> str:
+        """Returns account type"""
         return f"{AccountType.POT}"
 
     def update_balance(self, amount: float, currency: str):
+        """
+        Updates the object balance converting it to the account currency
+        And saving it in the database
+        """
         amount: float = convert_currency(amount, currency, self.currency)
         self.balance += Decimal(amount)
         self.save()
 
 
-def only_int(value: str):
+def only_int(value: str) -> None:
+    """Raises an error if the input given is not numeric"""
     if (not value.isnumeric()):
         raise ValidationError("value contains characters")
 
 
-def iban_valid(value: str):
+def iban_valid(value: str) -> None:
+    """
+    Raises an error if the inputs first 2 characters are not alphabetical
+    """
     s1: str = value[0:2]
     if (not s1.isalpha()):
         raise ValidationError(
@@ -156,6 +173,12 @@ def iban_valid(value: str):
 
 
 class BankAccount(PotAccount):
+    """
+    BankAccount model used to represent your own account
+    that you can send to or take money from
+    and be affected by interest
+    """
+
     bank_name: CharField = CharField(
         max_length=50,
         blank=False
@@ -186,4 +209,5 @@ class BankAccount(PotAccount):
     )
 
     def get_type(self) -> str:
+        """Returns account type"""
         return f"{AccountType.BANK}"

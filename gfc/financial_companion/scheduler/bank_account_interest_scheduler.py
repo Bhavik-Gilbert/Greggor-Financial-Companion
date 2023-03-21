@@ -6,12 +6,13 @@ from financial_companion.helpers import add_interest_to_bank_accounts
 from django_q.models import Schedule
 
 
-def create_bank_account_interest_scheduler():
+def create_bank_account_interest_scheduler() -> None:
+    """Creates a scheduler object for account interest calculations"""
     date_time_str: str = f'{timezone.now().month + 1}-01-{timezone.now().year}'
     date_object: datetime = datetime.strptime(
         date_time_str, '%m-%d-%Y').replace(tzinfo=pytz.timezone(settings.TIME_ZONE))
 
-    name = "Bank Account Interest"
+    name: str = "Bank Account Interest"
     if Schedule.objects.filter(name=name).count() == 0:
         scheduler: Schedule = Schedule.objects.create(
             name=name,
