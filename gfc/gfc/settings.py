@@ -31,7 +31,7 @@ SECRET_KEY = os.environ.get(
     "django-insecure-)2rxjsa3d&2d83qxnyjyca(d(kl=tt6g*h&*et!-u$fa-w94_j'")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG: bool = True  # TODO: set false before submission
+DEBUG: bool = False
 
 ALLOWED_HOSTS: list[str] = [
     "greggorfinancialcompanion.pythonanywhere.com",
@@ -167,11 +167,6 @@ AUTH_USER_MODEL: str = 'financial_companion.User'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# URL to redirect to and from on protected pages
-# TODO: Change pages when made
-LOGIN_URL: str = "log_in"
-LOGGED_IN_URL: str = "dashboard"
 
 # Number of items per pagniated page
 NUMBER_OF_ITEMS_PER_PAGE: int = 10
