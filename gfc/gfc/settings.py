@@ -168,6 +168,10 @@ AUTH_USER_MODEL: str = 'financial_companion.User'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# URL to redirect to and from on protected page
+LOGIN_URL: str = "log_in"
+LOGGED_IN_URL: str = "dashboard"
+
 # Number of items per pagniated page
 NUMBER_OF_ITEMS_PER_PAGE: int = 10
 
