@@ -32,7 +32,6 @@ class Command(BaseCommand):
             user__in=users)
 
         users.delete()
-        quiz_scores.delete()
         Schedule.objects.all().delete()
 
         QuizSet.objects.filter(seeded=True).delete()

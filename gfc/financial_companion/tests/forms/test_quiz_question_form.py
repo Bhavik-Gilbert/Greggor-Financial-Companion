@@ -1,7 +1,7 @@
 from django import forms
 from .test_form_base import FormTestCase
 from financial_companion.forms import QuizQuestionForm
-from financial_companion.models import User, QuizQuestion, QuizSet, QuizScore
+from financial_companion.models import User, QuizSet, QuizScore
 from typing import Any
 
 

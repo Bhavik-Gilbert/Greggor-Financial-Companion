@@ -30,7 +30,7 @@
               <tr class="text-center">
                 <td>{{ transaction.id}}</td>
                 <td>{{ transaction.title }}</td>
-                <td>{{ transaction.currency.upper }} {{ transaction.amount }} </td>
+                <td>{{ transaction.currency.upper }} {{ transaction.amount }}</td>
                 <td> <a href="{% url 'individual_transaction' pk=transaction.id%}" class="btn btn-sm btn-outline-primary justify-content-center">View Info</a</td>
               </tr>
             {% endfor %}

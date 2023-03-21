@@ -1,5 +1,5 @@
 from django import forms
-from financial_companion.models import QuizQuestion, QuizSet, QuizScore
+from financial_companion.models import QuizQuestion, QuizSet, QuizScore, User
 
 
 class QuizQuestionForm(forms.Form):
@@ -7,7 +7,7 @@ class QuizQuestionForm(forms.Form):
 
     def __init__(self, user, quiz_set, *args, **kwargs):
         self.quiz_set: QuizSet = quiz_set
-        self.user: QuizSet = user
+        self.user: User = user
         super(QuizQuestionForm, self).__init__(*args, **kwargs)
 
         if self.quiz_set is not None:
@@ -21,6 +21,7 @@ class QuizQuestionForm(forms.Form):
                 )
 
     def save(self) -> QuizScore:
+        """Create a new quiz score object."""
         if not self.is_valid():
             return None
         total_questions: int = self.quiz_set.questions.count()

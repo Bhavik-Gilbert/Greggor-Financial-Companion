@@ -1,12 +1,9 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
-from django.urls import reverse
-from django.conf import settings
-from ..models import Transaction, User, PotAccount, AccountTarget, Account
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from financial_companion.helpers import FilterTransactionType
-from financial_companion.helpers import paginate
+from ..models import Transaction, User, AccountTarget, Account
+from financial_companion.helpers import FilterTransactionType, paginate
+from django.core.paginator import Page
 
 
 @login_required
@@ -30,7 +27,8 @@ def individual_account_view(
     transactions: list[Transaction] = account.get_account_transactions(
         filter_type, True)
 
-    list_of_transactions = paginate(request.GET.get('page', 1), transactions)
+    list_of_transactions: Page = paginate(
+        request.GET.get('page', 1), transactions)
 
     return render(request, "pages/individual_account.html",
                   {"account": account, "account_targets": account_targets, 'transactions': list_of_transactions})

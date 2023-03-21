@@ -20,12 +20,13 @@ class AddTransactionForm(forms.ModelForm):
             user=user.id)
         self.fields['receiver_account'].queryset: QuerySet[Account] = Account.objects.filter(
             user=user.id)
-        self.fields['category'].label_from_instance = self.label_from_instance
-        self.fields['sender_account'].label_from_instance = self.label_from_instance
-        self.fields['receiver_account'].label_from_instance = self.label_from_instance
+        self.fields['category'].label_from_instance: str = self.label_from_instance
+        self.fields['sender_account'].label_from_instance: str = self.label_from_instance
+        self.fields['receiver_account'].label_from_instance: str = self.label_from_instance
         self.user: User = user
 
     def label_from_instance(self, obj):
+        """ Return objects name"""
         return obj.name
 
     class Meta:
@@ -33,7 +34,7 @@ class AddTransactionForm(forms.ModelForm):
         fields: list[str] = [
             'title',
             'description',
-            'image',
+            'file',
             'category',
             'amount',
             'currency',
@@ -47,7 +48,7 @@ class AddTransactionForm(forms.ModelForm):
             transaction: Transaction = Transaction.objects.create(
                 title=self.cleaned_data.get('title'),
                 description=self.cleaned_data.get('description'),
-                image=self.cleaned_data.get('image'),
+                file=self.cleaned_data.get('file'),
                 category=self.cleaned_data.get('category'),
                 amount=self.cleaned_data.get('amount'),
                 currency=self.cleaned_data.get('currency'),
@@ -66,7 +67,7 @@ class AddTransactionForm(forms.ModelForm):
         sender_account: Account = self.cleaned_data.get('sender_account')
         receiver_account: Account = self.cleaned_data.get('receiver_account')
         users_accounts = PotAccount.objects.filter(user=self.user)
-        ids = []
+        ids: list[int] = []
         for account in users_accounts:
             ids.append(account.id)
         if sender_account == receiver_account:
@@ -113,6 +114,7 @@ class AddTransactionsViaBankStatementForm(forms.Form):
         )
 
     def save(self) -> Transaction:
+        """Create a new transaction via bank statement."""
         super().full_clean()
 
         bank_statement: forms.FileInput = self.cleaned_data["bank_statement"]

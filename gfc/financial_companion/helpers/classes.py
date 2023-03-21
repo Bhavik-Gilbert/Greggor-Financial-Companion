@@ -95,7 +95,7 @@ class ParseStatementPDF:
             self, statement_dataframe_row: list[Any], indexes: dict[str, int]) -> None:
         """Updates object balance data if statement dataframe row balance block is not empty"""
         if not pd.isna(statement_dataframe_row[indexes["balance"]]):
-            self.balance = float(re.sub(self.number_regex, '', str(
+            self.balance: float = float(re.sub(self.number_regex, '', str(
                 statement_dataframe_row[indexes["balance"]])))
 
     def set_amount_and_transaction_type_from_datataframe_row(
@@ -172,7 +172,7 @@ class ParseStatementPDF:
         self.set_initial_balance_from_dataframe(statement_dataframe, indexes)
 
         for statement_dataframe_row in statement_dataframe.iloc():
-            transactions = self.get_transaction_from_dataframe_row(
+            transactions: list[dict[str, Any]] = self.get_transaction_from_dataframe_row(
                 statement_dataframe_row, indexes, transactions)
 
         return self.set_expense_and_income_columns_correct_way_around(
@@ -188,16 +188,16 @@ class ParseStatementPDF:
             statement_path, pages='all')
 
         indexes: dict[str, int] = {}
-        indexes["date"] = 0
-        indexes["balance"] = -1
+        indexes["date"]: int = 0
+        indexes["balance"]: int = -1
         indexes["income"], indexes["expense"], fail = self.get_dataframe_list_statement_column_expense_indexes(
             statement_dataframe_list)
-        indexes["description"] = indexes["income"] - 1
+        indexes["description"]: int = indexes["income"] - 1
 
         self.reset_object()
         transactions: list[dict[str, Any]] = []
         if not fail:
-            transactions = self.get_transactions_from_dataframe_list(
+            transactions: list[dict[str, Any]] = self.get_transactions_from_dataframe_list(
                 statement_dataframe_list, indexes)
 
         return transactions

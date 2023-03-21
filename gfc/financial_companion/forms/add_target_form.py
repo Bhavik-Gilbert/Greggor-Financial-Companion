@@ -5,7 +5,6 @@ from ..helpers import Timespan, TransactionType, CurrencyType
 from django.core.exceptions import ValidationError
 import re
 from decimal import Decimal
-from typing import Union
 
 
 class TargetForm(forms.Form):
@@ -23,10 +22,10 @@ class TargetForm(forms.Form):
         super(TargetForm, self).__init__(*args, **kwargs)
 
         if (self.instance):
-            self.fields['target_type'].initial = self.instance.target_type
-            self.fields['timespan'].initial = self.instance.timespan
-            self.fields['amount'].initial = self.instance.amount
-            self.fields['currency'].initial = self.instance.currency
+            self.fields['target_type'].initial: str = self.instance.target_type
+            self.fields['timespan'].initial: str = self.instance.timespan
+            self.fields['amount'].initial: Decimal = self.instance.amount
+            self.fields['currency'].initial: str = self.instance.currency
 
     target_type: forms.ChoiceField = forms.ChoiceField(
         choices=TransactionType.choices)
@@ -37,10 +36,11 @@ class TargetForm(forms.Form):
         choices=CurrencyType.choices)
 
     def clean(self):
+        """Clean the data and generate messages for any errors."""
         super().clean()
         filter_type_dict: dict[str, models.Model] = {
             self.foreign_key_name.lower(): self.foreign_key}
-        check_unique_together: Union[models.QuerySet, list[AbstractTarget]] = self.form_type.objects.filter(
+        check_unique_together: models.QuerySet[AbstractTarget] = self.form_type.objects.filter(
             timespan=self.cleaned_data.get('timespan'),
             **filter_type_dict,
             target_type=self.cleaned_data.get('target_type')
@@ -63,9 +63,10 @@ class TargetForm(forms.Form):
                     f"This target can not be created as a target with the same timespan, transaction type and {self.foreign_key.__class__.__name__.lower()} exists"))
 
     def save(self) -> AbstractTarget:
+        """Create a new target."""
         self.full_clean()
         if self.instance is None:
-            target = self.form_type()
+            target: AbstractTarget = self.form_type()
             setattr(target, self.foreign_key_name.lower(), self.foreign_key)
         else:
             target: AbstractTarget = self.instance

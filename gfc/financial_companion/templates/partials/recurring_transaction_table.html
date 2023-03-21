@@ -30,7 +30,7 @@
                   {% else %}
                     <td>{{transaction.interval.capitalize}}ly</td>
                   {% endif %}
-                <td>{{ transaction.amount }} {{ transaction.currency.upper }} </td>
+                <td>{{ transaction.currency.upper }} {{ transaction.amount }}</td>
                 <td> <a href="{% url 'individual_recurring_transaction' pk=transaction.id%}" class="btn btn-sm btn-outline-primary justify-content-center">View Info</a</td>
               </tr>
             </form>

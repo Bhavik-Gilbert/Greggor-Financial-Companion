@@ -1,7 +1,5 @@
-from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 from .test_view_base import ViewTestCase
-from financial_companion.forms import TargetForm
 from financial_companion.models import User, UserTarget
 from typing import Any
 from django.http import HttpResponse

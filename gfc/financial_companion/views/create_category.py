@@ -53,7 +53,8 @@ def edit_category_view(request: HttpRequest, pk: int) -> HttpResponse:
         return redirect("dashboard")
 
     if request.method == "POST":
-        form = CategoryForm(request.POST, instance=current_category)
+        form: CategoryForm = CategoryForm(
+            request.POST, instance=current_category)
         if form.is_valid():
             form.save(current_user=request.user, instance=current_category)
             messages.add_message(
@@ -63,7 +64,7 @@ def edit_category_view(request: HttpRequest, pk: int) -> HttpResponse:
             return redirect('individual_category_redirect',
                             pk=current_category.id)
     else:
-        form = CategoryForm(instance=current_category)
+        form: CategoryForm = CategoryForm(instance=current_category)
 
     return render(request, "pages/create_category.html",
                   {'form': form, "form_toggle": False})

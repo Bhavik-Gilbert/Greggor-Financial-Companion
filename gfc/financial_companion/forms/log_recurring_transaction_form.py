@@ -1,6 +1,5 @@
 from django import forms
 from financial_companion.models import RecurringTransaction
-from typing import Any
 
 
 class RecurringTransactionForm(forms.ModelForm):
@@ -10,7 +9,7 @@ class RecurringTransactionForm(forms.ModelForm):
         model: RecurringTransaction = RecurringTransaction
         fields: list[str] = [
             'title',
-            'image',
+            'file',
             'category',
             'amount',
             'currency',

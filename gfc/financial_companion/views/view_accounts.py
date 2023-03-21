@@ -1,9 +1,10 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from ..models import PotAccount, BankAccount, Account, AccountTarget
 from ..helpers import get_warning_messages_for_targets, paginate
 from django.http import HttpRequest, HttpResponse
 from django.db.models import QuerySet
+from django.core.paginator import Page
 
 
 @login_required
@@ -20,7 +21,7 @@ def view_user_accounts(request: HttpRequest) -> HttpResponse:
         pk__in=user_bank_accounts_only)
     user_accounts_only: QuerySet[Account] = all_user_accounts.exclude(
         pk__in=all_user_pot_accounts).order_by('name')
-    paginated_user_accounts_only: list[Account] = paginate(
+    paginated_user_accounts_only: Page = paginate(
         request.GET.get('page', 1), user_accounts_only, 9)
 
     targets_for_messages: QuerySet[AccountTarget] = request.user.get_all_account_targets(

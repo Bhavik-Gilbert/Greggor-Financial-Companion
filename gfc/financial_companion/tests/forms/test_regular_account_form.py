@@ -2,7 +2,6 @@ from .test_form_base import FormTestCase
 from financial_companion.forms import RegularAccountForm, MonetaryAccountForm
 from financial_companion.helpers import AccountType
 from financial_companion.models import User
-from decimal import Decimal
 from typing import Any
 
 

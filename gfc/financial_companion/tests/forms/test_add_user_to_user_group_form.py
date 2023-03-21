@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 from typing import Any
 from .test_form_base import FormTestCase

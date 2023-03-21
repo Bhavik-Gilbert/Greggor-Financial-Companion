@@ -5,7 +5,6 @@ from financial_companion.helpers import FilterTransactionType
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse
 from financial_companion.helpers import paginate
-from django.db.models import QuerySet
 
 
 @login_required
@@ -24,7 +23,8 @@ def view_users_transactions(request: HttpRequest,
         key=lambda x: x.time_of_transaction,
         reverse=True)
 
-    list_of_transactions = paginate(request.GET.get('page', 1), transactions)
+    list_of_transactions: Page = paginate(
+        request.GET.get('page', 1), transactions)
 
     return render(request, "pages/display_transactions.html",
                   {'transactions': list_of_transactions})
