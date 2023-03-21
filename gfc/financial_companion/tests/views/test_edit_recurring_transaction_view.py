@@ -54,7 +54,8 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
             response, 'pages/add_recurring_transaction.html')
         form: AddRecurringTransactionForm = response.context['form']
         self.assertTrue(isinstance(form, AddRecurringTransactionForm))
-        self.assertFalse(form.is_bound)
+        self.assertTrue(form.is_bound)
+        self.assertFalse(form.is_valid())
         transaction: RecurringTransaction = RecurringTransaction.objects.get(
             id=2)
         transaction.refresh_from_db()
@@ -106,11 +107,27 @@ class EditRecurringTransactionViewTestCase(ViewTestCase):
 
     def test_invalid_recurring_transaction_id_given(self) -> None:
         self._login(self.user)
-        invalid_url = reverse(
+        invalid_url: str = reverse(
             'edit_recurring_transaction', kwargs={
                 'pk': 100000})
         response: HttpResponse = self.client.get(invalid_url, follow=True)
-        response_url = reverse('view_recurring_transactions')
+        response_url: str = reverse('view_recurring_transactions')
+        self.assertRedirects(
+            response,
+            response_url,
+            status_code=302,
+            target_status_code=200)
+        self.assertTemplateUsed(
+            response, 'pages/view_recurring_transactions.html')
+
+    def test_invalid_user_cannot_edit_others_recurring_transactions(
+            self) -> None:
+        self._login(self.user)
+        invalid_url: str = reverse(
+            'edit_recurring_transaction', kwargs={
+                'pk': 4})
+        response: HttpResponse = self.client.get(invalid_url, follow=True)
+        response_url: str = reverse('view_recurring_transactions')
         self.assertRedirects(
             response,
             response_url,
