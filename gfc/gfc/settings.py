@@ -188,6 +188,8 @@ EMAIL_HOST_PASSWORD: str = os.environ.get(
 EMAIL_PORT: int = 587
 EMAIL_USE_TLS: bool = True
 EMAIL_USE_SSL: bool = False
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 Q_CLUSTER: dict[str, Any] = {
     'name': "financial_companion_schedulers",
