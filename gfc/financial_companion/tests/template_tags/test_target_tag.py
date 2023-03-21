@@ -1,6 +1,6 @@
 from .test_template_tag_base import TemplateTagTestCase
 from financial_companion.models import CategoryTarget, AccountTarget, UserTarget
-from financial_companion.helpers import timespan_map, TransactionType
+from financial_companion.helpers import timespan_map, TransactionType, convert_currency
 from financial_companion.templatetags import get_completeness
 from freezegun import freeze_time
 import datetime
@@ -40,13 +40,13 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
     def _calculate_completeness(self, target, transactions):
         total = 0.0
         for transaction in transactions:
-            total += float(transaction.amount)
+            total += float(convert_currency(transaction.amount, transaction.currency, target.currency))
 
         amount = target.amount
         if amount == 0:
             return round(0, 2)
         else:
-            completeness = (total / float(target.amount)) * 100
+            completeness = (total / float(amount)) * 100
             return round(completeness, 2)
 
     def setUp(self):
