@@ -5,8 +5,7 @@ from financial_companion.helpers import functions, paginate
 from financial_companion.helpers.enums import Timespan
 from financial_companion.models import Transaction
 from financial_companion.forms import TimespanOptionsForm
-from ..models import Transaction
-from json import dumps
+from ..models import Transaction, User, AbstractTarget
 from django.core.paginator import Page
 
 

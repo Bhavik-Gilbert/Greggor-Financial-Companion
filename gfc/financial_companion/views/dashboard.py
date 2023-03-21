@@ -4,8 +4,7 @@ from financial_companion.models import PotAccount, Transaction, User
 from financial_companion.helpers.enums import Timespan
 from ..helpers import get_data_for_account_projection, get_warning_messages_for_targets
 from django.contrib.auth.decorators import login_required
-from json import loads
-from typing import Union, Any
+from typing import Any
 from django.db.models import QuerySet
 
 

@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect
 from ..models import UserGroup, User
 from django.contrib.auth.decorators import login_required
 from financial_companion.forms import JoinUserGroupForm
-from django.core.paginator import Page
 from django.db.models import QuerySet
 
 
