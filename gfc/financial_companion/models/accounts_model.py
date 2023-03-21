@@ -131,7 +131,7 @@ class Account(Model):
 
 class PotAccount(Account):
     """
-    PotAccount model used to represent your own account 
+    PotAccount model used to represent your own account
     that you can send to or take money from
     """
 
@@ -174,7 +174,7 @@ def iban_valid(value: str) -> None:
 
 class BankAccount(PotAccount):
     """
-    BankAccount model used to represent your own account 
+    BankAccount model used to represent your own account
     that you can send to or take money from
     and be affected by interest
     """
