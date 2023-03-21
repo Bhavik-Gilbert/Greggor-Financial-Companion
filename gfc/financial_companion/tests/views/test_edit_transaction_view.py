@@ -51,7 +51,8 @@ class EditTransactionViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, 'pages/add_transaction.html')
         form: AddTransactionForm = response.context['form']
         self.assertTrue(isinstance(form, AddTransactionForm))
-        self.assertFalse(form.is_bound)
+        self.assertTrue(form.is_bound)
+        self.assertFalse(form.is_valid())
         transaction: Transaction = Transaction.objects.get(id=2)
         transaction.refresh_from_db()
         self.assertEqual(

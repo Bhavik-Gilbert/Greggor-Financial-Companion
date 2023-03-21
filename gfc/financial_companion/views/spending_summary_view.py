@@ -14,6 +14,7 @@ from django.core.paginator import Page
 def spending_summary(request: HttpRequest) -> HttpResponse:
     time: Timespan = Timespan.DAY
     user: User = request.user
+    form: TimespanOptionsForm = TimespanOptionsForm()
     if request.method == "POST":
         form: TimespanOptionsForm = TimespanOptionsForm(request.POST)
         if form.is_valid():
@@ -31,7 +32,6 @@ def spending_summary(request: HttpRequest) -> HttpResponse:
         categories, total_spent)
     percentages_list: list[float] = list(percentages.values())
     labels: list[str] = list(percentages.keys())
-    form: TimespanOptionsForm = TimespanOptionsForm()
     if percentages_list == []:
         percentages_list: list[float] = None
     targets: list[AbstractTarget] = list(
