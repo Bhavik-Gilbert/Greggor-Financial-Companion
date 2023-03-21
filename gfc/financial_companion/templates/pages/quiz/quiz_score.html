@@ -7,7 +7,7 @@
 {% block content %}
   <div class="row gy-4 justify-content-center text-center">
     <h1>Quiz Results</h1>
-    
+
     <div class="card px-0">
       <div class="card-body row justify-content-center text-center">
         <h5 class="col-auto">Questions Answered: {{quiz_score.total_questions}}</h5>
@@ -26,7 +26,7 @@
             <h1 class="col">You failed, take a chance to study the answers and try again</h1>
             <div class="col">{% include 'partials/greggor_logo.html' with height=300 greggor_type="sad" %}</div>
           {% else %}
-            <h1 class="col">Well done you pass, study the answers and try again to get even better</h1>
+            <h1 class="col">Well done you passed, study the answers and try again to get an even higher score</h1>
             <div class="col">{% include 'partials/greggor_logo.html' with height=300 greggor_type="normal" %}</div>
           {% endif %}
       </div>
@@ -37,7 +37,7 @@
         {%include 'partials/quiz/quiz_results_card.html' with question=question %}
       {% endfor %}
     </div>
-    
+
     <div class="row mt-3">
       <div class="row gy-1 justify-content-center">
         <a href="{% url 'quiz_questions' pk=quiz_score.quiz_set.id %}" class="btn btn-lg btn-outline-primary col-auto">Retake Quiz</a>

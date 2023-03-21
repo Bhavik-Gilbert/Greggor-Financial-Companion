@@ -99,5 +99,5 @@ class QuizscoreViewTestCase(ViewTestCase):
         self.quiz_score.save()
         response: HttpResponse = self.client.get(self.url)
         self._assert_response_contains(response, [
-            "Well done you pass, study the answers and try again to get even better"
+            "Well done you passed, study the answers and try again to get an even higher score"
         ])
