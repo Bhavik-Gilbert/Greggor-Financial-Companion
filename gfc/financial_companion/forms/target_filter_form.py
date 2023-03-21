@@ -15,14 +15,17 @@ class TargetFilterForm(forms.Form):
     target_type: forms.ChoiceField = forms.ChoiceField(
         choices=[('', '-----')] + TargetType.choices, required=False)
 
-    def get_time(self):
+    def get_time(self) -> Timespan:
+        """Get time input from form"""
         self.full_clean()
         return self.cleaned_data["time"]
 
-    def get_income_or_expense(self):
+    def get_income_or_expense(self) -> TransactionType:
+        """Get transaction type input from form"""
         self.full_clean()
         return self.cleaned_data["income_or_expense"]
 
-    def get_target_type(self):
+    def get_target_type(self) -> TargetType:
+        """Get target type input from form"""
         self.full_clean()
         return self.cleaned_data["target_type"]

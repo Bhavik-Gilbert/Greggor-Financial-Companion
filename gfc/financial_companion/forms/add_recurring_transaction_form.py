@@ -1,7 +1,6 @@
 from datetime import date
 from django import forms
 from financial_companion.models import PotAccount, RecurringTransaction, User, Category, Account
-from typing import Any
 from django.forms.widgets import DateInput
 from django.db.models import QuerySet
 
@@ -17,12 +16,13 @@ class AddRecurringTransactionForm(forms.ModelForm):
             user=user.id)
         self.fields['receiver_account'].queryset: QuerySet[Account] = Account.objects.filter(
             user=user.id)
-        self.fields['category'].label_from_instance: Any = self.label_from_instance
-        self.fields['sender_account'].label_from_instance: Any = self.label_from_instance
-        self.fields['receiver_account'].label_from_instance: Any = self.label_from_instance
+        self.fields['category'].label_from_instance: str = self.label_from_instance
+        self.fields['sender_account'].label_from_instance: str = self.label_from_instance
+        self.fields['receiver_account'].label_from_instance: str = self.label_from_instance
         self.user: User = user
 
     def label_from_instance(self, obj) -> str:
+        """Return objects name"""
         return obj.name
 
     class Meta:
@@ -73,7 +73,8 @@ class AddRecurringTransactionForm(forms.ModelForm):
         receiver_account: Account = self.cleaned_data.get('receiver_account')
         start_date: date = self.cleaned_data.get('start_date')
         end_date: date = self.cleaned_data.get('end_date')
-        users_accounts: PotAccount = PotAccount.objects.filter(user=self.user)
+        users_accounts: QuerySet[PotAccount] = PotAccount.objects.filter(
+            user=self.user)
         ids: list[Account] = []
         for account in users_accounts:
             ids.append(account.id)

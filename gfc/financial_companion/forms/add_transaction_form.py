@@ -25,8 +25,8 @@ class AddTransactionForm(forms.ModelForm):
         self.fields['receiver_account'].label_from_instance: str = self.label_from_instance
         self.user: User = user
 
-    def label_from_instance(self, obj):
-        """ Return objects name"""
+    def label_from_instance(self, obj) -> str:
+        """Return objects name"""
         return obj.name
 
     class Meta:
@@ -66,7 +66,8 @@ class AddTransactionForm(forms.ModelForm):
         super().clean()
         sender_account: Account = self.cleaned_data.get('sender_account')
         receiver_account: Account = self.cleaned_data.get('receiver_account')
-        users_accounts = PotAccount.objects.filter(user=self.user)
+        users_accounts: QuerySet[PotAccount] = PotAccount.objects.filter(
+            user=self.user)
         ids: list[int] = []
         for account in users_accounts:
             ids.append(account.id)
@@ -93,7 +94,7 @@ class AddTransactionsViaBankStatementForm(forms.Form):
         choices=CurrencyType.choices,
         label="Account Currency"
     )
-    update_balance = forms.ChoiceField(
+    update_balance: forms.ChoiceField = forms.ChoiceField(
         label="Update Account Balance (Select if you want to set the balance of this account to the close balance on the statement provided)",
         choices=(
             (False, "No"),
