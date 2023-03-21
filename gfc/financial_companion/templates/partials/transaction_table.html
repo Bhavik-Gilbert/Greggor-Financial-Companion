@@ -1,42 +1,40 @@
-{% if transactions %}
-    <div class="row">
-      <div class="col-12">
-        <div>
-          {% if pk %}
-            <form action="{% url 'filter_transaction_request_with_pk' redirect_name=redirect_name pk=pk %}" method="post">
-          {% else %}
-            <form action="{% url 'filter_transaction_request' redirect_name=redirect_name %}" method="post">
-          {% endif %}
-            {% csrf_token %}
-            <div class="text-center">
-              <input type = "submit" name = "sent" value = "View Sent Transactions" class= "btn btn-primary my-1">
-              <input type = "submit" name = "received" value = "View Received Transactions" class= "btn btn-primary my-1">
-              <input type = "submit" name = "all" value = "View Transactions" class= "btn btn-primary my-1">
-            </div>
-          </form>
+<div class="row">
+  <div class="col-12">
+    <div>
+      {% if pk %}
+        <form action="{% url 'filter_transaction_request_with_pk' redirect_name=redirect_name pk=pk %}" method="post">
+      {% else %}
+        <form action="{% url 'filter_transaction_request' redirect_name=redirect_name %}" method="post">
+      {% endif %}
+        {% csrf_token %}
+        <div class="text-center">
+          <input type = "submit" name = "sent" value = "View Sent Transactions" class= "btn btn-primary my-1">
+          <input type = "submit" name = "received" value = "View Received Transactions" class= "btn btn-primary my-1">
+          <input type = "submit" name = "all" value = "View Transactions" class= "btn btn-primary my-1">
         </div>
-        <br>
-        <div class="container container-scrollableX p-0 mb-2">
-          <table class="table table-bordered table-striped text-center" >
-            <thead class = "table-primary">
-              <tr class="text-center">
-                  <th scope="col" class="col-1">ID</th>
-                  <th scope="col" class="col-auto">Transaction Name</th>
-                  <th scope="col" class="col-auto">Amount</th>
-                  <th scope="col" class="col-2"></th>
-              </tr>
-            </thead>
-            {% for transaction in transactions %}
-              <tr class="text-center">
-                <td>{{ transaction.id}}</td>
-                <td>{{ transaction.title }}</td>
-                <td>{{ transaction.currency.upper }} {{ transaction.amount }}</td>
-                <td> <a href="{% url 'individual_transaction' pk=transaction.id%}" class="btn btn-sm btn-outline-primary justify-content-center">View Info</a</td>
-              </tr>
-            {% endfor %}
-          </table>
-        </div>
-        {% include 'partials/pagination.html'  with page_obj=transactions %}
-      </div>
+      </form>
     </div>
-{% endif %}
+    <br>
+    <div class="container container-scrollableX p-0 mb-2">
+      <table class="table table-bordered table-striped text-center" >
+        <thead class = "table-primary">
+          <tr class="text-center">
+              <th scope="col" class="col-1">ID</th>
+              <th scope="col" class="col-auto">Transaction Name</th>
+              <th scope="col" class="col-auto">Amount</th>
+              <th scope="col" class="col-2"></th>
+          </tr>
+        </thead>
+        {% for transaction in transactions %}
+          <tr class="text-center">
+            <td>{{ transaction.id}}</td>
+            <td>{{ transaction.title }}</td>
+            <td>{{ transaction.currency.upper }} {{ transaction.amount }} </td>
+            <td> <a href="{% url 'individual_transaction' pk=transaction.id%}" class="btn btn-sm btn-outline-primary justify-content-center">View Info</a</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+    {% include 'partials/pagination.html'  with page_obj=transactions %}
+  </div>
+</div>

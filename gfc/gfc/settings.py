@@ -36,6 +36,7 @@ DEBUG: bool = True  # TODO: set false before submission
 ALLOWED_HOSTS: list[str] = ["greggorfinancialcompanion.pythonanywhere.com", "127.0.0.1", "localhost"]
 
 
+
 # Application definition
 
 INSTALLED_APPS: list[str] = [
