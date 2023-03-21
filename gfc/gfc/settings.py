@@ -204,4 +204,4 @@ Q_CLUSTER: dict[str, Any] = {
 }
 
 # Site url
-SITE_URL_SPENDING_PAGE: str = "http://greggorfinancialcompanion.pythonanywhere.com/spending_summary"
+SITE_URL_SPENDING_PAGE: str = "https://greggorfinancialcompanion.pythonanywhere.com/spending_summary"
