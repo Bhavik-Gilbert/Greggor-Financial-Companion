@@ -33,7 +33,7 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG: bool = True  # TODO: set false before submission
 
-ALLOWED_HOSTS: list[str] = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS: list[str] = ["http://greggorfinancialcompanion.pythonanywhere.com/spending_summary", "127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -202,4 +202,4 @@ Q_CLUSTER: dict[str, Any] = {
 }
 
 # Site url
-SITE_URL_SPENDING_PAGE: str = "http://localhost:8000/spending_summary"
+SITE_URL_SPENDING_PAGE: str = "http://greggorfinancialcompanion.pythonanywhere.com/spending_summary"
