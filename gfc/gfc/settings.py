@@ -185,10 +185,11 @@ FAKER_LOCALE: str = "en_GB"
 # Information for email password reset
 EMAIL_BACKEND: str = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST: str = "smtp.gmail.com"
-EMAIL_HOST_USER: str = "greggorfinancialcompanion@gmail.com"
-EMAIL_HOST_PASSWORD: str = "ajoaavtgkujobzep"
+EMAIL_HOST_USER: str = "gfcsystem10@gmail.com"
+EMAIL_HOST_PASSWORD: str = os.environ.get(
+    "EMAIL_PASSWORD_KEY")
 EMAIL_PORT: int = 587
-EMAIL_USE_TL: bool = True
+EMAIL_USE_TLS: bool = True
 EMAIL_USE_SSL: bool = False
 
 Q_CLUSTER: dict[str, Any] = {
