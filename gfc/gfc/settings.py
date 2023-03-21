@@ -33,8 +33,7 @@ SECRET_KEY = os.environ.get(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG: bool = True  # TODO: set false before submission
 
-ALLOWED_HOSTS: list[str] = ["127.0.0.1", "localhost"]
-
+ALLOWED_HOSTS: list[str] = ["greggorfinancialcompanion.pythonanywhere.com", "127.0.0.1", "localhost"]
 
 # Application definition
 
@@ -83,7 +82,6 @@ TEMPLATES: list[dict[str, Any]] = [
 ]
 
 WSGI_APPLICATION: str = 'gfc.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -145,13 +143,11 @@ USE_I18N: bool = True
 
 USE_TZ: bool = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL: str = '/static/'
 STATICFILES_DIRS: Path = [os.path.join(BASE_DIR, "static")]
-
 
 # Media files
 MEDIA_URL: str = '/media/'
@@ -160,7 +156,6 @@ MEDIA_ROOT: Path = os.path.join(BASE_DIR, 'media')
 # File upload handler
 FILE_UPLOAD_HANDLERS: list[str] = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler']
-
 
 # User model for authentication and login purposes
 AUTH_USER_MODEL: str = 'financial_companion.User'
@@ -193,6 +188,8 @@ EMAIL_HOST_PASSWORD: str = os.environ.get(
 EMAIL_PORT: int = 587
 EMAIL_USE_TLS: bool = True
 EMAIL_USE_SSL: bool = False
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 Q_CLUSTER: dict[str, Any] = {
     'name': "financial_companion_schedulers",
@@ -203,4 +200,4 @@ Q_CLUSTER: dict[str, Any] = {
 }
 
 # Site url
-SITE_URL_SPENDING_PAGE: str = "http://localhost:8000/spending_summary"
+SITE_URL_SPENDING_PAGE: str = "https://greggorfinancialcompanion.pythonanywhere.com/spending_summary"

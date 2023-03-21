@@ -16,9 +16,7 @@
 
     <div align="center" class="w-50 container-fluid">
       <a class="btn btn-primary" href="{% url 'create_user_group'%}">Add New</a>
-      {% if groups %}
-        <a class="btn btn-primary" href="{% url 'all_groups' search_name='all'%}">View All</a>
-      {% endif %}
+      <a class="btn btn-primary" href="{% url 'all_groups' search_name='all'%}">View All</a>
       <br/><br>
       <form action='{% url 'join_user_group' %}' method="post" class="input-group  d-flex justify-content-center">
         {% csrf_token %}

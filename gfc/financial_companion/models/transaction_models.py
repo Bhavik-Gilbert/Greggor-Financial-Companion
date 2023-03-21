@@ -15,7 +15,7 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .accounts_model import Account, PotAccount
 from .category_model import Category
 from .user_model import User
-from ..helpers import CurrencyType, Timespan, random_filename, timespan_map
+from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, convert_currency
 import datetime
 import os
 from django.db.models.signals import pre_delete
@@ -151,11 +151,12 @@ class Transaction(AbstractTransaction):
 
             if (database_transaction.sender_account.id == self.sender_account.id and
                 database_transaction.receiver_account.id == self.receiver_account.id and
-                    database_transaction.amount == self.amount):
+                database_transaction.amount == self.amount and
+                    database_transaction.currency == self.currency):
                 return
 
             if database_transaction.sender_account.id == self.sender_account.id:
-                send_amount: float = database_transaction.amount - \
+                send_amount: float = Decimal(convert_currency(database_transaction.amount, database_transaction.currency, self.currency)) - \
                     Decimal(self.amount)
             else:
                 database_sender_account: Account = Account.objects.get_subclass(
@@ -166,7 +167,7 @@ class Transaction(AbstractTransaction):
 
             if database_transaction.receiver_account.id == self.receiver_account.id:
                 receive_amount: Decimal = Decimal(
-                    self.amount) - database_transaction.amount
+                    self.amount) - Decimal(convert_currency(database_transaction.amount, database_transaction.currency, self.currency))
             else:
                 database_receiver_account: Account = Account.objects.get_subclass(
                     id=database_transaction.receiver_account.id)
