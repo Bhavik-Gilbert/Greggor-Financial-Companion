@@ -84,7 +84,6 @@ TEMPLATES: list[dict[str, Any]] = [
 
 WSGI_APPLICATION: str = 'gfc.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
