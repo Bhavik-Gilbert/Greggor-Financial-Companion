@@ -142,19 +142,24 @@ class Transaction(AbstractTransaction):
     def get_category_splits(
             transactions: list, user: User) -> dict[str, float]:
         """Splits list by category spending amounts for a given list of transactions"""
+        transactions_per_category: dict[str, list[Transaction]] = dict()
         spent_per_category: dict[str, float] = dict()
         for transaction in transactions:
             if ((transaction.category is None) or (
                     transaction.category.user.id != user.id)):
-                if ("Other" in spent_per_category.keys()):
-                    spent_per_category["Other"] += transaction.amount
+                if ("Other" in transactions_per_category.keys()):
+                    transactions_per_category["Other"].append(transaction)
                 else:
-                    spent_per_category["Other"] = transaction.amount
+                    transactions_per_category["Other"] = [transaction]
             else:
-                if (transaction.category.name in spent_per_category.keys()):
-                    spent_per_category[transaction.category.name] += transaction.amount
+                if (transaction.category.name in transactions_per_category.keys()):
+                    transactions_per_category[transaction.category.name].append(transaction)
                 else:
-                    spent_per_category[transaction.category.name] = transaction.amount
+                    transactions_per_category[transaction.category.name] = [transaction]
+
+        for category, category_transactions in transactions_per_category.items():
+            spent_per_category[category] = Transaction.calculate_total_amount_from_transactions(category_transactions)
+
         return spent_per_category
 
     class Meta:

@@ -21,7 +21,7 @@ class CalculateSplitPercentagesFunctionTestCase(HelperTestCase):
                 Timespan.WEEK, self.user), self.user)
         percentages: dict[str, Decimal] = functions.calculate_split_percentages(
             category_amounts)
-        self.assertEqual(round(list(percentages.values())[0]), 97)
+        self.assertEqual(round(list(percentages.values())[0]), 96)
 
     @freeze_time("1999-01-07 22:00:00")
     def test_percentages_with_no_data(self):
