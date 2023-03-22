@@ -6,6 +6,7 @@ from financial_companion.helpers import functions
 from django.urls import reverse
 from django.http import HttpResponse
 from freezegun import freeze_time
+from decimal import Decimal
 
 
 class SpendingSummaryViewTestCase(ViewTestCase):
@@ -34,21 +35,21 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertTrue(isinstance(form, TimespanOptionsForm))
         time: Timespan = Timespan.WEEK
         self.assertTrue(isinstance(time, Timespan))
+        transactions_spent: list[Transaction] = Transaction.get_transactions_from_time_period(
+            time, self.user, FilterTransactionType.SENT
+        )
         total_spent: float = Transaction.calculate_total_amount_from_transactions(
-            Transaction.get_transactions_from_time_period(
-                time, self.user, FilterTransactionType.SENT
-            )
+            transactions_spent
         )
         total_received: float = Transaction.calculate_total_amount_from_transactions(
             Transaction.get_transactions_from_time_period(
                 time, self.user, FilterTransactionType.RECEIVED
             )
         )
-        categories: dict[str, Decimal] = Transaction.get_category_splits(
-            Transaction.get_transactions_from_time_period(
-                time, self.user, "sent"), self.user)
-        percentages: dict[str, float] = functions.calculate_percentages(
-            categories, total_spent)
+        category_amounts: dict[str, Decimal] = Transaction.get_category_splits(
+            transactions_spent, self.user)
+        percentages: dict[str, float] = functions.calculate_split_percentages(
+            category_amounts)
         percentages_list: list[float] = list(percentages.values())
         labels: list[str] = list(percentages.keys())
 
@@ -84,10 +85,10 @@ class SpendingSummaryViewTestCase(ViewTestCase):
             transactions_received
         )
         self.assertEqual(total_received, 0)
-        categories = Transaction.get_category_splits(
+        category_amounts = Transaction.get_category_splits(
             transactions_sent, self.user)
-        self.assertEqual(len(categories), 0)
-        percentages = functions.calculate_percentages(categories, total_spent)
+        self.assertEqual(len(category_amounts), 0)
+        percentages = functions.calculate_split_percentages(category_amounts)
         self.assertEqual(len(percentages), 0)
         percentages_list = list(percentages.values())
         self.assertEqual(len(percentages_list), 0)
@@ -126,10 +127,10 @@ class SpendingSummaryViewTestCase(ViewTestCase):
                 time, self.user, FilterTransactionType.RECEIVED
             )
         )
-        categories = Transaction.get_category_splits(
+        category_amounts = Transaction.get_category_splits(
             Transaction.get_transactions_from_time_period(
                 time, self.user, "sent"), self.user)
-        percentages = functions.calculate_percentages(categories, total_spent)
+        percentages = functions.calculate_split_percentages(category_amounts)
         percentages_list = list(percentages.values())
         labels = list(percentages.keys())
         keyset: list[str] = response.context["keyset"]

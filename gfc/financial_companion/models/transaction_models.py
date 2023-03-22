@@ -143,20 +143,18 @@ class Transaction(AbstractTransaction):
             transactions: list, user: User) -> dict[str, float]:
         """Splits list by category spending amounts for a given list of transactions"""
         spent_per_category: dict[str, float] = dict()
-        for x in transactions:
-            if ((x.category is None) or (x.category.user.id != user.id)):
-                if (spent_per_category.get("Other") is None):
-                    spent_per_category["Other"] = x.amount
+        for transaction in transactions:
+            if ((transaction.category is None) or (
+                    transaction.category.user.id != user.id)):
+                if ("Other" in spent_per_category.keys()):
+                    spent_per_category["Other"] += transaction.amount
                 else:
-                    spent_per_category.update(
-                        {"Other": spent_per_category.get("Other") + x.amount})
+                    spent_per_category["Other"] = transaction.amount
             else:
-                if ((len(spent_per_category) == 0) or (
-                        spent_per_category.get(x.category.name) is None)):
-                    spent_per_category[x.category.name] = x.amount
+                if (transaction.category.name in spent_per_category.keys()):
+                    spent_per_category[transaction.category.name] += transaction.amount
                 else:
-                    spent_per_category.update(
-                        {x.category.name: spent_per_category.get(x.category.name) + x.amount})
+                    spent_per_category[transaction.category.name] = transaction.amount
         return spent_per_category
 
     class Meta:

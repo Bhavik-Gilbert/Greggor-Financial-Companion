@@ -32,11 +32,11 @@ def spending_summary(request: HttpRequest,
             time, request.user, FilterTransactionType.RECEIVED
         )
     )
-    categories: dict[str, float] = Transaction.get_category_splits(
+    category_amounts: dict[str, float] = Transaction.get_category_splits(
         Transaction.get_transactions_from_time_period(
             time, request.user, FilterTransactionType.SENT), user)
-    percentages: dict[str, float] = functions.calculate_percentages(
-        categories, total_spent)
+    percentages: dict[str, float] = functions.calculate_split_percentages(
+        category_amounts)
     percentages_list: list[float] = list(percentages.values())
     labels: list[str] = list(percentages.keys())
     if percentages_list == []:

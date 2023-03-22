@@ -54,13 +54,17 @@ def random_filename(filename: str) -> str:
     return '{}.{}'.format(''.join(filename_strings_to_add), file_extension)
 
 
-def calculate_percentages(
-        spent_per_category: dict[str, float], total: float) -> dict[str, float]:
-    """calculate percentage of expenditure taken up by each category"""
-    for key, value in spent_per_category.items():
-        percentage: float = float((float(value) / total) * 100)
-        spent_per_category.update({key: percentage})
-    return spent_per_category
+def calculate_split_percentages(
+        spent_per_split: dict[str, float]) -> dict[str, float]:
+    """
+    Calculate percentage of expenditure taken up by
+    each split type in the dictionary
+    """
+    total: float = sum(spent_per_split.values())
+    for key, value in spent_per_split.items():
+        percentage: float = float(value / total) * 100
+        spent_per_split.update({key: percentage})
+    return spent_per_split
 
 
 def paginate(page: int, list_input: list[Any],
