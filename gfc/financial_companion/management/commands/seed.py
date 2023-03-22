@@ -50,6 +50,13 @@ class Command(BaseCommand):
     def __init__(self) -> None:
         super().__init__()
         self.faker: Faker = Faker("en_US")
+        # Set currency choices
+        self.currencies: list[CurrencyType] = [
+            CurrencyType.GBP,
+            self._choose_random_enum(CurrencyType),
+            self._choose_random_enum(CurrencyType),
+            self._choose_random_enum(CurrencyType)
+        ]
 
     def handle(self, *args: list[Any], **options: dict[Any, Any]) -> None:
         """Seeds Database"""
@@ -86,7 +93,7 @@ class Command(BaseCommand):
                     target_type=self._choose_random_enum(TransactionType),
                     timespan=self._choose_random_enum(Timespan),
                     amount=float(randint(0, 1000000)) / 100,
-                    currency=self._choose_random_enum(CurrencyType),
+                    currency=random.choice(self.currencies),
                     category=category
                 )
             categories.append(category)
@@ -132,7 +139,7 @@ class Command(BaseCommand):
                             TransactionType),
                         timespan=self._choose_random_enum(Timespan),
                         amount=float(randint(0, 1000000)) / 100,
-                        currency=self._choose_random_enum(CurrencyType),
+                        currency=random.choice(self.currencies),
                         user=user
                     )
                 self.create_accounts_for_user(user, categories)
@@ -171,7 +178,7 @@ class Command(BaseCommand):
                 description=self.faker.text(),
                 user=user,
                 balance=float(randint(-1000000, 1000000)) / 100,
-                currency=self._choose_random_enum(CurrencyType)
+                currency=random.choice(self.currencies)
             )
             self.create_target_for_account(pot_account)
             self.create_transactions_for_account(pot_account, categories)
@@ -184,7 +191,7 @@ class Command(BaseCommand):
                 description=self.faker.text(),
                 user=user,
                 balance=float(randint(-1000000, 1000000)) / 100,
-                currency=self._choose_random_enum(CurrencyType),
+                currency=random.choice(self.currencies),
                 bank_name=self.faker.word(),
                 account_number=str(randint(0, 9)) + "" +
                 str(randint(1000000, 9999999)),
@@ -221,7 +228,7 @@ class Command(BaseCommand):
                 description=self.faker.text(),
                 category=random.choice(categories),
                 amount=float(randint(0, 1000000)) / 100,
-                currency=self._choose_random_enum(CurrencyType),
+                currency=random.choice(self.currencies),
                 sender_account=sender_account,
                 receiver_account=receiver_account
             )
@@ -258,7 +265,7 @@ class Command(BaseCommand):
                 target_type=self._choose_random_enum(TransactionType),
                 timespan=self._choose_random_enum(Timespan),
                 amount=float(randint(0, 1000000)) / 100,
-                currency=self._choose_random_enum(CurrencyType),
+                currency=random.choice(self.currencies),
                 account=account
             )
 
@@ -386,7 +393,7 @@ class Command(BaseCommand):
                 description=self.faker.text(),
                 category=random.choice(categories),
                 amount=float(randint(0, 1000000)) / 100,
-                currency=self._choose_random_enum(CurrencyType),
+                currency=random.choice(self.currencies),
                 sender_account=sender_account,
                 receiver_account=receiver_account,
                 start_date=start_date,
