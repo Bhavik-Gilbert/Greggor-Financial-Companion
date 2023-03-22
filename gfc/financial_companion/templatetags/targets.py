@@ -27,16 +27,16 @@ def get_completeness(current_target) -> float:
         ) >= start_of_timespan_period and transaction.time_of_transaction.date() <= datetime.date.today():
             filtered_transactions = [*filtered_transactions, transaction]
 
-    total: float = 0.0
-
-    for transaction in filtered_transactions:
-        total += float(convert_currency(transaction.amount, transaction.currency, current.currency))
+    total: float = fcmodels.Transaction.calculate_total_amount_from_transactions(
+        filtered_transactions,
+        current_target.currency
+    )
 
     amount: float = current_target.amount
     if amount == 0:
         return round(0, 2)
     
-    completeness: float = (total / float(current_target.amount)) * 100
+    completeness: float = (total / float(amount)) * 100
     return round(completeness, 2)
 
 
