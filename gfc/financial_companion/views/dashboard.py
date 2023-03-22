@@ -10,6 +10,7 @@ from django.db.models import QuerySet
 
 @login_required
 def dashboard_view(request: HttpRequest) -> HttpResponse:
+    """View to logged in user dashboard"""
     user: User = request.user
     user_accounts: QuerySet[PotAccount] = PotAccount.objects.filter(
         user=user.id)

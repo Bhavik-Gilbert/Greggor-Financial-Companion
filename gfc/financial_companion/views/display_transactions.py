@@ -11,6 +11,7 @@ from django.core.paginator import Page
 @login_required
 def view_users_transactions(request: HttpRequest,
                             filter_type: str = FilterTransactionType.ALL) -> HttpResponse:
+    """View to display the users transactions"""
     user: User = request.user
 
     if not (filter_type in FilterTransactionType.get_send_list()
@@ -33,6 +34,7 @@ def view_users_transactions(request: HttpRequest,
 
 @login_required
 def filter_transaction_request(request, redirect_name: str) -> HttpResponse:
+    """Filters transactions and sets redirect to input page with filter"""
     if 'sent' in request.POST:
         return redirect(reverse(redirect_name, kwargs={
                         'filter_type': FilterTransactionType.SENT}))
@@ -49,6 +51,7 @@ def filter_transaction_request(request, redirect_name: str) -> HttpResponse:
 @login_required
 def filter_transaction_request_with_pk(
         request, redirect_name: str, pk: int) -> HttpResponse:
+    """Filters transactions and sets redirect to input page with filter"""
     if 'sent' in request.POST:
         return redirect(reverse(redirect_name, kwargs={
                         'pk': pk, 'filter_type': FilterTransactionType.SENT}))

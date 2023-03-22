@@ -9,6 +9,7 @@ from ..models import UserGroup, User
 @login_required
 def add_user_to_user_group_view(
         request: HttpRequest, group_pk: int) -> HttpResponse:
+    """View to add a user to a user group"""
     if request.method == 'POST':
         form: AddUserToUserGroupForm = AddUserToUserGroupForm(request.POST)
         try:

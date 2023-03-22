@@ -9,6 +9,7 @@ from financial_companion.models import User
 
 @login_required
 def change_password_view(request: HttpRequest) -> HttpResponse:
+    """View for users to change their password"""
     if request.method == 'POST':
         form: UserChangePasswordForm = UserChangePasswordForm(request.POST)
         if form.is_valid():

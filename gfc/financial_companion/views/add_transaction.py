@@ -9,7 +9,7 @@ from django.contrib import messages
 
 @login_required
 def add_transaction_view(request: HttpRequest) -> HttpResponse:
-    """View to record a transaction made"""
+    """View to record a transaction"""
 
     user: User = request.user
     if request.method == 'POST':
@@ -30,6 +30,7 @@ def add_transaction_view(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
+    """View to edit a transaction"""
     try:
         transaction: Transaction = Transaction.objects.get(id=pk)
         user: User = request.user
@@ -62,6 +63,7 @@ def edit_transaction_view(request: HttpRequest, pk) -> HttpResponse:
 
 @login_required
 def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
+    """View to delete a transaction"""
     try:
         transaction: Transaction = Transaction.objects.get(id=pk)
     except ObjectDoesNotExist:
@@ -77,6 +79,7 @@ def delete_transaction_view(request: HttpRequest, pk) -> HttpResponse:
 
 @login_required
 def add_transactions_via_bank_statement(request: HttpRequest) -> HttpResponse:
+    """View to add transactions via uploading a bank statement"""
     user: User = request.user
 
     if request.method == 'POST':

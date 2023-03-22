@@ -8,6 +8,7 @@ from django.http import HttpResponse
 
 @login_required
 def edit_user_details_view(request) -> HttpResponse:
+    """View to edit user profile details"""
     user: User = User.objects.get(id=request.user.id)
     if request.method == "POST":
         form: EditUserDetailsForm = EditUserDetailsForm(
@@ -23,5 +24,5 @@ def edit_user_details_view(request) -> HttpResponse:
         else:
             return redirect('edit_user_details')
     else:
-        form = EditUserDetailsForm(instance=user)
+        form: EditUserDetailsForm = EditUserDetailsForm(instance=user)
         return render(request, 'pages/edit_user_details.html', {'form': form})

@@ -134,7 +134,7 @@ class SpendingSummaryViewTestCase(ViewTestCase):
             status_code=302,
             target_status_code=200)
         self.assertTemplateUsed(response, "pages/spending_summary.html")
-    
+
     @freeze_time("2023-01-01 22:00:00")
     def test_get_invalid_timespan_spending_summary_page(self):
         self._login(self.user)
@@ -152,7 +152,7 @@ class SpendingSummaryViewTestCase(ViewTestCase):
             status_code=302,
             target_status_code=200)
         self.assertTemplateUsed(response, "pages/spending_summary.html")
-    
+
     @freeze_time("2023-01-01 22:00:00")
     def test_get_invalid_currency_spending_summary_page(self):
         self._login(self.user)
@@ -170,6 +170,6 @@ class SpendingSummaryViewTestCase(ViewTestCase):
             status_code=302,
             target_status_code=200)
         self.assertTemplateUsed(response, "pages/spending_summary.html")
-    
+
     def test_get_view_redirects_when_not_logged_in(self):
         self._assert_require_login(self.url)

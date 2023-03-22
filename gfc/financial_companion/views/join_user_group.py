@@ -9,6 +9,7 @@ from django.db.models import QuerySet
 
 @login_required
 def join_user_group_view(request: HttpRequest) -> HttpResponse:
+    """View for users to join user groups"""
     if request.method == 'POST':
         form: JoinUserGroupForm = JoinUserGroupForm(request.POST)
         if form.is_valid():
