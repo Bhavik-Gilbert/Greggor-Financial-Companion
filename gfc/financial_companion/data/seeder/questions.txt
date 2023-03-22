@@ -67,3 +67,73 @@ Checking Account
 Investing Account
 Credit Account
 4
+
+What is the 50% category in the 50 30 20 budget rule?
+Wants 
+Investments
+Savings 
+Needs
+4
+
+What is the 30% category in the 50 30 20 budget rule?
+Wants 
+Needs
+Savings 
+Investments
+1
+
+What is the 20% category in the 50 30 20 budget rule?
+Investments 
+Savings 
+Needs
+Wants
+2
+
+What percentage of income did the average person in England spend on housing in 2022?
+13%
+54%
+26%
+34%
+3
+
+What percentage of people outright owned their home in the UK in 2020?
+29%
+34%
+24%
+17%
+2
+
+What percentage of people had a home on mortgage in the UK in 2020?
+36%
+17%
+29%
+24%
+3
+
+What percentage of people rented their home in the UK in 2020?
+24%
+17%
+34%
+36%
+4
+
+What was the highest spend category behind housing in 2022?
+Food
+Transportation
+Utilities
+Insurance
+2
+
+What was the fastest growing country in the world in 2021 via GDP?
+Ireland
+Moldova
+Maldives
+Libya
+4
+
+Which country had the largest economy in 2022 via GDP?
+United States
+Germany
+China
+Japan
+1
