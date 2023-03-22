@@ -115,37 +115,61 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertEqual(money_out, total_spent)
 
     @freeze_time("2023-01-01 22:00:00")
-    def test_change_timespan_spending_summary_page(self):
+    def test_valid_form_inputs_spending_summary_page(self):
         self._login(self.user)
         time: Timespan = Timespan.WEEK
+        currency: CurrencyType = CurrencyType.USD
         self.assertTrue(isinstance(time, Timespan))
+        self.assertTrue(isinstance(currency, CurrencyType))
         response = self.client.post(
-            self.url, {"time_choice": "day"}, follow=True)
-        self.assertEqual(response.status_code, 200)
+            self.url, {"time_choice": time, "currency_choice": currency},
+            follow=True
+        )
+        response_url: str = reverse("spending_summary", kwargs={
+            "time": time, "currency": currency
+        })
+        self.assertRedirects(
+            response,
+            response_url,
+            status_code=302,
+            target_status_code=200)
         self.assertTemplateUsed(response, "pages/spending_summary.html")
-        form: TimespanCurrencyOptionsForm = response.context["form"]
-        self.assertTrue(isinstance(form, TimespanCurrencyOptionsForm))
-        total_spent: float = Transaction.calculate_total_amount_from_transactions(
-            Transaction.get_transactions_from_time_period(
-                time, self.user, FilterTransactionType.SENT
-            )
-        )
-        total_received: float = Transaction.calculate_total_amount_from_transactions(
-            Transaction.get_transactions_from_time_period(
-                time, self.user, FilterTransactionType.RECEIVED
-            )
-        )
-        category_amounts = Transaction.get_category_splits(
-            Transaction.get_transactions_from_time_period(
-                time, self.user, "sent"), self.user)
-        percentages = functions.calculate_split_percentages(category_amounts)
-        percentages_list = list(percentages.values())
-        labels = list(percentages.keys())
-        keyset: list[str] = response.context["keyset"]
-        self.assertEqual(keyset, labels)
-        dataset: list[float] = response.context["dataset"]
-        self.assertEqual(dataset, percentages_list)
-        money_in: Decimal = response.context["money_in"]
-        self.assertEqual(money_in, total_received)
-        money_out: Decimal = response.context["money_out"]
-        self.assertEqual(money_out, total_spent)
+    
+    @freeze_time("2023-01-01 22:00:00")
+    def test_get_invalid_timespan_spending_summary_page(self):
+        self._login(self.user)
+        time: str = "invalid"
+        currency: CurrencyType = CurrencyType.USD
+        self.assertFalse(isinstance(time, Timespan))
+        self.assertTrue(isinstance(currency, CurrencyType))
+        url_with_params: str = reverse('spending_summary', kwargs={
+            "time": time, "currency": currency
+        })
+        response = self.client.get(url_with_params, follow=True)
+        self.assertRedirects(
+            response,
+            self.url,
+            status_code=302,
+            target_status_code=200)
+        self.assertTemplateUsed(response, "pages/spending_summary.html")
+    
+    @freeze_time("2023-01-01 22:00:00")
+    def test_get_invalid_currency_spending_summary_page(self):
+        self._login(self.user)
+        time: Timespan = Timespan.WEEK
+        currency: str = "invalid"
+        self.assertTrue(isinstance(time, Timespan))
+        self.assertFalse(isinstance(currency, CurrencyType))
+        url_with_params: str = reverse('spending_summary', kwargs={
+            "time": time, "currency": currency
+        })
+        response = self.client.get(url_with_params, follow=True)
+        self.assertRedirects(
+            response,
+            self.url,
+            status_code=302,
+            target_status_code=200)
+        self.assertTemplateUsed(response, "pages/spending_summary.html")
+    
+    def test_get_view_redirects_when_not_logged_in(self):
+        self._assert_require_login(self.url)

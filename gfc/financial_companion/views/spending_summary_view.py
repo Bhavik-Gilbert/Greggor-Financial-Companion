@@ -16,7 +16,7 @@ from django.core.paginator import Page
 def spending_summary(request: HttpRequest,
                      time: Timespan = Timespan.DAY,
                      currency: CurrencyType = CurrencyType.GBP) -> HttpResponse:
-    if time not in Timespan:
+    if time not in Timespan or currency not in CurrencyType:
         return redirect("spending_summary")
     user: User = request.user
     form: TimespanCurrencyOptionsForm = TimespanCurrencyOptionsForm()
