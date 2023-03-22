@@ -174,7 +174,7 @@ class User(AbstractUser):
     def get_leaderboard_score(self) -> float:
         """Returns calculated score based off of the users targets"""
         score: float = 0
-        score += -(0.5 * self.get_number_of_completed_spending_targets()) + self.get_number_of_completed_saving_targets() + \
-            (0.5 * self.get_number_of_nearly_completed_saving_targets()
-             ) + -(0.5 * self.get_number_of_nearly_completed_spending_targets())
+        score += self.get_number_of_completed_spending_targets() + -(self.get_number_of_completed_saving_targets()) + \
+            -(0.5 * self.get_number_of_nearly_completed_saving_targets()
+             ) + (0.5 * self.get_number_of_nearly_completed_spending_targets())
         return score
