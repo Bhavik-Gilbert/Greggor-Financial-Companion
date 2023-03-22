@@ -5,3 +5,6 @@ from .test_get_overall_completeness_tag import GetOverallCompletenessTemplateTag
 from .test_get_overall_greggor_type_tag import GetOverallGreggorTypeTemplateTagTestCase
 from .test_maths_divide import MathsDivideTemplateTagTestCase
 from .test_maths_sig_fig import MathsSigFigTemplateTagTestCase
+from .test_length_tag import LengthTemplateTagTestCase
+from .test_to_list_tag import ToListTemplateTagTestCase
+from .test_get_key_list_tag import GetKeyListTemplateTagTestCase

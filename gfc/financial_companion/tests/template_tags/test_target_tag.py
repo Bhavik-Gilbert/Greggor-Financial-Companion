@@ -7,7 +7,7 @@ import datetime
 
 
 class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
-    """Test for the get_completeness logo template tag"""
+    """Test for the get_completeness template tag"""
 
     def _get_all_transactions(self, target):
         transactions = []
