@@ -1,6 +1,6 @@
 from django import template
 import financial_companion.models as fcmodels
-from financial_companion.helpers import timespan_map, TransactionType
+from financial_companion.helpers import timespan_map, TransactionType, convert_currency
 import datetime
 register = template.Library()
 
@@ -30,7 +30,7 @@ def get_completeness(current_target) -> float:
     total: float = 0.0
 
     for transaction in filtered_transactions:
-        total += float(transaction.amount)
+        total += float(convert_currency(transaction.amount, transaction.currency, current.currency))
 
     amount: float = current_target.amount
     if amount == 0:
