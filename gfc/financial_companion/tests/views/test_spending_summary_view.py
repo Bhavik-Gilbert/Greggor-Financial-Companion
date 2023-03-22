@@ -1,7 +1,9 @@
 from .test_view_base import ViewTestCase
-from financial_companion.forms import TimespanOptionsForm
+from financial_companion.forms import TimespanCurrencyOptionsForm
 from financial_companion.models import User, Transaction
-from financial_companion.helpers.enums import Timespan, FilterTransactionType
+from financial_companion.helpers.enums import (
+    Timespan, FilterTransactionType, CurrencyType
+)
 from financial_companion.helpers import functions
 from django.urls import reverse
 from django.http import HttpResponse
@@ -19,6 +21,10 @@ class SpendingSummaryViewTestCase(ViewTestCase):
 
     def test_spending_summary_url(self):
         self.assertEqual(self.url, '/spending_summary/')
+        url_with_params: str = reverse('spending_summary', kwargs={
+            "time": Timespan.DAY, "currency": CurrencyType.GBP
+        })
+        self.assertEqual(url_with_params, '/spending_summary/day/GBP/')
 
     @freeze_time("2023-01-07 22:00:00")
     def test_valid_within_time_period(self):
@@ -31,10 +37,12 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/spending_summary.html")
-        form: TimespanOptionsForm = response.context["form"]
-        self.assertTrue(isinstance(form, TimespanOptionsForm))
-        time: Timespan = Timespan.WEEK
-        self.assertTrue(isinstance(time, Timespan))
+        form: TimespanCurrencyOptionsForm = response.context["form"]
+        self.assertTrue(isinstance(form, TimespanCurrencyOptionsForm))
+        time: Timespan = response.context["time"].lower()
+        self.assertTrue(time in Timespan)
+        currency: CurrencyType = response.context["currency"]
+        self.assertTrue(currency in CurrencyType)
         transactions_spent: list[Transaction] = Transaction.get_transactions_from_time_period(
             time, self.user, FilterTransactionType.SENT
         )
@@ -68,8 +76,8 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/spending_summary.html")
-        form: TimespanOptionsForm = response.context["form"]
-        self.assertTrue(isinstance(form, TimespanOptionsForm))
+        form: TimespanCurrencyOptionsForm = response.context["form"]
+        self.assertTrue(isinstance(form, TimespanCurrencyOptionsForm))
         time: Timespan = Timespan.DAY
         self.assertTrue(isinstance(time, Timespan))
         transactions_sent: list[Transaction] = Transaction.get_transactions_from_time_period(
@@ -115,8 +123,8 @@ class SpendingSummaryViewTestCase(ViewTestCase):
             self.url, {"time_choice": "day"}, follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/spending_summary.html")
-        form: TimespanOptionsForm = response.context["form"]
-        self.assertTrue(isinstance(form, TimespanOptionsForm))
+        form: TimespanCurrencyOptionsForm = response.context["form"]
+        self.assertTrue(isinstance(form, TimespanCurrencyOptionsForm))
         total_spent: float = Transaction.calculate_total_amount_from_transactions(
             Transaction.get_transactions_from_time_period(
                 time, self.user, FilterTransactionType.SENT

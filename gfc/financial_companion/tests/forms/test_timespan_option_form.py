@@ -1,14 +1,15 @@
 from financial_companion.forms import TimespanOptionsForm
 from .test_form_base import FormTestCase
+from financial_companion.helpers import Timespan
 from typing import Any
 
 
-class TimeSpanDropDownFormTestCase(FormTestCase):
-    """Unit tests of the time span drop down form"""
+class TimespanOptionFormTestCase(FormTestCase):
+    """Unit tests of the timespan option form"""
 
     def setUp(self):
         self.form_input: dict[str, Any] = {
-            "time_choice": "day"
+            "time_choice": Timespan.DAY
         }
 
     def test_form_contains_required_fields(self):
@@ -26,3 +27,7 @@ class TimeSpanDropDownFormTestCase(FormTestCase):
         self.form_input['time_choice']: str = ''
         form: TimespanOptionsForm = TimespanOptionsForm(data=self.form_input)
         self.assertFalse(form.is_valid())
+    
+    def test_get_timespan(self):
+        form: TimespanOptionsForm = TimespanOptionsForm(data=self.form_input)
+        self.assertEqual(Timespan.DAY, form.get_timespan())

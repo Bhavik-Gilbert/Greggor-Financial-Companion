@@ -9,13 +9,17 @@
         <div>
             <form class="row" method="post">
                 {% csrf_token %}
-                <div class="col-6 col-md-3">
-                    {% include 'partials/form.html' with form=form %}
+                <div class="col-12">
+                  <div class="col-12 col-md-3">
+                      {% include 'partials/form.html' with form=form %}
+                  </div>
                 </div>
-                <input type="submit" value="Apply" class="btn btn-primary col-6 col-md-2 my-4">
+                <div class="col-12">
+                  <input type="submit" value="Apply" class="btn btn-primary col-12 col-md-2">
+                </div>
               </form>
         </div>
-        <strong>Currently Selected: Last {{time}}</strong>
+        <strong>Currently Selected: Last {{time}} | {{currency}}</strong>
         <div class="col-12 col-md-4">
           {% if targets %}
             {% include 'partials/target_bar.html' with targets=targets %}
@@ -47,7 +51,7 @@
           {% if money_in != 0 or money_out != 0 %}
             <div class="card text-bg-primary">
                 <div class="card-body">
-                    <h5 class="card-title">Income vs Outcome:</h5>
+                    <h5 class="card-title">Income vs Outcome ({{currency}}):</h5>
                     {% include 'partials/dashboard/graph.html' with chart_name='in_vs_out' %}
                     <script>
                         var money_in = {{ money_in|safe }};

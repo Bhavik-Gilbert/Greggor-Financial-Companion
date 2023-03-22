@@ -265,7 +265,7 @@ urlpatterns: list[URLPattern] = [
             views.view_targets,
             name='view_targets'),
     re_path(
-        r'^spending_summary(?:/(?P<time>[a-zA-Z]+))?/$',
+        r'^spending_summary(?:/(?P<time>[a-zA-Z]+))?(?:/(?P<currency>[a-zA-Z]+))?/$',
         views.spending_summary,
         name='spending_summary'),
     path('view_recurring_transactions/',
