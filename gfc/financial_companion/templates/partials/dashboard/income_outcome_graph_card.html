@@ -4,7 +4,7 @@
 
 {% block card_content %}
     <div>
-        <p>Income and Expenditure in the last month</p>
+        <p>Income and Expenditure in the last month in GBP</p>
         {% if money_in == 0 and money_out == 0 %}
             {% include "partials/dashboard/no_content.html" with content_type_plural="transaction data" %}
         {% else %}

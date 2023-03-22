@@ -7,11 +7,13 @@ from django.contrib import messages
 
 @login_required
 def profile_view(request: HttpRequest) -> HttpResponse:
+    """View to display user profile"""
     return render(request, 'pages/profile.html')
 
 
 @login_required
 def delete_profile_view(request: HttpRequest) -> HttpResponse:
+    """View to delete user"""
     user: User = request.user
     user.delete()
     messages.add_message(

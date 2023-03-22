@@ -265,7 +265,7 @@ urlpatterns: list[URLPattern] = [
             views.view_targets,
             name='view_targets'),
     re_path(
-        r'^spending_summary(?:/(?P<time>[a-zA-Z]+))?/$',
+        r'^spending_summary(?:/(?P<time>[a-zA-Z]+))?(?:/(?P<currency>[a-zA-Z]+))?/$',
         views.spending_summary,
         name='spending_summary'),
     path('view_recurring_transactions/',
@@ -286,8 +286,7 @@ urlpatterns: list[URLPattern] = [
         'individual_recurring_transaction/(?P<pk>\\d+)/$',
         views.individual_recurring_transaction_view,
         name='individual_recurring_transaction')
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

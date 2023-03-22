@@ -9,6 +9,7 @@ from django.db.models import QuerySet
 @login_required
 def all_groups_view(request: HttpRequest,
                     search_name: str = "all") -> HttpResponse:
+    """View to display all user groups"""
 
     user_groups: list[UserGroup] = []
     user: User = request.user

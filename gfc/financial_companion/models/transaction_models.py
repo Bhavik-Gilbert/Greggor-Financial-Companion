@@ -101,6 +101,27 @@ class Transaction(AbstractTransaction):
     )
 
     @staticmethod
+    def calculate_total_amount_from_transactions(
+            transactions: list, goal_currency_type: CurrencyType = CurrencyType.GBP) -> float:
+        """
+        Calculates the total amount for a given list of transactions
+        """
+        transactions_amounts: dict[CurrencyType, float] = {}
+        total_amount: float = 0
+
+        for transaction in transactions:
+            if transaction.currency in transactions_amounts.keys():
+                transactions_amounts[transaction.currency] += transaction.amount
+            else:
+                transactions_amounts[transaction.currency] = transaction.amount
+
+        for current_currency_type, amount in transactions_amounts.items():
+            total_amount += float(convert_currency(amount,
+                                  current_currency_type, goal_currency_type))
+
+        return total_amount
+
+    @staticmethod
     def get_transactions_from_time_period(
             time_choice: Timespan, user: User, filter_type: str = str("all")) -> list:
         """Gets transactions for a given user within a time period specified"""
@@ -121,21 +142,27 @@ class Transaction(AbstractTransaction):
     def get_category_splits(
             transactions: list, user: User) -> dict[str, float]:
         """Splits list by category spending amounts for a given list of transactions"""
+        transactions_per_category: dict[str, list[Transaction]] = dict()
         spent_per_category: dict[str, float] = dict()
-        for x in transactions:
-            if ((x.category is None) or (x.category.user.id != user.id)):
-                if (spent_per_category.get("Other") is None):
-                    spent_per_category["Other"] = x.amount
+        for transaction in transactions:
+            if ((transaction.category is None) or (
+                    transaction.category.user.id != user.id)):
+                if ("Other" in transactions_per_category.keys()):
+                    transactions_per_category["Other"].append(transaction)
                 else:
-                    spent_per_category.update(
-                        {"Other": spent_per_category.get("Other") + x.amount})
+                    transactions_per_category["Other"] = [transaction]
             else:
-                if ((len(spent_per_category) == 0) or (
-                        spent_per_category.get(x.category.name) is None)):
-                    spent_per_category[x.category.name] = x.amount
+                if (transaction.category.name in transactions_per_category.keys()):
+                    transactions_per_category[transaction.category.name].append(
+                        transaction)
                 else:
-                    spent_per_category.update(
-                        {x.category.name: spent_per_category.get(x.category.name) + x.amount})
+                    transactions_per_category[transaction.category.name] = [
+                        transaction]
+
+        for category, category_transactions in transactions_per_category.items():
+            spent_per_category[category] = Transaction.calculate_total_amount_from_transactions(
+                category_transactions)
+
         return spent_per_category
 
     class Meta:

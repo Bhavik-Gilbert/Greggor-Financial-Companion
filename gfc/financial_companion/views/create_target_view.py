@@ -12,7 +12,8 @@ from typing import Any
 from django.core.paginator import Page
 
 
-def create_target(request, Target, current_item) -> Any:
+def create_target(request, Target, current_item) -> HttpResponse:
+    """Render base request data for create target views"""
     title_first_word: str = re.split(r"\B([A-Z])", Target.__name__)[0]
     title: str = f'{title_first_word} Target'
     form: TargetForm = TargetForm(
@@ -90,6 +91,7 @@ def create_user_target_view(request: HttpRequest) -> HttpResponse:
 
 def edit_target(request: HttpRequest, Target, current_item,
                 foreign_key) -> HttpResponse:
+    """Render base request data for edit target views"""
     title_first_word: str = re.split(r"\B([A-Z])", Target.__name__)[0]
     title: str = f'{title_first_word} Target'
     if request.method == "POST":
@@ -267,7 +269,7 @@ def view_targets(request: HttpRequest, time: str = "all",
                     form_output[key]: str = "all"
             return redirect("view_targets", **form_output)
     else:
-        form = TargetFilterForm()
+        form: TargetFilterForm = TargetFilterForm()
 
     targets: list[AbstractTarget] = [target for target in request.user.get_all_targets() if (
         (time == target.timespan or time == "all") and

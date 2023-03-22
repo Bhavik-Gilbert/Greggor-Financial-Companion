@@ -26,10 +26,10 @@ def category_list_view(request: HttpRequest,
         categories: Category = Category.objects.filter(
             user=request.user).filter(
             name__icontains=search_name)
-    targetsForMessages: list[CategoryTarget] = request.user.get_all_category_targets(
+    targets_for_messages: list[CategoryTarget] = request.user.get_all_category_targets(
     )
     request: HttpRequest = get_warning_messages_for_targets(
-        request, False, targetsForMessages)
+        request, False, targets_for_messages)
 
     return render(request, "pages/category_list.html",
                   {"categories": categories})

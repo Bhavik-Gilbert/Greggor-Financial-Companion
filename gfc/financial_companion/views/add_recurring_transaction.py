@@ -36,6 +36,7 @@ def add_recurring_transaction_view(request: HttpRequest) -> HttpResponse:
 @login_required
 def edit_recurring_transaction_view(
         request: HttpRequest, pk: int) -> HttpResponse:
+    """View to edit a recurring transaction"""
     try:
         transaction: RecurringTransaction = RecurringTransaction.objects.get(
             id=pk)
@@ -70,6 +71,7 @@ def edit_recurring_transaction_view(
 @login_required
 def delete_recurring_transaction_view(
         request: HttpRequest, pk) -> HttpResponse:
+    """View to delete a recurring transaction"""
     try:
         transaction: RecurringTransaction = RecurringTransaction.objects.get(
             id=pk)
