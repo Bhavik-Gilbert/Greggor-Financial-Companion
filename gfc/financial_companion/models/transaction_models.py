@@ -101,6 +101,27 @@ class Transaction(AbstractTransaction):
     )
 
     @staticmethod
+    def calculate_total_amount_from_transactions(
+            transactions: list, goal_currency_type: CurrencyType = CurrencyType.GBP) -> float:
+        """
+        Calculates the total amount for a given list of transactions
+        """
+        transactions_amounts: dict[CurrencyType, float] = {}
+        total_amount: float = 0
+
+        for transaction in transactions:
+            if transaction.currency in transactions_amounts.keys():
+                transactions_amounts[transaction.currency] += transaction.amount
+            else:
+                transactions_amounts[transaction.currency] = transaction.amount
+
+        for current_currency_type, amount in transactions_amounts.items():
+            total_amount += float(convert_currency(amount,
+                                  current_currency_type, goal_currency_type))
+
+        return total_amount
+
+    @staticmethod
     def get_transactions_from_time_period(
             time_choice: Timespan, user: User, filter_type: str = str("all")) -> list:
         """Gets transactions for a given user within a time period specified"""

@@ -1,7 +1,7 @@
 from .test_view_base import ViewTestCase
 from financial_companion.forms import TimespanOptionsForm
 from financial_companion.models import User, Transaction
-from financial_companion.helpers.enums import Timespan
+from financial_companion.helpers.enums import Timespan, FilterTransactionType
 from financial_companion.helpers import functions
 from django.urls import reverse
 from django.http import HttpResponse
@@ -34,12 +34,16 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertTrue(isinstance(form, TimespanOptionsForm))
         time: Timespan = Timespan.WEEK
         self.assertTrue(isinstance(time, Timespan))
-        total_spent: Decimal = sum(transaction.amount for transaction in
-                                   Transaction.get_transactions_from_time_period(
-                                       time, self.user, "sent"))
-        total_received: Decimal = sum(transaction.amount for transaction in
-                                      Transaction.get_transactions_from_time_period(
-                                          time, self.user, "received"))
+        total_spent: float = Transaction.calculate_total_amount_from_transactions(
+            Transaction.get_transactions_from_time_period(
+                time, self.user, FilterTransactionType.SENT
+            )
+        )
+        total_received: float = Transaction.calculate_total_amount_from_transactions(
+            Transaction.get_transactions_from_time_period(
+                time, self.user, FilterTransactionType.RECEIVED
+            )
+        )
         categories: dict[str, Decimal] = Transaction.get_category_splits(
             Transaction.get_transactions_from_time_period(
                 time, self.user, "sent"), self.user)
@@ -67,16 +71,21 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertTrue(isinstance(form, TimespanOptionsForm))
         time: Timespan = Timespan.DAY
         self.assertTrue(isinstance(time, Timespan))
-        transactions = Transaction.get_transactions_from_time_period(
-            time, self.user, "sent")
-        self.assertEqual(len(transactions), 0)
-        total_spent = sum(transaction.amount for transaction in transactions)
+        transactions_sent: list[Transaction] = Transaction.get_transactions_from_time_period(
+            time, self.user, FilterTransactionType.SENT)
+        transactions_received: list[Transaction] = Transaction.get_transactions_from_time_period(
+            time, self.user, FilterTransactionType.RECEIVED)
+        self.assertEqual(len(transactions_sent), 0)
+        total_spent: float = Transaction.calculate_total_amount_from_transactions(
+            transactions_sent
+        )
         self.assertEqual(total_spent, 0)
-        total_received = sum(transaction.amount for transaction in
-                             Transaction.get_transactions_from_time_period(
-                                 time, self.user, "received"))
+        total_received: float = Transaction.calculate_total_amount_from_transactions(
+            transactions_received
+        )
         self.assertEqual(total_received, 0)
-        categories = Transaction.get_category_splits(transactions, self.user)
+        categories = Transaction.get_category_splits(
+            transactions_sent, self.user)
         self.assertEqual(len(categories), 0)
         percentages = functions.calculate_percentages(categories, total_spent)
         self.assertEqual(len(percentages), 0)
@@ -107,12 +116,16 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, "pages/spending_summary.html")
         form: TimespanOptionsForm = response.context["form"]
         self.assertTrue(isinstance(form, TimespanOptionsForm))
-        total_spent = sum(transaction.amount for transaction in
-                          Transaction.get_transactions_from_time_period(
-                              time, self.user, "sent"))
-        total_received = sum(transaction.amount for transaction in
-                             Transaction.get_transactions_from_time_period(
-                                 time, self.user, "received"))
+        total_spent: float = Transaction.calculate_total_amount_from_transactions(
+            Transaction.get_transactions_from_time_period(
+                time, self.user, FilterTransactionType.SENT
+            )
+        )
+        total_received: float = Transaction.calculate_total_amount_from_transactions(
+            Transaction.get_transactions_from_time_period(
+                time, self.user, FilterTransactionType.RECEIVED
+            )
+        )
         categories = Transaction.get_category_splits(
             Transaction.get_transactions_from_time_period(
                 time, self.user, "sent"), self.user)

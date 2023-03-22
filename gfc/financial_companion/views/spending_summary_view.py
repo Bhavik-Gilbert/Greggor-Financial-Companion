@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from financial_companion.helpers import functions, paginate
-from financial_companion.helpers.enums import Timespan
+from financial_companion.helpers.enums import Timespan, FilterTransactionType
 from financial_companion.models import Transaction
 from financial_companion.forms import TimespanOptionsForm
 from ..models import Transaction, User, AbstractTarget
@@ -22,15 +22,19 @@ def spending_summary(request: HttpRequest,
             time: str = form.get_choice()
             return redirect("spending_summary", time=time)
 
-    total_spent: int = sum(transaction.amount for transaction in
-                           Transaction.get_transactions_from_time_period(
-                               time, request.user, "sent"))
-    total_received: int = sum(transaction.amount for transaction in
-                              Transaction.get_transactions_from_time_period(
-                                  time, request.user, "received"))
+    total_spent: float = Transaction.calculate_total_amount_from_transactions(
+        Transaction.get_transactions_from_time_period(
+            time, request.user, FilterTransactionType.SENT
+        )
+    )
+    total_received: float = Transaction.calculate_total_amount_from_transactions(
+        Transaction.get_transactions_from_time_period(
+            time, request.user, FilterTransactionType.RECEIVED
+        )
+    )
     categories: dict[str, float] = Transaction.get_category_splits(
         Transaction.get_transactions_from_time_period(
-            time, request.user, "sent"), user)
+            time, request.user, FilterTransactionType.SENT), user)
     percentages: dict[str, float] = functions.calculate_percentages(
         categories, total_spent)
     percentages_list: list[float] = list(percentages.values())

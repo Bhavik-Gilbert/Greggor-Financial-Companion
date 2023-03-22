@@ -58,7 +58,7 @@ def calculate_percentages(
         spent_per_category: dict[str, float], total: float) -> dict[str, float]:
     """calculate percentage of expenditure taken up by each category"""
     for key, value in spent_per_category.items():
-        percentage: float = float((value / total) * 100)
+        percentage: float = float((float(value) / total) * 100)
         spent_per_category.update({key: percentage})
     return spent_per_category
 
