@@ -40,7 +40,8 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
     def _calculate_completeness(self, target, transactions):
         total = 0.0
         for transaction in transactions:
-            total += float(convert_currency(transaction.amount, transaction.currency, target.currency))
+            total += float(convert_currency(transaction.amount,
+                           transaction.currency, target.currency))
 
         amount = target.amount
         if amount == 0:

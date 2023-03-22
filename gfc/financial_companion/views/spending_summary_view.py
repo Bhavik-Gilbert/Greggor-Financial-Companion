@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
 from financial_companion.helpers import functions, paginate
 from financial_companion.helpers.enums import (
-    Timespan, FilterTransactionType, 
+    Timespan, FilterTransactionType,
     CurrencyType
 )
 from financial_companion.models import Transaction
@@ -21,7 +21,8 @@ def spending_summary(request: HttpRequest,
     user: User = request.user
     form: TimespanCurrencyOptionsForm = TimespanCurrencyOptionsForm()
     if request.method == "POST":
-        form: TimespanCurrencyOptionsForm = TimespanCurrencyOptionsForm(request.POST)
+        form: TimespanCurrencyOptionsForm = TimespanCurrencyOptionsForm(
+            request.POST)
         if form.is_valid():
             time: str = form.get_timespan()
             currency: str = form.get_currency()
@@ -51,11 +52,11 @@ def spending_summary(request: HttpRequest,
             lambda target: time == target.timespan,
             request.user.get_all_targets()))
     list_of_targets: Page = paginate(request.GET.get('page', 1), targets)
-    return render(request, "pages/spending_summary.html", 
-        {
-            'keyset': labels, 'dataset': percentages_list,
-            'form': form, 'money_in': total_received, 'money_out': total_spent, 
-            'time': str(time).capitalize(), 'targets': list_of_targets,
-            'currency': currency
-        }
-    )
+    return render(request, "pages/spending_summary.html",
+                  {
+                      'keyset': labels, 'dataset': percentages_list,
+                      'form': form, 'money_in': total_received, 'money_out': total_spent,
+                      'time': str(time).capitalize(), 'targets': list_of_targets,
+                      'currency': currency
+                  }
+                  )

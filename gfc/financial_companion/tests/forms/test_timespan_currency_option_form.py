@@ -22,5 +22,6 @@ class TimespanCurrencyOptionFormTestCase(FormTestCase):
         )
 
     def test_valid_timespan_dropdown_form(self):
-        form: TimespanCurrencyOptionsForm = TimespanCurrencyOptionsForm(data=self.form_input)
+        form: TimespanCurrencyOptionsForm = TimespanCurrencyOptionsForm(
+            data=self.form_input)
         self.assertTrue(form.is_valid())

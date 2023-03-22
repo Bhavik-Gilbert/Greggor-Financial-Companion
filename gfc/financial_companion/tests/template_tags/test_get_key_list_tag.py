@@ -7,10 +7,9 @@ class GetKeyListTemplateTagTestCase(TemplateTagTestCase):
 
     def setUp(self):
         self.dict: dict[str, int] = {}
-        for i in range (100):
-            self.dict[str(i)]: int = i 
-    
+        for i in range(100):
+            self.dict[str(i)]: int = i
+
     def test_valid_get_key_list(self):
         key_list: list[str] = get_key_list(self.dict)
         self.assertEqual(key_list, list(self.dict.keys()))
-    

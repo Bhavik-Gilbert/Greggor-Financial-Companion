@@ -153,12 +153,15 @@ class Transaction(AbstractTransaction):
                     transactions_per_category["Other"] = [transaction]
             else:
                 if (transaction.category.name in transactions_per_category.keys()):
-                    transactions_per_category[transaction.category.name].append(transaction)
+                    transactions_per_category[transaction.category.name].append(
+                        transaction)
                 else:
-                    transactions_per_category[transaction.category.name] = [transaction]
+                    transactions_per_category[transaction.category.name] = [
+                        transaction]
 
         for category, category_transactions in transactions_per_category.items():
-            spent_per_category[category] = Transaction.calculate_total_amount_from_transactions(category_transactions)
+            spent_per_category[category] = Transaction.calculate_total_amount_from_transactions(
+                category_transactions)
 
         return spent_per_category
 

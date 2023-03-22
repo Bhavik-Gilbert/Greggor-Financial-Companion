@@ -18,4 +18,3 @@ from .test_user_change_password_form import UserChangePasswordFormTestCase
 from .test_timespan_option_form import TimespanOptionFormTestCase
 from .test_currency_option_form import CurrencyOptionFormTestCase
 from .test_timespan_currency_option_form import TimespanCurrencyOptionFormTestCase
-

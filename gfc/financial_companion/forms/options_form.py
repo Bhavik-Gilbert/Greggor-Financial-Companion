@@ -12,6 +12,7 @@ class TimespanOptionsForm(forms.Form):
         self.full_clean()
         return self.cleaned_data["time_choice"]
 
+
 class CurrencyOptionsForm(forms.Form):
     """Form to select currency"""
     currency_choice: forms.ChoiceField = forms.ChoiceField(
@@ -22,6 +23,6 @@ class CurrencyOptionsForm(forms.Form):
         self.full_clean()
         return self.cleaned_data["currency_choice"]
 
+
 class TimespanCurrencyOptionsForm(CurrencyOptionsForm, TimespanOptionsForm):
     pass
-

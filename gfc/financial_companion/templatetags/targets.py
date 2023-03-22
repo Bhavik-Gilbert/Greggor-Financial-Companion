@@ -7,7 +7,7 @@ register = template.Library()
 
 @register.filter
 def get_completeness(current_target) -> float:
-    """Gets and calculates the completeness of a target"""
+    """Calculates and gets the completeness of a target"""
     transactions: list[fcmodels.Transaction] = []
 
     if isinstance(current_target, fcmodels.CategoryTarget):
@@ -35,7 +35,7 @@ def get_completeness(current_target) -> float:
     amount: float = current_target.amount
     if amount == 0:
         return round(0, 2)
-    
+
     completeness: float = (total / float(amount)) * 100
     return round(completeness, 2)
 

@@ -27,7 +27,7 @@ class TimespanOptionFormTestCase(FormTestCase):
         self.form_input['time_choice']: str = ''
         form: TimespanOptionsForm = TimespanOptionsForm(data=self.form_input)
         self.assertFalse(form.is_valid())
-    
+
     def test_get_timespan(self):
         form: TimespanOptionsForm = TimespanOptionsForm(data=self.form_input)
         self.assertEqual(Timespan.DAY, form.get_timespan())
