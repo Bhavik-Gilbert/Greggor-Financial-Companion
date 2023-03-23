@@ -9,6 +9,7 @@ class RegularAccountFormTestCase(FormTestCase):
     """Unit tests of the regular account form."""
 
     def setUp(self):
+        super().setUp()
         self.form_input: dict[str, Any] = {
             "name": "Test regular",
             "description": "This is a test regular",

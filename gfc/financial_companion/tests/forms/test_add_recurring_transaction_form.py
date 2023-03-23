@@ -6,9 +6,10 @@ from typing import Any
 
 
 class AddRecurringTransactionFormTestCase(FormTestCase):
-    """Unit tests of the add transaction form"""
+    """Unit tests of the add recurring transaction form"""
 
     def setUp(self):
+        super().setUp()
         self.user: User = User.objects.get(username='@johndoe')
         self.form_input: dict[str, Any] = {
             "title": "Test",

@@ -13,6 +13,7 @@ class AddTransactionsViaBankStatementFormTestCase(FormTestCase):
     """Unit tests of the add transactions via bank statement form"""
 
     def setUp(self):
+        super().setUp()
         self.user: User = User.objects.get(username="@johndoe")
         self.account: PotAccount = PotAccount.objects.filter(
             user=self.user).first()

@@ -8,6 +8,7 @@ class CurrencyOptionFormTestCase(FormTestCase):
     """Unit tests of the currency option form"""
 
     def setUp(self):
+        super().setUp()
         self.form_input: dict[str, Any] = {
             "currency_choice": CurrencyType.GBP
         }

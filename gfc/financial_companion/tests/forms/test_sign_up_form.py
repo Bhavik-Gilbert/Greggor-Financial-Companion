@@ -11,6 +11,7 @@ class SignUpFormTestCase(FormTestCase):
     """Unit tests of the sign up form"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('sign_up')
         self.form_input: dict[str, Any] = {
             "first_name": "John",

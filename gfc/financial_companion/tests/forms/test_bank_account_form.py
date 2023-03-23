@@ -10,6 +10,7 @@ class BankAccountFormTestCase(FormTestCase):
     """Unit tests of the bank account form."""
 
     def setUp(self):
+        super().setUp()
         self.form_input: dict[str, Any] = {
             "name": "Test Bank",
             "description": "This is a test bank",
@@ -117,9 +118,7 @@ class BankAccountFormTestCase(FormTestCase):
         self.assertTrue(form.is_valid())
 
     def test_valid_form_accepts_account_number_8_digits(self):
-        self.form_input["account_number"]: str = "9" * 8
-        form: BankAccountForm = BankAccountForm(data=self.form_input)
-        self.assertTrue(form.is_valid())
+        self.test_valid_form_accepts_account_number_whole_numerics()
 
     def test_invalid_form_rejects_account_number_non_whole_numeric_try_string(
             self):
@@ -160,9 +159,7 @@ class BankAccountFormTestCase(FormTestCase):
         self.assertTrue(form.is_valid())
 
     def test_valid_form_accepts_sort_code_6_digits(self):
-        self.form_input["sort_code"]: str = "9" * 6
-        form: BankAccountForm = BankAccountForm(data=self.form_input)
-        self.assertTrue(form.is_valid())
+        self.test_valid_form_accepts_sort_code_whole_numerics()
 
     def test_invalid_form_rejects_sort_code_non_whole_numeric_try_string(self):
         self.form_input["sort_code"]: str = "hello"

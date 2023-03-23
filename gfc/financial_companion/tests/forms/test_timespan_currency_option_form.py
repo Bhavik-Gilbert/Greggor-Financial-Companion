@@ -8,6 +8,7 @@ class TimespanCurrencyOptionFormTestCase(FormTestCase):
     """Unit tests of the timespan currency option form"""
 
     def setUp(self):
+        super().setUp()
         self.form_input: dict[str, Any] = {
             "time_choice": Timespan.DAY,
             "currency_choice": CurrencyType.GBP

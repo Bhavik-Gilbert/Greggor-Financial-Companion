@@ -8,6 +8,7 @@ class TimespanOptionFormTestCase(FormTestCase):
     """Unit tests of the timespan option form"""
 
     def setUp(self):
+        super().setUp()
         self.form_input: dict[str, Any] = {
             "time_choice": Timespan.DAY
         }
