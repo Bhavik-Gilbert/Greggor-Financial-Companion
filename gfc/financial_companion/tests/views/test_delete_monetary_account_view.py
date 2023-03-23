@@ -9,6 +9,7 @@ class DeleteMonetaryAccountViewTestCase(ViewTestCase):
     """Tests of the delete monetary account view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('delete_monetary_account', kwargs={"pk": 5})
         self.user: User = User.objects.get(username='@johndoe')
 

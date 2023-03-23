@@ -6,6 +6,7 @@ class LengthTemplateTagTestCase(TemplateTagTestCase):
     """Test for the to_list template tag"""
 
     def setUp(self):
+        super().setUp()
         self.list: list[str] = []
         for i in range(100):
             self.list.append(i)

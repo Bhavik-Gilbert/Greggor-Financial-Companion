@@ -4,16 +4,19 @@ from financial_companion.forms import TargetForm
 from financial_companion.models import User, CategoryTarget
 from django.http import HttpResponse
 from django.contrib.messages.storage.base import Message
+from typing import Any
 
 
 class EditCategoryTargetViewTestCase(ViewTestCase):
     """Tests of the edit category target view."""
 
     def setUp(self) -> None:
-        self.url = reverse('edit_category_target', kwargs={'pk': 1})
-        self.test_user = User.objects.get(username='@johndoe')
-        self.test_category_target = CategoryTarget.objects.get(id=1)
-        self.form_input = {
+        super().setUp()
+        self.url: str = reverse('edit_category_target', kwargs={'pk': 1})
+        self.test_user: User = User.objects.get(username='@johndoe')
+        self.test_category_target: CategoryTarget = CategoryTarget.objects.get(
+            id=1)
+        self.form_input: dict[str, Any] = {
             'target_type': 'income',
             'timespan': 'month',
             'amount': 200.00,
@@ -28,7 +31,7 @@ class EditCategoryTargetViewTestCase(ViewTestCase):
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/create_targets.html')
-        form = response.context['form']
+        form: TargetForm = response.context['form']
         self.assertTrue(isinstance(form, TargetForm))
         self.assertFalse(form.is_bound)
         messages_list: list[Message] = list(response.context['messages'])

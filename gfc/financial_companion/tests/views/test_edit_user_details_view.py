@@ -3,12 +3,14 @@ from .test_view_base import ViewTestCase
 from financial_companion.forms import EditUserDetailsForm
 from financial_companion.models import User
 from django.http import HttpResponse
+from typing import Any
 
 
 class EditUserDetailsViewTestCase(ViewTestCase):
     """Unit tests of the edit user details view"""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('edit_user_details')
         self.form_input: dict[str, str] = {
             "first_name": "Bob",
@@ -54,7 +56,7 @@ class EditUserDetailsViewTestCase(ViewTestCase):
 
     def test_edit_user_details_unsuccessful_invalid_input(self) -> None:
         self._login(self.user)
-        invalid_form_input: dict = {}
+        invalid_form_input: dict[str, Any] = {}
         response: HttpResponse = self.client.post(
             self.url, invalid_form_input, follow=True)
         self.assertEqual(response.status_code, 200)

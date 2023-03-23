@@ -9,6 +9,7 @@ class EditCategoryViewTestCase(ViewTestCase):
     """Tests of the edit category view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('edit_category', kwargs={"pk": 1})
         self.form_input: dict[str, str] = {
             'name': 'Travel',
@@ -24,7 +25,7 @@ class EditCategoryViewTestCase(ViewTestCase):
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/create_category.html')
-        form = response.context['form']
+        form: CategoryForm = response.context['form']
         self.assertTrue(isinstance(form, CategoryForm))
         self.assertFalse(form.is_bound)
         messages_list = list(response.context['messages'])

@@ -10,6 +10,7 @@ class CreateAccountTargetViewTestCase(ViewTestCase):
     """Tests of the create account target view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('create_account_target', kwargs={'pk': 3})
         self.test_user: User = User.objects.get(username='@johndoe')
         self.test_account = Account.objects.get(id=3)

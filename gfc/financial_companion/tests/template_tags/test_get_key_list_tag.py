@@ -6,6 +6,7 @@ class GetKeyListTemplateTagTestCase(TemplateTagTestCase):
     """Test for the get_key_list template tag"""
 
     def setUp(self):
+        super().setUp()
         self.dict: dict[str, int] = {}
         for i in range(100):
             self.dict[str(i)]: int = i

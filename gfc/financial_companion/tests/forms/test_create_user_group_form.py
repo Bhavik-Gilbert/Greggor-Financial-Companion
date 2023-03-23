@@ -10,6 +10,7 @@ class CreateUserGroupFormTestCase(FormTestCase):
     """Unit tests of the create user group form"""
 
     def setUp(self):
+        super().setUp()
         self.test_user: User = User.objects.get(username='@johndoe')
         self.url: str = reverse('create_user_group')
         self.form_input: dict[str, Any] = {

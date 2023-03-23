@@ -12,6 +12,7 @@ class EditTransactionViewTestCase(ViewTestCase):
     """Unit tests of the edit transaction view"""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('edit_transaction', kwargs={"pk": 2})
         self.image_path: str = "financial_companion/tests/data/dragon.jpeg"
         self.image_upload: SimpleUploadedFile = self._get_image_upload_file(
@@ -42,7 +43,7 @@ class EditTransactionViewTestCase(ViewTestCase):
 
     def test_unsuccesfully_edit_transaction(self) -> None:
         self._login(self.user)
-        self.form_input['title'] = ''
+        self.form_input['title']: str = ''
         before_count: int = Transaction.objects.count()
         response: HttpResponse = self.client.post(self.url, self.form_input)
         after_count: int = Transaction.objects.count()
@@ -81,7 +82,7 @@ class EditTransactionViewTestCase(ViewTestCase):
             status_code=302,
             target_status_code=200)
         self.assertTemplateUsed(response, 'pages/individual_transaction.html')
-        transaction = Transaction.objects.get(id=2)
+        transaction: Transaction = Transaction.objects.get(id=2)
         transaction.refresh_from_db()
         self.assertEqual(transaction.title, "Test")
         self.assertEqual(transaction.description, "This is a test transaction")
@@ -96,7 +97,7 @@ class EditTransactionViewTestCase(ViewTestCase):
 
     def test_invalid_transaction_id_given(self) -> None:
         self._login(self.user)
-        invalid_url = reverse('edit_transaction', kwargs={'pk': 100000})
+        invalid_url: str = reverse('edit_transaction', kwargs={'pk': 100000})
         response: HttpResponse = self.client.get(invalid_url, follow=True)
         response_url: str = reverse(
             'view_transactions', kwargs={

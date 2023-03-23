@@ -126,15 +126,15 @@ class BankAccountModelTestCase(ModelTestCase):
         self._assert_model_is_valid()
 
     def test_interest_rate_can_be_0(self):
-        self.test_model.interest_rate: float = Decimal("0.0")
+        self.test_model.interest_rate: Decimal = Decimal("0.0")
         self._assert_model_is_valid()
 
     def test_interest_rate_is_2_decimal_places(self):
-        self.test_model.interest_rate: float = Decimal("1.01")
+        self.test_model.interest_rate: Decimal = Decimal("1.01")
         self._assert_model_is_valid()
 
     def test_interest_rate_cannot_have_more_than_2_decimal_places(self):
-        self.test_model.interest_rate: float = Decimal("10.001")
+        self.test_model.interest_rate: Decimal = Decimal("10.001")
         self._assert_model_is_invalid()
 
     def test_interest_rate_default_is_not_blank(self):

@@ -2,12 +2,14 @@ from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.forms import UserLogInForm
 from financial_companion.models import User
+from django.http import HttpResponse
 
 
 class LogInViewTestCase(ViewTestCase):
     """Unit tests of the log in view"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('log_in')
         self.user: User = User.objects.get(username='@johndoe')
 

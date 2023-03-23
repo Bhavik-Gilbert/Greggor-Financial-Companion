@@ -10,6 +10,7 @@ class IndividualAccountViewTestCase(ViewTestCase):
     """Unit tests of the individual account view"""
 
     def setUp(self):
+        super().setUp()
         self.user: User = User.objects.get(username="@johndoe")
         self.account: PotAccount = PotAccount.objects.get_subclass(
             user=self.user, id=3)

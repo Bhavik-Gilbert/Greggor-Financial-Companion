@@ -11,6 +11,7 @@ class CreateCategoryTargetViewTestCase(ViewTestCase):
     """Tests of the create category target view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('create_category_target', kwargs={'pk': 1})
         self.test_user: User = User.objects.get(username='@johndoe')
         self.test_category: Category = Category.objects.get(id=1)

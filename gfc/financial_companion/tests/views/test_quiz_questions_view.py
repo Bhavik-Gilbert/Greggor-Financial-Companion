@@ -12,6 +12,7 @@ class QuizQuestionsViewTestCase(ViewTestCase):
     """Unit tests of the quiz questions view"""
 
     def _assert_invalid_question_form_input(self, form_input: dict[str, Any]):
+        """Assert form input invalid"""
         self._login(self.user)
         quiz_score_before: int = QuizScore.objects.count()
         response: HttpResponse = self.client.post(
@@ -22,6 +23,7 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         self.assertTrue(len(response.context["form"].errors) > 0)
 
     def _assert_question_form_displays(self, response: HttpResponse):
+        """Assert questions are in response"""
         self.assertTemplateUsed(response, 'pages/quiz/quiz_questions.html')
         self._assert_response_contains(response, self.page_contain_list)
         for question in self.quiz_set.questions.all():
@@ -32,6 +34,7 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         self.assertTrue(isinstance(response.context["form"], QuizQuestionForm))
 
     def setUp(self):
+        super().setUp()
         self.user: User = User.objects.get(username='@johndoe')
         self.quiz_set: QuizSet = QuizSet.objects.get(id=1)
         self.base_url: str = '/quiz_questions/'
@@ -106,10 +109,7 @@ class QuizQuestionsViewTestCase(ViewTestCase):
         self._assert_invalid_question_form_input(form_input)
 
     def test_invalid_post_quiz_questions_without_submit_answer(self):
-        self._login(self.user)
-        response: HttpResponse = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        self._assert_question_form_displays(response)
+        self.test_valid_get_quiz_questions()
 
     def test_invalid_pk_must_be_int_try_str(self):
         url: str = f"{self.base_url}hi/"

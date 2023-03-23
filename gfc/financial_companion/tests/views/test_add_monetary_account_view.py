@@ -12,8 +12,9 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
     """Unit tests of the add monetary account view"""
 
     def setUp(self) -> None:
+        super().setUp()
         self.user: User = User.objects.get(username="@johndoe")
-        self.url: str = reverse(f"add_monetary_account")
+        self.url: str = reverse("add_monetary_account")
 
     def test_valid_page_url(self) -> None:
         self.assertEqual(self.url, "/add_monetary_account/")

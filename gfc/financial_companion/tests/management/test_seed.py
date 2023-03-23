@@ -28,7 +28,7 @@ class ManagementSeedTestCase(ManagementTestCase):
         # check all schedulers created
         self.assertTrue(Schedule.objects.count() >= 3)
         # check all questions read from file
-        self.assertEqual(QuizQuestion.objects.count(), 10)
+        self.assertEqual(QuizQuestion.objects.count(), 20)
 
         # check database seeded correctly
         self.assertTrue(Category.objects.count() >= 3 * (user_count - 2))
@@ -53,7 +53,7 @@ class ManagementSeedTestCase(ManagementTestCase):
             user__in=seeded_users)
         seeded_user_categories: QuerySet[Category] = Category.objects.filter(
             user__in=seeded_users)
-        seeded_user_emails: str = []
+        seeded_user_emails: list[str] = []
         self.assertEqual(
             User.objects.filter(
                 email__endswith='@gfc.org').count(), 0)
@@ -92,8 +92,7 @@ class ManagementSeedTestCase(ManagementTestCase):
 
     def test_successfully_seed_and_unseed(self) -> None:
         """Tests that we can seed and unseed the database"""
-        # TODO: Add back before submission
-        # self._assert_successfully_seed()
-        # seeded_users: QuerySet[User] = User.objects.filter(
-        #    email__endswith='@gfc.org')
-        # self._assert_successfully_unseed(seeded_users)
+        self._assert_successfully_seed()
+        seeded_users: QuerySet[User] = User.objects.filter(
+           email__endswith='@gfc.org')
+        self._assert_successfully_unseed(seeded_users)

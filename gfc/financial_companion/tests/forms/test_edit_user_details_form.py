@@ -10,6 +10,7 @@ class EditUserDetailsFormTestCase(FormTestCase):
     """Unit tests of the edit user details form"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('edit_user_details')
         self.form_input: dict[str, Any] = {
             "first_name": "Bob",

@@ -4,14 +4,16 @@ from financial_companion.forms import UserGroupForm
 from financial_companion.models import User, UserGroup
 from django.http import HttpResponse
 from django.contrib.messages.storage.base import Message
+from typing import Any
 
 
 class EditUserGroupViewTestCase(ViewTestCase):
     """Tests of the edit user group view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('edit_user_group', kwargs={"pk": 1})
-        self.form_input = {
+        self.form_input: dict[str, Any] = {
             'name': 'Financial Club',
             'description': 'We are the best financial club',
         }
@@ -43,7 +45,7 @@ class EditUserGroupViewTestCase(ViewTestCase):
         self.assertEqual(after_count, before_count)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/create_user_group.html')
-        form = response.context['form']
+        form: UserGroupForm = response.context['form']
         self.assertTrue(isinstance(form, UserGroupForm))
 
     def test_successful_edit_user_group_form_submission(self) -> None:

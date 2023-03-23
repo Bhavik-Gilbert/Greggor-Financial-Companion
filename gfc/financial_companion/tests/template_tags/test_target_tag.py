@@ -1,6 +1,12 @@
 from .test_template_tag_base import TemplateTagTestCase
-from financial_companion.models import CategoryTarget, AccountTarget, UserTarget
-from financial_companion.helpers import timespan_map, TransactionType, convert_currency
+from financial_companion.models import (
+    CategoryTarget, AccountTarget, UserTarget,
+    Transaction, Account, AbstractTarget
+)
+from financial_companion.helpers import (
+    timespan_map, TransactionType, convert_currency,
+    FilterTransactionType
+)
 from financial_companion.templatetags import get_completeness
 from freezegun import freeze_time
 import datetime
@@ -9,46 +15,40 @@ import datetime
 class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
     """Test for the get_completeness template tag"""
 
-    def _get_all_transactions(self, target):
-        transactions = []
+    def _get_all_transactions(
+            self, target: AbstractTarget) -> list[Transaction]:
+        """Get all transactions from a given target"""
+        transactions: list[Transaction] = []
         if isinstance(target, CategoryTarget):
             transactions = target.category.get_category_transactions()
         elif isinstance(target, AccountTarget):
-            account = target.account
+            account: Account = target.account
             if target.target_type == TransactionType.INCOME:
-                transactions = account.get_account_transactions("sent")
+                transactions = account.get_account_transactions(
+                    FilterTransactionType.SENT)
             else:
-                transactions = account.get_account_transactions("received")
+                transactions = account.get_account_transactions(
+                    FilterTransactionType.RECEIVED)
         elif isinstance(target, UserTarget):
             transactions = target.user.get_user_transactions()
         return transactions
 
-    def _get_start_of_time_period(self, target):
-        timespan_int = timespan_map[target.timespan]
-        start_of_timespan_period = datetime.date.today(
+    def _get_start_of_time_period(self, target) -> datetime.date:
+        """Get start of target interval"""
+        timespan_int: int = timespan_map[target.timespan]
+        start_of_timespan_period: datetime.date = datetime.date.today(
         ) - datetime.timedelta(days=timespan_int)
         return start_of_timespan_period
 
-    def _filter_transactions(self, start, transactions):
-        filtered_transactions = []
+    def _filter_transactions(self, start: datetime.date,
+                             transactions: list[Transaction]) -> list[Transaction]:
+        """Filter transactions after start date"""
+        filtered_transactions: list[Transaction] = []
         for transaction in transactions:
             if transaction.time_of_transaction.date(
             ) >= start and transaction.time_of_transaction.date() <= datetime.date.today():
                 filtered_transactions = [*filtered_transactions, transaction]
         return filtered_transactions
-
-    def _calculate_completeness(self, target, transactions):
-        total = 0.0
-        for transaction in transactions:
-            total += float(convert_currency(transaction.amount,
-                           transaction.currency, target.currency))
-
-        amount = target.amount
-        if amount == 0:
-            return round(0, 2)
-        else:
-            completeness = (total / float(amount)) * 100
-            return round(completeness, 2)
 
     def setUp(self):
         self.account_target: AccountTarget = AccountTarget.objects.get(id=1)
@@ -82,7 +82,6 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
                 self.user_target))
 
     # test the filter transaction on each different time span
-    # freeze time is year month day
     @freeze_time("2023-01-01 13:00:00")
     def test_filter_transactions_with_timespan_day_and_time_within_a_day(self):
         target: CategoryTarget = self.category_target
@@ -161,9 +160,8 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
         transactions = self._get_all_transactions(target)
         start = self._get_start_of_time_period(target)
         filtered = self._filter_transactions(start, transactions)
-        completeness = self._calculate_completeness(target, filtered)
         completeness_from_tag = get_completeness(target)
-        self.assertEqual(completeness, completeness_from_tag)
+        self.assertEqual(16589.94, completeness_from_tag)
 
     @freeze_time("2023-01-01 12:00:00")
     def test_get_completeness_for_account_target(self):
@@ -177,9 +175,7 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
         transactions = self._get_all_transactions(target)
         start = self._get_start_of_time_period(target)
         filtered = self._filter_transactions(start, transactions)
-        completeness = self._calculate_completeness(target, filtered)
         completeness_from_tag = get_completeness(target)
-        self.assertEqual(completeness, 0)
         self.assertEqual(completeness_from_tag, 0)
 
     @freeze_time("2023-01-01 12:00:00")
@@ -188,6 +184,5 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
         transactions = self._get_all_transactions(target)
         start = self._get_start_of_time_period(target)
         filtered = self._filter_transactions(start, transactions)
-        completeness = self._calculate_completeness(target, filtered)
         completeness_from_tag = get_completeness(target)
-        self.assertEqual(completeness, completeness_from_tag)
+        self.assertEqual(17288.81, completeness_from_tag)

@@ -10,6 +10,7 @@ class CreateCategoryViewTestCase(ViewTestCase):
     """Tests of the create category view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('create_category')
         self.form_input: dict[str, str] = {
             'name': 'Travel',

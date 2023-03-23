@@ -4,17 +4,19 @@ from financial_companion.models import RecurringTransaction, User
 from django.urls import reverse
 from decimal import Decimal
 from django.http import HttpResponse
+from typing import Any
 
 
 class EditRecurringTransactionViewTestCase(ViewTestCase):
     """Unit tests of the edit recurring transaction view"""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('edit_recurring_transaction', kwargs={"pk": 2})
         self.image_path: str = "financial_companion/tests/data/dragon.jpeg"
-        self.image_upload = self._get_image_upload_file(
+        self.image_upload: str = self._get_image_upload_file(
             self.image_path, "jpeg")
-        self.form_input = {
+        self.form_input: dict[str, Any] = {
             "title": "Test",
             "description": "This is a test transaction",
             "file": self.image_upload,

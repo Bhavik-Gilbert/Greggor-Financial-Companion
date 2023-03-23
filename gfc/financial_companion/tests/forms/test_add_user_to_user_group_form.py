@@ -3,13 +3,13 @@ from django.urls import reverse
 from typing import Any
 from .test_form_base import FormTestCase
 from financial_companion.forms import AddUserToUserGroupForm
-from financial_companion.models import User
 
 
 class AddUserToUserGroupFormTestCase(FormTestCase):
     """Unit tests of the add user to user group form"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('sign_up')
         self.form_input: dict[str, Any] = {
             "user_email": "john.doe@gfc.org"

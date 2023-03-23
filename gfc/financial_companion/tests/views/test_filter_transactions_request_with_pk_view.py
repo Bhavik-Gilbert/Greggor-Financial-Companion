@@ -2,12 +2,14 @@ from .test_view_base import ViewTestCase
 from financial_companion.models import User, PotAccount
 from django.urls import reverse
 from django.contrib.messages.storage.base import Message
+from django.http import HttpResponse
 
 
 class FilterTransactionsWithPKViewTestCase(ViewTestCase):
     """Unit tests of the filter transactions request with pk view"""
 
     def setUp(self):
+        super().setUp()
         self.user: User = User.objects.get(username="@johndoe")
         self.account: PotAccount = PotAccount.objects.filter(user=self.user)[0]
         self.url: str = reverse(

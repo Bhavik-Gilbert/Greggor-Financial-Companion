@@ -9,6 +9,7 @@ class AllGroupsViewCase(ViewTestCase):
     """Tests of the user view all groups view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('all_groups', kwargs={'search_name': "all"})
         self.redirect_url: str = reverse('all_groups_redirect')
         self.user: User = User.objects.get(username='@johndoe')

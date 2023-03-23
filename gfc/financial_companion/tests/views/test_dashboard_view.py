@@ -11,6 +11,7 @@ class DashboardViewTestCase(ViewTestCase):
     """Tests of the user dashboard view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('dashboard')
         self.user: User = User.objects.get(username='@johndoe')
         self.account: PotAccount = PotAccount.objects.get(name='ghi')

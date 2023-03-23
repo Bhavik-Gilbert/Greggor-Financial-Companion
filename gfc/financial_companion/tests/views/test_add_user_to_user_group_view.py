@@ -9,6 +9,7 @@ class AddUserToUserGroupViewTestCase(ViewTestCase):
     """Tests for add user to user group view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse(
             'add_user_to_user_group', kwargs={
                 "group_pk": 1})
@@ -81,7 +82,7 @@ class AddUserToUserGroupViewTestCase(ViewTestCase):
             self) -> None:
         self._login(self.user)
         self.assertFalse(self.user_group.members.contains(self.user_two))
-        self.form_input['user_email'] = "janedoe"
+        self.form_input['user_email']: str = "janedoe"
         before_count: int = self.user_group.members_count()
         response: HttpResponse = self.client.post(
             self.url, self.form_input, follow=True)

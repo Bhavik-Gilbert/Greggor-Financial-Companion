@@ -10,6 +10,7 @@ class ChangePasswordViewTestCase(ViewTestCase):
     """Unit tests of the change password view"""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('change_password')
         self.form_input: dict[str, str] = {
             "password": "Password123",
@@ -50,7 +51,7 @@ class ChangePasswordViewTestCase(ViewTestCase):
 
     def test_change_password_unsuccessful_invalid_input(self) -> None:
         self.assertTrue(self._login(self.user))
-        invalid_form_input: list[str, str] = {
+        invalid_form_input: dict[str, str] = {
             "password": "Password123",
             "new_password": "dd"
         }

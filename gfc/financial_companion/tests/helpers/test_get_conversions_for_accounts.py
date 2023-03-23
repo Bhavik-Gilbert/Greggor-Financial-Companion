@@ -35,6 +35,7 @@ class GetConversionsForAccountsHelperFunctionTestCase(HelperTestCase):
             assert_get_conversions_for_accounts_args)
 
     def setUp(self):
+        super().setUp()
         self.valid_bank_accounts: QuerySet[BankAccount] = BankAccount.objects.filter(
             interest_rate__gt=0)
         self.no_valid_bank_accounts: Union[QuerySet,

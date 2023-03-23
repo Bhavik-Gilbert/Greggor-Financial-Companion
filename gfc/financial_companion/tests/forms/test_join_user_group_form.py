@@ -8,6 +8,7 @@ class JoinUserGroupFormTestCase(FormTestCase):
     """Unit tests of the join user group form"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('join_user_group')
         self.form_input: dict[str, Any] = {
             "invite_code": "ABCDEFGH"

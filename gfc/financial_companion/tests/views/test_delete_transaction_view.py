@@ -8,6 +8,7 @@ class DeleteTransactionViewTestCase(ViewTestCase):
     """Unit tests of the delete transaction view"""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('delete_transaction', kwargs={"pk": 2})
         self.user: User = User.objects.get(username='@johndoe')
 

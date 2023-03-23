@@ -1,14 +1,16 @@
-
+from django.http import HttpResponse
 from .test_view_base import ViewTestCase
 from financial_companion.models import User
 from financial_companion.helpers import get_data_for_account_projection
 from django.urls import reverse
+from typing import Any
 
 
 class ViewSavingsAccountsViewTestCase(ViewTestCase):
-    """Tests of the Savings Accounts Projection view."""
+    """Tests of the savings accounts projection view."""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('view_savings_accounts')
         self.user: User = User.objects.get(username='@johndoe')
 
@@ -28,12 +30,12 @@ class ViewSavingsAccountsViewTestCase(ViewTestCase):
         self.assertTemplateUsed(self.response,
                                 'partials/dashboard/account_projection_graph.html'
                                 )
-        accountsProjections: dict[str,
+        account_projections: dict[str,
                                   Any] = get_data_for_account_projection(self.user)
-        self._assert_context_is_passed_in(accountsProjections)
+        self._assert_context_is_passed_in(account_projections)
 
-    def _assert_context_is_passed_in(self, accountsProjections):
-        for key in accountsProjections.keys():
+    def _assert_context_is_passed_in(self, account_projections):
+        for key in account_projections.keys():
             self.assertEqual(
-                self.response.context[key], accountsProjections[key]
+                self.response.context[key], account_projections[key]
             )

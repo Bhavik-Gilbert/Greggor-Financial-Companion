@@ -8,6 +8,7 @@ class IndividualRecurringTransactionViewTestCase(ViewTestCase):
     """Unit tests of the individual transaction view"""
 
     def setUp(self):
+        super().setUp()
         self.user: User = User.objects.get(username="@johndoe")
         self.transaction: RecurringTransaction = RecurringTransaction.objects.get(
             id=2)

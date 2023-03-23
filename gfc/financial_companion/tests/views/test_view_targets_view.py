@@ -2,12 +2,14 @@ from .test_view_base import ViewTestCase
 from financial_companion.forms import TargetFilterForm
 from financial_companion.models import User
 from django.urls import reverse
+from django.http import HttpResponse
 
 
 class ViewTargetsViewTestCase(ViewTestCase):
     """Unit tests of the view targets view"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('view_targets')
         self.form_input: dict[str, str] = {
             "time": "",

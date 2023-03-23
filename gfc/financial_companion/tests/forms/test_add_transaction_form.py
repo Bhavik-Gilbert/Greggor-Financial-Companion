@@ -10,6 +10,7 @@ class AddTransactionFormTestCase(FormTestCase):
     """Unit tests of the add transaction form"""
 
     def setUp(self):
+        super().setUp()
         self.user: User = User.objects.get(username='@johndoe')
         self.form_input: dict[str, Any] = {
             "title": "Test",

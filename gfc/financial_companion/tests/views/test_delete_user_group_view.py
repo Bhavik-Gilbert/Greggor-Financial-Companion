@@ -9,8 +9,9 @@ class DeleteUserGroupViewTestCase(ViewTestCase):
     """Tests of the delete user group view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('delete_user_group', kwargs={"pk": 1})
-        self.user = User.objects.get(username='@johndoe')
+        self.user: User = User.objects.get(username='@johndoe')
 
     def test_delete_user_group_url(self) -> None:
         self.assertEqual(self.url, '/delete_user_group/1')

@@ -12,6 +12,7 @@ class SendMonthlyNewsletterTaskTestCase(HelperTestCase):
     """Test file for the send monthly newsletter task function"""
 
     def setUp(self):
+        super().setUp()
         send_monthly_newsletter_email()
         self.user: User = User.objects.get(username='@johndoe')
         self.users: QuerySet[User] = get_user_model().objects.all()

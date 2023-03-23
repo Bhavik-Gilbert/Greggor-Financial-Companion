@@ -10,6 +10,7 @@ class QuizViewTestCase(ViewTestCase):
     """Unit tests of the quiz view"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('quiz')
         self.url_with_params: str = reverse(
             'quiz_with_params',

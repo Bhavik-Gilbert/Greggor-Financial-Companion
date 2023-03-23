@@ -12,9 +12,10 @@ from decimal import Decimal
 
 
 class SpendingSummaryViewTestCase(ViewTestCase):
-    """Test Case for user spending summary page."""
+    """Test case for user spending summary page."""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('spending_summary')
         self.test_model: Transaction = Transaction.objects.get(id=4)
         self.user: User = User.objects.get(id=1)
@@ -121,7 +122,7 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         currency: CurrencyType = CurrencyType.USD
         self.assertTrue(isinstance(time, Timespan))
         self.assertTrue(isinstance(currency, CurrencyType))
-        response = self.client.post(
+        response: HttpResponse = self.client.post(
             self.url, {"time_choice": time, "currency_choice": currency},
             follow=True
         )
@@ -145,7 +146,7 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         url_with_params: str = reverse('spending_summary', kwargs={
             "time": time, "currency": currency
         })
-        response = self.client.get(url_with_params, follow=True)
+        response: HttpResponse = self.client.get(url_with_params, follow=True)
         self.assertRedirects(
             response,
             self.url,
@@ -163,7 +164,7 @@ class SpendingSummaryViewTestCase(ViewTestCase):
         url_with_params: str = reverse('spending_summary', kwargs={
             "time": time, "currency": currency
         })
-        response = self.client.get(url_with_params, follow=True)
+        response: HttpResponse = self.client.get(url_with_params, follow=True)
         self.assertRedirects(
             response,
             self.url,

@@ -9,6 +9,7 @@ class CategoryFormTestCase(FormTestCase):
     """Unit tests of the category form."""
 
     def setUp(self):
+        super().setUp()
         self.test_model: User = User.objects.get(username='@johndoe')
         self.form_input: dict[str, Any] = {
             'name': 'Travel',
@@ -79,3 +80,4 @@ class CategoryFormTestCase(FormTestCase):
         after_count: int = Category.objects.count()
         self.assertEqual(current_category.name, 'Travel')
         self.assertEqual(current_category.description, 'Travel Expenses')
+        self.assertEqual(before_count, after_count)

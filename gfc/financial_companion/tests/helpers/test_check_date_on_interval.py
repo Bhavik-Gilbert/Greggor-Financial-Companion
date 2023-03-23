@@ -9,12 +9,14 @@ class CheckDateOnIntervalHelperFunctionTestCase(HelperTestCase):
 
     def _assert_interval_is_invalid(
             self, interval: Timespan, start_date: date, current_date: date):
+        """Assert date is not on interval"""
         check_interval: bool = check_date_on_interval(
             interval, start_date, current_date)
         self.assertFalse(check_interval)
 
     def _assert_interval_is_valid(
             self, interval: Timespan, start_date: date, current_date: date):
+        """Assert date is on interval"""
         check_interval: bool = check_date_on_interval(
             interval, start_date, current_date)
         self.assertTrue(check_interval)

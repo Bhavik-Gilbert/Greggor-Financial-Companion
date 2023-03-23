@@ -11,6 +11,9 @@ class FormTestCase(BaseTestCase):
     setUp() method of the subclass.
     """
 
+    def setUp(self):
+        super().setUp()
+
     def _assert_form_has_necessary_fields(
             self, form: forms.Form, *fields: Any):
         """Asserts the form has the necessary fields"""

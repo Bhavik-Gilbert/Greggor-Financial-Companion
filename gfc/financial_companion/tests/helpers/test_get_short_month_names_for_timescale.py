@@ -8,6 +8,7 @@ class GetShortMonthNamesForTimescaleHelperFunctionTestCase(HelperTestCase):
     """Test file for the test_get_short_month_names_for_timescale helpers function"""
 
     def setUp(self):
+        super().setUp()
         self.valid_bank_accounts: QuerySet[BankAccount] = BankAccount.objects.filter(
             interest_rate__gt=0)
         self.no_bank_accounts: QuerySet[BankAccount] = BankAccount.objects.filter(

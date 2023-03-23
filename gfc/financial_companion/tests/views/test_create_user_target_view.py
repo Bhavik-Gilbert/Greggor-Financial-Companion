@@ -9,6 +9,7 @@ class CreateUserTargetViewTestCase(ViewTestCase):
     """Tests of the create user target view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('create_user_target')
         self.test_user: User = User.objects.get(username='@johndoe')
         self.form_input: dict[str, Any] = {

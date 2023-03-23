@@ -10,6 +10,7 @@ class UserChangePasswordFormTestCase(FormTestCase):
     """Unit tests of the change password form"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('change_password')
         self.form_input: dict[str, Any] = {
             "password": "Password123",
