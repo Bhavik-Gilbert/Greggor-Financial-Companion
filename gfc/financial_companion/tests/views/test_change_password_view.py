@@ -50,7 +50,18 @@ class ChangePasswordViewTestCase(ViewTestCase):
         self.assertNotEqual(old_password, new_password)
         self.assertFalse(self._is_logged_in())
 
-    def test_change_password_unsuccessful_invalid_input(self) -> None:
+    def test_change_password_unsuccessful_invalid_user_password(self) -> None:
+        self.assertTrue(self._login(self.user))
+        self.form_input['password'] = "Password12"
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'pages/change_password.html')
+        form: UserChangePasswordForm = response.context['form']
+        self.assertTrue(isinstance(form, UserChangePasswordForm))
+        self.assertTrue(self._is_logged_in())
+
+    def test_change_password_unsuccessful_user_password(self) -> None:
         self.assertTrue(self._login(self.user))
         invalid_form_input: list[str, str] = {
             "password": "Password123",
