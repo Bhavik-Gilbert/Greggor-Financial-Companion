@@ -58,8 +58,8 @@ class ParseStatementPDF:
         """
 
         if len(transactions) > 1:
-            if not ((transactions[1]["balance"] - transactions[0]["balance"] > 0 and transactions[1]["transaction_type"] == TransactionType.INCOME) or (
-                    transactions[1]["balance"] - transactions[0]["balance"] < 0 and transactions[1]["transaction_type"] == TransactionType.EXPENSE)):
+            if ((transactions[1]["balance"] - transactions[0]["balance"] > 0 and transactions[1]["transaction_type"] == TransactionType.EXPENSE) or (
+                    transactions[1]["balance"] - transactions[0]["balance"] < 0 and transactions[1]["transaction_type"] == TransactionType.INCOME)):
                 for transaction in transactions:
                     if transaction["transaction_type"] == TransactionType.INCOME:
                         transaction["transaction_type"]: str = TransactionType.EXPENSE
