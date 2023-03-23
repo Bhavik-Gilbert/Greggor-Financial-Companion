@@ -29,7 +29,18 @@ The project is called `gfc` (Greggor Financial Companion).  It currently consist
 
 ## Deployed application
 This application is deployed using python anywhere
-### [Live Site](http://greggorfinancialcompanion.pythonanywhere.com/) - http://greggorfinancialcompanion.pythonanywhere.com/
+
+<br>
+
+Uses can access the website here:
+#### [Live Site](http://greggorfinancialcompanion.pythonanywhere.com/) - http://greggorfinancialcompanion.pythonanywhere.com/
+
+<br>
+
+Accounts with admin access can view the admin panel here:
+#### [Admin Panel](http://greggorfinancialcompanion.pythonanywhere.com/admin) - http://greggorfinancialcompanion.pythonanywhere.com/admin
+
+<br>
 
 ## Installation instructions
 To install the software and use it in your local development environment, you must first set up and activate a local development environment.  From the root of the project:
