@@ -15,7 +15,8 @@ import datetime
 class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
     """Test for the get_completeness template tag"""
 
-    def _get_all_transactions(self, target: AbstractTarget) -> list[Transaction]:
+    def _get_all_transactions(
+            self, target: AbstractTarget) -> list[Transaction]:
         """Get all transactions from a given target"""
         transactions: list[Transaction] = []
         if isinstance(target, CategoryTarget):
@@ -23,9 +24,11 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
         elif isinstance(target, AccountTarget):
             account: Account = target.account
             if target.target_type == TransactionType.INCOME:
-                transactions = account.get_account_transactions(FilterTransactionType.SENT)
+                transactions = account.get_account_transactions(
+                    FilterTransactionType.SENT)
             else:
-                transactions = account.get_account_transactions(FilterTransactionType.RECEIVED)
+                transactions = account.get_account_transactions(
+                    FilterTransactionType.RECEIVED)
         elif isinstance(target, UserTarget):
             transactions = target.user.get_user_transactions()
         return transactions
@@ -37,7 +40,8 @@ class GetCompletenessTemplateTagTestCase(TemplateTagTestCase):
         ) - datetime.timedelta(days=timespan_int)
         return start_of_timespan_period
 
-    def _filter_transactions(self, start: datetime.date, transactions: list[Transaction]) -> list[Transaction]:
+    def _filter_transactions(self, start: datetime.date,
+                             transactions: list[Transaction]) -> list[Transaction]:
         """Filter transactions after start date"""
         filtered_transactions: list[Transaction] = []
         for transaction in transactions:

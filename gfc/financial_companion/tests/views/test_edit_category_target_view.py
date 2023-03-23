@@ -14,7 +14,8 @@ class EditCategoryTargetViewTestCase(ViewTestCase):
         super().setUp()
         self.url: str = reverse('edit_category_target', kwargs={'pk': 1})
         self.test_user: User = User.objects.get(username='@johndoe')
-        self.test_category_target: CategoryTarget = CategoryTarget.objects.get(id=1)
+        self.test_category_target: CategoryTarget = CategoryTarget.objects.get(
+            id=1)
         self.form_input: dict[str, Any] = {
             'target_type': 'income',
             'timespan': 'month',

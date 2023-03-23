@@ -27,5 +27,6 @@ class CalculateSplitPercentagesFunctionTestCase(HelperTestCase):
         category_amounts: dict[str, float] = Transaction.get_category_splits(
             Transaction.get_transactions_from_time_period(
                 Timespan.WEEK, self.user), self.user)
-        percentages: dict[str, float] = functions.calculate_split_percentages(category_amounts)
+        percentages: dict[str, float] = functions.calculate_split_percentages(
+            category_amounts)
         self.assertFalse(bool(percentages))

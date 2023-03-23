@@ -5,6 +5,7 @@ from financial_companion.forms import UserSignUpForm
 from financial_companion.models import User
 from django.http import HttpResponse
 
+
 class SignUpViewTestCase(ViewTestCase):
     """Unit tests of the sign up view"""
 

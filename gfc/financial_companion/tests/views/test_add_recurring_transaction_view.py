@@ -62,7 +62,8 @@ class AddRecurringTransactionViewTestCase(ViewTestCase):
     def test_succesfully_add_recurring_transaction(self) -> None:
         self._login(self.user)
         before_count: int = RecurringTransaction.objects.count()
-        response: HttpResponse = self.client.post(self.url, self.form_input, follow=True)
+        response: HttpResponse = self.client.post(
+            self.url, self.form_input, follow=True)
         after_count: int = RecurringTransaction.objects.count()
         self.assertEqual(after_count, before_count + 1)
         response_url: str = reverse('view_recurring_transactions')
@@ -73,7 +74,8 @@ class AddRecurringTransactionViewTestCase(ViewTestCase):
             target_status_code=200)
         self.assertTemplateUsed(
             response, 'pages/view_recurring_transactions.html')
-        transaction: RecurringTransaction = RecurringTransaction.objects.get(title='Test')
+        transaction: RecurringTransaction = RecurringTransaction.objects.get(
+            title='Test')
         self.assertEqual(transaction.description, 'This is a test transaction')
         self.assertEqual(transaction.category.id, 1)
         self.assertTrue("transactions/" in transaction.file.name)

@@ -7,7 +7,7 @@ class GetProjectionTimescaleOptionsHelperFunctionTestCase(HelperTestCase):
 
     def test_return_valid_timescale_options(self):
         projection_timescale_options: dict[int,
-                                         str] = get_projection_timescale_options()
+                                           str] = get_projection_timescale_options()
         self.assertGreater(len([*projection_timescale_options]), 0)
         for months, display_string in projection_timescale_options.items():
             self.assertIsInstance(months, int)
