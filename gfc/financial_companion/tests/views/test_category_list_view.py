@@ -1,7 +1,6 @@
 from django.urls import reverse
 from .test_view_base import ViewTestCase
-from financial_companion.models import User, Category
-from financial_companion.forms import UserLogInForm
+from financial_companion.models import User
 from django.contrib.messages.storage.base import Message
 from django.http import HttpResponse
 
@@ -10,6 +9,7 @@ class CategoryListViewCase(ViewTestCase):
     """Tests of the user view categories view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse(
             'categories_list', kwargs={
                 'search_name': "all"})
@@ -89,7 +89,7 @@ class CategoryListViewCase(ViewTestCase):
         self.url = reverse(
             'categories_list', kwargs={
                 'search_name': "Shopping"})
-        response = self.client.post(self.url)
+        response: HttpResponse = self.client.post(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/category_list.html')
         messages_list: list[Message] = list(response.context['messages'])

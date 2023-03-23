@@ -12,6 +12,7 @@ class EditMonetaryAccountViewTestCase(ViewTestCase):
     """Unit tests of the edit monetary account view"""
 
     def setUp(self) -> None:
+        super().setUp()
         self.pot_account: PotAccount = PotAccount.objects.get(id=4)
         self.bank_account: BankAccount = BankAccount.objects.get(id=5)
         self.regular_account: Account = Account.objects.get(id=1)

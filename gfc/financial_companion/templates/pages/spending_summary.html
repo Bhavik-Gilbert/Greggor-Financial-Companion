@@ -9,45 +9,63 @@
         <div>
             <form class="row" method="post">
                 {% csrf_token %}
-                <div class="col-6 col-md-3">
-                    {% include 'partials/form.html' with form=form %}
+                <div class="col-12">
+                  <div class="col-12 col-md-3">
+                      {% include 'partials/form.html' with form=form %}
+                  </div>
                 </div>
-                <input type="submit" value="Apply" class="btn btn-primary col-6 col-md-2 my-4">
+                <div class="col-12">
+                  <input type="submit" value="Apply" class="btn btn-primary col-12 col-md-2">
+                </div>
               </form>
         </div>
-        <strong>Currently Selected: Last {{time}}</strong>
+        <strong>Currently Selected: Last {{time}} | {{currency}}</strong>
         <div class="col-12 col-md-4">
-            {%include 'partials/target_bar.html' with targets=targets %}
+          {% if targets %}
+            {% include 'partials/target_bar.html' with targets=targets %}
+            &nbsp
+            {% include 'partials/pagination.html'  with page_obj=targets %}
+          {% else %}
+            {% include 'partials/dashboard/no_content.html' with content_type_plural='targets' %}
+          {% endif %}
         </div>
         <div class="col-12 col-md-8">
-            {% if dataset != None %}
-                <div class="card text-bg-primary">
-                    <div class="card-body">
-                        <h5 class="card-title">Your Spending:</h5>
-                        {% include 'partials/dashboard/graph.html' with chart_name='categories' %}
-                        <script>
-                            var dataset = {{ dataset|safe }}.map(num => parseFloat(num));
-                            var keyset = {{ keyset|safe }};
-                            setChart(dataset, keyset, '% of Spending', "", 'pie');
-                        </script>
-                    </div>
+          {% if dataset %}
+            <div class="card text-bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Your Spending:</h5>
+                    {% include 'partials/dashboard/graph.html' with chart_name='categories' %}
+                    <script>
+                        var dataset = {{ dataset|safe }}.map(num => parseFloat(num));
+                        var keyset = {{ keyset|safe }};
+                        setChart(dataset, keyset, '% of Spending', "", 'pie');
+                    </script>
                 </div>
-                &nbsp
-                <div class="card text-bg-primary">
-                    <div class="card-body">
-                        <h5 class="card-title">Income vs Outcome:</h5>
-                        {% include 'partials/dashboard/graph.html' with chart_name='in_vs_out' %}
-                        <script>
-                            var money_in = {{ money_in|safe }};
-                            var money_out = {{money_out|safe}};
+            </div>
+          {% endif %}
 
-                            setChart([money_in, money_out], ['Money In', 'Money Out'], 'Amount', "Income vs Outcome", 'doughnut');
-                        </script>
-                    </div>
+          {% if dataset and money_in != 0 or money_out != 0 %}
+            &nbsp
+          {% endif %}
+
+          {% if money_in != 0 or money_out != 0 %}
+            <div class="card text-bg-primary">
+                <div class="card-body">
+                    <h5 class="card-title">Income vs Outcome ({{currency}}):</h5>
+                    {% include 'partials/dashboard/graph.html' with chart_name='in_vs_out' %}
+                    <script>
+                        var money_in = {{ money_in|safe }};
+                        var money_out = {{money_out|safe}};
+
+                        setChart([money_in, money_out], ['Money In', 'Money Out'], 'Amount', "Income vs Outcome", 'doughnut');
+                    </script>
                 </div>
-            {% else %}
-                {% include "partials/dashboard/no_content.html" with content_type_plural="transaction for this time span." %}
-            {% endif %}
+            </div>
+          {% endif %}
+
+          {% if not dataset and money_in == 0 and money_out == 0 %}
+              {% include "partials/dashboard/no_content.html" with content_type_plural="transaction for this time span" %}
+          {% endif %}
         </div>
     </div>
 </body>

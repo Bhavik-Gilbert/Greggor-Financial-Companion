@@ -8,6 +8,7 @@ class LogInFormTestCase(FormTestCase):
     """Unit tests of the log in form."""
 
     def setUp(self):
+        super().setUp()
         self.form_input: dict[str, Any] = {
             'username': '@janedoe', 'password': 'Password123'}
 

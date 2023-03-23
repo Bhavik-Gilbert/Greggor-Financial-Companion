@@ -1,15 +1,14 @@
-from django import forms
 from django.urls import reverse
 from typing import Any
 from .test_form_base import FormTestCase
 from financial_companion.forms import JoinUserGroupForm
-from financial_companion.models import User
 
 
 class JoinUserGroupFormTestCase(FormTestCase):
     """Unit tests of the join user group form"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('join_user_group')
         self.form_input: dict[str, Any] = {
             "invite_code": "ABCDEFGH"

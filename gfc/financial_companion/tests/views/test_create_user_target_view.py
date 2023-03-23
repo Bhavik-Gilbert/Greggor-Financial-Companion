@@ -1,7 +1,5 @@
-from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 from .test_view_base import ViewTestCase
-from financial_companion.forms import TargetForm
 from financial_companion.models import User, UserTarget
 from typing import Any
 from django.http import HttpResponse
@@ -11,6 +9,7 @@ class CreateUserTargetViewTestCase(ViewTestCase):
     """Tests of the create user target view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('create_user_target')
         self.test_user: User = User.objects.get(username='@johndoe')
         self.form_input: dict[str, Any] = {

@@ -8,6 +8,7 @@
 
 <!-- Content -->
 {% block content %}
+<body onload="loadInitialGraph({{bank_account_infos}},{{timescales_strings|safe}},{{conversion_to_main_currency_JSON}},'{{main_currency}}')">
   <h1>Savings Accounts</h1>
   <div>
     <div class="container mt-3"></div>
@@ -17,9 +18,9 @@
           <label>Account:</label>
           <select class = "form-select form-select" name = "accountDropdown" id = "accountDropdown" autocomplete="off">
             {% for id, name in bank_accounts.items %}
-              <option class="mx-3" value={{id|list}}>{{name}}</option>
+              <option class="mx-3" value={{id|to_list}}>{{name}}</option>
             {% endfor %}
-            <option class="mx-3" value="{{bank_accounts|getKeyList}}">-- SHOW ALL --</option>
+            <option class="mx-3" value="{{bank_accounts|get_key_list}}">-- SHOW ALL --</option>
           </select>
         </div>
         <div class = "col-auto align-bottom">
@@ -87,4 +88,5 @@
     {% endif %}
     </div>
   </div>
+</body>
 {% endblock %}

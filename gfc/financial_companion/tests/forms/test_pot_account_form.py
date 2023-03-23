@@ -11,6 +11,7 @@ class PotAccountFormTestCase(FormTestCase):
     """Unit tests of the pot account form."""
 
     def setUp(self):
+        super().setUp()
         self.form_input: dict[str, Any] = {
             "name": "Test Pot",
             "description": "This is a test pot",

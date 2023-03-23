@@ -1,7 +1,6 @@
 from .test_helper_base import HelperTestCase
 from financial_companion.helpers import get_short_month_names_for_timescale, get_projection_timescale_options
 from financial_companion.models import BankAccount
-from typing import Union
 from django.db.models import QuerySet
 
 
@@ -9,10 +8,11 @@ class GetShortMonthNamesForTimescaleHelperFunctionTestCase(HelperTestCase):
     """Test file for the test_get_short_month_names_for_timescale helpers function"""
 
     def setUp(self):
-        self.valid_bank_accounts: Union[QuerySet, list[BankAccount]] = BankAccount.objects.filter(
+        super().setUp()
+        self.valid_bank_accounts: QuerySet[BankAccount] = BankAccount.objects.filter(
             interest_rate__gt=0)
-        self.no_bank_accounts: Union[QuerySet, list[BankAccount]
-                                     ] = BankAccount.objects.filter(id__lt=0)
+        self.no_bank_accounts: QuerySet[BankAccount] = BankAccount.objects.filter(
+            id__lt=0)
         self.max_timescale_in_months: int = max(
             get_projection_timescale_options().keys())
 

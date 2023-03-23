@@ -1,5 +1,5 @@
 from .test_view_base import ViewTestCase
-from financial_companion.models import User, RecurringTransaction, Transaction
+from financial_companion.models import User, RecurringTransaction
 from django.http import HttpResponse
 from django.urls import reverse
 
@@ -8,6 +8,7 @@ class IndividualRecurringTransactionViewTestCase(ViewTestCase):
     """Unit tests of the individual transaction view"""
 
     def setUp(self):
+        super().setUp()
         self.user: User = User.objects.get(username="@johndoe")
         self.transaction: RecurringTransaction = RecurringTransaction.objects.get(
             id=2)

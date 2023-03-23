@@ -31,10 +31,13 @@ SECRET_KEY = os.environ.get(
     "django-insecure-)2rxjsa3d&2d83qxnyjyca(d(kl=tt6g*h&*et!-u$fa-w94_j'")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG: bool = True  # TODO: set false before submission
+# TODO: Make false
+DEBUG: bool = True
 
-ALLOWED_HOSTS: list[str] = ["127.0.0.1", "localhost"]
-
+ALLOWED_HOSTS: list[str] = [
+    "greggorfinancialcompanion.pythonanywhere.com",
+    "127.0.0.1",
+    "localhost"]
 
 # Application definition
 
@@ -50,6 +53,8 @@ INSTALLED_APPS: list[str] = [
     'django_q',
     'django_cleanup.apps.CleanupConfig',
 ]
+
+X_FRAME_OPTIONS: str = 'SAMEORIGIN'
 
 MIDDLEWARE: list[str] = [
     'django.middleware.security.SecurityMiddleware',
@@ -81,7 +86,6 @@ TEMPLATES: list[dict[str, Any]] = [
 ]
 
 WSGI_APPLICATION: str = 'gfc.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -143,13 +147,11 @@ USE_I18N: bool = True
 
 USE_TZ: bool = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL: str = '/static/'
 STATICFILES_DIRS: Path = [os.path.join(BASE_DIR, "static")]
-
 
 # Media files
 MEDIA_URL: str = '/media/'
@@ -159,7 +161,6 @@ MEDIA_ROOT: Path = os.path.join(BASE_DIR, 'media')
 FILE_UPLOAD_HANDLERS: list[str] = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler']
 
-
 # User model for authentication and login purposes
 AUTH_USER_MODEL: str = 'financial_companion.User'
 
@@ -168,8 +169,7 @@ AUTH_USER_MODEL: str = 'financial_companion.User'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# URL to redirect to and from on protected pages
-# TODO: Change pages when made
+# URL to redirect to and from on protected page
 LOGIN_URL: str = "log_in"
 LOGGED_IN_URL: str = "dashboard"
 
@@ -203,4 +203,4 @@ Q_CLUSTER: dict[str, Any] = {
 }
 
 # Site url
-SITE_URL_SPENDING_PAGE: str = "http://localhost:8000/spending_summary"
+SITE_URL_SPENDING_PAGE: str = "https://greggorfinancialcompanion.pythonanywhere.com/spending_summary"

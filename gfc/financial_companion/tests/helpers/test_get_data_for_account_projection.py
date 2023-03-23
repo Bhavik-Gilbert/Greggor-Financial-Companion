@@ -7,6 +7,7 @@ class GetDataForAccountProjectionHelperFunctionTestCase(HelperTestCase):
     """Test file for the get_data_for_account_projection helpers function"""
 
     def setUp(self):
+        super().setUp()
         self.valid_user_with_savings_accounts: int = 1
         self.valid_user_without_savings_accounts: int = 2
         self.invalid_user: int = -1
@@ -33,6 +34,7 @@ class GetDataForAccountProjectionHelperFunctionTestCase(HelperTestCase):
         self._assert_bank_accounts_info_is_(False)
 
     def _assert_context_is_valid(self):
+        """Assert required data is in context"""
         context: dict[str, Any] = self.context
 
         self.assertTrue('bank_accounts' in context)
@@ -62,12 +64,14 @@ class GetDataForAccountProjectionHelperFunctionTestCase(HelperTestCase):
         self.assertIsInstance(conversion_to_main_currency, dict)
         self.assertIsInstance(main_currency, str)
 
-    def _assert_bank_accounts_is_(self, validity):
-        bank_accounts: dict[int, str] = self.context['bank_accounts']
+    def _assert_bank_accounts_is_(self, validity: bool):
+        """Assert bank accounts in context is valid"""
+        bank_accounts: dict[str, Any] = self.context['bank_accounts']
         self.assertTrue((len(bank_accounts) != 0) == validity)
         self.assertIsInstance(bank_accounts, dict)
 
-    def _assert_bank_accounts_info_is_(self, validity):
+    def _assert_bank_accounts_info_is_(self, validity: int):
+        """Assert bank account info in context is valid"""
         bank_account_infos: str = self.context['bank_account_infos']
         self.assertTrue((len(bank_account_infos) != 2) == validity)
         self.assertIsInstance(bank_account_infos, str)

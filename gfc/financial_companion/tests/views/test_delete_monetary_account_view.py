@@ -1,8 +1,5 @@
-from django.contrib.auth.hashers import check_password
 from django.urls import reverse
-
 from .test_view_base import ViewTestCase
-from financial_companion.forms import CategoryForm
 from financial_companion.models import User, Account
 from django.http import HttpResponse
 from django.contrib.messages.storage.base import Message
@@ -12,6 +9,7 @@ class DeleteMonetaryAccountViewTestCase(ViewTestCase):
     """Tests of the delete monetary account view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('delete_monetary_account', kwargs={"pk": 5})
         self.user: User = User.objects.get(username='@johndoe')
 

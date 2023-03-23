@@ -1,6 +1,5 @@
 from django import forms
 from financial_companion.models import RecurringTransaction
-from typing import Any
 
 
 class RecurringTransactionForm(forms.ModelForm):
@@ -10,7 +9,7 @@ class RecurringTransactionForm(forms.ModelForm):
         model: RecurringTransaction = RecurringTransaction
         fields: list[str] = [
             'title',
-            'image',
+            'file',
             'category',
             'amount',
             'currency',
@@ -25,8 +24,9 @@ class RecurringTransactionForm(forms.ModelForm):
         """Generate messages for any errors"""
         super.clean()
 
-        if self.end_date < self.start_date:
-            self.add_error("End date must be after start date.")
+        if self.end_date is not None and self.start_date is not None:
+            if self.end_date < self.start_date:
+                self.add_error("End date must be after start date.")
 
     def save(self, instance: RecurringTransaction = None) -> RecurringTransaction:
         """Record the inputted transaction"""

@@ -8,6 +8,7 @@ class DeleteProfileViewTestCase(ViewTestCase):
     """Unit tests of the delete profile view"""
 
     def setUp(self) -> None:
+        super().setUp()
         self.user: User = User.objects.get(username='@johndoe')
         self.url: str = reverse('delete_profile')
 

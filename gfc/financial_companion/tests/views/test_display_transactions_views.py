@@ -1,6 +1,5 @@
 from .test_view_base import ViewTestCase
-from financial_companion.forms import UserLogInForm
-from financial_companion.models import User, Transaction
+from financial_companion.models import User
 from django.urls import reverse
 from django.http import HttpResponse
 from django.contrib.messages.storage.base import Message
@@ -10,6 +9,7 @@ class DisplayTransactionsViewTestCase(ViewTestCase):
     """Unit tests of the display transactions view"""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse(
             'view_transactions', kwargs={
                 'filter_type': "all"})

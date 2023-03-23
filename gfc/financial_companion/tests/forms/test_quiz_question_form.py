@@ -1,14 +1,15 @@
 from django import forms
 from .test_form_base import FormTestCase
 from financial_companion.forms import QuizQuestionForm
-from financial_companion.models import User, QuizQuestion, QuizSet, QuizScore
+from financial_companion.models import User, QuizSet, QuizScore
 from typing import Any
 
 
 class QuizQuestionFormTestCase(FormTestCase):
-    """Unit tests of quiz_question form."""
+    """Unit tests of quiz question form."""
 
     def setUp(self):
+        super().setUp()
         self.user: User = User.objects.get(username='@johndoe')
         self.quiz_set: QuizSet = QuizSet.objects.get(id=1)
         self.form_input: dict[str, Any] = {"quiz_submit": ""}

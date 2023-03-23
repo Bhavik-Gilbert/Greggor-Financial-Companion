@@ -1,10 +1,7 @@
-
-from django import forms
 from .test_form_base import FormTestCase
 from financial_companion.forms import CategoryForm
 from financial_companion.models.user_model import User
 from financial_companion.models.category_model import Category
-from financial_companion.models.target_model import CategoryTarget
 from typing import Any
 
 
@@ -12,6 +9,7 @@ class CategoryFormTestCase(FormTestCase):
     """Unit tests of the category form."""
 
     def setUp(self):
+        super().setUp()
         self.test_model: User = User.objects.get(username='@johndoe')
         self.form_input: dict[str, Any] = {
             'name': 'Travel',
@@ -82,3 +80,4 @@ class CategoryFormTestCase(FormTestCase):
         after_count: int = Category.objects.count()
         self.assertEqual(current_category.name, 'Travel')
         self.assertEqual(current_category.description, 'Travel Expenses')
+        self.assertEqual(before_count, after_count)

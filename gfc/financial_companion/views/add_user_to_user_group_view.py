@@ -1,17 +1,15 @@
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import redirect
 from django.contrib import messages
 from financial_companion.forms import AddUserToUserGroupForm
 from django.contrib.auth.decorators import login_required
 from ..models import UserGroup, User
-from typing import Any
-from django.db.models import QuerySet
 
 
 @login_required
 def add_user_to_user_group_view(
         request: HttpRequest, group_pk: int) -> HttpResponse:
+    """View to add a user to a user group"""
     if request.method == 'POST':
         form: AddUserToUserGroupForm = AddUserToUserGroupForm(request.POST)
         try:

@@ -12,14 +12,15 @@ class AddTransactionViewTestCase(ViewTestCase):
     """Unit tests of the add transaction view"""
 
     def setUp(self) -> None:
-        self.url = reverse('add_transaction')
+        super().setUp()
+        self.url: str = reverse('add_transaction')
         self.image_path: str = "financial_companion/tests/data/dragon.jpeg"
         self.image_upload: SimpleUploadedFile = self._get_image_upload_file(
             self.image_path, "jpeg")
         self.form_input: dict[str, Any] = {
             "title": "Test",
             "description": "This is a test transaction",
-            "image": self.image_upload,
+            "file": self.image_upload,
             "category": 1,
             "amount": 152.95,
             "currency": "USD",
@@ -31,7 +32,7 @@ class AddTransactionViewTestCase(ViewTestCase):
     def test_add_transaction_url(self) -> None:
         self.assertEqual(self.url, '/add_transaction/')
 
-    def test_get_add_transaction(self):
+    def test_get_add_transaction(self) -> None:
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
@@ -40,7 +41,7 @@ class AddTransactionViewTestCase(ViewTestCase):
         self.assertTrue(isinstance(form, AddTransactionForm))
         self.assertFalse(form.is_bound)
 
-    def test_unsuccesfully_add_transaction(self) -> Any:
+    def test_unsuccesfully_add_transaction(self) -> None:
         self._login(self.user)
         self.form_input['title']: str = ''
         before_count: int = Transaction.objects.count()
@@ -71,9 +72,9 @@ class AddTransactionViewTestCase(ViewTestCase):
         self.assertTemplateUsed(response, 'pages/display_transactions.html')
         transaction: Transaction = Transaction.objects.get(title='Test')
         self.assertEqual(transaction.description, 'This is a test transaction')
-        self.assertTrue("transactions/" in transaction.image.name)
+        self.assertTrue("transactions/" in transaction.file.name)
         self.assertTrue(self.image_path.split(
-            "/")[-1].split(".")[-1] in transaction.image.name)
+            "/")[-1].split(".")[-1] in transaction.file.name)
         self.assertEqual(transaction.category.id, 1)
         self.assertEqual(transaction.amount, Decimal("152.95"))
         self.assertEqual(transaction.currency, 'USD')

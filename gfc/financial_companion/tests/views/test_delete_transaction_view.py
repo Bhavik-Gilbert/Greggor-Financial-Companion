@@ -1,5 +1,4 @@
 from .test_view_base import ViewTestCase
-from financial_companion.forms import AddTransactionForm
 from financial_companion.models import Transaction, User
 from django.urls import reverse
 from django.http import HttpResponse
@@ -9,6 +8,7 @@ class DeleteTransactionViewTestCase(ViewTestCase):
     """Unit tests of the delete transaction view"""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('delete_transaction', kwargs={"pk": 2})
         self.user: User = User.objects.get(username='@johndoe')
 

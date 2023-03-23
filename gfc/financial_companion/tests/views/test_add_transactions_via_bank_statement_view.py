@@ -15,7 +15,8 @@ class AddTransactionsViaBankStatementViewTestCase(ViewTestCase):
     """Unit tests of the add transactions via bank statement view"""
 
     def setUp(self) -> None:
-        self.url = reverse('add_transactions_via_bank_statement')
+        super().setUp()
+        self.url: str = reverse('add_transactions_via_bank_statement')
         self.user: User = User.objects.get(username="@johndoe")
         self.account: PotAccount = PotAccount.objects.filter(
             user=self.user).first()

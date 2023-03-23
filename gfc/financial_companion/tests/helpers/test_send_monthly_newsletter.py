@@ -4,7 +4,6 @@ from financial_companion.models import User
 from django.core import mail
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from typing import Union
 from django.db.models import QuerySet
 from django.core.mail.message import EmailMultiAlternatives
 
@@ -13,10 +12,10 @@ class SendMonthlyNewsletterTaskTestCase(HelperTestCase):
     """Test file for the send monthly newsletter task function"""
 
     def setUp(self):
+        super().setUp()
         send_monthly_newsletter_email()
         self.user: User = User.objects.get(username='@johndoe')
-        self.users: Union[QuerySet, list[User]
-                          ] = get_user_model().objects.all()
+        self.users: QuerySet[User] = get_user_model().objects.all()
 
     def test_check_correct_number_of_emails_are_sent(self):
         self.assertEqual(len(mail.outbox), len(self.users))

@@ -1,5 +1,5 @@
 from .test_view_base import ViewTestCase
-from financial_companion.models import User, Account, PotAccount, BankAccount, AccountTarget
+from financial_companion.models import User, Account, PotAccount, AccountTarget
 from django.http import HttpResponse
 from django.urls import reverse
 from django.db.models import Q
@@ -10,6 +10,7 @@ class IndividualAccountViewTestCase(ViewTestCase):
     """Unit tests of the individual account view"""
 
     def setUp(self):
+        super().setUp()
         self.user: User = User.objects.get(username="@johndoe")
         self.account: PotAccount = PotAccount.objects.get_subclass(
             user=self.user, id=3)

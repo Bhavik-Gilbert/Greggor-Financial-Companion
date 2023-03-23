@@ -1,7 +1,6 @@
 from .test_helper_base import HelperTestCase
 from financial_companion.helpers import get_projections_balances, get_projection_timescale_options
 from financial_companion.models import BankAccount
-from typing import Union
 from django.db.models import QuerySet
 from typing import Any
 
@@ -10,8 +9,9 @@ class GetProjectionBalancesHelperFunctionTestCase(HelperTestCase):
     """Test file for the get_projections_balances helpers function"""
 
     def setUp(self):
-        self.bank_accounts: Union[QuerySet, list[BankAccount]
-                                  ] = BankAccount.objects.filter(interest_rate__gt=0)
+        super().setUp()
+        self.bank_accounts: QuerySet[BankAccount] = BankAccount.objects.filter(
+            interest_rate__gt=0)
         self.timescales: int = max(get_projection_timescale_options().keys())
 
     def test_valid_accounts_no_timescale(self):
@@ -46,14 +46,17 @@ class GetProjectionBalancesHelperFunctionTestCase(HelperTestCase):
         self._assert_projection_empty()
 
     def _get_no_accounts(self):
-        self.bank_accounts: Union[QuerySet, list[BankAccount]
-                                  ] = BankAccount.objects.filter(id__lt=0)
+        """Set balances to where id is like 0"""
+        self.bank_accounts: QuerySet[BankAccount] = BankAccount.objects.filter(
+            id__lt=0)
 
     def _get_and_test_balances(self):
+        """Set balances to get projections balances"""
         self.balances: dict[str, list[float]] = get_projections_balances(
             self.bank_accounts, self.timescales)
 
     def _assert_projection_valid(self):
+        """Assert there is the necessary data to display"""
         if self.timescales < 0:
             self.timescales: int = 0
 
@@ -67,4 +70,5 @@ class GetProjectionBalancesHelperFunctionTestCase(HelperTestCase):
         self.assertEqual(len(projection['balances']), self.timescales)
 
     def _assert_projection_empty(self):
+        """Assert there is no data to display"""
         self.assertEqual(len([*self.balances]), 0)

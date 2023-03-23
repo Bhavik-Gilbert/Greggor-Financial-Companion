@@ -1,6 +1,5 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from ..models import User
 from django.contrib import messages
@@ -8,12 +7,13 @@ from django.contrib import messages
 
 @login_required
 def profile_view(request: HttpRequest) -> HttpResponse:
-    user: User = request.user
+    """View to display user profile"""
     return render(request, 'pages/profile.html')
 
 
 @login_required
 def delete_profile_view(request: HttpRequest) -> HttpResponse:
+    """View to delete user"""
     user: User = request.user
     user.delete()
     messages.add_message(

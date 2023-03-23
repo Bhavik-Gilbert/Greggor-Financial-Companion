@@ -1,8 +1,7 @@
 from .test_view_base import ViewTestCase
-from financial_companion.models import User, Account, PotAccount, Transaction, AbstractTransaction
+from financial_companion.models import User, PotAccount, Transaction
 from django.contrib.messages import get_messages
 from django.urls import reverse
-from typing import Union, Any
 from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.contrib.messages.storage.base import Message
@@ -12,11 +11,12 @@ class DashboardViewTestCase(ViewTestCase):
     """Tests of the user dashboard view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('dashboard')
         self.user: User = User.objects.get(username='@johndoe')
         self.account: PotAccount = PotAccount.objects.get(name='ghi')
         user_transactions: list = []
-        user_transactions: Union[QuerySet, list[Transaction]] = [
+        user_transactions: QuerySet[Transaction] = [
             *
             user_transactions,
             *

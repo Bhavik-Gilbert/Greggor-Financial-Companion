@@ -5,7 +5,7 @@
         "fields": {
             "title": "New Phone",
             "description": "Bought a new phone from Apple",
-            "image": "transactions/2.jpg",
+            "file": "transactions/2.jpg",
             "category" : 1,
             "amount" : 1499.99,
             "currency" : "USD",
@@ -20,7 +20,7 @@
         "fields": {
             "title": "New Car",
             "description": "Bought a new car",
-            "image": "transactions/123.jpg",
+            "file": "transactions/123.jpg",
             "category" : 1,
             "amount" : 14999.99,
             "currency" : "USD",
@@ -35,7 +35,7 @@
         "fields": {
             "title": "New Bike",
             "description": "Bought a new bike",
-            "image": "transactions/13.jpg",
+            "file": "transactions/13.jpg",
             "category" : 1,
             "amount" : 499.99,
             "currency" : "USD",
@@ -51,7 +51,7 @@
         "fields": {
             "title": "New Shoes",
             "description": "Bought new shoes from my friend",
-            "image": "transactions/2.jpg",
+            "file": "transactions/2.jpg",
             "category" : 1,
             "amount" : 199.99,
             "currency" : "USD",
@@ -67,7 +67,7 @@
         "fields": {
             "title": "New glasses",
             "description": "Bought new glasses",
-            "image": "transactions/5.jpg",
+            "file": "transactions/5.jpg",
             "category" : 1,
             "amount" : 299.99,
             "currency" : "USD",
@@ -83,7 +83,7 @@
         "fields": {
             "title": "old laptop bag",
             "description": "sold my old laptop bag",
-            "image": "transactions/11.jpg",
+            "file": "transactions/11.jpg",
             "category" : 1,
             "amount" : 89.99,
             "currency" : "USD",
@@ -99,7 +99,7 @@
         "fields": {
             "title": "old phone",
             "description": "sold old phone",
-            "image": "transactions/23.jpg",
+            "file": "transactions/23.jpg",
             "category" : 1,
             "amount" : 499.99,
             "currency" : "USD",
@@ -115,7 +115,7 @@
         "fields": {
             "title": "test for nearly completed targets",
             "description": "sold old phone",
-            "image": "transactions/23.jpg",
+            "file": "transactions/23.jpg",
             "category" : 1,
             "amount" : 75.00,
             "currency" : "USD",
@@ -131,7 +131,7 @@
         "fields": {
             "title": "old phone",
             "description": "test for nearly completed targets",
-            "image": "transactions/23.jpg",
+            "file": "transactions/23.jpg",
             "category" : 1,
             "amount" : 99.00,
             "currency" : "USD",
@@ -147,7 +147,7 @@
         "fields": {
             "title": "test for nearly completed targets",
             "description": "sold old phone",
-            "image": "transactions/23.jpg",
+            "file": "transactions/23.jpg",
             "category" : 1,
             "amount" : 75.00,
             "currency" : "USD",
@@ -163,7 +163,7 @@
         "fields": {
             "title": "old phone",
             "description": "test for nearly completed targets",
-            "image": "transactions/23.jpg",
+            "file": "transactions/23.jpg",
             "category" : 1,
             "amount" : 99.00,
             "currency" : "USD",
@@ -178,7 +178,7 @@
         "fields": {
             "title": "Manchester City Season Tickets",
             "description": "Bought reasonably priced season tickets",
-            "image": "transactions/2.jpg",
+            "file": "transactions/2.jpg",
             "category" : 4,
             "amount" : 499.99,
             "currency" : "GBP",

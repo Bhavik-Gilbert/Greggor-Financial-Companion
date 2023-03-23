@@ -1,11 +1,7 @@
 from .test_model_base import ModelTestCase
-from django.db.models.base import ModelBase
 from financial_companion.models.user_model import User, change_filename
 from freezegun import freeze_time
 from ...models import AbstractTarget
-import datetime
-
-from financial_companion.templatetags import get_completeness
 
 
 class UserModelTestCase(ModelTestCase):
@@ -310,17 +306,17 @@ class UserModelTestCase(ModelTestCase):
     @freeze_time("2023-01-01 13:00:00")
     def test_get_leaderboard_score_within_day(self):
         score: float = self.test_model.get_leaderboard_score()
-        self.assertTrue(score == 0.0)
+        self.assertTrue(score == 2.5)
 
     @freeze_time("2023-01-03 13:00:00")
     def test_get_leaderboard_score_after_day(self):
         score: float = self.test_model.get_leaderboard_score()
-        self.assertTrue(score == 1.5)
+        self.assertTrue(score == -0.5)
 
     @freeze_time("2023-01-06 13:00:00")
-    def test_get_number_of_completed_targets_within_week(self):
+    def test_get_leaderboard_score_within_week(self):
         score: float = self.test_model.get_leaderboard_score()
-        self.assertTrue(score == 1.5)
+        self.assertTrue(score == -0.5)
 
     @freeze_time("2023-01-11 13:00:00")
     def test_get_leaderboard_score_after_week(self):
@@ -335,12 +331,12 @@ class UserModelTestCase(ModelTestCase):
     @freeze_time("2023-02-03 13:00:00")
     def test_get_leaderboard_score_after_month(self):
         score: float = self.test_model.get_leaderboard_score()
-        self.assertTrue(score == -0.5)
+        self.assertTrue(score == 1.5)
 
     @freeze_time("2023-07-09 13:00:00")
     def test_get_leaderboard_score_within_year(self):
         score: float = self.test_model.get_leaderboard_score()
-        self.assertTrue(score == -0.5)
+        self.assertTrue(score == 1.5)
 
     @freeze_time("2024-08-26 13:00:00")
     def test_get_leaderboard_score_after_year(self):

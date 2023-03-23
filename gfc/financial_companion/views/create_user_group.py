@@ -10,7 +10,7 @@ from django.contrib import messages
 def create_user_group_view(request: HttpRequest) -> HttpResponse:
     """View to allow users to create a user group"""
     if request.method == 'POST':
-        form = UserGroupForm(request.POST, request.FILES)
+        form: UserGroupForm = UserGroupForm(request.POST, request.FILES)
         if form.is_valid():
             user = request.user
             user_group: UserGroup = form.save(user)
@@ -21,7 +21,7 @@ def create_user_group_view(request: HttpRequest) -> HttpResponse:
                 "You have successfully made a group")
             return redirect('all_groups_redirect')
     else:
-        form = UserGroupForm()
+        form: UserGroupForm = UserGroupForm()
     return render(request, "pages/create_user_group.html",
                   {'form': form, 'form_toggle': True})
 
@@ -63,7 +63,7 @@ def edit_user_group_view(request: HttpRequest, pk: int) -> HttpResponse:
         return redirect("all_groups_redirect")
 
     if request.method == "POST":
-        form = UserGroupForm(
+        form: UserGroupForm = UserGroupForm(
             request.POST,
             request.FILES,
             instance=current_user_group)

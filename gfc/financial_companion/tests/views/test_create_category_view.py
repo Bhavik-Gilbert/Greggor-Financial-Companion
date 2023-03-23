@@ -1,11 +1,8 @@
-from django.contrib.auth.hashers import check_password
 from django.urls import reverse
-
 from .test_view_base import ViewTestCase
 from financial_companion.forms import CategoryForm
 from financial_companion.models import User, Category
 from django.http import HttpResponse
-from typing import Any
 from django.contrib.messages.storage.base import Message
 
 
@@ -13,6 +10,7 @@ class CreateCategoryViewTestCase(ViewTestCase):
     """Tests of the create category view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('create_category')
         self.form_input: dict[str, str] = {
             'name': 'Travel',

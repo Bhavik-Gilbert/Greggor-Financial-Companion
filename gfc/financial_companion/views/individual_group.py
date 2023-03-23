@@ -1,12 +1,9 @@
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse
-from django.urls import reverse
-from django.conf import settings
 from ..models import User, UserGroup
 from ..forms import AddUserToUserGroupForm
 from ..helpers import paginate, get_sorted_members_based_on_completed_targets
-from typing import Union
 from django.db.models import QuerySet
 from django.core.paginator import Page
 
@@ -21,11 +18,11 @@ def individual_group_view(request: HttpRequest, pk: int,
         return redirect("dashboard")
     else:
         user: User = request.user
-        members: Union[QuerySet, list[User]] = group.members.all()
+        members: QuerySet[User] = group.members.all()
         members_list: list[User] = list(members)
         sorted_members_list: list[User] = sorted(
             members_list, key=lambda x: x.id)
-        is_owner = (group.owner_email == user.email)
+        is_owner: bool = (group.owner_email == user.email)
         owners_email: str = group.owner_email
         count: int = group.members_count()
         form: AddUserToUserGroupForm = AddUserToUserGroupForm()

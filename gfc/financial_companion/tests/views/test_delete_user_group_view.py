@@ -1,6 +1,4 @@
-from django.contrib.auth.hashers import check_password
 from django.urls import reverse
-
 from .test_view_base import ViewTestCase
 from financial_companion.models import User, UserGroup
 from django.http import HttpResponse
@@ -11,8 +9,9 @@ class DeleteUserGroupViewTestCase(ViewTestCase):
     """Tests of the delete user group view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('delete_user_group', kwargs={"pk": 1})
-        self.user = User.objects.get(username='@johndoe')
+        self.user: User = User.objects.get(username='@johndoe')
 
     def test_delete_user_group_url(self) -> None:
         self.assertEqual(self.url, '/delete_user_group/1')

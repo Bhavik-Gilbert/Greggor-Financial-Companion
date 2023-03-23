@@ -1,12 +1,11 @@
+from decimal import Decimal
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 import calendar
-from django.core.mail import EmailMessage
-from django.utils import timezone
 from datetime import datetime, date
 from django.conf import settings
-from datetime import date, timedelta
+from datetime import date
 from financial_companion.helpers.enums import Timespan
 import financial_companion.models as fcmodels
 from financial_companion.helpers import (
@@ -14,13 +13,12 @@ from financial_companion.helpers import (
     check_date_on_interval,
     check_within_date_range
 )
-from typing import Union, Any
 from django.db.models import QuerySet
 
 
 def send_monthly_newsletter_email() -> None:
     """sends emails to all users containing the monthly newsletter"""
-    users: Union[QuerySet, list[fcmodels.User]] = fcmodels.User.objects.all()
+    users: QuerySet[fcmodels.User] = fcmodels.User.objects.all()
     for user in users:
         transactions: list[fcmodels.Transaction] = fcmodels.Transaction.get_transactions_from_time_period(
             Timespan.MONTH, user)
@@ -50,7 +48,7 @@ def add_interest_to_bank_accounts() -> None:
     """Adds interest rates to bank accounts"""
     no_of_days_in_prev_month: int = get_number_of_days_in_prev_month()
     for account in fcmodels.BankAccount.objects.all():
-        account.balance = account.balance * \
+        account.balance: Decimal = account.balance * \
             ((1 + (account.interest_rate / 365))**no_of_days_in_prev_month)
         account.save()
 
@@ -66,7 +64,7 @@ def create_transaction_via_recurring_transactions() -> None:
         if check_current_in_date_range and check_current_on_interval:
             transaction: fcmodels.Transaction = fcmodels.Transaction.objects.create(
                 title=recurring_transaction.title,
-                image=recurring_transaction.image,
+                file=recurring_transaction.file,
                 description=recurring_transaction.description,
                 category=recurring_transaction.category,
                 amount=recurring_transaction.amount,

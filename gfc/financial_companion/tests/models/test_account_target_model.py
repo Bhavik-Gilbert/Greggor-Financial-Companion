@@ -2,7 +2,6 @@ from .test_model_base import ModelTestCase
 from django.db.backends.sqlite3.base import IntegrityError
 from ...models import AccountTarget
 from freezegun import freeze_time
-import datetime
 
 
 class AccountTargetModelTestCase(ModelTestCase):
@@ -53,11 +52,11 @@ class AccountTargetModelTestCase(ModelTestCase):
         self.assertEqual(self.test_model.is_complete(), False)
 
     def test_get_model_name_function_when_plural_is_false(self) -> None:
-        self.assertEquals(self.test_model.getModelName(), "account")
+        self.assertEquals(self.test_model.get_model_name(), "account")
 
     def test_get_model_name_function_when_plural_is_true(self) -> None:
         self.assertEquals(
-            self.test_model.getModelName(
+            self.test_model.get_model_name(
                 plural=True), "accounts")
 
     def test_get_str_function(self) -> None:

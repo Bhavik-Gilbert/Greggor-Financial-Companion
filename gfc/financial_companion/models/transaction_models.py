@@ -2,7 +2,7 @@ from django.db.models import (
     Model,
     CharField,
     DecimalField,
-    ImageField,
+    FileField,
     DateTimeField,
     DateField,
     ForeignKey,
@@ -15,7 +15,7 @@ from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from .accounts_model import Account, PotAccount
 from .category_model import Category
 from .user_model import User
-from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, TransactionType, FilterTransactionType
+from ..helpers import CurrencyType, Timespan, random_filename, timespan_map, convert_currency
 import datetime
 import os
 from django.db.models.signals import pre_delete
@@ -26,6 +26,7 @@ from financial_companion.models import User
 
 
 def change_filename(instance, filename: str) -> str:
+    """Returns filepath with random filename for file to be stored"""
     return os.path.join('transactions', random_filename(filename))
 
 
@@ -42,11 +43,8 @@ class AbstractTransaction(Model):
         max_length=200
     )
 
-    image: ImageField = ImageField(
+    file: FileField = FileField(
         blank=True,
-        height_field=None,
-        width_field=None,
-        max_length=100,
         upload_to=change_filename
     )
 
@@ -76,7 +74,7 @@ class AbstractTransaction(Model):
         on_delete=CASCADE,
         related_name="receiver%(app_label)s_%(class)s_related")
 
-    def clean(self):
+    def clean(self) -> None:
         super().clean()
         try:
             self.sender_account and self.receiver_account
@@ -95,7 +93,7 @@ class AbstractTransaction(Model):
 
 
 class Transaction(AbstractTransaction):
-    """ Concrete model for a generic transaction """
+    """Concrete model for a generic transaction"""
 
     time_of_transaction: DateTimeField = DateTimeField(
         blank=False,
@@ -103,11 +101,32 @@ class Transaction(AbstractTransaction):
     )
 
     @staticmethod
+    def calculate_total_amount_from_transactions(
+            transactions: list, goal_currency_type: CurrencyType = CurrencyType.GBP) -> float:
+        """
+        Calculates the total amount for a given list of transactions
+        """
+        transactions_amounts: dict[CurrencyType, float] = {}
+        total_amount: float = 0
+
+        for transaction in transactions:
+            if transaction.currency in transactions_amounts.keys():
+                transactions_amounts[transaction.currency] += transaction.amount
+            else:
+                transactions_amounts[transaction.currency] = transaction.amount
+
+        for current_currency_type, amount in transactions_amounts.items():
+            total_amount += float(convert_currency(amount,
+                                  current_currency_type, goal_currency_type))
+
+        return total_amount
+
+    @staticmethod
     def get_transactions_from_time_period(
             time_choice: Timespan, user: User, filter_type: str = str("all")) -> list:
+        """Gets transactions for a given user within a time period specified"""
         user_transactions: list[Transaction] = user.get_user_transactions(
             filter_type=filter_type)
-
         timespan_int: int = timespan_map[time_choice]
         start_of_timespan_period: datetime = datetime.datetime.today(
         ) - datetime.timedelta(days=timespan_int)
@@ -122,27 +141,35 @@ class Transaction(AbstractTransaction):
     @staticmethod
     def get_category_splits(
             transactions: list, user: User) -> dict[str, float]:
+        """Splits list by category spending amounts for a given list of transactions"""
+        transactions_per_category: dict[str, list[Transaction]] = dict()
         spent_per_category: dict[str, float] = dict()
-        for x in transactions:
-            if ((x.category is None) or (x.category.user.id != user.id)):
-                if (spent_per_category.get("Other") is None):
-                    spent_per_category["Other"] = x.amount
+        for transaction in transactions:
+            if ((transaction.category is None) or (
+                    transaction.category.user.id != user.id)):
+                if ("Other" in transactions_per_category.keys()):
+                    transactions_per_category["Other"].append(transaction)
                 else:
-                    spent_per_category.update(
-                        {"Other": spent_per_category.get("Other") + x.amount})
+                    transactions_per_category["Other"] = [transaction]
             else:
-                if ((len(spent_per_category) == 0) or (
-                        spent_per_category.get(x.category.name) is None)):
-                    spent_per_category[x.category.name] = x.amount
+                if (transaction.category.name in transactions_per_category.keys()):
+                    transactions_per_category[transaction.category.name].append(
+                        transaction)
                 else:
-                    spent_per_category.update(
-                        {x.category.name: spent_per_category.get(x.category.name) + x.amount})
+                    transactions_per_category[transaction.category.name] = [
+                        transaction]
+
+        for category, category_transactions in transactions_per_category.items():
+            spent_per_category[category] = Transaction.calculate_total_amount_from_transactions(
+                category_transactions)
+
         return spent_per_category
 
     class Meta:
         ordering: list[str] = ['-time_of_transaction']
 
-    def _update_account_balances(self):
+    def _update_account_balances(self) -> None:
+        """Updates account balances based on object and database data"""
         check_object_exists: list[Transaction] = Transaction.objects.filter(
             id=self.id).count() > 0
         send_amount: float = -self.amount
@@ -154,11 +181,12 @@ class Transaction(AbstractTransaction):
 
             if (database_transaction.sender_account.id == self.sender_account.id and
                 database_transaction.receiver_account.id == self.receiver_account.id and
-                    database_transaction.amount == self.amount):
+                database_transaction.amount == self.amount and
+                    database_transaction.currency == self.currency):
                 return
 
             if database_transaction.sender_account.id == self.sender_account.id:
-                send_amount: float = database_transaction.amount - \
+                send_amount: float = Decimal(convert_currency(database_transaction.amount, database_transaction.currency, self.currency)) - \
                     Decimal(self.amount)
             else:
                 database_sender_account: Account = Account.objects.get_subclass(
@@ -169,7 +197,7 @@ class Transaction(AbstractTransaction):
 
             if database_transaction.receiver_account.id == self.receiver_account.id:
                 receive_amount: Decimal = Decimal(
-                    self.amount) - database_transaction.amount
+                    self.amount) - Decimal(convert_currency(database_transaction.amount, database_transaction.currency, self.currency))
             else:
                 database_receiver_account: Account = Account.objects.get_subclass(
                     id=database_transaction.receiver_account.id)
@@ -187,7 +215,7 @@ class Transaction(AbstractTransaction):
         if isinstance(receiver_account, PotAccount):
             receiver_account.update_balance(receive_amount, self.currency)
 
-    def save(self, *args, **kwargs):
+    def save(self, *args, **kwargs) -> None:
         self._update_account_balances()
         super().save(*args, **kwargs)
 
@@ -195,12 +223,16 @@ class Transaction(AbstractTransaction):
 @receiver(pre_delete, sender=Transaction,
           dispatch_uid='delete_transaction_signal')
 def delete_transaction(sender, instance: Transaction, **kwargs):
+    """
+    Signal that removes transaction amount from account balances
+    Occurs on transaction object deletion
+    """
     instance.amount = 0
     instance._update_account_balances()
 
 
 class RecurringTransaction(AbstractTransaction):
-
+    """RecurringTransaction model used for transactions that occur multiple times"""
     start_date: DateField = DateField(
         blank=False,
     )
@@ -219,7 +251,7 @@ class RecurringTransaction(AbstractTransaction):
     class Meta:
         ordering: list[str] = ['-interval']
 
-    def add_transaction(self, transaction: Transaction):
+    def add_transaction(self, transaction: Transaction) -> None:
         """Add transaction to transaction in recurring transaction"""
         self.transactions.add(transaction)
         self.save()

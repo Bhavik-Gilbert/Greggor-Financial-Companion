@@ -1,5 +1,4 @@
 from django import forms
-from django.contrib.auth.hashers import check_password
 from django.urls import reverse
 from typing import Any
 from .test_form_base import FormTestCase
@@ -11,6 +10,7 @@ class UserChangePasswordFormTestCase(FormTestCase):
     """Unit tests of the change password form"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('change_password')
         self.form_input: dict[str, Any] = {
             "password": "Password123",

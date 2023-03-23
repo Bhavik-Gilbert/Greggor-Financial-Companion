@@ -22,7 +22,7 @@ from .view_groups import all_groups_view
 from .create_target_view import create_category_target_view, edit_category_target_view, create_account_target_view, create_user_target_view, edit_account_target_view, edit_user_target_view, delete_user_target_view, delete_account_target_view, delete_category_target_view, view_targets
 from .join_user_group import join_user_group_view
 from .view_savings_accounts import view_savings_accounts
-from .financial_analysis_view import spending_summary
+from .spending_summary_view import spending_summary
 from .view_recurring_transactions import view_users_recurring_transactions
 from .individual_recurring_transaction import individual_recurring_transaction_view
 from .add_recurring_transaction import add_recurring_transaction_view, edit_recurring_transaction_view, delete_recurring_transaction_view

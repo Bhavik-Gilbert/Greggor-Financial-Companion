@@ -1,10 +1,8 @@
 from .test_model_base import ModelTestCase
-from django.db.models.base import ModelBase
-from django.utils import timezone
 from decimal import Decimal
 from financial_companion.models.transaction_models import change_filename
 from ...helpers import CurrencyType
-from ...models import AbstractTransaction, Transaction, User, Account, Category
+from ...models import Transaction, User, Account, Category
 from financial_companion.helpers.enums import Timespan
 from ...models import Transaction
 from financial_companion.helpers.enums import Timespan, CurrencyType
@@ -18,6 +16,7 @@ class TransactionModelTestCase(ModelTestCase):
 
     def _assert_balance_changes_on_transaction_created(
             self, account: PotAccount):
+        """Assert balance changes in database when transaction is made"""
         balance_before_transaction: Decimal = account.balance
         self.transaction_model.save()
         account.refresh_from_db()
@@ -39,6 +38,7 @@ class TransactionModelTestCase(ModelTestCase):
 
     def _assert_balance_changes_on_transaction_update(
             self, account: PotAccount, new_transaction_amount: Decimal):
+        """Assert balance changes in database when transaction is updated"""
         self.transaction_model.save()
         account.refresh_from_db()
         balance_before_transaction: Decimal = account.balance
@@ -88,6 +88,7 @@ class TransactionModelTestCase(ModelTestCase):
         self.transactions: Transaction = Transaction.objects.all()
 
     def _set_categories_none(self, transactions):
+        """Set category in all transactions to None"""
         for transaction in transactions:
             transaction.category: Category = None
             transaction.save()
@@ -139,7 +140,7 @@ class TransactionModelTestCase(ModelTestCase):
         self.receiver_account.refresh_from_db()
         sender_account_balance_before_delete: Decimal = self.transaction_model.sender_account.balance
         receiver_account_balance_before_delete: Decimal = self.transaction_model.receiver_account.balance
-        transaction_ammount: Decimal = self.transaction_model.amount
+        transaction_amount: Decimal = self.transaction_model.amount
         self.transaction_model.delete()
         self.sender_account.refresh_from_db()
         self.receiver_account.refresh_from_db()
@@ -148,16 +149,25 @@ class TransactionModelTestCase(ModelTestCase):
         self.assertEqual(
             sender_account_balance_after_delete,
             sender_account_balance_before_delete +
-            transaction_ammount)
+            transaction_amount)
         self.assertEqual(
             receiver_account_balance_after_delete,
             receiver_account_balance_before_delete -
-            transaction_ammount)
+            transaction_amount)
 
     @freeze_time("2023-01-07 22:00:00")
     def test_valid_within_time_period(self):
         self.assertEqual(
             len(Transaction.get_transactions_from_time_period(Timespan.WEEK, self.user)), 8)
+
+    @freeze_time("2023-01-07 22:00:00")
+    def test_valid_amount_within_time_period(self):
+        transactions: list[Transaction] = Transaction.get_transactions_from_time_period(
+            Timespan.WEEK, self.user)
+        self.assertEqual(
+            round(
+                Transaction.calculate_total_amount_from_transactions(transactions), 2), round(
+                14196.84, 2))
 
     @freeze_time("2023-01-07 22:00:00")
     def test_valid_split_categories(self):

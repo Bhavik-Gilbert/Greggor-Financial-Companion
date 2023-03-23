@@ -38,26 +38,29 @@ class AbstractTarget(Model):
         abstract: bool = True
 
     def is_complete(self) -> bool:
+        """Returns boolean if the target is complete or not"""
         if get_completeness(self) >= 100:
             return True
         else:
             return False
 
     def is_nearly_complete(self) -> bool:
+        """Returns boolean if the target if between 70% and 100% completeness"""
         completeness: float = get_completeness(self)
         if completeness >= 75 and completeness < 100:
             return True
         else:
             return False
 
-    def getModelName(self, plural: bool = False) -> str:
+    def get_model_name(self, plural: bool = False) -> str:
+        """Get model name with pluralisation if necessary"""
         if plural:
             return "targets"
         else:
             return "target"
 
     def __str__(self) -> str:
-        return self.getModelName()
+        return self.get_model_name()
 
 
 class CategoryTarget(AbstractTarget):
@@ -66,9 +69,10 @@ class CategoryTarget(AbstractTarget):
     category: ForeignKey = ForeignKey(Category, on_delete=CASCADE)
 
     class Meta:
-        unique_together: list = ["target_type", "timespan", "category"]
+        unique_together: list[str] = ["target_type", "timespan", "category"]
 
-    def getModelName(self, plural: bool = False) -> str:
+    def get_model_name(self, plural: bool = False) -> str:
+        """Get model name with pluralisation if necessary"""
         if plural:
             return "categories"
         else:
@@ -84,9 +88,10 @@ class UserTarget(AbstractTarget):
     user: ForeignKey = ForeignKey(User, on_delete=CASCADE)
 
     class Meta:
-        unique_together: list = ["target_type", "timespan", "user"]
+        unique_together: list[str] = ["target_type", "timespan", "user"]
 
-    def getModelName(self, plural: bool = False) -> str:
+    def get_model_name(self, plural: bool = False) -> str:
+        """Get model name with pluralisation if necessary"""
         if plural:
             return "users"
         else:
@@ -102,9 +107,10 @@ class AccountTarget(AbstractTarget):
     account: ForeignKey = ForeignKey(PotAccount, on_delete=CASCADE)
 
     class Meta:
-        unique_together: list = ["target_type", "timespan", "account"]
+        unique_together: list[str] = ["target_type", "timespan", "account"]
 
-    def getModelName(self, plural: bool = False):
+    def get_model_name(self, plural: bool = False) -> str:
+        """Get model name with pluralisation if necessary"""
         if plural:
             return "accounts"
         else:

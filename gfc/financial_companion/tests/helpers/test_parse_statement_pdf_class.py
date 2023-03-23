@@ -7,13 +7,14 @@ import numpy as np
 from datetime import datetime
 from .test_helper_base import HelperTestCase
 from financial_companion.helpers import ParseStatementPDF, TransactionType
-from financial_companion.models import User, PotAccount, Account
+from financial_companion.models import User, PotAccount
 
 
 class ParseStatementPDFClassTestCase(HelperTestCase):
     """Test file for the parse statement pdf helpers class"""
 
     def setUp(self):
+        super().setUp()
         self.bank_statement_parser: ParseStatementPDF = ParseStatementPDF()
         self.user: User = User.objects.get(username="@johndoe")
         self.account: PotAccount = PotAccount.objects.filter(
@@ -60,7 +61,7 @@ class ParseStatementPDFClassTestCase(HelperTestCase):
             "description": self.bank_statement_parser.description
         }
 
-    def _fill_parser_object(self, fill_data: bool = True):
+    def _fill_parser_object(self, fill_data: bool = True) -> None:
         """
         Fills all object attributes
         If fill_data is false, object data attributes will remain as they are
@@ -70,7 +71,7 @@ class ParseStatementPDFClassTestCase(HelperTestCase):
         if fill_data:
             self._fill_parser_object_data()
 
-    def _fill_parser_object_data(self):
+    def _fill_parser_object_data(self) -> None:
         """
         Fills all object data attributes
         """

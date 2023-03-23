@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 from ..helpers import AccountType
 from ..forms import MonetaryAccountForm
-from ..models import PotAccount, User, Account, BankAccount
+from ..models import User, Account, BankAccount
 from django.contrib import messages
 from django import forms
 
@@ -15,7 +15,7 @@ def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
 
     user: User = request.user
     account_type: AccountType = AccountType.REGULAR
-    form: forms.ModelForm = MonetaryAccountForm(
+    form: MonetaryAccountForm = MonetaryAccountForm(
         form_type=account_type, user=user)
 
     if request.method == "POST":
@@ -27,7 +27,7 @@ def add_monetary_account_view(request: HttpRequest) -> HttpResponse:
         elif "submit_type" in request.POST:
             # get form from request and check form
             account_type: str = request.POST["submit_type"]
-            form: forms.ModelForm = MonetaryAccountForm(
+            form: MonetaryAccountForm = MonetaryAccountForm(
                 request.POST, form_type=account_type, user=user)
             if form.is_valid():
                 form.save()
@@ -85,7 +85,7 @@ def edit_monetary_account_view(request: HttpRequest, pk: int) -> HttpResponse:
                 "individual_account", pk=pk, filter_type="all")
 
     else:
-        form: forms.ModelForm = MonetaryAccountForm(
+        form: MonetaryAccountForm = MonetaryAccountForm(
             form_type=account_type, user=user, instance=this_account)
     return render(request, "pages/monetary_accounts_form.html", {
         "form_toggle": False,

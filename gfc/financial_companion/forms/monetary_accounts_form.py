@@ -7,7 +7,7 @@ from typing import Any
 
 def MonetaryAccountForm(*args, **kwargs) -> forms.ModelForm:
     """Form to create monetary account"""
-    form_type: int = kwargs.get("form_type")
+    form_type: AccountType = kwargs.get("form_type")
     kwargs.pop("form_type", None)
     if form_type == AccountType.BANK:
         return BankAccountForm(*args, **kwargs)
@@ -21,7 +21,7 @@ class RegularAccountForm(forms.ModelForm):
     """form to create accounts"""
 
     def __init__(self, *args, **kwargs) -> None:
-        self.user: int = kwargs.get("user")
+        self.user: User = kwargs.get("user")
         kwargs.pop("user", None)
         super(RegularAccountForm, self).__init__(*args, **kwargs)
 
@@ -31,6 +31,7 @@ class RegularAccountForm(forms.ModelForm):
         widgets: dict[str, Any] = {"description": forms.Textarea()}
 
     def save(self, instance: Account = None) -> Account:
+        """Create a new monetary account."""
         super().save(commit=False)
 
         if instance is None:
@@ -55,7 +56,7 @@ class PotAccountForm(forms.ModelForm):
     """Form to create pot account"""
 
     def __init__(self, *args, **kwargs) -> None:
-        self.user: int = kwargs.get("user")
+        self.user: User = kwargs.get("user")
         kwargs.pop("user", None)
         super(PotAccountForm, self).__init__(*args, **kwargs)
 
@@ -65,6 +66,7 @@ class PotAccountForm(forms.ModelForm):
         widgets: dict[str, Any] = {"description": forms.Textarea()}
 
     def save(self, instance: PotAccount = None) -> PotAccount:
+        """Create a new pot account."""
         super().save(commit=False)
 
         if instance is None:
@@ -93,7 +95,7 @@ class BankAccountForm(forms.ModelForm):
     """Form to create bank account"""
 
     def __init__(self, *args, **kwargs) -> None:
-        self.user: int = kwargs.get("user")
+        self.user: User = kwargs.get("user")
         kwargs.pop("user", None)
         super(BankAccountForm, self).__init__(*args, **kwargs)
 
@@ -112,6 +114,7 @@ class BankAccountForm(forms.ModelForm):
         widgets: dict[str, Any] = {"description": forms.Textarea()}
 
     def save(self, instance: BankAccount = None) -> BankAccount:
+        """Create a new bank amount form."""
         super().save(commit=False)
 
         if instance is None:

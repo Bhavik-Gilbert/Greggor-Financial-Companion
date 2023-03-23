@@ -8,9 +8,10 @@ class IndividualGroupViewTestCase(ViewTestCase):
     """Unit tests of the individual group view"""
 
     def setUp(self):
-        self.owner = User.objects.get(username='@johndoe')
-        self.member = User.objects.get(username='@janedoe')
-        self.group = UserGroup.objects.get(id=3)
+        super().setUp()
+        self.owner: User = User.objects.get(username='@johndoe')
+        self.member: User = User.objects.get(username='@janedoe')
+        self.group: UserGroup = UserGroup.objects.get(id=3)
         self.url: str = reverse(
             "individual_group", kwargs={
                 "pk": self.group.id, "leaderboard": "False"})
@@ -32,7 +33,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
         response: HttpResponse = self.client.get(self.redirect_url)
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "pages/individual_group.html")
-        group: Group = response.context["group"]
+        group: UserGroup = response.context["group"]
         self.assertTrue(isinstance(group, UserGroup))
         self.assertContains(response, self.group.name)
         self.assertContains(response, self.group.invite_code)

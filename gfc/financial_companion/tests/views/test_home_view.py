@@ -9,8 +9,9 @@ class HomeViewTestCase(ViewTestCase):
     """Unit tests of the home view"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('home')
-        self.user = User.objects.get(username='@johndoe')
+        self.user: User = User.objects.get(username='@johndoe')
 
     def test_valid_home_url(self):
         self.assertEqual(self.url, '/')

@@ -1,5 +1,3 @@
-from django import forms
-from django.urls import reverse
 from django.db import IntegrityError
 from .test_form_base import FormTestCase
 from financial_companion.forms import TargetForm
@@ -12,6 +10,7 @@ class CreateTargetFormTestCase(FormTestCase):
     """Unit tests of the create target form"""
 
     def setUp(self):
+        super().setUp()
         self.test_user: User = User.objects.get(username='@johndoe')
         self.test_category: Category = Category.objects.get(id=1)
         self.form_input: dict[str, Any] = {
@@ -138,14 +137,15 @@ class CreateTargetFormTestCase(FormTestCase):
         after_count: int = CategoryTarget.objects.count()
         self.assertEqual(current_category_target.timespan, 'month')
         self.assertEqual(current_category_target.target_type, 'income')
+        self.assertEqual(before_count, after_count)
 
     def test_form_thorws_error_when_updating_invalid_data(self):
         category_target: CategoryTarget = CategoryTarget.objects.get(id=1)
-        self.other_category_target: CategoryTarget = CategoryTarget.objects.get(
+        other_category_target: CategoryTarget = CategoryTarget.objects.get(
             id=2)
         self.form_input: dict[str, Any] = {
-            'target_type': self.other_category_target.target_type,
-            'timespan': self.other_category_target.timespan,
+            'target_type': other_category_target.target_type,
+            'timespan': other_category_target.timespan,
             'amount': 200,
             'currency': 'USD'
         }
@@ -158,11 +158,11 @@ class CreateTargetFormTestCase(FormTestCase):
             self.assertFalse(form.save())
 
     def test_target_must_be_unique_for_a_category(self):
-        self.test_category_target: CategoryTarget = CategoryTarget.objects.get(
+        test_category_target: CategoryTarget = CategoryTarget.objects.get(
             id=1)
         self.form_input: dict[str, Any] = {
-            'target_type': self.test_category_target.target_type,
-            'timespan': self.test_category_target.timespan,
+            'target_type': test_category_target.target_type,
+            'timespan': test_category_target.timespan,
             'amount': 200,
             'currency': 'USD'
         }

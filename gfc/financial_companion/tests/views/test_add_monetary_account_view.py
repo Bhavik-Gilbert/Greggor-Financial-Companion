@@ -1,7 +1,6 @@
 from django.http import HttpResponse
 from django.urls import reverse
 from typing import Any
-
 from .test_view_base import ViewTestCase
 from financial_companion.forms import PotAccountForm, BankAccountForm, RegularAccountForm
 from financial_companion.models import User, PotAccount, BankAccount, Account
@@ -13,8 +12,9 @@ class AddMonetaryAccountViewTestCase(ViewTestCase):
     """Unit tests of the add monetary account view"""
 
     def setUp(self) -> None:
+        super().setUp()
         self.user: User = User.objects.get(username="@johndoe")
-        self.url: str = reverse(f"add_monetary_account")
+        self.url: str = reverse("add_monetary_account")
 
     def test_valid_page_url(self) -> None:
         self.assertEqual(self.url, "/add_monetary_account/")

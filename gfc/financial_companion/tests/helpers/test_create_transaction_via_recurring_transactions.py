@@ -9,6 +9,7 @@ class CreateTransactionViaRecurringTransactionsTaskTestCase(HelperTestCase):
     """Test file for the create transaction via recurring transactions task"""
 
     def _assert_transaction_count_changes(self, difference=0):
+        """Assert that the number of transactions change"""
         before_transaction_count: int = Transaction.objects.all().count()
         create_transaction_via_recurring_transactions()
         after_transaction_count: int = Transaction.objects.all().count()

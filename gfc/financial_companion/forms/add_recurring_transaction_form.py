@@ -1,8 +1,6 @@
+from datetime import date
 from django import forms
 from financial_companion.models import PotAccount, RecurringTransaction, User, Category, Account
-from datetime import datetime
-from django.utils.timezone import make_aware
-from typing import Any
 from django.forms.widgets import DateInput
 from django.db.models import QuerySet
 
@@ -18,12 +16,13 @@ class AddRecurringTransactionForm(forms.ModelForm):
             user=user.id)
         self.fields['receiver_account'].queryset: QuerySet[Account] = Account.objects.filter(
             user=user.id)
-        self.fields['category'].label_from_instance: Any = self.label_from_instance
-        self.fields['sender_account'].label_from_instance: Any = self.label_from_instance
-        self.fields['receiver_account'].label_from_instance: Any = self.label_from_instance
+        self.fields['category'].label_from_instance: str = self.label_from_instance
+        self.fields['sender_account'].label_from_instance: str = self.label_from_instance
+        self.fields['receiver_account'].label_from_instance: str = self.label_from_instance
         self.user: User = user
 
     def label_from_instance(self, obj) -> str:
+        """Return objects name"""
         return obj.name
 
     class Meta:
@@ -31,7 +30,7 @@ class AddRecurringTransactionForm(forms.ModelForm):
         fields: list[str] = [
             'title',
             'description',
-            'image',
+            'file',
             'category',
             'amount',
             'currency',
@@ -52,7 +51,7 @@ class AddRecurringTransactionForm(forms.ModelForm):
             recurring_transaction: RecurringTransaction = RecurringTransaction.objects.create(
                 title=self.cleaned_data.get('title'),
                 description=self.cleaned_data.get('description'),
-                image=self.cleaned_data.get('image'),
+                file=self.cleaned_data.get('file'),
                 category=self.cleaned_data.get('category'),
                 amount=self.cleaned_data.get('amount'),
                 currency=self.cleaned_data.get('currency'),
@@ -70,11 +69,12 @@ class AddRecurringTransactionForm(forms.ModelForm):
         """Clean the data and generate messages for any errors."""
 
         super().clean()
-        sender_account = self.cleaned_data.get('sender_account')
-        receiver_account = self.cleaned_data.get('receiver_account')
-        start_date = self.cleaned_data.get('start_date')
-        end_date = self.cleaned_data.get('end_date')
-        users_accounts: PotAccount = PotAccount.objects.filter(user=self.user)
+        sender_account: Account = self.cleaned_data.get('sender_account')
+        receiver_account: Account = self.cleaned_data.get('receiver_account')
+        start_date: date = self.cleaned_data.get('start_date')
+        end_date: date = self.cleaned_data.get('end_date')
+        users_accounts: QuerySet[PotAccount] = PotAccount.objects.filter(
+            user=self.user)
         ids: list[Account] = []
         for account in users_accounts:
             ids.append(account.id)
