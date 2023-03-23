@@ -14,6 +14,7 @@ class ParseStatementPDFClassTestCase(HelperTestCase):
     """Test file for the parse statement pdf helpers class"""
 
     def setUp(self):
+        super().setUp()
         self.bank_statement_parser: ParseStatementPDF = ParseStatementPDF()
         self.user: User = User.objects.get(username="@johndoe")
         self.account: PotAccount = PotAccount.objects.filter(

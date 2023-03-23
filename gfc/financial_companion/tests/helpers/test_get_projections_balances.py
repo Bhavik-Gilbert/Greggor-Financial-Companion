@@ -9,6 +9,7 @@ class GetProjectionBalancesHelperFunctionTestCase(HelperTestCase):
     """Test file for the get_projections_balances helpers function"""
 
     def setUp(self):
+        super().setUp()
         self.bank_accounts: QuerySet[BankAccount] = BankAccount.objects.filter(
             interest_rate__gt=0)
         self.timescales: int = max(get_projection_timescale_options().keys())
@@ -45,14 +46,17 @@ class GetProjectionBalancesHelperFunctionTestCase(HelperTestCase):
         self._assert_projection_empty()
 
     def _get_no_accounts(self):
+        """Set balances to where id is like 0"""
         self.bank_accounts: QuerySet[BankAccount] = BankAccount.objects.filter(
             id__lt=0)
 
     def _get_and_test_balances(self):
+        """Set balances to get projections balances"""
         self.balances: dict[str, list[float]] = get_projections_balances(
             self.bank_accounts, self.timescales)
 
     def _assert_projection_valid(self):
+        """Assert there is the necessary data to display"""
         if self.timescales < 0:
             self.timescales: int = 0
 
@@ -66,4 +70,5 @@ class GetProjectionBalancesHelperFunctionTestCase(HelperTestCase):
         self.assertEqual(len(projection['balances']), self.timescales)
 
     def _assert_projection_empty(self):
+        """Assert there is no data to display"""
         self.assertEqual(len([*self.balances]), 0)

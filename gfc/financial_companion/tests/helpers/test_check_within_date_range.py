@@ -9,12 +9,14 @@ class CheckWithinDateRangeHelperFunctionTestCase(HelperTestCase):
 
     def _assert_range_is_invalid(
             self, start_date: date, end_date: date, current_date: date):
+        """Assert date is not within date range"""
         check_range: bool = check_within_date_range(
             start_date, end_date, current_date)
         self.assertFalse(check_range)
 
     def _assert_range_is_valid(
             self, start_date: date, end_date: date, current_date: date):
+        """Assert date is within date range"""
         check_range: bool = check_within_date_range(
             start_date, end_date, current_date)
         self.assertTrue(check_range)

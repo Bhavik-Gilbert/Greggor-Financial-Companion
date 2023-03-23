@@ -8,6 +8,7 @@ class RandomFilenameHelperFunctionTestCase(HelperTestCase):
     """Test file for the random_filename helpers function"""
 
     def setUp(self):
+        super().setUp()
         self.filename: str = "greggor.png"
 
     def test_get_correct_file_extension(self):

@@ -9,6 +9,7 @@ class PaginateFunctionTestCase(HelperTestCase):
     """Test file for the paginate helpers function"""
 
     def setUp(self):
+        super().setUp
         self.random_list: list[int] = []
         for i in range(0, 15):
             n: int = random.randint(1, 30)

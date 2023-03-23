@@ -11,6 +11,7 @@ class GetSortedMembersBasedOnCompletedTargetsHelperFunctionTestCase(
     """Test file for the get_sorted_members_based_on_completed_targets helpers function"""
 
     def setUp(self):
+        super().setUp()
         self.group: UserGroup = UserGroup.objects.get(id=3)
         self.members: QuerySet[User] = self.group.members.all()
         self.member_1: User = self.members[0]
