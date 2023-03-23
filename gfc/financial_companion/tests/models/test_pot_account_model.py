@@ -20,11 +20,11 @@ class PotAccountModelTestCase(ModelTestCase):
         self._assert_model_is_valid()
 
     def test_vaild_balance_for_2_decimal_places(self):
-        self.test_model.balance: float = Decimal('200.01')
+        self.test_model.balance: Decimal = Decimal('200.01')
         self._assert_model_is_valid()
 
     def test_invalid_balance_for_3_decimal_places(self):
-        self.test_model.balance: float = Decimal('200.012')
+        self.test_model.balance: Decimal = Decimal('200.012')
         self._assert_model_is_invalid()
 
     def test_vaild_currency_types(self):

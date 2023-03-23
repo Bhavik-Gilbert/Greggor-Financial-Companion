@@ -35,7 +35,7 @@ class AccountModelTestCase(ModelTestCase):
 
     def test_description_max_length_is_500(self):
         self.test_model.description: str = "a" * 500
-        self._assert_model_is_valid
+        self._assert_model_is_valid()
 
     def test_description_is_not_longer_than_500(self):
         self.test_model.description: str = "a" * 501
@@ -52,9 +52,7 @@ class AccountModelTestCase(ModelTestCase):
         self.assertEqual(len(transactions), 3)
 
     def test_get_account_transactions_all_filter(self):
-        transactions: list[Transaction] = self.test_model.get_account_transactions(
-            FilterTransactionType.ALL, True)
-        self.assertEqual(len(transactions), 3)
+        self.test_get_account_transactions_allow_accounts()
 
     def test_get_account_transactions_received_filter(self):
         transactions: list[Transaction] = self.test_model.get_account_transactions(

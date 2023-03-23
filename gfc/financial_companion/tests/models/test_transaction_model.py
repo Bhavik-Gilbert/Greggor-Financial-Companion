@@ -16,6 +16,7 @@ class TransactionModelTestCase(ModelTestCase):
 
     def _assert_balance_changes_on_transaction_created(
             self, account: PotAccount):
+        """Assert balance changes in database when transaction is made"""
         balance_before_transaction: Decimal = account.balance
         self.transaction_model.save()
         account.refresh_from_db()
@@ -37,6 +38,7 @@ class TransactionModelTestCase(ModelTestCase):
 
     def _assert_balance_changes_on_transaction_update(
             self, account: PotAccount, new_transaction_amount: Decimal):
+        """Assert balance changes in database when transaction is updated"""
         self.transaction_model.save()
         account.refresh_from_db()
         balance_before_transaction: Decimal = account.balance
@@ -86,6 +88,7 @@ class TransactionModelTestCase(ModelTestCase):
         self.transactions: Transaction = Transaction.objects.all()
 
     def _set_categories_none(self, transactions):
+        """Set category in all transactions to None"""
         for transaction in transactions:
             transaction.category: Category = None
             transaction.save()
