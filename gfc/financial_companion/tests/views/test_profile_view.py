@@ -1,12 +1,14 @@
 from .test_view_base import ViewTestCase
 from financial_companion.models import User
 from django.urls import reverse
+from django.http import HttpResponse
 
 
 class ProfileViewTestCase(ViewTestCase):
     """Unit tests of the profile view"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('profile')
         self.user: User = User.objects.get(username='@michaelkolling')
 

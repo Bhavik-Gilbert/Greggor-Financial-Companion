@@ -8,6 +8,7 @@ class DeleteRecurringTransactionViewTestCase(ViewTestCase):
     """Unit tests of the delete recurring transaction view"""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse(
             'delete_recurring_transaction',
             kwargs={

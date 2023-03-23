@@ -2,12 +2,14 @@ from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.forms import JoinUserGroupForm
 from financial_companion.models import User, UserGroup
+from django.http import HttpResponse
 
 
 class JoinUserGroupViewTestCase(ViewTestCase):
     """Unit tests of the join user group view"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('join_user_group')
         self.form_input: dict[str, str] = {
             'invite_code': 'ABCDEFGH'

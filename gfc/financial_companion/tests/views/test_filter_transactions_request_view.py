@@ -10,6 +10,7 @@ class FilterTransactionsViewTestCase(ViewTestCase):
     """Unit tests of the filter transactions request view"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse(
             "filter_transaction_request", kwargs={
                 "redirect_name": "view_transactions"})

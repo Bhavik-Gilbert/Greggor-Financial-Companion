@@ -12,7 +12,8 @@ class AddTransactionViewTestCase(ViewTestCase):
     """Unit tests of the add transaction view"""
 
     def setUp(self) -> None:
-        self.url = reverse('add_transaction')
+        super().setUp()
+        self.url: str = reverse('add_transaction')
         self.image_path: str = "financial_companion/tests/data/dragon.jpeg"
         self.image_upload: SimpleUploadedFile = self._get_image_upload_file(
             self.image_path, "jpeg")
@@ -31,7 +32,7 @@ class AddTransactionViewTestCase(ViewTestCase):
     def test_add_transaction_url(self) -> None:
         self.assertEqual(self.url, '/add_transaction/')
 
-    def test_get_add_transaction(self):
+    def test_get_add_transaction(self) -> None:
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
@@ -40,7 +41,7 @@ class AddTransactionViewTestCase(ViewTestCase):
         self.assertTrue(isinstance(form, AddTransactionForm))
         self.assertFalse(form.is_bound)
 
-    def test_unsuccesfully_add_transaction(self) -> Any:
+    def test_unsuccesfully_add_transaction(self) -> None:
         self._login(self.user)
         self.form_input['title']: str = ''
         before_count: int = Transaction.objects.count()

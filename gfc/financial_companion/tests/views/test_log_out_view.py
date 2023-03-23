@@ -1,12 +1,14 @@
 from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.models import User
+from django.http import HttpResponse
 
 
 class LogOutViewTestCase(ViewTestCase):
     """Tests of the log out view."""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('log_out')
         self.user: User = User.objects.get(username='@johndoe')
 

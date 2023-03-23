@@ -11,7 +11,8 @@ class QuizReadyViewTestCase(ViewTestCase):
     """Unit tests of the quiz ready view"""
 
     def setUp(self):
-        self.base_url = '/quiz_ready/'
+        super().setUp()
+        self.base_url: str = '/quiz_ready/'
         self.url: str = reverse('quiz_ready', kwargs={"question_total": 1})
         self.user: User = User.objects.get(username='@johndoe')
         self.page_contain_list: list[Any] = [

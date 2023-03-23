@@ -2,12 +2,14 @@ from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.models import User, PotAccount, BankAccount
 from django.db.models import QuerySet
+from django.http import HttpResponse
 
 
 class ViewAccountsViewTestCase(ViewTestCase):
     """Tests of the user view pot accounts view."""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('view_accounts')
         self.user: User = User.objects.get(username='@johndoe')
         self.account: PotAccount = PotAccount.objects.get(name='ghi')

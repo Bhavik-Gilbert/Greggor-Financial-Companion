@@ -9,6 +9,7 @@ class DeleteUserTargetViewTestCase(ViewTestCase):
     """Tests of the delete user target view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('delete_user_target', kwargs={"pk": 1})
         self.user: User = User.objects.get(username='@johndoe')
 

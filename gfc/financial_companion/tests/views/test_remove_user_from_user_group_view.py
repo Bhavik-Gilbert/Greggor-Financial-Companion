@@ -2,12 +2,14 @@ from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.models import User, UserGroup
 from django.contrib.messages.storage.base import Message
+from django.http import HttpResponse
 
 
 class RemoveUserFromUserGroupViewTestCase(ViewTestCase):
     """Tests of the remove user from user group view."""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse(
             'remove_user_from_user_group', kwargs={
                 "group_pk": 1, "user_pk": 2})

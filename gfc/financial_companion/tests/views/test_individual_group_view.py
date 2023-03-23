@@ -8,6 +8,7 @@ class IndividualGroupViewTestCase(ViewTestCase):
     """Unit tests of the individual group view"""
 
     def setUp(self):
+        super().setUp()
         self.owner: User = User.objects.get(username='@johndoe')
         self.member: User = User.objects.get(username='@janedoe')
         self.group: UserGroup = UserGroup.objects.get(id=3)

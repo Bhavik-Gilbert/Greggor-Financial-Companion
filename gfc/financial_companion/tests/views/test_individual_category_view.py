@@ -10,6 +10,7 @@ class IndividualCategoryViewTestCase(ViewTestCase):
     """Unit tests of the individual category view"""
 
     def setUp(self):
+        super().setUp()
         self.user: User = User.objects.get(username="@johndoe")
         self.category: Category = Category.objects.filter(user=self.user)[0]
         self.url: str = reverse(

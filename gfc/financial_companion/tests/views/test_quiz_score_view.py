@@ -11,6 +11,7 @@ class QuizscoreViewTestCase(ViewTestCase):
     """Unit tests of the quiz score view"""
 
     def setUp(self):
+        super().setUp()
         self.user: User = User.objects.get(username='@johndoe')
         self.quiz_score: QuizScore = QuizScore.objects.filter(user=self.user)[
             0]

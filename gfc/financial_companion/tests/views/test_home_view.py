@@ -9,6 +9,7 @@ class HomeViewTestCase(ViewTestCase):
     """Unit tests of the home view"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('home')
         self.user: User = User.objects.get(username='@johndoe')
 

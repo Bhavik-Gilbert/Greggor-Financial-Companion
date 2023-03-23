@@ -3,12 +3,13 @@ from django.urls import reverse
 from .test_view_base import ViewTestCase
 from financial_companion.forms import UserSignUpForm
 from financial_companion.models import User
-
+from django.http import HttpResponse
 
 class SignUpViewTestCase(ViewTestCase):
     """Unit tests of the sign up view"""
 
     def setUp(self):
+        super().setUp()
         self.url: str = reverse('sign_up')
         self.form_input: dict[str, str] = {
             'first_name': 'Bob',

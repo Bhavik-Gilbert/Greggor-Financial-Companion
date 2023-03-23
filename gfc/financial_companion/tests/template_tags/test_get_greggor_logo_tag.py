@@ -37,16 +37,16 @@ class GetGreggorTemplateTagTestCase(TemplateTagTestCase):
         greggor_input: str = "not a greggor"
         self.assertFalse(greggor_input in GreggorTypes)
         greggor_filename: str = get_greggor(greggor_input)
-        greggor_filename: str = self._get_name_in_filename(greggor_filename)
-        self.assertNotEqual(greggor_input, greggor_filename)
-        self.assertTrue(greggor_filename in GreggorTypes)
+        greggor_name: str = self._get_name_in_filename(greggor_filename)
+        self.assertNotEqual(greggor_input, greggor_name)
+        self.assertTrue(greggor_name in GreggorTypes)
 
     def test_valid_function_returns_a_valid_greggor_type_if_input_is_empty(
             self):
         greggor_filename: str = get_greggor("")
-        greggor_filename: str = self._get_name_in_filename(greggor_filename)
-        self.assertNotEqual(greggor_filename, greggor_filename)
-        self.assertTrue(greggor_filename in GreggorTypes)
+        greggor_name: str = self._get_name_in_filename(greggor_filename)
+        self.assertNotEqual(greggor_filename, greggor_name)
+        self.assertTrue(greggor_name in GreggorTypes)
 
     @freeze_time("2012-01-01 10:00:00")
     def test_valid_party_greggor_on_holidays_without_valid_input(self):

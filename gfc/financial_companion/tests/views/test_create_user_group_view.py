@@ -9,6 +9,7 @@ class CreateUserGroupViewTestCase(ViewTestCase):
     """Tests of the create user group view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('create_user_group')
         self.form_input: dict[str, str] = {
             'name': 'Financial Club',

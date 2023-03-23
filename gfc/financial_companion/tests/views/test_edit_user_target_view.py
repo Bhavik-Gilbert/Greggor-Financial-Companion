@@ -9,6 +9,7 @@ class EditUserTargetViewTestCase(ViewTestCase):
     """Tests of the edit user target view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('edit_user_target', kwargs={'pk': 1})
         self.test_user: User = User.objects.get(username='@johndoe')
         self.form_input: dict[str, Any] = {

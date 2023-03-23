@@ -9,6 +9,7 @@ class DisplayTransactionsViewTestCase(ViewTestCase):
     """Unit tests of the display transactions view"""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse(
             'view_transactions', kwargs={
                 'filter_type': "all"})

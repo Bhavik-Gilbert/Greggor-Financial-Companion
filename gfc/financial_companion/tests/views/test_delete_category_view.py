@@ -9,6 +9,7 @@ class DeleteCategoryViewTestCase(ViewTestCase):
     """Tests of the delete category view."""
 
     def setUp(self) -> None:
+        super().setUp()
         self.url: str = reverse('delete_category', kwargs={"pk": 1})
         self.user: User = User.objects.get(username='@johndoe')
 
