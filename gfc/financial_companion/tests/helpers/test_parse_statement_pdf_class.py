@@ -61,7 +61,7 @@ class ParseStatementPDFClassTestCase(HelperTestCase):
             "description": self.bank_statement_parser.description
         }
 
-    def _fill_parser_object(self, fill_data: bool = True):
+    def _fill_parser_object(self, fill_data: bool = True) -> None:
         """
         Fills all object attributes
         If fill_data is false, object data attributes will remain as they are
@@ -71,7 +71,7 @@ class ParseStatementPDFClassTestCase(HelperTestCase):
         if fill_data:
             self._fill_parser_object_data()
 
-    def _fill_parser_object_data(self):
+    def _fill_parser_object_data(self) -> None:
         """
         Fills all object data attributes
         """
