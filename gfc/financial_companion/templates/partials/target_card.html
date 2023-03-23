@@ -1,9 +1,6 @@
 {% load targets %}
-{% load get_logo %}
 
 {% with completeness=target|get_completeness %}
-    {%with checked_completeness=completeness|check_completeness_if_expense:target %}
-      {% with type_of_greggor=checked_completeness|get_greggor_type_from_completeness %}
       <div class="col-auto">
         <div class="card">
           <div class="card-body p-0">
@@ -29,6 +26,4 @@
           </div>
         </div>
       </div>
-    {% endwith %}
-  {% endwith %}
 {% endwith %}
