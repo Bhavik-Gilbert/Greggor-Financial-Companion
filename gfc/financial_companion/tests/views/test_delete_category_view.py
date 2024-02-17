@@ -3,6 +3,7 @@ from .test_view_base import ViewTestCase
 from financial_companion.models import User, Category
 from django.http import HttpResponse
 from django.contrib.messages.storage.base import Message
+from freezegun import freeze_time
 
 
 class DeleteCategoryViewTestCase(ViewTestCase):
@@ -16,6 +17,7 @@ class DeleteCategoryViewTestCase(ViewTestCase):
     def test_delete_category_url(self) -> None:
         self.assertEqual(self.url, '/delete_category/1')
 
+    @freeze_time("2023-03-29 13:00:00")
     def test_successful_deletion(self) -> None:
         self._login(self.user)
         before_count: int = Category.objects.count()

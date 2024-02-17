@@ -3,6 +3,7 @@ from financial_companion.models import User, PotAccount
 from django.urls import reverse
 from django.contrib.messages.storage.base import Message
 from django.http import HttpResponse
+from freezegun import freeze_time
 
 
 class FilterTransactionsWithPKViewTestCase(ViewTestCase):
@@ -23,6 +24,7 @@ class FilterTransactionsWithPKViewTestCase(ViewTestCase):
             self.url,
             f"/filter_transaction_request_with_pk/individual_account/{self.account.id}/")
 
+    @freeze_time("2023-03-29 13:00:00")
     def test_post_when_all_button_is_clicked(self):
         self._login(self.user)
         self.form_data: dict[str, bool] = {
@@ -50,6 +52,7 @@ class FilterTransactionsWithPKViewTestCase(ViewTestCase):
         self.assertContains(response, 5)
         self.assertContains(response, 499.99)
 
+    @freeze_time("2023-03-29 13:00:00")
     def test_post_when_sent_button_is_clicked(self):
         self._login(self.user)
         self.form_data: dict[str, bool] = {
@@ -74,6 +77,7 @@ class FilterTransactionsWithPKViewTestCase(ViewTestCase):
         self.assertContains(response, 4)
         self.assertContains(response, 14999.99)
 
+    @freeze_time("2023-03-29 13:00:00")
     def test_post_when_received_button_is_clicked(self):
         self._login(self.user)
         self.form_data: dict[str, bool] = {
@@ -98,6 +102,7 @@ class FilterTransactionsWithPKViewTestCase(ViewTestCase):
         self.assertContains(response, 5)
         self.assertContains(response, 499.99)
 
+    @freeze_time("2023-03-29 13:00:00")
     def test_post_when_random_input_is_given(self):
         self._login(self.user)
         self.form_data: dict[str, bool] = {

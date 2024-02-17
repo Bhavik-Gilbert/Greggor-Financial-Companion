@@ -3,6 +3,7 @@ from .test_view_base import ViewTestCase
 from financial_companion.models import User
 from django.contrib.messages.storage.base import Message
 from django.http import HttpResponse
+from freezegun import freeze_time
 
 
 class CategoryListViewCase(ViewTestCase):
@@ -22,6 +23,7 @@ class CategoryListViewCase(ViewTestCase):
     def test_valid_categories_list_redirect_url(self) -> None:
         self.assertEqual(self.redirect_url, "/categories/")
 
+    @freeze_time("2023-03-29 13:00:00")
     def test_valid_get_categories_list_redirect(self) -> None:
         self._login(self.user)
         response: HttpResponse = self.client.post(self.redirect_url)
@@ -38,6 +40,7 @@ class CategoryListViewCase(ViewTestCase):
         self.assertContains(response, 'Entertainment')
         self.assertContains(response, 'Going out and having fun')
 
+    @freeze_time("2023-03-29 13:00:00")
     def test_post_when_search_is_empty(self) -> None:
         self._login(self.user)
         response: HttpResponse = self.client.post(self.url)
@@ -54,6 +57,7 @@ class CategoryListViewCase(ViewTestCase):
         self.assertContains(response, 'Entertainment')
         self.assertContains(response, 'Going out and having fun')
 
+    @freeze_time("2023-03-29 13:00:00")
     def test_post_when_full_category_name_is_applied(self) -> None:
         self._login(self.user)
         self.url: str = reverse(
@@ -69,6 +73,7 @@ class CategoryListViewCase(ViewTestCase):
         self.assertContains(response, 'Food')
         self.assertContains(response, "Eating out expenses")
 
+    @freeze_time("2023-03-29 13:00:00")
     def test_post_when_partial_category_name_is_applied(self) -> None:
         self._login(self.user)
         self.url: str = reverse('categories_list', kwargs={'search_name': "e"})
@@ -84,6 +89,7 @@ class CategoryListViewCase(ViewTestCase):
         self.assertContains(response, 'Entertainment')
         self.assertContains(response, 'Going out and having fun')
 
+    @freeze_time("2023-03-29 13:00:00")
     def test_post_when_incorrect_category_name_is_applied(self):
         self._login(self.user)
         self.url = reverse(

@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.db.models import QuerySet
 from django.http import HttpResponse
 from django.contrib.messages.storage.base import Message
+from freezegun import freeze_time
 
 
 class DashboardViewTestCase(ViewTestCase):
@@ -39,6 +40,7 @@ class DashboardViewTestCase(ViewTestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'pages/dashboard.html')
 
+    @freeze_time("2023-03-29 13:00:00")
     def test_dashboard_displays_desired_info(self) -> None:
         self._login(self.user)
         response: HttpResponse = self.client.get(self.url)

@@ -3,7 +3,7 @@ from .test_view_base import ViewTestCase
 from financial_companion.models import User, UserTarget
 from django.http import HttpResponse
 from django.contrib.messages.storage.base import Message
-
+from freezegun import freeze_time
 
 class DeleteUserTargetViewTestCase(ViewTestCase):
     """Tests of the delete user target view."""
@@ -16,6 +16,7 @@ class DeleteUserTargetViewTestCase(ViewTestCase):
     def test_delete_user_target_url(self) -> None:
         self.assertEqual(self.url, '/delete_target/user/1')
 
+    @freeze_time("2023-03-29 13:00:00")
     def test_successful_deletion(self) -> None:
         self._login(self.user)
         before_count: int = UserTarget.objects.count()
