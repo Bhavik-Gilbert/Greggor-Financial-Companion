@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from django.contrib.messages.storage.base import Message
 from freezegun import freeze_time
 
+
 class DeleteUserTargetViewTestCase(ViewTestCase):
     """Tests of the delete user target view."""
 

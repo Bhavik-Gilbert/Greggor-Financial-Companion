@@ -30,7 +30,8 @@ def change_password_view(request: HttpRequest) -> HttpResponse:
                     request,
                     messages.ERROR,
                     "The password provided is incorrect")
-                return render(request, 'pages/change_password.html', {'form': form})
+                return render(
+                    request, 'pages/change_password.html', {'form': form})
         else:
             messages.add_message(
                 request,

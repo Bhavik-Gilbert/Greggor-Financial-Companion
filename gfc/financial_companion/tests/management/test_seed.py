@@ -94,5 +94,5 @@ class ManagementSeedTestCase(ManagementTestCase):
         """Tests that we can seed and unseed the database"""
         self._assert_successfully_seed()
         seeded_users: QuerySet[User] = User.objects.filter(
-           email__endswith='@gfc.org')
+            email__endswith='@gfc.org')
         self._assert_successfully_unseed(seeded_users)

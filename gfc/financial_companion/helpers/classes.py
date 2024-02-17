@@ -43,6 +43,7 @@ class CurrencyConversion:
 
 class StoredCurrencyConverter:
     """Structure of stored CurrencyConversions"""
+
     def __init__(self) -> None:
         self.conversion_list: list[CurrencyConversion] = []
 

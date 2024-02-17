@@ -6,6 +6,7 @@ from typing import Any
 from django.contrib.messages.storage.base import Message
 from freezegun import freeze_time
 
+
 class FilterTransactionsViewTestCase(ViewTestCase):
     """Unit tests of the filter transactions request view"""
 
