@@ -3,6 +3,8 @@ from currency_symbols import CurrencySymbols
 from currency_converter import CurrencyConverter
 from .enums import CurrencyType, Timespan
 from .maps import timespan_map
+from .constants import stored_currency_converter
+from .classes import CurrencyConversion
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
@@ -36,10 +38,22 @@ def convert_currency(amount: float, current_currency_code: str,
     if current_currency_code == target_currency_code or current_currency_code not in CurrencyType or target_currency_code not in CurrencyType:
         return amount
 
+    # Check stored conversions for conversion rate recorded in last 24 hours
+    conversion: CurrencyConversion = stored_currency_converter.get_conversion(
+        current_currency_code, target_currency_code)
+    if conversion:
+        return conversion.convert(
+            amount, current_currency_code, target_currency_code)
+
+    # Get current available conversion rate
     c: CurrencyConverter = CurrencyConverter(
         fallback_on_missing_rate=True,
         fallback_on_wrong_date=True)
-    return c.convert(amount, current_currency_code, target_currency_code)
+    conversion_rate: float = c.convert(
+        1, current_currency_code, target_currency_code)
+    stored_currency_converter.add_conversion(
+        current_currency_code, target_currency_code, conversion_rate)
+    return conversion_rate * float(amount)
 
 
 def random_filename(filename: str) -> str:

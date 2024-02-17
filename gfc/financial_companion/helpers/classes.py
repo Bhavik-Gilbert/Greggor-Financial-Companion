@@ -8,6 +8,77 @@ import financial_companion.models as fcmodels
 from datetime import datetime
 
 
+class CurrencyConversion:
+    """Stores a record of a conversion rate between two currencies"""
+
+    def __init__(self, currency_from_code: str, currency_to_code: str,
+                 conversion_rate: float, time_recorded: datetime) -> None:
+        self.currency_from_code: str = currency_from_code
+        self.currency_to_code: str = currency_to_code
+        self.conversion_rate: float = conversion_rate
+        self.time_recorded: datetime = time_recorded
+        self.supported_currencies: list[str] = [
+            currency_from_code, currency_to_code]
+
+    def can_convert(self, currency_from_code: str, currency_to_code: str):
+        """Checks if conversion is valid for inputted currencies"""
+        return currency_from_code in self.supported_currencies and currency_to_code in self.supported_currencies
+
+    def conversion_in_date(self) -> bool:
+        """Checks conversion is less than a day old"""
+        return (datetime.now() - self.time_recorded).days == 0
+
+    def convert(self, amount: float, currency_from_code: str,
+                currency_to_code: str) -> float:
+        """Converts amount using conversion rate"""
+        if not self.can_convert(currency_from_code, currency_to_code):
+            return amount
+
+        conversion_rate = self.conversion_rate
+        if currency_from_code == self.currency_to_code:
+            conversion_rate = 1 / conversion_rate
+
+        return float(amount) * conversion_rate
+
+
+class StoredCurrencyConverter:
+    """Structure of stored CurrencyConversions"""
+    def __init__(self) -> None:
+        self.conversion_list: list[CurrencyConversion] = []
+
+    def has_valid_conversion(self, currency_from_code: str,
+                             currency_to_code: str) -> bool:
+        """Checks if currency conversion for inputted currencies is stored"""
+        return self.get_conversion(
+            currency_from_code, currency_to_code) is not None
+
+    def get_conversion(self, currency_from_code: str,
+                       currency_to_code: str) -> CurrencyConversion:
+        """Gets CurrencyConversion for inputted currencies if available"""
+        for conversion in self.conversion_list:
+            if conversion.can_convert(
+                    currency_from_code, currency_to_code) and conversion.conversion_in_date():
+                return conversion
+        return None
+
+    def add_conversion(self, currency_from_code: str,
+                       currency_to_code: str, conversion_rate: float) -> None:
+        """
+        Adds new CurrencyConversion to structure
+        Removes previous rate entries
+        """
+        conversion: CurrencyConversion = CurrencyConversion(
+            currency_from_code, currency_to_code, conversion_rate, datetime.now())
+        old_conversion: CurrencyConversion = self.get_conversion(
+            currency_from_code, currency_to_code)
+
+        if old_conversion:
+            replace_index: int = self.conversion_list.index(old_conversion)
+            self.conversion_list[replace_index] = conversion
+        else:
+            self.conversion_list.append(conversion)
+
+
 class ParseStatementPDF:
     def __init__(self) -> None:
         self.number_regex: str = r'[^-\d.]'
